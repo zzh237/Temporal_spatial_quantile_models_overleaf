@@ -1,0 +1,321 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.85in]{geometry}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,longtable,array,ragged2e,pdflscape}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{microtype}
+\usepackage{setspace}
+\definecolor{crit}{RGB}{170,0,0}
+\definecolor{major}{RGB}{176,92,0}
+\definecolor{minor}{RGB}{60,85,130}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{implgreen}{RGB}{0,105,70}
+\hypersetup{hidelinks}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Detailed Review: Quantile Temporal-Spatial Analysis}
+\fancyhead[R]{\small Page \thepage\ of \pageref{LastPage}}
+\fancyfoot[C]{}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\emergencystretch=4em
+\onehalfspacing
+\newcommand{\status}[1]{\textcolor{implgreen}{\textbf{#1}}}
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\title{Detailed Review of the Main Paper and Supplement\\\textit{Risk Bounds for Quantile Temporal-Spatial Analysis}}
+\author{Technical, Mathematical, and Editorial Comments}
+\date{30 July 2026}
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.93\linewidth}{\textbf{Page-number convention.} Every page reference below refers to the supplied 133-page compiled PDF, not to the revised PDF.}}
+\end{center}
+
+\section*{Scope and overall assessment}
+The manuscript has a promising objective: risk bounds for conditional-quantile estimation with temporal dependence, a shared spatial random effect, heavy-tailed measurement error, and several structured function classes. The current compiled version, however, contains foundational mathematical inconsistencies in the dependence assumptions, coupling, localization, and application-specific calculations. It also contains literal internal review notes in the compiled appendix. These issues are more serious than ordinary copyediting.
+
+The companion full-length redline preserves the paper's section order---general theory, trend filtering, high-dimensional linear quantile regression, $K$-NN fused lasso, nonconvex classes, neural networks, algorithms, experiments, and the complete proof supplement---in one TeX file. In the main paper, mathematically invalid or internally inconsistent statements are replaced by corrected model, assumption, theorem, and algorithm blocks. Appendices A--I now contain operative corrected statements and proofs in red; the previous appendix comments have been replaced by actual derivations. A final gray tracked-comparison appendix retains the supplied detailed derivations solely so that every change can be located against the original source. The experimental numerical values and designs are not altered; experiment-specific concerns are listed separately below.
+
+
+\begin{center}
+\fbox{\parbox{0.93\linewidth}{\textbf{Regenerated complete version.} The unified redline contains the full main paper, operative corrected appendices, the tracked source comparison, and the references in one file. Red text gives the implemented revisions. Gray text in the final comparison appendix reproduces the supplied derivations only for auditability and is not part of the operative proof. No appendix comment is left as an unresolved instruction.}}
+\end{center}
+\textbf{Most important substantive changes in the revised paper:}
+\begin{enumerate}[leftmargin=2em]
+\item beta mixing is imposed on the \emph{joint time cluster} $W_i=(X_i,\delta_i,E_i)$, Berbee coupling is applied to that joint object, and the design law used after conditioning is made explicit;
+\item the empirical processes are centered at $f^*$ and localized through an explicit critical radius;
+\item the tail remainder is quantitatively tied to the curvature margin;
+\item prediction and parameter-recovery claims are separated in the high-dimensional linear section;
+\item graph-TV scaling and normalized loss conventions are corrected;
+\item the nonconvex result uses a genuine near-best approximating function and a centered star hull;
+\item the neural-network class has a specified, clipped, sparse architecture; and
+\item the ADMM dual step is corrected.
+\end{enumerate}
+
+\textbf{Scope of the mathematical repair.} The internal logical gaps identified in the appendix have been addressed: the proof now uses joint-cluster coupling, centered weighted processes, consistent conditioning, explicit graph and network conditions, and a fixed-point radius. Source-dependent ingredients are isolated as named assumptions rather than asserted without support. The resulting document is a mathematically coherent revision, but---as with any new theoretical argument---the authors should still check cited external approximation, entropy, and graph-geometry inputs against the primary sources before submission.
+
+\section*{Priority legend}
+\textcolor{crit}{\textbf{Critical}} means the issue invalidates a theorem/proof step or makes the stated claim undefined. \textcolor{major}{\textbf{Major}} means the claim is materially ambiguous, inconsistent, or overstated. \textcolor{minor}{\textbf{Minor}} means the issue is localized but should still be corrected.
+\clearpage
+\begin{landscape}
+\section*{A. Mathematical and theoretical issues}
+\fontsize{7.1}{8.5}\selectfont
+\renewcommand{\arraystretch}{1.22}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{L{0.04\linewidth}L{0.055\linewidth}L{0.065\linewidth}L{0.11\linewidth}L{0.245\linewidth}L{0.275\linewidth}L{0.095\linewidth}}
+\toprule
+\textbf{ID} & \textbf{PDF page(s)} & \textbf{Priority} & \textbf{Location} & \textbf{Issue} & \textbf{Recommended correction} & \textbf{Revision status}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{PDF page(s)} & \textbf{Priority} & \textbf{Location} & \textbf{Issue} & \textbf{Recommended correction} & \textbf{Revision status}\\
+\midrule
+\endhead
+\midrule
+\multicolumn{7}{r}{\emph{Continued on next page}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+T01 & 2, 7 & \textcolor{crit}{\textbf{Critical}} & Model and Assumption 1.1 & The data-generating model is never given a dedicated equation. Assumption 1.1 says the data are generated from “model (1),” but Equation (1) is the estimator, not a stochastic model. & State explicitly that $y_{ij}=f^*(x_{ij})+\delta_i(x_{ij})+e_{ij}$ and separately impose the conditional-quantile calibration. Refer to this equation throughout. & \status{Rewritten}\\
+\rowcolor{lightgray}T02 & 2 & \textcolor{crit}{\textbf{Critical}} & Notation: empirical inner product & The displayed empirical inner product contains $f(x)g(x)\,dx$ inside a discrete sum, and the population integrals/suprema use $[0,1]$ even though the domain is $[0,1]^d$. & Define $\langle f,g\rangle_{n,m}=n^{-1}\sum_i m_i^{-1}\sum_j f(x_{ij})g(x_{ij})$ and integrate over $[0,1]^d$ with respect to the design law $Q$. & \status{Corrected}\\
+T03 & 2 & \textcolor{major}{\textbf{Major}} & Conditional quantile definition & The equality $P\{y_{ij}\le f^*(x_{ij})\mid x_{ij}\}=\tau$ presumes an exact, effectively unique conditional quantile. Quantiles may be set-valued when the conditional CDF has a jump. & Define $f^*(x)=\inf\{t:F_{ij}(t\mid x)\ge\tau\}$, then impose the exact calibration/continuity condition only when it is needed for Knight’s identity to cancel the linear term. & \status{Clarified}\\
+\rowcolor{lightgray}T04 & 3, 32, 125--127 & \textcolor{crit}{\textbf{Critical}} & Blocking construction & The sets $I_s$ are written as two-point sets such as $\{(s-1)L,sL\}$ instead of integer intervals, and the modular indexing is ambiguous at zero and at the remainder block. & Use interlaced sets $\mathcal J_{e,\ell}=\{\ell+2qL_n:q\ge0\}\cap[n]$ and $\mathcal J_{o,\ell}=\{\ell+(2q+1)L_n:q\ge0\}\cap[n]$. These sets partition $[n]$ and have a clear separation gap. & \status{Rewritten}\\
+T05 & 3, 11--12 & \textcolor{crit}{\textbf{Critical}} & Theorem 1 statement & The theorem uses a localization radius $t$ that is not defined or quantified. The displayed $O_P$ statement therefore does not specify a rate or a fixed-point condition. & Define a blockwise localized complexity $\Psi_n(r)$ and a critical radius $r_n=\inf\{r:\Psi_n(r)\le c r^2\}$. State the risk as $O_P(r_n^2)$. & \status{Rewritten}\\
+\rowcolor{lightgray}T06 & 3--4, 11--12 & \textcolor{major}{\textbf{Major}} & Generic “polylog” rate & The text claims a generic $\operatorname{polylog}(n)/(nm)$ rate for broad classes. Such a rate cannot follow without entropy, Gaussian-width, or other geometric control of the particular class. & Keep the main result at the localized-complexity level. Evaluate the fixed point only in the trend-filtering, linear, graph, and network applications. & \status{Corrected}\\
+T07 & 4, 18, 95 & \textcolor{crit}{\textbf{Critical}} & Projection in the nonconvex case & $f_{\mathrm{Proj}}:=\inf_{f\in\mathcal F}\|f-f^*\|_\infty$ defines a scalar, but subsequent arguments treat it as a function. & Choose an approximate minimizer $f^\circ\in\mathcal F$ satisfying $\|f^\circ-f^*\|_\infty\le\inf_{f\in\mathcal F}\|f-f^*\|_\infty+n^{-1}$ and define $\phi_n$ from that function. & \status{Corrected}\\
+\rowcolor{lightgray}T08 & 17--18 & \textcolor{major}{\textbf{Major}} & Star hull definition & The definition writes “for any $\mu\in[0,1]$” outside the set and does not cleanly distinguish the affine star hull of functions from the centered star hull of errors. & Use $\mathcal H_{\mathcal F}^\star=\{\mu(f-f^*):f\in\mathcal F,\mu\in[0,1]\}$ and localize this centered class in $L_2(Q)$. & \status{Corrected}\\
+T09 & 7 & \textcolor{crit}{\textbf{Critical}} & Independence versus beta mixing & Assumption 1 describes $\{\delta_i\}$ and $\{e_{ij}\}$ as independently distributed and then imposes nontrivial beta mixing across time. Read literally, the assumptions contradict one another. & Assume conditional independence within a time cluster and beta mixing across time for the joint cluster process. Remove claims of cross-time independence. & \status{Rewritten}\\
+\rowcolor{lightgray}T10 & 7, 32--35, 125--127 & \textcolor{crit}{\textbf{Critical}} & Separate couplings & The proof couples $X_i$, $E_i$, and $\delta_i$ separately. Three unrelated couplings need not preserve their contemporaneous joint law, so equalities involving $y_{ij}$ in the “star world” do not follow. & Apply Berbee’s lemma once to $W_i=(X_i,\delta_i,E_i)$. The coupled cluster then has the correct joint marginal law and is independent within each interlaced block. & \status{Rewritten}\\
+T11 & 7--8, 42--43, 52 & \textcolor{crit}{\textbf{Critical}} & Within-cluster dependence and design law & Several proofs symmetrize over all $(i,j)$ as if the summands were conditionally independent. The mean-remainder calculation also integrates against the marginal design law $Q$ after conditioning on $\delta_i$, which requires independence of the sampling locations and the spatial effect. & State that $X_i$ is independent of $\delta_i$, that the $x_{ij}$ are conditionally i.i.d. from $Q$, and that the $e_{ij}$ are independent conditional on $(\delta_i,X_i)$; otherwise use cluster-level arguments and the correct conditional design law. & \status{Assumption strengthened}\\
+\rowcolor{lightgray}T12 & 8 & \textcolor{crit}{\textbf{Critical}} & Assumption 2 & The condition is stated for “any any function $\phi$” and uses an absolute-value CDF inequality without clearly specifying the scalar perturbation, the conditioning point, or uniformity over $(i,j)$. & State a uniform scalar local-curvature condition: for $|u|\le R$, $\underline f|u|\le|F_{ij}(f^*(x)+u\mid x)-F_{ij}(f^*(x)\mid x)|\le\bar f|u|$. & \status{Rewritten}\\
+T13 & 8--10 & \textcolor{major}{\textbf{Major}} & Assumption 3: definition of $\Pi$ & The conditioning alternates between $x$, $x_S$, and the full vector, and it is unclear whether the same active set $S$ works for every block and every $i$. & Define $D_i(x,u)$ first, then its block average $\Pi_I(x,u)$. State explicitly that dependence on $x$ is only through one fixed coordinate set $S$ and that the bound holds uniformly over all blocks. & \status{Rewritten}\\
+\rowcolor{lightgray}T14 & 8--10, 53--54 & \textcolor{crit}{\textbf{Critical}} & Dimension of the grid argument & The uniform grid covers $s$ design coordinates and the threshold $u$, but the union bound uses $M^s$ rather than $M^{s+1}$. The threshold dimension is missing. & Use $M^{s+1}$ grid points and carry the resulting $(s+1)$ factor into the logarithmic term. & \status{Corrected}\\
+T15 & 10, 49--55 & \textcolor{crit}{\textbf{Critical}} & Tail constant and curvature absorption & The small tail constant $\widetilde c_0$ is not quantitatively related to the curvature margin. Later proofs redefine the penalty term in an attempt to absorb it. & Fix $c_0<C_0$ once and require the tail constant to satisfy an explicit inequality such as $8C_m\eta_0<C_0-c_0$. Never redefine the curvature penalty later. & \status{Rewritten}\\
+\rowcolor{lightgray}T16 & 10--11, 55--56 & \textcolor{major}{\textbf{Major}} & Tail example & The definition of $T_n$ is repeated/circular, and conditional tail probabilities are bounded by unconditional high-probability events without carefully conditioning on $x$ and $\delta_i$. & Present the tail assumption as a primitive condition. Give a separate sufficient example with explicit independence and uniform envelope conditions, or remove the informal derivation. & \status{Consolidated}\\
+T17 & 11--12, 41--43 & \textcolor{crit}{\textbf{Critical}} & Uncentered Rademacher class & The complexity is taken over $f$ rather than $f-f^*$. Consequently the class need not contain zero, the supremum can be negative, and the proof cannot simply drop the coupling indicator by using $1_{\Omega}\le1$. & Use the centered class $\{f-f^*:f\in\mathcal F\}$ in every Rademacher process. The class then contains zero and the supremum is nonnegative. & \status{Corrected}\\
+\rowcolor{lightgray}T18 & 11--12 & \textcolor{major}{\textbf{Major}} & Block normalization & The theorem sums normalized block complexities without giving a fixed-point equation that accounts for $2L$ blocks and their effective sizes. Statements later insert or remove factors of $L$ inconsistently. & Define the block process with the original empirical weights $n^{-1}m_i^{-1}$, or equivalently multiply the within-block normalized complexity by its block weight $M_{a,\ell}/N$, before summing the blocks. & \status{Corrected in unified revision}\\
+T19 & 12, 30, 60 & \textcolor{major}{\textbf{Major}} & Huber-type loss and $L_2$ conversion & The manuscript alternates between empirical and population Huber losses and asserts an $L_2$ comparison with factor $B$. Since both $f$ and $f^*$ are bounded by $B$, their difference may be as large as $2B$. & Use a consistent population loss $\Delta^2(h)=\int\min\{|h|,h^2\}\,dQ$ and the bound $\|h\|_2^2\le(1\vee2B)\Delta^2(h)$. & \status{Corrected}\\
+\rowcolor{lightgray}T20 & 12--14 & \textcolor{crit}{\textbf{Critical}} & Trend-filtering domain & Total variation and weak derivatives are written on $[0,1]^d$, while the application and spline arguments are univariate. The formula $\int_{[0,1]^d}|f^{(k)}(t)|dt$ is not a valid univariate derivative identity for $d>1$. & State explicitly that the trend-filtering application has $d=1$ and define $J_k(f)=\operatorname{TV}(f^{(k-1)})$ on $[0,1]$. & \status{Corrected}\\
+T21 & 12 & \textcolor{major}{\textbf{Major}} & Polynomial degree/indexing & The text says $J_k(f)=\operatorname{TV}(f^{(k-1)})$ but then claims the minimizer is a degree-$k$ spline; the examples correspond instead to degree $k-1$. It also cites Equation (2), which is the block definition. & Use one convention throughout: $k=1$ piecewise constant, $k=2$ piecewise linear, and degree $k-1$. Cite the estimator equation, not the block equation. & \status{Corrected}\\
+\rowcolor{lightgray}T22 & 13 & \textcolor{crit}{\textbf{Critical}} & Radius $V=1$ & Canonical scaling $V^*=O(1)$ does not imply $V=1$ or $J_k(f)\le1$. Rescaling the constraint changes the class and the constants/rate. & Keep a general radius $V\ge J_k(f^*)$ and show its exponent in the rate. Set $V=1$ only after an explicit normalization. & \status{Corrected}\\
+T23 & 13 & \textcolor{major}{\textbf{Major}} & Duplicated theorem setup & Theorem 3 repeats the estimator and assumptions twice, once with a generic seminorm and once with total variation, and alternates between $f$ and $\widehat f$. & State one estimator, one class, and one theorem. Define all symbols before the display. & \status{Corrected}\\
+\rowcolor{lightgray}T24 & 13--14, 63--66 & \textcolor{crit}{\textbf{Critical}} & Trend-filtering exponents & The powers of $B$ and $\log n$ differ between Theorem 3, Lemma 39, and the proof conclusion. Several algebraic steps used to solve the fixed point are not valid. & Recompute the entropy integral and solve one explicit fixed point. The revised statement gives the standard $N^{-2k/(2k+1)}$ exponent, a displayed $V$ dependence, and a separate spatial-effect term. & \status{Rewritten}\\
+T25 & 14 & \textcolor{major}{\textbf{Major}} & Minimax claim & The text calls the rate minimax optimal without requiring the additional spatial term to be no larger than the nonparametric term. If that term dominates, the displayed upper bound does not match the cited lower bound. & Qualify the statement: the usual minimax exponent is recovered only when the spatial-effect remainder is asymptotically no larger than the trend-filtering term. & \status{Corrected}\\
+\rowcolor{lightgray}T26 & 14 & \textcolor{major}{\textbf{Major}} & Linear model constraint & Assumption 6.2 writes $V\ge V^*\ge\|\beta\|_1$ rather than $\|\beta^*\|_1$, and the treatment of an intercept is not specified. & Write $f^*(x)=x^\top\beta^*$ with $\|\beta^*\|_1\le V$. Include an intercept in $x$ if desired and state how the bounded-predictor condition is enforced. & \status{Corrected}\\
+T27 & 15 & \textcolor{major}{\textbf{Major}} & Design-matrix definition & The dimensions and row definition of $X$ are malformed, and $A$ is introduced without a clear block normalization. This makes the theorem difficult to check dimensionally. & Define the weighted block matrix with row $x_{ij}^{\top}/m_i$ and use $n^{-1}\sum_{a,\ell}E\max_q\|X^w_{a,\ell,\cdot q}\|_2$, which matches the estimator's weights. & \status{Corrected in unified revision}\\
+\rowcolor{lightgray}T28 & 5--6, 15 & \textcolor{crit}{\textbf{Critical}} & Coefficient-consistency claim & The prose claims consistent coefficient estimation and variable selection without a restricted-eigenvalue or identifiability condition. The displayed risk controls only prediction. & State the result as a prediction bound. Explicitly say that coefficient error and support recovery still require a restricted-eigenvalue or comparable condition. & \status{Corrected}\\
+T29 & 15 & \textcolor{major}{\textbf{Major}} & Linear-rate summary & The expression “$(nm)^{-1/2}+n^{-1}s$” is ambiguous and does not agree with the theorem’s dependence on $V$, $\log d$, block sizes, or the spatial term. & Derive the simplified rate only after column normalization and retain $V$, $\sqrt{\log d}$, and all block/log factors. & \status{Corrected}\\
+\rowcolor{lightgray}T30 & 16 & \textcolor{crit}{\textbf{Critical}} & Graph total-variation scaling & Equation (21) states $\|\nabla_{G_K}\theta^*\|_1\asymp(nm)^{-1/d}$. An unnormalized sum of edge differences cannot decay at that rate; the expected scaling is approximately $N^{1-1/d}$ up to logarithms. & Replace the negative exponent by $N^{1-1/d}\operatorname{polylog}(N)$ and propagate that scaling into the theorem. & \status{Corrected}\\
+T31 & 15--16 & \textcolor{major}{\textbf{Major}} & Symmetric $K$-NN graph & The prose says points are connected if one is a nearest neighbor of the other “and vice versa,” which describes the mutual graph, whereas the intended construction elsewhere is the symmetrized graph using “or.” & State explicitly whether the graph is mutual or symmetric. The revised paper uses the symmetric union graph. & \status{Clarified}\\
+\rowcolor{lightgray}T32 & 17, 68--75 & \textcolor{crit}{\textbf{Critical}} & KNN norm scaling & Theorem 5 writes an unnormalized Euclidean norm on an $N$-vector but gives a rate of order $N^{-1/d}$. The dimensions do not match unless the norm is normalized. & Use $\|u\|_{n,m}^2=n^{-1}\sum_i m_i^{-1}\sum_j u_{ij}^2$ (or $N^{-1}\|u\|_2^2$ when $m_i\asymp m$). & \status{Corrected}\\
+T33 & 17 & \textcolor{major}{\textbf{Major}} & Undefined graph quantities & $V_{G^*}$ is not defined, and the explanation changes $\operatorname{polylog}(nm)$ into $\operatorname{poly}(nm)$, which would destroy consistency. & Use $V_n\ge\|D_{G_K}\theta^*\|_1$ and write $\operatorname{polylog}(N)$ consistently. & \status{Corrected}\\
+\rowcolor{lightgray}T34 & 17 & \textcolor{minor}{\textbf{Minor}} & Extension rule & The denominator in the out-of-sample $K$-nearest-neighbor average is written as an indicator sum without stating $K\le N$ or addressing ties. & Define a deterministic tie-breaking rule, assume $K\le N$, and write the average over an explicitly defined set $N_K(x)$ of size $K$. & \status{Clarified}\\
+T35 & 17--18 & \textcolor{crit}{\textbf{Critical}} & Nonconvex theorem contradiction & Theorem 7 is titled as a nonconvex result but says “let $\mathcal F$ ... be convex.” This contradicts both the section and the proof strategy. & Remove the convexity assumption and use the star-hull argument based on convexity of the loss, not of the class. & \status{Corrected}\\
+\rowcolor{lightgray}T36 & 18 & \textcolor{major}{\textbf{Major}} & Approximation error notation & The text writes $\phi_{nm}:=\sup_{f_{\rm Proj}\in\mathcal F}\|f_{\rm Proj}-f^*\|_\infty$, which is the worst approximation rather than the best approximation. & Define $\phi_n$ from a best or near-best approximant. Do not take a supremum over the class. & \status{Corrected}\\
+T37 & 18, 95--103 & \textcolor{crit}{\textbf{Critical}} & Two-sided empirical process & The nonconvex comparison introduces both signs of the empirical process, but subsequent corollaries copy one-sided convex bounds without consistently reversing every decomposition. & State a symmetric localized process bound on the centered star hull and use it for both signs. Avoid duplicating twelve nearly identical terms. & \status{Rewritten}\\
+\rowcolor{lightgray}T38 & 19--20 & \textcolor{crit}{\textbf{Critical}} & Neural-network recursion & The displayed recursion applies the ReLU inside $f_i^{(s)}$ and then applies another ReLU to $f_i^{(L-1)}$ in the output. Layer and coefficient indices are also inconsistent. & Define $h_0=x$, $h_\ell=\sigma(W_\ell h_{\ell-1}+b_\ell)$ once per hidden layer, followed by an affine output. & \status{Corrected}\\
+T39 & 20--21 & \textcolor{crit}{\textbf{Critical}} & Network class not controlled & The class specifies only depth and width. It has no weight, sparsity, or output constraint, so the global boundedness assumption and the stated entropy/risk bound do not follow. & Use a clipped-output network class and specify sparsity/parameter count (or weight bounds). Evaluate complexity for that exact class. & \status{Rewritten}\\
+\rowcolor{lightgray}T40 & 20--21 & \textcolor{major}{\textbf{Major}} & Hierarchical composition assumptions & The set $\mathcal P$, number of levels, number of nodes, and relevant bounded domains are not required to be finite/fixed, although the approximation theorem depends on these quantities. & Assume a finite bottleneck set and a fixed finite hierarchy. State boundedness of intermediate functions/domains. & \status{Strengthened}\\
+T41 & 21 & \textcolor{crit}{\textbf{Critical}} & Unspecified architecture in Theorem 10 & The rate is asserted for arbitrary $L$ and $r$, but no choice balances approximation and estimation. Such a rate cannot hold uniformly over all architectures. & Make $L_N$, width, and sparsity part of the theorem and select them to balance approximation error and localized complexity. & \status{Rewritten}\\
+\rowcolor{lightgray}T42 & 22 & \textcolor{major}{\textbf{Major}} & Trend-filtering penalty order & The algorithm section alternates among $TV^{(k)}(f)$, $D^{(k+1)}$, and the theory’s $TV(f^{(k-1)})$. The convention is not consistent. & Adopt one indexing convention and define the discrete operator to match it. The revised algorithm uses the same $D^{(k)}$ convention as its class definition. & \status{Corrected}\\
+T43 & 22--24 & \textcolor{crit}{\textbf{Critical}} & ADMM dual step & The “dual update” is written as an argmax of a positive quadratic, which is unbounded and is not an ADMM update. & Use the scaled-dual update $u^{t+1}=u^t+\theta^{t+1}-z^{t+1}$ and monitor primal and dual residuals. & \status{Corrected}\\
+\rowcolor{lightgray}T44 & 23 & \textcolor{major}{\textbf{Major}} & Check-loss proximal formula & The case analysis is phrased in terms of $\theta^{(t-1)}$ even though the optimization variable is $\theta_{ij}$. This obscures the proximal map and its thresholds. & Define $q=z^t-u^t$ and write the closed-form proximal update directly in three cases according to the location of $y_{ij}$ relative to $q$. & \status{Rewritten}\\
+T45 & 24--25 & \textcolor{major}{\textbf{Major}} & KNN ADMM statement & The dual update maximizes over $z$ instead of $u$, the text contains “is is,” and Algorithm 2 is captioned as trend filtering rather than graph fused lasso. & Correct the optimization variable, caption, and update equations. & \status{Corrected}\\
+\rowcolor{lightgray}T46 & 30--31 & \textcolor{major}{\textbf{Major}} & Population and empirical loss notation & $\Delta_{nm}^2$ and $\Delta^2$ use inconsistent measures and the notation $P(t)$ is not defined. Several later displays silently switch between them. & Reserve $\Delta_{n,m}^2$ for the weighted empirical average and define $\Delta^2$ as an integral with respect to $Q$. & \status{Corrected}\\
+T47 & 31--32 & \textcolor{major}{\textbf{Major}} & Excess-loss definitions & Some displays subtract $\rho_\tau(y_{ij}-f^*(x_{ij}))$, while a later line substitutes the same term inconsistently as $\rho_\tau(y_{ij}-f^*)$ instead of $\rho_\tau(\delta_i+e_{ij})$. & Define one excess loss $\widehat Z_{ij}(f)$ and use the model to rewrite its baseline exactly once. & \status{Consolidated}\\
+\rowcolor{lightgray}T48 & 32 & \textcolor{minor}{\textbf{Minor}} & Population minimizer wording & The text says $f^*\in\arg\min Z(f)$ even though $Z$ is already defined as excess risk. The intended facts are $Z(f^*)=0$ and $Z(f)\ge0$. & State the excess-risk properties directly. & \status{Corrected}\\
+T49 & 34 & \textcolor{major}{\textbf{Major}} & Coupling-error probability & Lemma 16 replaces $3/n$ by $\epsilon/2$ without stating the required lower bound on $n$ and then uses the bound as if it were uniform. & Keep the explicit $3/n$ term until the final asymptotic step, or state “for $n\ge6/\epsilon$.” & \status{Corrected}\\
+\rowcolor{lightgray}T50 & 34--35 & \textcolor{crit}{\textbf{Critical}} & Independence inside a block & The proof says the entire collection indexed by $(i,j)$ is i.i.d. within a block. Berbee coupling only makes the time clusters independent; within-cluster observations may remain dependent through $\delta_i$. & Say clusters are independent across $i$. Use conditional independence within $i$ only after conditioning on $\delta_i$, or use cluster-level symmetrization. & \status{Corrected}\\
+T51 & 36--37 & \textcolor{major}{\textbf{Major}} & Curvature outside the local neighborhood & The lower-bound proof uses the Huber threshold one even though the local CDF condition is valid on $[-R,R]$. Constants and thresholds therefore require rescaling by $R$. & Derive $C_0\min\{|h|,h^2\}$ with $C_0$ depending explicitly on $R$ and $\underline f$, or define a Huber function with threshold $R$. & \status{Corrected in constants}\\
+\rowcolor{lightgray}T52 & 37 & \textcolor{minor}{\textbf{Minor}} & Corollary 22 annotation & The source itself contains the note “the notation here does not match the statement from (68),” confirming that the population expectation is not consistently defined. & Define $\overline Z(f)=E\widehat Z(f)$ and $\Delta^2=E\Delta_{n,m}^2$ before the corollary. & \status{Corrected}\\
+T53 & 41--43 & \textcolor{crit}{\textbf{Critical}} & Literal internal comments in lemmas & Reviewer/author notes such as “this does not make sense,” “same comment frombefore,” and “please check everywhere” are typeset as part of the mathematical statements. & Remove all internal notes. Replace the malformed class by $\{f\in\mathcal F:c_0\Delta^2(f-f^*)\le t^2\}$ and center the process. & \status{Removed}\\
+\rowcolor{lightgray}T54 & 42--43 & \textcolor{crit}{\textbf{Critical}} & Conditional symmetrization & The proof calls $\widehat Z^*_{ij}-\widetilde Z^*_{ij}$ independent over all $(i,j)$ after conditioning, but that conclusion requires a precise within-cluster conditional-independence assumption. & Add that assumption explicitly and condition on the full cluster effect/design; otherwise symmetrize independent cluster sums. & \status{Rewritten}\\
+T55 & 44 & \textcolor{major}{\textbf{Major}} & Lemma 27 conditioning & A literal note says the right-hand side needs conditioning on $x$. The lemma’s statement and proof use inconsistent conditional probabilities. & Condition every probability on $(x_{ij},\delta_i)$ in $\widetilde Z_{ij}$ and on $x_{ij}$ in $Z_{ij}$. & \status{Corrected}\\
+\rowcolor{lightgray}T56 & 45--48 & \textcolor{major}{\textbf{Major}} & Remainder algebra & The derivation of $Z_{ij}(f)-\widetilde Z_{ij}(f)$ contains a parenthesis error, repeated terms, and the note “first equality seems wrong.” The final cancellation is not presented transparently. & Apply Knight’s identity once to both conditional expectations; subtract them and cancel the baseline terms in one aligned display. & \status{Rewritten}\\
+T57 & 49, 51--55 & \textcolor{crit}{\textbf{Critical}} & Penalty $\ell(f)$ redefined & $\ell(f)$ is first $(C_0-c_0)\Delta^2$ and is later set to unrelated multiples of $\widetilde c_0\Delta^2$. This breaks the localization argument. & Choose $c_0$ and $\ell(f)$ once. Absorb tail terms by an assumption that makes their coefficient smaller than $C_0-c_0$. & \status{Corrected}\\
+\rowcolor{lightgray}T58 & 49 & \textcolor{major}{\textbf{Major}} & Incomplete proof text & Corollary 30 contains “by Lemma 29 incomplete sentence” and “Oscar pauses here,” so the proof is not publication-ready. & Delete internal notes and provide a complete explanation of each inequality. & \status{Removed}\\
+T59 & 50--51 & \textcolor{crit}{\textbf{Critical}} & Ghost design sample with shared random function & The ghost construction changes $x_{ij}$ while sharing $\delta_i$ and $e_{ij}$, then asserts i.i.d. symmetry. Since $\delta_i(x)$ is evaluated at the design, this requires a carefully specified conditional kernel and is not automatic. & Formulate the cluster as one random element and apply standard conditional symmetrization to independent clusters. Avoid ad hoc partial ghost samples. & \status{Rewritten}\\
+\rowcolor{lightgray}T60 & 52--55 & \textcolor{crit}{\textbf{Critical}} & Average versus sum of absolute values & The grid argument controls the absolute value of a block average of signed remainders, but Step 3 replaces a sum of absolute values by the absolute value of the average. That inequality is false in general. & Assume/control the signed block average that actually appears in the empirical-process decomposition, without inserting absolute values term by term. & \status{Rewritten}\\
+T61 & 53--54 & \textcolor{crit}{\textbf{Critical}} & Hoeffding centering & Hoeffding’s inequality is applied to the block average $\Pi$ without explicitly showing that the summands are independent and centered at each grid point. Heterogeneous cluster laws can invalidate centering. & Either assume common cluster marginals within each block or define $D_i-E D_i$ and track the deterministic mean separately. & \status{Assumption made explicit}\\
+\rowcolor{lightgray}T62 & 54 & \textcolor{major}{\textbf{Major}} & Incorrect localization indicators & The proof partitions with $1\{f-f^*\le1\}$ and $1\{f-f^*>1\}$, omitting absolute values and therefore mishandling negative deviations. & Use $1\{|f-f^*|\le1\}$ and its complement. & \status{Corrected}\\
+T63 & 55--56 & \textcolor{major}{\textbf{Major}} & Tail-example conditioning & The example treats events such as $\|\delta_i\|_\infty\le R_n$ as if they directly bound probabilities conditional on the realized $\delta_i$. The conditioning and high-probability layers are mixed. & Separate the outer high-probability envelope event from the inner conditional tail bound and state all independence assumptions. & \status{Rewritten with explicit localization range}\\
+\rowcolor{lightgray}T64 & 57--58 & \textcolor{crit}{\textbf{Critical}} & $A_3$ ghost-process argument & $Z_{ij}$ is already a conditional expectation depending on the design, but the ghost construction includes $\delta^*$ and $e^*$ and asserts a symmetry that is not justified as written. & Treat $Z_{ij}(f)$ as a deterministic function of the independent coupled cluster/design and apply standard symmetrization at that level. & \status{Rewritten}\\
+T65 & 58--60 & \textcolor{crit}{\textbf{Critical}} & Circular/corrupted aggregation & The proof of Lemma 34 says “Thus, by Theorem 1” while it is still proving Theorem 1, repeatedly substitutes $J_{e,1}$ for $J_{e,\ell}$, and drops the coupling remainder. & Aggregate the block lemmas directly, retain the sum over $\ell$, and add the explicit coupling probability before invoking the critical-radius lemma. & \status{Rewritten}\\
+\rowcolor{lightgray}T66 & 60--63 & \textcolor{crit}{\textbf{Critical}} & Radius $t$ versus $t^2$ & Several local balls use radius proportional to $t^2$ where the $L_2$ radius should be proportional to $t$. The final fixed-point display therefore has inconsistent dimensions. & If the Huber excess is at most $t^2$, use $\|f-f^*\|_2\lesssim t$. Keep squared risks and radii distinct. & \status{Corrected}\\
+T67 & 61--62 & \textcolor{major}{\textbf{Major}} & $O_P$ criterion & The displayed limit in Corollary 38 mixes $\kappa$, $r_n$, $3/n$, and the complexity terms in a malformed fraction, and the proof says an inequality holds “and the last” without a complete argument. & Use a standard peeling/fixed-point lemma with a monotone sub-root complexity and state the high-probability result explicitly. & \status{Rewritten}\\
+\rowcolor{lightgray}T68 & 63--66 & \textcolor{crit}{\textbf{Critical}} & Trend-filtering population-to-empirical localization & The proof invokes a Bartlett et al. corollary to assert a set inclusion between population and empirical balls with a probability expression that is dimensionally and notationally incorrect. & Use a valid entropy bound uniformly over the empirical design metric, or first prove a separate norm-equivalence event for the bounded TV class. & \status{Rewritten}\\
+T69 & 65 & \textcolor{crit}{\textbf{Critical}} & Fixed-point algebra & The implication involving powers of $b$ and $N$ is algebraically false, and later displays interchange $B$, $L$, and the block length. This is the source of conflicting exponents. & Redo the entropy integral symbolically and solve the scalar inequality once; do not absorb parameter powers by unsupported comparisons. & \status{Rewritten}\\
+\rowcolor{lightgray}T70 & 66 & \textcolor{major}{\textbf{Major}} & Lemma/theorem mismatch & Lemma 39 and the proof of Theorem 3 give different powers of $B$ and $\log n$. The theorem cannot be verified from the lemma. & Use one rate throughout and show the final multiplication by the Huber-to-$L_2$ factor explicitly. & \status{Corrected}\\
+T71 & 67--68 & \textcolor{major}{\textbf{Major}} & Linear proof denominator & The odd-block bound divides by $\sum_{i\in J_{e,\ell}}m_i$ rather than the odd-block size. The proof also inserts an additional $L$ without clearly tracing normalization. & Use $M_{a,\ell}$ for each block and keep the block normalization in the definition of $\mathcal A_n$. & \status{Corrected}\\
+\rowcolor{lightgray}T72 & 71--72 & \textcolor{crit}{\textbf{Critical}} & KNN Rademacher supremum & The initial complexity display has $s_{ij}\theta^*_{ij}$ under a supremum over $\theta$, so the supremum no longer depends on the candidate. The subsequent centering step does not follow from that display. & Start with $\sum s_{ij}(\theta_{ij}-\theta^*_{ij})$ over the centered graph-TV class. & \status{Corrected}\\
+T73 & 72--75 & \textcolor{crit}{\textbf{Critical}} & Circular local-radius assumption & The KNN proof assumes $b^2=O(n^{-1}+N^{-1})$ in order to discard the local-radius term, although $b$ is the unknown radius the proof is meant to determine. & Keep the $b$ term and solve the resulting fixed-point inequality; do not assume the desired rate. & \status{Rewritten}\\
+\rowcolor{lightgray}T74 & 73--75 & \textcolor{major}{\textbf{Major}} & Logarithmic exponents and symbols & The proof alternates among $l$, $\ell$, and $\mu$ in powers such as $\log^{3+l}(N)$ and gives inconsistent choices of $K$. & Choose one $K=\operatorname{polylog}(N)$ and use a named, fixed logarithmic exponent depending only on $d$. & \status{Consolidated}\\
+T75 & 78--82 & \textcolor{crit}{\textbf{Critical}} & KNN extension proof & The proof contains an unresolved “(??)” reference, swaps the labels $\mathrm{Int}_1$ and $\mathrm{Int}_2$, and uses dimensionally incorrect radii such as $(1/2+1/N)+R_{K,\max}$. & Reorganize the extension error into estimation and approximation components, use radii of order $1/N+R_{K,\max}$, and provide valid references. & \status{Rewritten}\\
+\rowcolor{lightgray}T76 & 83--93 & \textcolor{major}{\textbf{Major}} & Dependent-design KNN geometry & Several occupancy and nearest-neighbor lemmas are copied from an i.i.d. setting. The block coupling is invoked, but the probability bounds and union factors do not consistently reflect $2L_n$ blocks and $N^d$ cells. & State a single graph-regularity proposition under the joint mixing design and prove/quote the required occupancy and degree events with all block and cell factors. & \status{Consolidated}\\
+T77 & 93--94 & \textcolor{crit}{\textbf{Critical}} & Graph lemmas: equality/norm errors & Lemma 49 writes an equality where only a triangle-inequality bound is available, and Lemma 50 alternates between $D^+$ and $D^\dagger$ and between $\ell_1$ and $\ell_2$ graph-TV norms. & Use inequalities throughout, one pseudoinverse notation, and the $\ell_1$ incidence norm that defines graph total variation. & \status{Corrected}\\
+\rowcolor{lightgray}T78 & 95--98 & \textcolor{crit}{\textbf{Critical}} & Nonconvex localization typos & The proof assumes the infimum projection is attained, substitutes an undefined $f$, and later contains $\widehat Z(f)-\widehat Z(f)$ where a population/empirical difference was intended. & Use a near-minimizer $f^\circ$, compare $\widehat Z(\widehat f)$ with $\widehat Z(f^\circ)$, and write both empirical-process signs correctly. & \status{Rewritten}\\
+T79 & 95--100 & \textcolor{major}{\textbf{Major}} & $\widetilde t^2$ definitions & The approximation-adjusted radius is defined with different factors in Equations (214), (215), and the following display, so the event and threshold do not match. & Define one radius, for example $\widetilde t^2=t^2+C\phi_n^2$, and use it unchanged. & \status{Corrected}\\
+\rowcolor{lightgray}T80 & 99--103 & \textcolor{crit}{\textbf{Critical}} & Sign errors in twelve-term decomposition & The decomposition of $\overline Z-\widehat Z$ and its reverse interchanges $Z-\widetilde Z$ with $\widetilde Z-Z$ in several places. Therefore the named $A$, $E$, and $F$ terms do not equal the preceding process. & Avoid the twelve-term duplication. Bound the absolute centered process on the star hull once. & \status{Rewritten}\\
+T81 & 104--105 & \textcolor{major}{\textbf{Major}} & Wrong block in copied corollary & The bound for $\widetilde B_1$ uses $\mathcal R_{J_{e,\ell}}$ instead of the odd-block complexity. & Use the matching odd block and verify every copied even/odd label. & \status{Corrected by consolidation}\\
+\rowcolor{lightgray}T82 & 108--113 & \textcolor{crit}{\textbf{Critical}} & Missing weights and inconsistent expectations & Some $E_1$ displays omit $m_i^{-1}\sum_j$, and expectations unnecessarily include Rademacher variables before symmetrization. The coefficient of $\ell(f)$ changes again. & Retain the weighted cluster average in every term and use one conditional-expectation hierarchy and one penalty coefficient. & \status{Rewritten}\\
+T83 & 114--124 & \textcolor{major}{\textbf{Major}} & Network entropy/application proof & The network application does not clearly connect the approximation theorem, pseudo-dimension/entropy bound, block sample sizes, and the localized fixed point. The architecture parameters remain implicit. & State a lemma with explicit approximation and entropy bounds for the clipped sparse class, then balance approximation and estimation in the theorem. & \status{Rewritten}\\
+\rowcolor{lightgray}T84 & 125--127 & \textcolor{crit}{\textbf{Critical}} & Berbee lemma proof & The coupling proof invokes “Theorem 5” rather than the stated mixing theorem and its induction assumes that each new coupled variable is independent of all earlier coupled variables, which is precisely what must be constructed. & Quote sequential Berbee coupling for the joint clusters or prove it by conditioning on the sigma-field generated by all previously coupled clusters. & \status{Rewritten}\\
+T85 & 128--133 & \textcolor{major}{\textbf{Major}} & Reference list accuracy & The references contain duplicate authors, incomplete publication data, broken capitalization, PDF-extraction hyphenation, and entries that appear to have swapped metadata. & Regenerate the bibliography from a verified BibTeX database and check every cited theorem against the correct edition/page/theorem number. & \status{Cleaned; metadata check remains}\\
+\end{longtable}
+\end{landscape}
+\clearpage
+\begin{landscape}
+\section*{B. Grammar, wording, and presentation issues}
+The table lists representative errors. Many constructions recur, so the entire source should still receive a final professional copyedit after the mathematics is settled.
+\fontsize{7.1}{8.5}\selectfont
+\renewcommand{\arraystretch}{1.22}
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{L{0.045\linewidth}L{0.065\linewidth}L{0.16\linewidth}L{0.31\linewidth}L{0.31\linewidth}}
+\toprule
+\textbf{ID} & \textbf{PDF page(s)} & \textbf{Location} & \textbf{Issue} & \textbf{Recommended edit}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{PDF page(s)} & \textbf{Location} & \textbf{Issue} & \textbf{Recommended edit}\\
+\midrule
+\endhead
+\midrule
+\multicolumn{5}{r}{\emph{Continued on next page}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+G01 & 1 & Abstract & “a broad prototyped function class” is not idiomatic and does not describe the mathematical object. & Use “a broad class of candidate functions.”\\
+\rowcolor{lightgray}G02 & 1 & Abstract & “The function class is convex or non-convex” is a fragment and the following “For convex case” lacks an article. & Write two complete sentences distinguishing the convex and nonconvex results.\\
+G03 & 1 & Abstract & “pioneering advancement” is promotional and unsupported. & State precisely which results are new.\\
+\rowcolor{lightgray}G04 & 1 & Abstract & The abstract says the paper uses “simulated and real datasets,” but the supplied manuscript presents simulations and no identifiable real-data analysis. & Remove the real-data claim unless a real-data section is added.\\
+G05 & 1--2 & Introduction & “inclusivity towards error distributions” and similar phrases are vague. & Use “applicability to heavy-tailed error distributions.”\\
+\rowcolor{lightgray}G06 & 2 & Model paragraph & The sentence beginning “Then given a quantile level” has multiple misplaced modifiers and lacks a main verb. & Split the definition of $f^*$ from the statement of the estimation goal.\\
+G07 & 2 & Notation & “Given a distribution $Q$ ..., and $\{z_{ij}\}$ identically distributed” is a sentence fragment. & Write “Let $Q$ be ... and let $z_{ij}\sim Q$.”\\
+\rowcolor{lightgray}G08 & 3 & Summary & “let $f^*(x_{ij})\tau$-be conditional quantiles” is ungrammatical. & Write “let $f^*(x_{ij})$ be the conditional $\tau$-quantile.”\\
+G09 & 3 & Summary & “without any moments condition requirements” is wordy and ungrammatical. & Use “without moment assumptions.”\\
+\rowcolor{lightgray}G10 & 3 & Blocking paragraph & “Denote for” and “if $L$ has the order” are incorrect constructions. & Use “Define” and “if $L$ is of order $\log n$.”\\
+G11 & 4 & Convex/nonconvex summary & “release the condition” should be “relax the condition.” & Replace and rewrite the surrounding sentence.\\
+\rowcolor{lightgray}G12 & 4 & Nonconvex summary & “boarder class” is a spelling error. & Use “broader class.”\\
+G13 & 4 & Rate discussion & “The $A_1$ equals to” is ungrammatical. & Use “The term $A_1$ is ...”.\\
+\rowcolor{lightgray}G14 & 4 & Boundedness paragraph & “to target a sharp convergence rates” has article/number disagreement. & Use “to obtain sharp convergence rates.”\\
+G15 & 4--5 & Proof overview & Several sentences exceed 50 words and repeat “convert” four times. & Separate the loss comparison, symmetrization, and localization steps into distinct paragraphs.\\
+\rowcolor{lightgray}G16 & 5 & Trend-filtering discussion & “1th derivative” should be “first derivative” or “$(k-1)$st derivative,” depending on context. & Correct ordinal notation throughout.\\
+G17 & 6 & Literature review & “Theory for deep networks includes ... and so on” is a run-on list with missing spaces before citations. & Replace with a focused paragraph on approximation and statistical-risk results relevant to this paper.\\
+\rowcolor{lightgray}G18 & 6 & Neural-network paragraph & “the estimator models neural network achieves” is ungrammatical. & Use “the neural-network estimator achieves.”\\
+G19 & 6, 21 & Terminology & “Quantial” appears instead of “Quantile.” & Correct the spelling throughout.\\
+\rowcolor{lightgray}G20 & 6--7 & General methods & “We let the class of estimators possesses” has subject--verb disagreement. & Use “We assume that the function class satisfies ...”.\\
+G21 & 6 & Convexity & “which signifying that” should be “meaning that.” & Rewrite the sentence.\\
+\rowcolor{lightgray}G22 & 7 & Nonconvexity & “the later case” should be “the latter case.” & Correct the word.\\
+G23 & 8 & Assumption 2 & “for any any function” repeats a word. & Delete the duplicate and use a scalar perturbation.\\
+\rowcolor{lightgray}G24 & 8 & Assumption 3 & “That is, indicates with $k$-th entry” is not grammatical. & Write “That is, $x^{\backslash k}$ is obtained by replacing the $k$th coordinate ...”.\\
+G25 & 8 & Assumption 3 & Missing spaces produce strings such as “$u)for$.” & Repair spacing and run a LaTeX-aware spell check.\\
+\rowcolor{lightgray}G26 & 9--10 & Assumptions discussion & “Theorem 1 replies on” appears twice. & Use “Theorem 1 relies on.”\\
+G27 & 10 & Example 2 & “If we have ... satisfied, Then” is a comma splice with incorrect capitalization. & Split into two sentences.\\
+\rowcolor{lightgray}G28 & 11 & Example 2 & “condition condition” repeats a word. & Delete the duplicate.\\
+G29 & 11--12 & Theorem discussion & “this addition term” should be “this additional term.” & Correct the phrase.\\
+\rowcolor{lightgray}G30 & 12 & Rate discussion & Write $\log n$ consistently rather than “logn.” & Standardize mathematical typography.\\
+G31 & 13 & Theorem 3 & The setup is duplicated verbatim and includes “And let.” & Delete the duplicate and avoid beginning formal statements with “And.”\\
+\rowcolor{lightgray}G32 & 15 & Theorem 4 discussion & “normalizeda standard assumption” is missing punctuation/spacing. & Write “normalized, a standard assumption ...”.\\
+G33 & 15--16 & KNN introduction & “has showed” should be “has shown.” & Correct the verb.\\
+\rowcolor{lightgray}G34 & 16 & Graph discussion & “the $x_{ij}$s” is awkward. & Use “the design points $x_{ij}$.”\\
+G35 & 16 & Assumption 7 & “Under Assumptions 7” should be singular. & Use “Under Assumption 7.”\\
+\rowcolor{lightgray}G36 & 18 & Nonconvex discussion & “guranntees” is misspelled. & Use “guarantees.”\\
+G37 & 19 & Neural-network introduction & “Our papar” is misspelled. & Use “Our paper.”\\
+\rowcolor{lightgray}G38 & 21 & Network theorem & “an hierarchical” should be “a hierarchical.” & Correct the article.\\
+G39 & 21 & Rate comparison & “is the same to the rate” should be “is the same as the rate.” & Correct the preposition.\\
+\rowcolor{lightgray}G40 & 24 & Algorithm discussion & “is is” and “(51)can” are spacing/duplication errors. & Correct and proofread the paragraph.\\
+G41 & 25 & Simulation design & “vary $n$ in in” and “For each fix value” are errors. & Use “vary $n$ over ...” and “for each fixed value.”\\
+\rowcolor{lightgray}G42 & 26 & Signal description & “Sinosoidal” and “constructed to have with non-homogenous smoothness” are incorrect. & Use “Doppler-type function with spatially inhomogeneous smoothness.”\\
+G43 & 27 & Figure 2 caption & The caption says “Panels a, b, and b.” & Use “Panels a, b, and c.”\\
+\rowcolor{lightgray}G44 & 28--29 & Nonconvex experiment & “i.i.d.-style pairs” is misleading because flattening does not make dependent panel observations i.i.d. & Use “flattened input--response pairs” without implying independence.\\
+G45 & 30 & Acknowledgments & The JMLR template instruction remains as manuscript text. & Replace it with the actual funding and competing-interest statements.\\
+\rowcolor{lightgray}G46 & 41--49 & Proof appendix & Internal directives to coauthors/reviewers appear in the compiled paper. & Remove all comments from production text; keep them only as TeX comments or a separate review file.\\
+G47 & 50, 58, 107, 110 & Proof appendix & “Combines (99) and (100)” appears repeatedly. & Use “Combining (99) and (100) ...”.\\
+\rowcolor{lightgray}G48 & 50, 106, 109 & Proof appendix & “differed on” is used where “differ only in” is intended. & Rewrite the ghost-sample descriptions.\\
+G49 & 51, 107, 110 & Proof appendix & “on the both side” is ungrammatical. & Use “on both sides.”\\
+\rowcolor{lightgray}G50 & 70 & KNN appendix & “The rest poofs” contains two errors. & Use “The remaining proofs.”\\
+G51 & 81 & KNN extension & “It reminds to analyze” should be “It remains to analyze.” & Correct the sentence.\\
+\rowcolor{lightgray}G52 & 109 & Nonconvex appendix & “seperately” is misspelled. & Use “separately.”\\
+G53 & Throughout & Capitalization & Terms such as “Trend Filtering,” “High-dimensional Quantile Linear Regression,” and “Empirical Process Theory” are capitalized inconsistently. & Use sentence case except for proper names and section titles.\\
+\rowcolor{lightgray}G54 & Throughout & Terminology & The manuscript alternates among “temporal-spatial,” “spatial-temporal,” and “spatio-temporal.” & Choose one term and use it consistently; the revision uses “temporal-spatial” in the title and “spatio-temporal” only where conventional.\\
+G55 & Throughout & Hyphenation and spacing & PDF extraction artifacts such as “sub-Gaussian,” broken words, and missing spaces occur frequently. & Compile from clean source, remove soft-hyphen artifacts, and run automated spell/grammar checks.\\
+\end{longtable}
+\end{landscape}
+\clearpage
+\begin{landscape}
+\section*{C. Experiment-specific concerns (flagged, not substantively changed)}
+Per the requested scope, these items were not repaired in the revised paper beyond local grammar and LaTeX cleanup. They should be resolved before submission because some affect reproducibility or whether the simulated target is the asserted conditional quantile.
+\fontsize{7.1}{8.5}\selectfont
+\renewcommand{\arraystretch}{1.22}
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{L{0.045\linewidth}L{0.065\linewidth}L{0.16\linewidth}L{0.275\linewidth}L{0.255\linewidth}L{0.09\linewidth}}
+\toprule
+\textbf{ID} & \textbf{PDF page(s)} & \textbf{Location} & \textbf{Concern} & \textbf{Suggested action} & \textbf{Status}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{PDF page(s)} & \textbf{Location} & \textbf{Concern} & \textbf{Suggested action} & \textbf{Status}\\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+E01 & 25, 28 & Basis function definition & Equation (53) appears to define $h_t(x)$ as a 25-dimensional vector, whereas $\delta_i(x)$ needs a scalar and Equation (59) later uses a product over coordinates. & Confirm the implemented scalar basis and make Equations (53) and (59) identical. & \status{Not changed}\\
+\rowcolor{lightgray}E02 & 25--26 & Design recursion with unequal $m_i$ & When $m_i>m_{i-1}$, the rule $x_{ij}=x_{i-1,j}$ is not defined for newly appearing indices. & Specify a padded array of size $M=\max_i m_i$ before truncation, as is done later in the neural-network study. & \status{Not changed}\\
+E03 & 25--26 & Quantile target under correlated noise & The text says a normalization stabilizes variance when $\tau\ne0.5$, but variance normalization does not by itself make the conditional $\tau$-quantile of $\delta_i(x)+e_{ij}$ equal zero. & Describe the centering/quantile shift used to enforce the target quantile in every scenario. & \status{Not changed}\\
+\rowcolor{lightgray}E04 & 26 & BIC sample size and weights & The BIC formula uses $n$ observations and unweighted residuals even though the estimator uses $N=\sum_i m_i$ observations with cluster weights $1/(nm_i)$. & Explain which effective sample size and weighted loss were implemented. & \status{Not changed}\\
+E05 & 26 & Degrees of freedom & The degrees-of-freedom estimate uses a threshold of 0.05 without justification and the notation “$d+k+1$” conflicts with dimension $d$. & Rename the knot count and provide a citation/sensitivity check for the threshold. & \status{Not changed}\\
+\rowcolor{lightgray}E06 & 28--29 & Flattening dependent data & Flattening creates a matrix representation but does not create i.i.d. training pairs. & Avoid “i.i.d.-style” wording and state how minibatches, validation splits, and standard errors respect cluster/time dependence. & \status{Grammar changed only}\\
+E07 & 28--29 & Scenario numbering & The multivariate section lists Scenarios 1--4 and the network section jumps to Scenarios 6--8; Scenario 5 is absent. & Renumber or explain the omitted scenario. & \status{Not changed}\\
+\rowcolor{lightgray}E08 & 29--30 & Scenario 8 target & Scenario 8 declares $\tau=0.5$ but evaluates a grid $q\in\{0.1,0.3,0.5,0.7,0.9\}$. The oracle quantile for each $q$ is not fully specified under the dynamic noise process. & Give the oracle $q$-quantile function used in the MSE calculation for every $q$. & \status{Not changed}\\
+E09 & 29--30 & Monte Carlo uncertainty & Table 1 reports only means, with no standard errors, confidence intervals, or number of trials stated next to the table. & Report Monte Carlo standard errors and the exact number of replications for each row. & \status{Not changed}\\
+\rowcolor{lightgray}E10 & 29--30 & Neural-network comparability & Architecture, optimizer, learning rate, epochs, early stopping, random seeds, and hyperparameter selection are not reported. & Add a reproducibility table and confirm identical tuning budgets for SqErr and Quantile networks. & \status{Not changed}\\
+E11 & 29--30 & Interpretation of squared-error baseline & A mean-regression network is not designed to estimate tail quantiles, so its poor $q=0.1,0.9$ performance is expected and is not a strong quantile-regression benchmark. & Add competitive quantile-network, quantile-forest, and/or distributional-regression baselines. & \status{Not changed}\\
+\rowcolor{lightgray}E12 & 30 & Acknowledgments/funding & The manuscript contains only template instructions, not an actual disclosure. & Insert verified funding and conflict-of-interest statements. & \status{Author action}\\
+\end{longtable}
+\end{landscape}
+
+\clearpage
+\section*{D. Implementation map for the unified revision}
+\begin{longtable}{L{0.22\linewidth}L{0.70\linewidth}}
+\toprule
+\textbf{Revised section} & \textbf{Main changes implemented}\\
+\midrule
+Abstract and Introduction & Replaced promotional and grammatically unstable claims with a precise model, target, estimator, and contribution summary. Removed the unsupported claim of a real-data study.\\
+General Methods & Added the stochastic model, corrected empirical/population norms, imposed joint-cluster beta mixing, defined local quantile curvature, and introduced an explicit blockwise critical radius.\\
+Trend Filtering & Restricted the argument to $d=1$, corrected derivative/degree indexing, retained a general TV radius $V$, and stated a single internally consistent rate.\\
+High-Dimensional Linear Regression & Recast the result as a prediction theorem, defined block design matrices clearly, and removed coefficient/support-recovery claims that require restricted eigenvalues.\\
+$K$-NN Fused Lasso & Corrected graph-TV scaling, normalized the prediction norm, defined the symmetric graph and incidence matrix, and separated observed-point estimation from nearest-neighbor extension error.\\
+Nonconvex Theory & Replaced the scalar “projection” with a near-best function, used the centered star hull, and bounded both signs of one localized empirical process.\\
+Neural Networks & Corrected the layer recursion; specified clipped sparse ReLU classes and architecture sequences; connected approximation, entropy, and the nonconvex theorem.\\
+Algorithms & Replaced the unbounded “dual argmax” with the scaled-dual update and wrote the check-loss proximal step explicitly.\\
+Experiments & Preserved designs, numbers, and interpretations; corrected grammar, captions, and LaTeX only. Experiment-specific concerns remain listed in Section C of this review.\\
+Appendices & Replaced the former proof comments with operative red statements and proofs for the convex theorem, trend filtering, linear prediction, graph fused lasso, nonconvex localization, neural networks, ADMM, auxiliary inequalities, and beta mixing. Joint-cluster coupling, full-objective weights, centered local classes, and the critical-radius argument are implemented directly. The supplied detailed appendix is retained in gray only as a tracked comparison, with red implemented-correction passages.\\
+References & Converted the PDF reference list to a compilable in-file bibliography. Metadata should still be checked against a clean BibTeX database.\\
+\bottomrule
+\end{longtable}
+
+\section*{E. Recommended pre-submission checklist}
+\begin{enumerate}[leftmargin=2em]
+\item Confirm that the strengthened joint-process and conditional-independence assumptions match the intended data-generating mechanism.
+\item Confirm that the deliberately explicit logarithmic factors and architecture/graph assumptions match the preferred primary-source formulations.
+\item Check every external theorem used for entropy, graph geometry, and neural-network approximation against the original source; the internal implications are now proved conditionally on those inputs.
+\item Reconcile the two basis-function definitions and document how every simulated error distribution is shifted to have conditional $\tau$-quantile zero.
+\item Add full computational details, uncertainty measures, and competitive quantile baselines.
+\item Replace the acknowledgment placeholder with verified funding and competing-interest disclosures.
+\item Rebuild the references from verified BibTeX records and run a final grammar/style check after all mathematical revisions are accepted.
+\end{enumerate}
+
+\section*{Bottom line}
+The supplied manuscript was not submission-ready because several core proof steps were undefined or invalid and internal comments remained in the compiled appendix. The regenerated redline implements a coherent restart around the joint-cluster dependence structure, full-objective block weighting, centered localization, and an explicit fixed point. It replaces the appendix comments by actual red derivations and retains the original detailed source in gray for comparison. The experimental substance remains unchanged. Before submission, the authors should still validate the external graph-geometry, entropy, and neural-network approximation inputs against the cited primary sources and resolve the experiment-specific items in Section C.
+
+\end{document}

@@ -1,0 +1,495 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=0.7in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,longtable,array,ragged2e,pdflscape}
+\usepackage{hyperref}
+
+\hypersetup{hidelinks}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\renewcommand{\arraystretch}{1.18}
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+
+\definecolor{appliedgreen}{RGB}{0,105,70}
+\definecolor{partialorange}{RGB}{165,82,0}
+\definecolor{deferredred}{RGB}{150,0,0}
+\definecolor{lightgray}{RGB}{246,246,246}
+\newcommand{\applied}{\textcolor{appliedgreen}{\textbf{Applied}}}
+\newcommand{\partialapplied}{\textcolor{partialorange}{\textbf{Partially applied}}}
+\newcommand{\deferred}{\textcolor{deferredred}{\textbf{Deferred}}}
+
+\title{Disposition of the Detailed Paper Review\\
+\large Conservative Revision Dated 8 August 2026}
+\author{}
+\date{8 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Scope and decision rule}
+The revision uses \path{jmlr2025_beta_mix2_04202026.tex} as its base and
+records accepted edits in
+\path{jmlr2025_beta_mix2_08082026.tex}. Only localized corrections to
+definitions, notation, grammar, typography, and plainly erroneous algebra or
+algorithm statements were adopted. Changes that would introduce or strengthen
+assumptions, rebuild a theorem, alter a rate, or replace a proof were deferred.
+All accepted manuscript text is shown in red.
+
+\textbf{Partially applied} means that a low-risk local component was corrected,
+while the substantive remainder of the recommendation was deliberately left
+unchanged. The two proposed assumption replacements concerning quantile
+curvature and low-dimensional Lipschitz spatial fluctuation were not adopted.
+
+\begin{landscape}
+\section*{Part I. Applied changes}
+\footnotesize
+\begin{longtable}{L{0.055\linewidth}L{0.245\linewidth}L{0.135\linewidth}L{0.49\linewidth}}
+\toprule
+\textbf{ID} & \textbf{Issue} & \textbf{Disposition} & \textbf{What was changed and why}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Issue} & \textbf{Disposition} & \textbf{What was changed and why}\\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{\emph{Continued on next page}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+
+\multicolumn{4}{l}{\textbf{A. Mathematical, notation, and algorithm items}}\\
+\addlinespace
+T01 & Missing data-generating model & \applied & Added the explicit equation
+$y_{ij}=f^*(x_{ij})+\delta_i(x_{ij})+e_{ij}$ and separated it from the
+conditional-quantile statement. This supplies a missing definition without
+changing the dependence assumptions.\\
+\rowcolor{lightgray}T02 & Malformed empirical inner product and domains &
+\applied & Defined the weighted empirical inner product at the observed
+$x_{ij}$ values and changed population norms and integrals to $[0,1]^d$ with
+respect to $Q$.\\
+T20 & Multivariate notation in the univariate trend-filtering application &
+\applied & Stated $d=1$ for this application and defined
+$J_k(f)=\operatorname{TV}(f^{(k-1)})$ on $[0,1]$.\\
+\rowcolor{lightgray}T21 & Trend-filtering degree and derivative indexing &
+\applied & Used the consistent degree-$k-1$ convention and corrected the
+piecewise-constant, linear, and quadratic examples.\\
+T23 & Duplicated trend-filtering theorem setup & \applied & Removed the repeated
+estimator/setup and retained one statement referring to the already defined
+estimator. No rate or proof was replaced.\\
+\rowcolor{lightgray}T26 & Wrong coefficient in the linear-model constraint &
+\partialapplied & Replaced $\|\beta\|_1$ by $\|\beta^*\|_1$. The intercept and
+bounded-predictor questions were not resolved because they require modeling
+choices from the authors.\\
+T43 & Unbounded ADMM ``dual update'' & \applied & Replaced the positive-quadratic
+argmax by the standard scaled additive update
+$u^{(t)}=u^{(t-1)}+\theta^{(t)}-z^{(t)}$.\\
+\rowcolor{lightgray}T44 & Ambiguous check-loss proximal cases & \applied &
+Introduced $q_{ij}^{(t-1)}$ and $\gamma_i$ and wrote the three coordinate-wise
+proximal cases explicitly.\\
+T45 & Errors in the $K$-NN ADMM statement & \applied & Corrected the dual update,
+the explanatory sentence, and the algorithm caption so that they refer to
+quantile $K$-NN fused lasso.\\
+\rowcolor{lightgray}T46 & Inconsistent population Huber-loss measure & \applied &
+Defined the population loss as an integral over $[0,1]^d$ with respect to the
+design law $Q$.\\
+T47 & Inconsistent excess-loss substitution & \partialapplied & Corrected the
+two displayed baselines to $\rho_\tau\{\delta_i(x_{ij})+e_{ij}\}$. A global
+reconstruction of every excess-process definition was deferred.\\
+\rowcolor{lightgray}T48 & Incorrect population-minimizer wording & \applied &
+Replaced the minimizer claim by the direct excess-risk properties
+$Z(f^*)=0$ and $Z(f)\geq0$.\\
+T52 & Mismatched notation in the population expectation corollary & \applied &
+Removed the internal annotation and rewrote the short argument using the
+definitions of $\bar Z$ and $\Delta^2$.\\
+\rowcolor{lightgray}T53 & Literal comments and malformed localized class &
+\partialapplied & Introduced the notation
+$\mathcal F_t=\{f\in\mathcal F:c_0\Delta^2(f-f^*)\leq t^2\}$ and removed the
+local typeset directives in the affected lemmas. The surrounding
+symmetrization proof was not rewritten.\\
+T62 & One-sided localization indicators & \applied & Inserted absolute values
+in both occurrences of the small- and large-deviation partition.\\
+\rowcolor{lightgray}T72 & Candidate-free $K$-NN Rademacher supremum & \applied &
+Replaced $\theta^*_{ij}$ under the supremum by the centered candidate
+$\theta_{ij}-\theta^*_{ij}$.\\
+T81 & Even-block complexity used in an odd-block bound & \applied & Replaced
+$R_{\mathcal J_{e,l}}$ by the matching odd-block complexity
+$R_{\mathcal J_{o,l}}$.\\
+
+\addlinespace
+\multicolumn{4}{l}{\textbf{B. Grammar, wording, and presentation items}}\\
+\addlinespace
+\rowcolor{lightgray}G01 & ``Broad prototyped function class'' & \applied &
+Changed to ``broad class of candidate functions'' in the revised abstract.\\
+G02 & Abstract fragments for convex and nonconvex classes & \applied & Recast
+the fragments as complete sentences distinguishing the two settings.\\
+\rowcolor{lightgray}G03 & Unsupported promotional wording & \applied & Removed
+the ``pioneering advancement'' claim and stated only that risk bounds are
+derived.\\
+G04 & Unsupported real-data claim & \applied & Limited the abstract to the
+simulated temporal-spatial experiments actually present in the manuscript.\\
+\rowcolor{lightgray}G05 & Vague error-distribution wording & \applied & Replaced
+the phrase with a direct statement about applicability to normal and
+heavy-tailed errors.\\
+G06 & Fragmented model paragraph & \applied & Split the model, target function,
+and estimation goal into complete sentences.\\
+\rowcolor{lightgray}G07 & Fragmented notation paragraph & \applied & Rewrote the
+paragraph as complete definitions of $Q$, the norms, and the empirical inner
+product.\\
+G08 & Malformed conditional-quantile phrase & \applied & Changed it to
+``the conditional $\tau$-quantile.''\\
+\rowcolor{lightgray}G09 & ``Without any moments condition requirements'' &
+\applied & Changed to ``without moment assumptions.''\\
+G10 & Blocking-paragraph grammar & \applied & Replaced ``Denote for'' by
+``define'' and ``has the order'' by ``is of order.''\\
+\rowcolor{lightgray}G11 & ``Release the condition'' & \applied & Changed to
+``relax the requirement.''\\
+G12 & ``Boarder class'' typo & \applied & Changed to ``broader class.''\\
+\rowcolor{lightgray}G13 & ``The $A_1$ equals to'' & \applied & Replaced by a
+complete sentence defining the role of $A_1$.\\
+G14 & Article and number disagreement & \applied & Changed to ``to obtain sharp
+convergence rates.''\\
+\rowcolor{lightgray}G15 & Repetitive proof-overview paragraph & \applied &
+Separated the loss comparison, spatial decomposition, symmetrization, and
+metric comparison into short paragraphs.\\
+G16 & Incorrect derivative ordinal and indexing & \applied & Replaced the
+ambiguous ordinal prose by the explicit $(k-1)$ derivative convention.\\
+\rowcolor{lightgray}G17 & Run-on neural-network literature list & \applied &
+Rewrote it as a focused sentence with proper citation spacing.\\
+G18 & Ungrammatical neural-network subject & \applied & Changed to ``the
+neural-network estimator achieves.''\\
+\rowcolor{lightgray}G19 & ``Quantial'' typo & \applied & Corrected the visible
+instances to ``Quantile.''\\
+G20 & Subject--verb disagreement in the function-class setup & \applied &
+Changed to ``We assume that this function class satisfies.''\\
+\rowcolor{lightgray}G21 & ``Which signifying that'' & \applied & Replaced by
+``meaning that'' in a complete sentence.\\
+G22 & ``Later case'' & \applied & Changed to ``latter case'' and smoothed the
+sentence.\\
+\rowcolor{lightgray}G24 & Definition of $x^{\backslash k}$ & \applied & Replaced
+the fragment by a complete coordinate-replacement definition.\\
+G25 & Missing space in Assumption 3 & \applied & Inserted the missing space
+before ``for all $x$.''\\
+\rowcolor{lightgray}G26 & ``Theorem 1 replies on'' & \applied & Changed both
+instances to ``Theorem 1 relies on.''\\
+G27 & Comma splice and capitalization in the tail example & \applied & Recast
+the condition as ``Suppose that ... hold. Then ...''.\\
+\rowcolor{lightgray}G28 & Repeated word in the tail example & \applied & Removed
+the repeated ``condition.''\\
+G29 & ``Addition term'' & \applied & Changed to ``additional term'' and
+rewrote the surrounding sentence.\\
+\rowcolor{lightgray}G30 & ``logn'' typography & \applied & Standardized the
+affected expression to $\log n$.\\
+G31 & Duplicated theorem prose and ``And let'' & \applied & Removed the
+duplicate setup and used one grammatical theorem statement.\\
+\rowcolor{lightgray}G33 & ``Has showed'' & \applied & Changed the affected
+$K$-NN sentences to ``has shown'' or ``shown.''\\
+G34 & Awkward plural $x_{ij}$s & \applied & Replaced it with ``the design
+points $x_{ij}$.''\\
+\rowcolor{lightgray}G35 & ``Under Assumptions 7'' & \applied & Changed to the
+singular ``Under Assumption 7.''\\
+G36 & ``Guranntees'' typo & \applied & Changed to ``guarantees.''\\
+\rowcolor{lightgray}G37 & ``Our papar'' typo & \applied & Changed to ``Our
+paper.''\\
+G38 & ``An hierarchical'' & \applied & Changed to ``a hierarchical.''\\
+\rowcolor{lightgray}G39 & ``Same to the rate'' & \applied & Changed to ``same
+as the rate.''\\
+G40 & Algorithm spacing and duplicated words & \applied & Rewrote the affected
+algorithm sentence and removed the duplicated ``is.''\\
+\rowcolor{lightgray}G41 & Simulation-design typos & \applied & Changed to
+``vary $n$ over'' and ``for each fixed value.''\\
+G42 & Signal-description spelling and wording & \applied & Described the
+function as Doppler-type with spatially inhomogeneous smoothness.\\
+\rowcolor{lightgray}G43 & Repeated panel label & \applied & Corrected the third
+panel reference from panel b to panel c.\\
+G44 & Misleading ``i.i.d.-style pairs'' & \applied & Replaced it with
+``flattened input--response pairs.''\\
+\rowcolor{lightgray}G47 & ``Combines'' at the start of proof sentences &
+\applied & Changed the identified occurrences to ``Combining.''\\
+G48 & ``Differed on'' in ghost-sample prose & \applied & Changed the identified
+occurrences to ``differ only in.''\\
+\rowcolor{lightgray}G49 & ``On the both side'' & \applied & Changed the
+identified occurrences to ``on both sides.''\\
+G50 & ``The rest poofs'' & \applied & Changed to ``The remaining proofs.''\\
+\rowcolor{lightgray}G51 & ``It reminds to analyze'' & \applied & Changed to
+``It remains to analyze.''\\
+G52 & ``Seperately'' typo & \applied & Changed to ``separately.''\\
+
+\addlinespace
+\multicolumn{4}{l}{\textbf{C. Experiment item}}\\
+\addlinespace
+\rowcolor{lightgray}E06 & Flattening dependent observations &
+\partialapplied & Removed the misleading ``i.i.d.-style'' wording. The
+substantive questions about minibatches, validation splits, and dependence-aware
+uncertainty remain unresolved.\\
+\end{longtable}
+\end{landscape}
+
+\begin{landscape}
+\section*{Part II. Suspicious or deferred changes}
+\footnotesize
+\begin{longtable}{L{0.055\linewidth}L{0.245\linewidth}L{0.135\linewidth}L{0.49\linewidth}}
+\toprule
+\textbf{ID} & \textbf{Issue} & \textbf{Disposition} & \textbf{Reason for deferral}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Issue} & \textbf{Disposition} & \textbf{Reason for deferral}\\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{\emph{Continued on next page}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+
+\multicolumn{4}{l}{\textbf{A. Mathematical and theoretical items}}\\
+\addlinespace
+T03 & Conditional quantile definition & \deferred & Replacing exact calibration
+by an infimum definition changes the target and the cancellation used later in
+the proof. It requires an author-approved continuity/uniqueness condition.\\
+\rowcolor{lightgray}T04 & Blocking construction & \deferred & A new interlaced
+partition would change the coupling setup and every block-normalized proof
+term; this is not a local notation fix.\\
+T05 & Undefined localization radius in Theorem 1 & \deferred & Introducing a
+critical radius would replace the main theorem and require a complete
+fixed-point proof.\\
+\rowcolor{lightgray}T06 & Unsupported generic polylogarithmic rate & \deferred &
+Removing or replacing this claim requires reconciling all application-specific
+entropy calculations and theorem statements.\\
+T07 & Scalar ``projection'' used as a function & \deferred & Selecting a
+near-best approximating function changes the nonconvex setup and all subsequent
+localization arguments.\\
+\rowcolor{lightgray}T08 & Star-hull definition & \deferred & Centering and
+redefining the star hull changes the class used throughout the nonconvex
+theorem and proof.\\
+T09 & Independence versus beta mixing & \deferred & Resolving the contradiction
+requires a new joint stochastic assumption, not editorial repair.\\
+\rowcolor{lightgray}T10 & Separate Berbee couplings & \deferred & Coupling the
+joint cluster instead would require replacing the coupling construction and
+checking every equality in the coupled world.\\
+T11 & Within-cluster dependence and design law & \deferred & The recommended
+conditional-independence and design assumptions materially strengthen the
+model and must be justified by the authors.\\
+\rowcolor{lightgray}T12 & Proposed local quantile-curvature assumption &
+\deferred & The proposed scalar uniform condition is one of the expressly
+rejected assumption rewrites. It changes both the hypothesis and curvature
+proof.\\
+T13 & Proposed low-dimensional Lipschitz fluctuation assumption & \deferred &
+The proposed $D_i$ formulation and uniform block bound are not established by
+the current manuscript and would introduce a new substantive assumption.\\
+\rowcolor{lightgray}T14 & Missing threshold dimension in the grid proof &
+\deferred & The correction depends on rebuilding the disputed fluctuation
+assumption and its finite-grid argument.\\
+T15 & Tail constant versus curvature margin & \deferred & Fixing a quantitative
+absorption inequality changes assumptions, constants, and several proof
+lemmas.\\
+\rowcolor{lightgray}T16 & Circular tail example & \deferred & A valid sufficient
+example needs explicit conditioning and independence assumptions that are not
+presently verified.\\
+T17 & Uncentered Rademacher classes throughout & \deferred & Global centering
+would alter definitions and many empirical-process proofs; a one-line
+replacement would be unreliable.\\
+\rowcolor{lightgray}T18 & Block normalization & \deferred & Correcting weights
+requires tracing all $2L$ blocks through the theorem and proofs.\\
+T19 & Huber-loss to $L_2$ conversion & \deferred & The factor involving the
+bound $B$ affects rates and proof constants beyond the local population-loss
+notation fixed above.\\
+\rowcolor{lightgray}T22 & Trend-filtering radius fixed at one & \deferred &
+Keeping a general radius changes the estimator class and the rate's parameter
+dependence.\\
+T24 & Trend-filtering rate exponents & \deferred & The recommendation requires
+a new entropy calculation and fixed-point derivation.\\
+\rowcolor{lightgray}T25 & Minimax-optimality qualification & \deferred & The
+proper qualification depends on first validating the unresolved spatial
+remainder and trend-filtering rate.\\
+T27 & High-dimensional design-matrix definition & \deferred & Correcting the
+matrix and normalization changes the theorem's complexity quantity and proof.\\
+\rowcolor{lightgray}T28 & Coefficient consistency and variable selection &
+\deferred & Restricting the claim to prediction or adding an identifiability
+condition is a substantive theorem change.\\
+T29 & Linear-rate summary & \deferred & A corrected summary must be derived from
+the unresolved weighted design and block normalization.\\
+\rowcolor{lightgray}T30 & Graph total-variation scaling & \deferred & Changing
+the exponent must be propagated through the graph theorem and proof.\\
+T31 & Mutual versus symmetric $K$-NN graph & \deferred & The intended graph
+depends on the actual implementation; choosing ``and'' or ``or'' without the
+code would be speculative.\\
+\rowcolor{lightgray}T32 & $K$-NN norm scaling & \deferred & Normalizing the norm
+changes the theorem statement and all downstream rate comparisons.\\
+T33 & Undefined graph radius and polylogarithmic factor & \deferred & A valid
+replacement depends on the unresolved graph-TV scaling and theorem
+normalization.\\
+\rowcolor{lightgray}T34 & Out-of-sample extension and ties & \deferred & The
+tie-breaking rule and admissible $K$ are method-design choices not documented
+in the source.\\
+T35 & Convexity contradiction in the nonconvex theorem & \deferred & Removing
+convexity requires verifying that the full star-hull proof is valid without it.\\
+\rowcolor{lightgray}T36 & Approximation-error supremum & \deferred & Replacing it
+by a best or near-best approximant changes the nonconvex theorem and proof.\\
+T37 & Two-sided nonconvex empirical process & \deferred & The proposed symmetric
+bound is a proof replacement, not a localized correction.\\
+\rowcolor{lightgray}T38 & Neural-network recursion & \deferred & A new recursion
+would redefine the modeled architecture and must match the approximation
+theorem used later.\\
+T39 & Uncontrolled neural-network class & \deferred & Clipping, sparsity, or
+weight bounds are substantive new assumptions.\\
+\rowcolor{lightgray}T40 & Hierarchical-composition assumptions & \deferred &
+Finiteness and bounded-domain conditions would strengthen the model and affect
+the approximation result.\\
+T41 & Architecture choice in the network theorem & \deferred & Selecting depth,
+width, and sparsity requires balancing approximation and estimation from
+scratch.\\
+\rowcolor{lightgray}T42 & Trend-filtering penalty order in the algorithm &
+\deferred & The discrete operator convention must be reconciled jointly with
+the implementation and the theory before changing it.\\
+T49 & Coupling-error probability & \deferred & The probability bookkeeping is
+part of the asymptotic proof and cannot be safely changed in isolation.\\
+\rowcolor{lightgray}T50 & Independence within coupled blocks & \deferred & A
+correction requires either a new conditional-independence assumption or a
+cluster-level symmetrization proof.\\
+T51 & Curvature outside the local neighborhood & \deferred & Rescaling the
+Huber threshold and constants depends on the disputed curvature assumption.\\
+\rowcolor{lightgray}T54 & Conditional symmetrization & \deferred & The required
+within-cluster independence is not established, and the alternative is a new
+cluster-level argument.\\
+T55 & Conditioning in Lemma 27 & \deferred & Repairing the statement requires a
+consistent conditional-probability hierarchy across its proof and adjacent
+definitions.\\
+\rowcolor{lightgray}T56 & Remainder algebra & \deferred & The suggested repair
+rederives the conditional Knight-identity calculation and is therefore a proof
+change.\\
+T57 & Repeated redefinition of $\ell(f)$ & \deferred & Choosing one penalty
+coefficient requires a verified quantitative tail-absorption condition.\\
+\rowcolor{lightgray}T58 & Incomplete proof text & \deferred & Deleting the notes
+without supplying the missing proof would conceal an unresolved gap.\\
+T59 & Ghost design with a shared random function & \deferred & A valid repair
+requires a cluster-level random-element formulation and new symmetrization.\\
+\rowcolor{lightgray}T60 & Average versus sum of absolute values & \deferred &
+The false inequality occurs inside the core fluctuation proof; its replacement
+depends on the exact process that can actually be controlled.\\
+T61 & Hoeffding centering & \deferred & Centering heterogeneous cluster terms
+requires an additional common-law assumption or an explicit deterministic
+remainder.\\
+\rowcolor{lightgray}T63 & Tail-example conditioning & \deferred & Separating
+outer and inner probability layers requires assumptions not stated in the
+source.\\
+T64 & $A_3$ ghost-process argument & \deferred & The suggested deterministic
+cluster-level symmetrization replaces a substantive proof step.\\
+\rowcolor{lightgray}T65 & Circular aggregation & \deferred & Fixing the block
+indices, coupling remainder, and theorem dependence requires rebuilding the
+aggregation proof.\\
+T66 & Radius $t$ versus $t^2$ & \deferred & Correcting dimensions propagates
+through local balls, fixed points, and final rates.\\
+\rowcolor{lightgray}T67 & Malformed $O_P$ criterion & \deferred & A valid
+sub-root peeling lemma and high-probability statement would replace the
+current argument.\\
+T68 & Trend-filtering population-to-empirical localization & \deferred & The
+required norm-equivalence or uniform entropy event is not proved in the source.\\
+\rowcolor{lightgray}T69 & Fixed-point algebra & \deferred & The correction
+requires recomputing the entropy integral and solving the scalar inequality.\\
+T70 & Trend-filtering lemma/theorem rate mismatch & \deferred & Selecting one
+rate without a verified derivation would be arbitrary.\\
+\rowcolor{lightgray}T71 & Odd-block denominator in the linear proof & \deferred &
+The denominator is entangled with unresolved block-normalization conventions.\\
+T73 & Circular local-radius assumption in the $K$-NN proof & \deferred & The
+unknown radius must be retained and a new fixed-point inequality solved.\\
+\rowcolor{lightgray}T74 & Inconsistent logarithmic exponents and symbols &
+\deferred & A single exponent and $K$ choice must follow from a checked graph
+complexity proof.\\
+T75 & Broken $K$-NN extension proof & \deferred & The unresolved reference,
+swapped terms, and radii require a full reorganization of the proof.\\
+\rowcolor{lightgray}T76 & Dependent-design $K$-NN geometry & \deferred & The
+needed occupancy and degree proposition under mixing is not available in the
+current source.\\
+T77 & Graph lemma equality and norm errors & \deferred & Fixing the
+pseudoinverse and norm conventions changes multiple graph lemmas and their
+uses.\\
+\rowcolor{lightgray}T78 & Nonconvex localization defects & \deferred & A
+near-minimizer and corrected two-sided processes require rebuilding the
+nonconvex proof.\\
+T79 & Inconsistent approximation-adjusted radius & \deferred & A single
+definition cannot be selected safely until the surrounding nonconvex proof is
+rederived.\\
+\rowcolor{lightgray}T80 & Sign errors in the twelve-term decomposition &
+\deferred & Replacing the decomposition by an absolute centered process is a
+major proof rewrite.\\
+T82 & Missing weights and inconsistent expectations & \deferred & The
+correction must be propagated through all nonconvex process terms and penalty
+coefficients.\\
+\rowcolor{lightgray}T83 & Neural-network entropy/application proof & \deferred &
+The explicit architecture, approximation theorem, entropy bound, and fixed
+point all remain to be established together.\\
+T84 & Berbee coupling proof & \deferred & Quoting or proving sequential joint
+coupling changes a foundational proof and must be checked against the precise
+mixing assumptions.\\
+\rowcolor{lightgray}T85 & Bibliographic accuracy & \deferred & Metadata and cited
+theorem locations must be verified against primary sources; guessing would be
+unsafe.\\
+
+\addlinespace
+\multicolumn{4}{l}{\textbf{B. Grammar, wording, and presentation items}}\\
+\addlinespace
+G23 & Repeated ``any'' and proposed scalar perturbation & \deferred & The
+duplicate word is absent from the base source. The remaining recommendation
+would rewrite the disputed curvature assumption.\\
+\rowcolor{lightgray}G32 & Alleged missing spacing in the linear-theorem
+discussion & \deferred & The cited string does not occur in the base source, so
+there is no supported local edit to make.\\
+G45 & Acknowledgments template text & \deferred & Verified funding and
+competing-interest language was not supplied.\\
+\rowcolor{lightgray}G46 & Internal directives in the proof appendix & \deferred &
+Broad deletion would hide unresolved mathematical gaps. Only comments attached
+to the locally corrected notation in the applied section were removed.\\
+G53 & Global capitalization & \deferred & A manuscript-wide style pass is
+broader than the requested conservative corrections and risks changing
+technical naming inconsistently.\\
+\rowcolor{lightgray}G54 & Global temporal-spatial terminology & \deferred &
+Choosing one term throughout is an authorial style decision and would create a
+large, nonlocal diff.\\
+G55 & Global hyphenation and spacing cleanup & \deferred & This requires a
+separate full copyedit after the mathematical text is settled.\\
+
+\addlinespace
+\multicolumn{4}{l}{\textbf{C. Experiment-specific items}}\\
+\addlinespace
+\rowcolor{lightgray}E01 & Inconsistent basis-function definition & \deferred &
+The scalar basis actually used must be confirmed from the experiment code.\\
+E02 & Unequal-$m_i$ design recursion & \deferred & A padded-array construction
+would change the simulation design and must match the implementation.\\
+\rowcolor{lightgray}E03 & Quantile target under correlated noise & \deferred &
+The centering or quantile shift used in each scenario is not documented and
+cannot be inferred safely.\\
+E04 & BIC sample size and weights & \deferred & The effective sample size and
+weighted criterion must be confirmed from the code.\\
+\rowcolor{lightgray}E05 & Degrees-of-freedom threshold and notation & \deferred &
+The threshold needs a source or sensitivity analysis, and the intended knot
+count must be confirmed.\\
+E07 & Missing Scenario 5 & \deferred & It is unclear whether this is a numbering
+error or an omitted experiment.\\
+\rowcolor{lightgray}E08 & Scenario 8 quantile target & \deferred & The oracle
+quantile functions for the evaluation grid are not supplied.\\
+E09 & Monte Carlo uncertainty & \deferred & Standard errors and replication
+counts require the experiment outputs or rerunning the simulations.\\
+\rowcolor{lightgray}E10 & Neural-network reproducibility & \deferred &
+Architecture, optimization, seeds, and tuning budgets must come from the
+implemented experiment.\\
+E11 & Squared-error baseline interpretation & \deferred & Adding competitive
+baselines changes the experiment and requires new computation.\\
+\rowcolor{lightgray}E12 & Funding and conflict disclosure & \deferred & Only the
+authors can provide verified disclosure language.\\
+\end{longtable}
+\end{landscape}
+
+\section*{Conclusion}
+The applied set is intentionally narrow. Items in the second part should remain
+open until the authors choose the intended stochastic model and verify the
+affected theorem and proof chains. In particular, no new curvature or
+low-dimensional fluctuation assumption has been inserted into the manuscript.
+
+\end{document}
