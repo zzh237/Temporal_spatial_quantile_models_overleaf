@@ -3356,10 +3356,10 @@ Returning to \eqref{blk_856}, using Assumption $|\mathcal{J}_{e,l}| \,\leq\, c_2
     &\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}\left|\mathbb{E}[r_{ij}(f)|\delta_i]\right| \labelrel={eq1171} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \left|\mathbb{E}[r_{ij}(f)|\delta_i]\right|  \\
     & \labelrel\leq{eq1170} \frac{c_2}{L}\bigg| \frac{1}{|\mathcal{J}_{e,l}|} \sum_{i\in \mathcal{J}_{e,l}} \int_{[0,1]^d}\int_0^{f(x) - f^*(x)} \Big[ \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u \mid x_{i1}=x) \\
     &\qquad\qquad - \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u \mid \delta_i, x_{i1} = x) \Big] du \, dx \bigg| \\
-    &\,\leq\, \frac{c_2}{L}\int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \max_{x\in[0,1]^d}\max_{u \in [-1,1]} |\Pi(x,u)| \cdot \mathbbm{1}_{\{f(x) - f^*(x) \,\leq\, 1\}} \, dx \\
-    &\quad + \frac{c_2}{L}\int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \max_{x\in[0,1]^d}\max_{u \in [-|f(x) - f^*(x)|, |f(x) - f^*(x)|]}|\Pi(x,u)| \cdot \mathbbm{1}_{\{f(x) - f^*(x) > 1\}} \, dx \\
-    &\,\leq\, \tilde c_0 \frac{c_2}{L}\int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \mathbbm{1}_{\{f(x) - f^*(x) > 1\}} \, dx \\
-    &\quad + \frac{c_2}{L}\int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \mathbbm{1}_{\{f(x) - f^*(x) \,\leq\, 1\}} \, dx \cdot c_3\sqrt{\frac{s\log n \log T_n}{n}} \\
+    &\,\leq\, \frac{c_2}{L}\int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \max_{x\in[0,1]^d}\max_{u \in [-1,1]} |\Pi(x,u)| \cdot \mathbbm{1}_{\{\rev{\abs{f(x) - f^*(x)} \,\leq\, 1}\}} \, dx \\
+    &\quad + \frac{c_2}{L}\int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \max_{x\in[0,1]^d}\max_{u \in [-|f(x) - f^*(x)|, |f(x) - f^*(x)|]}|\Pi(x,u)| \cdot \mathbbm{1}_{\{\rev{\abs{f(x) - f^*(x)} > 1}\}} \, dx \\
+    &\,\leq\, \tilde c_0 \frac{c_2}{L}\int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \mathbbm{1}_{\{\rev{\abs{f(x) - f^*(x)} > 1}\}} \, dx \\
+    &\quad + \frac{c_2}{L}\int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \mathbbm{1}_{\{\rev{\abs{f(x) - f^*(x)} \,\leq\, 1}\}} \, dx \cdot c_3\sqrt{\frac{s\log n \log T_n}{n}} \\
     &\,\leq\, \tilde c_0 \frac{c_2}{L} \Delta^2(f-f^*) + \frac{c_2}{L}\Delta(f-f^*)\cdot c_3\sqrt{\frac{s\log n \log T_n}{n}} \\
     & \labelrel\leq{eq1033}  \tilde c_0\frac{c_2}{L}  \Delta^2(f-f^*) + \tilde c_0 \frac{c_2}{L}\Delta^2(f-f^*)+ \frac{c_3^2c_2}{L}\frac{1}{4\tilde c_0}\frac{s\log n\log T_n}{n}  \\
 &\,\leq\, \frac{2\tilde c_0c_2}{L}  \Delta^2(f-f^*)+ \frac{c_2}{L}\frac{c_3^2}{4\tilde c_0}\frac{s\log n\log T_n}{n},
