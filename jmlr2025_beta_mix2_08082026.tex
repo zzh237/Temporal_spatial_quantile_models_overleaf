@@ -5007,9 +5007,14 @@ r_n^2 \asymp    \frac{ \max\set{B,1} \log^{5+\mu}(nm)V_n}{nm} + \frac{\log^2(nm)
 
 \end{lemma}
 \begin{proof}
-By definition, we have 
-\bea R_{\mathcal{J}_{e,l}}\left(\|\nabla{G_K} \theta\|_1 \leq V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq b}\right) =  \Ept{x^*, s}{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}} \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}\,\rev{\left(\theta_{ij}-\theta_{ij}^*\right)}}.
-\bea 
+\rev{Define the constraint set as the intersection of the total-variation ball and the ball centered at $\theta^*$:}
+\beq
+\label{def_knn_constraint_set}
+\rev{\mathcal{K}(b, V_n) \,\coloneqq\, \set{\theta: \|\nabla{G_K} \theta\|_1 \,\leq\, V_n} \cap \set{\theta: \norm{\theta-\theta^*} \,\leq\, b}.}
+\beq
+\rev{By the definition of the Rademacher width $R_{\mathcal{J}_{e,l}}$ in \eqref{rademacher_def_blocks}, applied to the set $\mathcal{K}(b, V_n)$, we have}
+\bea R_{\mathcal{J}_{e,l}}\left(\mathcal{K}(b, V_n)\right) \,=\,  \Ept{x^*, s}{\sup_{\theta \in \mathcal{K}(b, V_n)} \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}\,\theta_{ij}}.
+\bea
 % \bea 
 %   &R\left( \|\nabla{G_K} \theta\|_1 \leq V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq b}\right) \\ &= \ept{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}} \frac{1}{n}\sum_{i=1}^n \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} \theta_{ij}}  
 %   \\ & =   \ept{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}}  \frac{1}{n}\sum_{i=1}^n \frac{1}{m}\sum_{j=1}^{m_{i}} \frac{m}{m_i}s_{ij} \theta_{ij}} \\ 
@@ -5079,12 +5084,11 @@ One can show that $\{\tilde s_{ij}\}_{i=1,j=1}^{n,m_{i}}$ are independent SubGau
 
 
 
-Now by triangle inequality, and let $\varLambda = \theta - \theta^*$, 
-we have 
-\bea 
+\rev{To rewrite the supremum in terms of the centered variable, we write $\theta_{ij} \,=\, (\theta_{ij} - \theta_{ij}^*) + \theta_{ij}^*$, and then perform the change of variable $\varLambda = \theta - \theta^*$. Since $\|\nabla{G_K} \theta\|_1 \,\leq\, V_n$, and $\|\nabla{G_K} \theta^*\|_1 \,\leq\, V_n$ by the bounded variation of $f^*$ in Assumption~\ref{ass_knn_3} and the choice of the tuning parameter $V_n$, the triangle inequality gives $\|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n$, so the constraint set for $\varLambda$ is enlarged and the supremum can only increase. We have}
+\bea
 \label{knn_rada}
-&R_{\mathcal{J}_{e,1}}\left( \|\nabla{G_K} \theta\|_1 \,\leq\, V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq  b}\right) \\ 
-&\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}} \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  (\theta_{ij} - \theta_{ij}^* + \theta_{ij}^*)\Big) \cdot \indic{\Omega_\beta}} 
+&R_{\mathcal{J}_{e,l}}\left( \rev{\mathcal{K}(b, V_n)}\right) \\
+&\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}} \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  (\theta_{ij} - \theta_{ij}^* + \theta_{ij}^*)\Big) \cdot \indic{\Omega_\beta}}
 \\ & = 
 \Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}} \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  (\theta_{ij} - \theta_{ij}^* )\Big) \cdot \indic{\Omega_\beta}} \\
 &\quad +   \Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}\theta_{ij}^*}\\
@@ -5097,12 +5101,12 @@ we have
 &\leq \frac{2\log(n)}{c_1C_{\beta}}\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\varLambda} \leq b \\ \|\nabla{G_K} \varLambda\|_1 \leq \|\nabla{G_K} \theta\|_1 +  \|\nabla{G_K} \theta^*\|_1 \leq 2V_n} } \frac{1}{\sum_{i = 1}^n  m_i}\sum_{i =1}^n \sum_{j=1}^{m_{i}} \varLambda_{ij}\tilde s_{ij}\Big) \cdot \indic{\Omega_\beta}},
 \bea 
 
-Where the first equality holds by the fact that $\|\nabla{G_K} \theta\|_1 \,\leq\, V_n$ and $\|\nabla{G_K} \theta^*\|_1 \,\leq\, V_n$ implies $\|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n$. 
-We use the assumption $m_i \asymp m$ specified in the statement of the Lemma. 
+\rev{The second equality holds since the term $\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}\theta_{ij}^*$ does not depend on $\theta$, and the Rademacher variables $s_{ij}$ have mean zero, so its expectation vanishes. The third equality holds by the fact that $\|\nabla{G_K} \theta\|_1 \,\leq\, V_n$ and $\|\nabla{G_K} \theta^*\|_1 \,\leq\, V_n$ implies $\|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n$. The first inequality follows by the change of variable $\varLambda = \theta - \theta^*$ and enlarging the constraint set to $\set{\varLambda: \norm{\varLambda} \,\leq\, b} \cap \set{\varLambda: \|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n}$, under which the supremum can only increase.}
+We use the assumption $m_i \asymp m$ specified in the statement of the Lemma.
 
 In this step the term on the right hand side, we get 
 \bea
-&R_{\mathcal{J}_{e,l}}\left( \|\nabla{G_K} \theta\|_1 \,\leq\, V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq  b}\right) \\
+&R_{\mathcal{J}_{e,l}}\left( \rev{\mathcal{K}(b, V_n)}\right) \\
 &\,\leq\, \frac{2\log(n)}{c_1C_{\beta}}\mathbb{E}_{x, \delta, e, x^*, \delta^*, e^*, s}\bigg[\Big(\sup_{\substack{\|\varLambda\|\,\leq\, b \\ \|\nabla{G_K} \varLambda\|_1\,\leq\, 2V_n}}\frac{1}{\sum_{i = 1}^n  m_i}\sum_{i =1}^n \sum_{j=1}^{m_{i}}\varLambda_{ij}\tilde s_{ij}\Big) \cdot \indic{\Omega_\beta}\bigg],
 \bea
 % in Inequality~\eqref{knn_rada} is analyzed. 
@@ -5121,10 +5125,10 @@ it is satisfied that
 where \( \tilde b_2 \,\geq\, 0 \) is a constant depending on \( d \), \( C_3 \) and \( v_{max} \). Moreover, \( \tilde C \) is \( \frac{c_1c}{c_2C} \) with \( c_1 \) and \( c_2 \) positive constants.
 Here \( v_{max} \), \( v_{min} \), \( C \) and \( c \) are from Assumptions~\ref{asm:m} and \ref{ass_knn}. The positive constants \( C_3 \) and \( C_4 \) only depend on \( d \).
 % and the last inequality follows from the choice of \( \eta \) in Equation (162) for sufficiently large \( C_d \).
-To find the quantity $R_{\mathcal{J}_{e,1}}\left( \|\nabla{G_K} \theta\|_1 \,\leq\, V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq  b}\right)$,  we will analyze
+To find the quantity $R_{\mathcal{J}_{e,l}}\left( \rev{\mathcal{K}(b, V_n)}\right)$,  we will analyze
 \[
-\frac{ R_{\mathcal{J}_{e,1}}\left( \|\nabla{G_K} \theta\|_1 \,\leq\, V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq  b}\right)}{t^2} \\
-+ \frac{R_{\mathcal{J}_{e,1}}\left( \|\nabla{G_K} \theta\|_1 \,\leq\, V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq  b}\right)}{t^2}.
+\frac{ R_{\mathcal{J}_{e,l}}\left( \rev{\mathcal{K}(b, V_n)}\right)}{t^2} \\
++ \frac{R_{\mathcal{J}_{o,l}}\left( \rev{\mathcal{K}(b, V_n)}\right)}{t^2}.
 \]
 See the equation (13.17) in \cite{wainwright2019high}. 
 Hence,
