@@ -1289,9 +1289,9 @@ L_P(\theta, z, u) \,=\, \frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i
 where \( P \) is the penalty parameter that controls step size in the update. Thus we can solve \eqref{74} iteratively:
 \begin{align}
 \label{76}
-\text{\small \textit{$\theta$-minimization}} \quad \theta &\,=\, \arg\min_{\theta \in \mathbb{R}^{\sum_{i=1}^n m_i}} \left\{ \frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_\tau (y_{ij} - \theta_{ij}) + \frac{P}{2} \| \theta - z + u \|^2 \right\}, \\
+\text{\small \textit{$\theta$-minimization}} \quad \rev{\theta^{(t)}} &\,=\, \arg\min_{\theta \in \mathbb{R}^{\sum_{i=1}^n m_i}} \left\{ \frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_\tau (y_{ij} - \theta_{ij}) + \frac{P}{2} \| \theta - \rev{z^{(t-1)}} + \rev{u^{(t-1)}} \|^2 \right\}, \\
 \label{77}
-\text{\small \textit{z-minimization}} \quad z &\,=\, \arg\min_{z \in \mathbb{R}^{\sum_{i=1}^n m_i}} \left\{ \frac{1}{2} \| \theta + u - z \|^2 + \frac{\lambda}{P} \|D^{(x, k+1)}(z)\|_1 \right\}, \\ 
+\text{\small \textit{z-minimization}} \quad \rev{z^{(t)}} &\,=\, \arg\min_{z \in \mathbb{R}^{\sum_{i=1}^n m_i}} \left\{ \frac{1}{2} \| \rev{\theta^{(t)}} + \rev{u^{(t-1)}} - z \|^2 + \frac{\lambda}{P} \|D^{(x, k+1)}(z)\|_1 \right\}, \\
 \label{78}
 \text{\small \textit{\rev{dual update}}} \quad \rev{u^{(t)}} &\,=\, \rev{u^{(t-1)}+\theta^{(t)}-z^{(t)}.}
 \end{align}
@@ -1374,9 +1374,9 @@ where \( P \) is the penalty parameter that controls step size in the update.
 We again solve \eqref{82} iteratively:
 \begin{align}
 \label{83}
-\text{\small \textit{$\theta$-minimization}} \quad \theta &\,=\, \arg\min_{\theta \in \mathbb{R}^{\sum_{i=1}^n m_i}} \left\{ \frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_\tau (y_{ij} - \theta_{ij}) + \frac{P}{2} \| \theta - z + u \|^2 \right\}, \\
+\text{\small \textit{$\theta$-minimization}} \quad \rev{\theta^{(t)}} &\,=\, \arg\min_{\theta \in \mathbb{R}^{\sum_{i=1}^n m_i}} \left\{ \frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_\tau (y_{ij} - \theta_{ij}) + \frac{P}{2} \| \theta - \rev{z^{(t-1)}} + \rev{u^{(t-1)}} \|^2 \right\}, \\
 \label{84}
-\text{\small \textit{z-minimization}} \quad z &\,=\, \arg\min_{z \in \mathbb{R}^{\sum_{i=1}^n m_i}} \left\{ \frac{1}{2} \| \theta + u - z \|^2 + \frac{\lambda}{P} \|\nabla_{G_k} z\|_1 \right\}, \\ 
+\text{\small \textit{z-minimization}} \quad \rev{z^{(t)}} &\,=\, \arg\min_{z \in \mathbb{R}^{\sum_{i=1}^n m_i}} \left\{ \frac{1}{2} \| \rev{\theta^{(t)}} + \rev{u^{(t-1)}} - z \|^2 + \frac{\lambda}{P} \|\nabla_{G_k} z\|_1 \right\}, \\
 \label{85}
 \text{\small \textit{\rev{dual update}}} \quad \rev{u^{(t)}} &\,=\, \rev{u^{(t-1)}+\theta^{(t)}-z^{(t)}.}
 \end{align}
