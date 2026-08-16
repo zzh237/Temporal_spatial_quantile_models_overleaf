@@ -847,7 +847,7 @@ It holds that
 \beq 
 \label{tf_rate}
 \left\|\hat f - f^*\right\|_2^2 \,=\, O_p \paren{\frac{ \max\set{B^{\frac{6k+1}{2k+1}},
- B^{\frac{2k-1}{2k+1}}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}} \,+\, \frac{\max\set{B,1}\cdot s\cdot\text{poly}(\log n) \log(T_n)}{n}},
+ B^{\frac{2k-1}{2k+1}}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}} \,+\, \frac{\max\set{B,1}\cdot s\cdot\text{poly}(\log n) \log(T_n)}{n}}.
 \beq  
 
 \end{theorem}
@@ -3251,8 +3251,8 @@ We then have that
 \beq 
 \label{in1031}
 &\left| \int_{[0,1]^d} \int_0^{f(x) - f^*(x)} \Pi(x,u) \, du \, dx \right| \\ 
-&\,=\, \left| \int_{[0,1]^d} \left[\int_0^{f(x) - f^*(x)} \Pi(x,u) \, du\right]   \cdot \ind{\{\rev{\abs{f(x) - f^*(x)} \,\leq\, 1}\}} dx \right.\\
-&\quad  \left.+ \int_{[0,1]^d} \left[\int_0^{f(x) - f^*(x)} \Pi(x,u) \, du\right]   \cdot \ind{\rev{\abs{f(x) - f^*(x)} > 1}}\, dx \right| \\
+&\,=\, \left| \int_{[0,1]^d} \left[\int_0^{|f(x) - f^*(x)|} \Pi(x,u) \, du\right]   \cdot \ind{\{\rev{\abs{f(x) - f^*(x)} \,\leq\, 1}\}} dx \right.\\
+&\quad  \left.+ \int_{[0,1]^d} \left[\int_0^{|f(x) - f^*(x)|} \Pi(x,u) \, du\right]   \cdot \ind{\rev{\abs{f(x) - f^*(x)} > 1}}\, dx \right| \\
 &\,\leq\, \int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \max_{x\in[0,1]^d}\max_{u \in [-1,1]} \abs{\Pi(x,u)} \cdot \ind{\rev{\abs{f(x) - f^*(x)} \,\leq\, 1}} \, dx \\
 &\quad + \int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \max_{x\in[0,1]^d}\max_{u \in [-\abs{f(x) - f^*(x)}, \abs{f(x) - f^*(x)}]} \abs{\Pi(x,u)} \\
 &\quad \cdot \ind{\rev{\abs{f(x) - f^*(x)} > 1}}  \, dx\\
