@@ -847,7 +847,7 @@ It holds that
 \beq 
 \label{tf_rate}
 \left\|\hat f - f^*\right\|_2^2 \,=\, O_p \paren{\frac{ \max\set{B^{\frac{6k+1}{2k+1}},
- B^{\frac{2k-1}{2k+1}}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}} \,+\, \frac{\max\set{B,1}\cdot s\cdot\text{poly}(\log n) \log(T_n)}{n}},
+ B^{\frac{2k-1}{2k+1}}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}} \,+\, \frac{\max\set{B,1}\cdot s\cdot\text{poly}(\log n) \log(T_n)}{n}}.
 \beq  
 
 \end{theorem}
@@ -1291,7 +1291,7 @@ where \( P \) is the penalty parameter that controls step size in the update. Th
 \label{76}
 \text{\small \textit{$\theta$-minimization}} \quad \theta &\,=\, \arg\min_{\theta \in \mathbb{R}^{\sum_{i=1}^n m_i}} \left\{ \frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_\tau (y_{ij} - \theta_{ij}) + \frac{P}{2} \| \theta - z + u \|^2 \right\}, \\
 \label{77}
-\text{\small \textit{z-minimization}} \quad z &\,=\, \arg\min_{z \in \mathbb{R}^{\sum_{i=1}^n m_i}} \left\{ \frac{1}{2} \| \theta + u - z \|^2 + \frac{\lambda}{P} \|D^{(x, k+1)}(z)\|_1 \right\}, \\ 
+\text{\small \textit{z-minimization}} \quad z^{(t)} &\,=\, \arg\min_{z \in \mathbb{R}^{\sum_{i=1}^n m_i}} \left\{ \frac{1}{2} \| \theta + u - z \|^2 + \frac{\lambda}{P} \|D^{(x, k+1)}(z)\|_1 \right\}, \\ 
 \label{78}
 \text{\small \textit{\rev{dual update}}} \quad \rev{u^{(t)}} &\,=\, \rev{u^{(t-1)}+\theta^{(t)}-z^{(t)}.}
 \end{align}
@@ -3251,8 +3251,8 @@ We then have that
 \beq 
 \label{in1031}
 &\left| \int_{[0,1]^d} \int_0^{f(x) - f^*(x)} \Pi(x,u) \, du \, dx \right| \\ 
-&\,=\, \left| \int_{[0,1]^d} \left[\int_0^{f(x) - f^*(x)} \Pi(x,u) \, du\right]   \cdot \ind{\{\rev{\abs{f(x) - f^*(x)} \,\leq\, 1}\}} dx \right.\\
-&\quad  \left.+ \int_{[0,1]^d} \left[\int_0^{f(x) - f^*(x)} \Pi(x,u) \, du\right]   \cdot \ind{\rev{\abs{f(x) - f^*(x)} > 1}}\, dx \right| \\
+&\,=\, \left| \int_{[0,1]^d} \left[\int_0^{|f(x) - f^*(x)|} \Pi(x,u) \, du\right]   \cdot \ind{\{\rev{\abs{f(x) - f^*(x)} \,\leq\, 1}\}} dx \right.\\
+&\quad  \left.+ \int_{[0,1]^d} \left[\int_0^{|f(x) - f^*(x)|} \Pi(x,u) \, du\right]   \cdot \ind{\rev{\abs{f(x) - f^*(x)} > 1}}\, dx \right| \\
 &\,\leq\, \int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \max_{x\in[0,1]^d}\max_{u \in [-1,1]} \abs{\Pi(x,u)} \cdot \ind{\rev{\abs{f(x) - f^*(x)} \,\leq\, 1}} \, dx \\
 &\quad + \int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \max_{x\in[0,1]^d}\max_{u \in [-\abs{f(x) - f^*(x)}, \abs{f(x) - f^*(x)}]} \abs{\Pi(x,u)} \\
 &\quad \cdot \ind{\rev{\abs{f(x) - f^*(x)} > 1}}  \, dx\\
