@@ -4655,10 +4655,11 @@ The claim of the theorem then follows and we get
 \section{Quantile K-NN fused lasso}
 \subsection{Proof of  Theorem~\ref{Theorem_5}}
 \begin{proof}
-   We will apply the result from Theorem~\ref{Theorem_1}, and also incorporate our problem in \ref{def_knn}, to get 
-\bea 
-&R_{\mathcal{J}_{e,l}}\left( \|\nabla{G_K} \theta\|_1 \,\leq\, V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq  \max\set{1,B^{1/2}}t}\right), \quad \\  &R_{\mathcal{J}_{o,l}}\left( \|\nabla{G_K} \theta\|_1 \,\leq\, V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq  \max\set{1,B^{1/2}}t}\right) 
-\bea for all $l = 1, \dots, L$,based on the results from Lemma~\ref{lemma_35}. 
+   We will apply the result from Theorem~\ref{Theorem_1}, and also incorporate our problem in \ref{def_knn}, to get
+\bea
+&R_{\mathcal{J}_{e,l}}\left(\set{\theta:\norm{\theta-\theta^*}\leq \max\set{1,B^{1/2}}t,\ \|\nabla{G_K}\theta\|_1\leq V_n}\right), \quad \\
+&R_{\mathcal{J}_{o,l}}\left(\set{\theta:\norm{\theta-\theta^*}\leq \max\set{1,B^{1/2}}t,\ \|\nabla{G_K}\theta\|_1\leq V_n}\right)
+\bea for all $l = 1, \dots, L$, based on the results from Lemma~\ref{lemma_35}.
 
 Then we can show that 
 Suppose in addition that \( K \asymp \log^{2+\mu}(nm) \) for some \( \mu > 0 \). The estimator \( \hat{\theta}_{V_n} \), defined in \eqref{def_knn} satisfies that
@@ -4967,8 +4968,8 @@ Let \( \Omega_{\varepsilon} := [0,1]^d \backslash B_{\varepsilon}(\partial[0,1]^
 \rev{The remaining proofs leading to the derivations of}
 
 \bea 
-\Delta^2(\hat{\theta}_{V_n} - \theta^*) &\,=\, O_p \left(\sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(\|\nabla{G_K} \theta_{e,l}\|_1 \,\leq\, V_n \cap \left\{\theta: \norm{\theta_{e,l}-\theta_{e,l}^*}\,\leq\, c^{-\frac{1}{2}}\cdot b(B)\cdot t\right\}\right)\right.\right. \\
-&\quad \left.\left. +R_{\mathcal{J}_{o,l}}\left(\|\nabla{G_K} \theta_{o,l}\|_1 \,\leq\, V_n \cap \left\{\theta: \norm{\theta_{o,l}-\theta_{o,l}^*}\,\leq\, c^{-\frac{1}{2}}\cdot b(B)\cdot t\right\}\right)\right.\right. \\
+\Delta^2(\hat{\theta}_{V_n} - \theta^*) &\,=\, O_p \left(\sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(\rev{\set{\theta: \norm{\theta_{e,l}-\theta_{e,l}^*}\,\leq\, c^{-\frac{1}{2}}\cdot b(B)\cdot t,\ \|\nabla{G_K} \theta_{e,l}\|_1 \,\leq\, V_n}}\right)\right.\right. \\
+&\quad \left.\left. +R_{\mathcal{J}_{o,l}}\left(\rev{\set{\theta: \norm{\theta_{o,l}-\theta_{o,l}^*}\,\leq\, c^{-\frac{1}{2}}\cdot b(B)\cdot t,\ \|\nabla{G_K} \theta_{o,l}\|_1 \,\leq\, V_n}}\right)\right.\right. \\
 &\quad \left.\left. + \frac{s\log n\log T_n}{n}\right)\right), \,\,\,\text{and}\,\,\,
 \bea  follows the similar proofs in Corollary~\ref{col_A_2} to Lemma~\ref{lem_17}.
 
@@ -5007,14 +5008,6 @@ r_n^2 \asymp    \frac{ \max\set{B,1} \log^{5+\mu}(nm)V_n}{nm} + \frac{\log^2(nm)
 
 \end{lemma}
 \begin{proof}
-\rev{Define the constraint set as the intersection of the total-variation ball and the ball centered at $\theta^*$:}
-\beq
-\label{def_knn_constraint_set}
-\rev{\mathcal{K}(b, V_n) \,\coloneqq\, \set{\theta: \|\nabla{G_K} \theta\|_1 \,\leq\, V_n} \cap \set{\theta: \norm{\theta-\theta^*} \,\leq\, b}.}
-\beq
-\rev{By the definition of the Rademacher width $R_{\mathcal{J}_{e,l}}$ in \eqref{rademacher_def_blocks}, applied to the set $\mathcal{K}(b, V_n)$, we have}
-\bea R_{\mathcal{J}_{e,l}}\left(\mathcal{K}(b, V_n)\right) \,=\,  \Ept{x^*, s}{\sup_{\theta \in \mathcal{K}(b, V_n)} \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}\,\theta_{ij}}.
-\bea
 % \bea 
 %   &R\left( \|\nabla{G_K} \theta\|_1 \leq V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq b}\right) \\ &= \ept{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}} \frac{1}{n}\sum_{i=1}^n \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} \theta_{ij}}  
 %   \\ & =   \ept{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}}  \frac{1}{n}\sum_{i=1}^n \frac{1}{m}\sum_{j=1}^{m_{i}} \frac{m}{m_i}s_{ij} \theta_{ij}} \\ 
@@ -5047,11 +5040,11 @@ Define:
 \beq 
 \label{tilde_s}
 \left(\tilde s\right)_{i,j} = \begin{cases}
-(s)_{i,j}, \text{ for } i \in \mathcal{J}_{e,l}, \text{and } j \in m_i,\\
-0, \text{ for } i \notin \mathcal{J}_{e,l}, \text{and } j \notin m_i.
+(s)_{i,j}, \text{ for } i \in \mathcal{J}_{e,l}, \text{ and } j \in [m_i],\\
+0, \text{ for } i \notin \mathcal{J}_{e,l}, \text{ and } j \in [m_i].
 \end{cases}  
 \beq 
-One can show that $\{\tilde s_{ij}\}_{i=1,j=1}^{n,m_{i}}$ are independent SubGaussian random variables with SubGaussian parameter $1$.
+Then $\{\tilde s_{ij}\}_{i=1,j=1}^{n,m_{i}}$ are independent, mean-zero Sub-Gaussian random variables with parameters bounded by $1$.
 
 % \bea 
 % \left({\theta}_{e,l}\right)_{i,j} = \begin{cases}
@@ -5084,32 +5077,45 @@ One can show that $\{\tilde s_{ij}\}_{i=1,j=1}^{n,m_{i}}$ are independent SubGau
 
 
 
-\rev{To rewrite the supremum in terms of the centered variable $\varLambda \,\coloneqq\, \theta - \theta^*$, we have}
+\rev{By the definition of the Rademacher width in \eqref{rademacher_def_blocks},}
 \bea
 \label{knn_rada}
-&R_{\mathcal{J}_{e,l}}\left( \rev{\mathcal{K}(b, V_n)}\right) \\
-&\labelrel={knn_center} \Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}} \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  (\theta_{ij} - \theta_{ij}^* + \theta_{ij}^*)\Big) \cdot \indic{\Omega_\beta}}
-\\ & \labelrel={knn_split}
-\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}} \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  (\theta_{ij} - \theta_{ij}^* )\Big) \cdot \indic{\Omega_\beta}} \\
-&\quad +   \Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}\theta_{ij}^*}\\
-& \labelrel={knn_szero} \Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\theta-\theta^*} \leq b, \|\nabla{G_K} (\theta - \theta^*)\|_1 \leq \|\nabla{G_K} \theta\|_1 +  \|\nabla{G_K} \theta^*\|_1 \leq 2V_n \\ \|\nabla{G_K} \theta\|_1 \leq V_n, \|\nabla{G_K} \theta^*\|_1 \leq V_n} } \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  (\theta_{ij} - \theta_{ij}^* )\Big) \cdot \indic{\Omega_\beta}}
-\\ &\labelrel\leq{knn_enlarge}  \Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\varLambda} \leq b \\ \|\nabla{G_K} \varLambda\|_1 \leq \|\nabla{G_K} \theta\|_1 +  \|\nabla{G_K} \theta^*\|_1 \leq 2V_n} } \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}} \varLambda_{ij}s_{ij} \Big) \cdot \indic{\Omega_\beta}} \\
-&\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\varLambda} \leq b \\ \|\nabla{G_K} \varLambda\|_1 \leq \|\nabla{G_K} \theta\|_1 +  \|\nabla{G_K} \theta^*\|_1 \leq 2V_n} } \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i =1}^n \sum_{j=1}^{m_{i}} \varLambda_{ij}s_{ij} \Big) \cdot \indic{\Omega_\beta}} \\
-&\,=\, \frac{\sum_{i = 1}^n  m_i}{\sum_{i \in \mathcal{J}_{e,l}}  m_i} \Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\varLambda} \leq b \\ \|\nabla{G_K} \varLambda\|_1 \leq \|\nabla{G_K} \theta\|_1 +  \|\nabla{G_K} \theta^*\|_1 \leq 2V_n} } \frac{1}{\sum_{i = 1}^n  m_i}\sum_{i =1}^n \sum_{j=1}^{m_{i}} \varLambda_{ij}\tilde s_{ij}\Big) \cdot \indic{\Omega_\beta}} \\
-& \asymp \frac{nm}{\abs{\mathcal{J}_{e,l}}m}\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\varLambda} \leq b \\ \|\nabla{G_K} \varLambda\|_1 \leq \|\nabla{G_K} \theta\|_1 +  \|\nabla{G_K} \theta^*\|_1 \leq 2V_n} } \frac{1}{\sum_{i = 1}^n  m_i}\sum_{i =1}^n \sum_{j=1}^{m_{i}} \varLambda_{ij}\tilde s_{ij}\Big) \cdot \indic{\Omega_\beta}} \\
-&\leq \frac{nL}{c_1 n}\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\varLambda} \leq b \\ \|\nabla{G_K} \varLambda\|_1 \leq \|\nabla{G_K} \theta\|_1 +  \|\nabla{G_K} \theta^*\|_1 \leq 2V_n} } \frac{1}{\sum_{i = 1}^n  m_i}\sum_{i =1}^n \sum_{j=1}^{m_{i}} \varLambda_{ij}\tilde s_{ij}\Big) \cdot \indic{\Omega_\beta}} \\
-&\leq \frac{2\log(n)}{c_1C_{\beta}}\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\varLambda} \leq b \\ \|\nabla{G_K} \varLambda\|_1 \leq \|\nabla{G_K} \theta\|_1 +  \|\nabla{G_K} \theta^*\|_1 \leq 2V_n} } \frac{1}{\sum_{i = 1}^n  m_i}\sum_{i =1}^n \sum_{j=1}^{m_{i}} \varLambda_{ij}\tilde s_{ij}\Big) \cdot \indic{\Omega_\beta}},
-\bea 
+&R_{\mathcal{J}_{e,l}}\left(\set{\theta: \norm{\theta-\theta^*} \,\leq\, b,\ \|\nabla{G_K}\theta\|_1 \,\leq\, V_n}\right) \\
+&\,=\,
+\Ept{x^*,s}{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K}\theta\|_1 \leq V_n}}
+\frac{1}{\sum_{i\in\mathcal{J}_{e,l}}m_i}
+\sum_{i\in\mathcal{J}_{e,l}}\sum_{j=1}^{m_i}s_{ij}(\theta_{ij}-\theta^*_{ij})} \\
+&\labelrel\leq{knn_enlarge}
+\Ept{x^*,s}{\sup_{\substack{\norm{\varLambda}\leq b \\ \|\nabla{G_K}\varLambda\|_1\leq 2V_n}}
+\frac{1}{\sum_{i\in\mathcal{J}_{e,l}}m_i}
+\sum_{i\in\mathcal{J}_{e,l}}\sum_{j=1}^{m_i}\varLambda_{ij}s_{ij}} \\
+&\,=\, \frac{\sum_{i=1}^n m_i}{\sum_{i\in\mathcal{J}_{e,l}}m_i}
+\Ept{x^*,s}{\sup_{\substack{\norm{\varLambda}\leq b \\ \|\nabla{G_K}\varLambda\|_1\leq 2V_n}}
+\frac{1}{\sum_{i=1}^n m_i}
+\sum_{i=1}^n\sum_{j=1}^{m_i}\varLambda_{ij}\tilde s_{ij}} \\
+& \asymp \frac{nm}{\abs{\mathcal{J}_{e,l}}m}
+\Ept{x^*,s}{\sup_{\substack{\norm{\varLambda}\leq b \\ \|\nabla{G_K}\varLambda\|_1\leq 2V_n}}
+\frac{1}{\sum_{i=1}^n m_i}
+\sum_{i=1}^n\sum_{j=1}^{m_i}\varLambda_{ij}\tilde s_{ij}} \\
+&\leq \frac{2\log(n)}{c_1C_{\beta}}
+\Ept{x^*,s}{\sup_{\substack{\norm{\varLambda}\leq b \\ \|\nabla{G_K}\varLambda\|_1\leq 2V_n}}
+\frac{1}{\sum_{i=1}^n m_i}
+\sum_{i=1}^n\sum_{j=1}^{m_i}\varLambda_{ij}\tilde s_{ij}},
+\bea
 
-\rev{The equality \eqref{knn_center} follows by the definition \eqref{rademacher_def_blocks} and writing $\theta_{ij} \,=\, (\theta_{ij} - \theta_{ij}^*) + \theta_{ij}^*$. The equality \eqref{knn_split} holds since $\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}\theta_{ij}^*$ does not depend on $\theta$ and can be pulled out of the supremum. The equality \eqref{knn_szero} holds since $\Ept{s}{\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}\theta_{ij}^*} \,=\, 0$ by $\ept{s_{ij}} \,=\, 0$ with $\theta^*$ fixed, and the constraint $\|\nabla{G_K} (\theta - \theta^*)\|_1 \,\leq\, \|\nabla{G_K} \theta\|_1 +  \|\nabla{G_K} \theta^*\|_1 \,\leq\, 2V_n$ is implied by the triangle inequality, where $\|\nabla{G_K} \theta^*\|_1 \,\leq\, V_n$ holds by the bounded variation of $f^*$ in Assumption~\ref{ass_knn_3} and the choice of the tuning parameter $V_n$. The inequality \eqref{knn_enlarge} follows by the change of variable $\varLambda \,=\, \theta - \theta^*$ and the set inclusion
-$\set{\theta - \theta^*: \theta \in \mathcal{K}(b, V_n)} \,\subseteq\, \set{\varLambda: \norm{\varLambda} \,\leq\, b} \cap \set{\varLambda: \|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n}$, under which the supremum can only increase.}
+\rev{The first equality follows by writing
+$\theta_{ij}=(\theta_{ij}-\theta^*_{ij})+\theta^*_{ij}$ and observing that
+$\Ept{s}{\sum_{i\in\mathcal{J}_{e,l}}\sum_{j=1}^{m_i}s_{ij}\theta^*_{ij}}=0$.
+For \eqref{knn_enlarge}, set $\varLambda=\theta-\theta^*$. By
+Assumption~\ref{ass_knn_4} and the triangle inequality,
+$\|\nabla{G_K}\varLambda\|_1\leq
+\|\nabla{G_K}\theta\|_1+\|\nabla{G_K}\theta^*\|_1\leq 2V_n$.
+Thus the change of variables maps the original constraint set into
+$\set{\varLambda:\norm{\varLambda}\leq b,\ \|\nabla{G_K}\varLambda\|_1\leq 2V_n}$,
+so enlarging the supremum gives the inequality. The next equality follows from
+the definition of $\tilde s_{ij}$ in \eqref{tilde_s}.}
 We use the assumption $m_i \asymp m$ specified in the statement of the Lemma.
 
-In this step the term on the right hand side, we get 
-\bea
-&R_{\mathcal{J}_{e,l}}\left( \rev{\mathcal{K}(b, V_n)}\right) \\
-&\,\leq\, \frac{2\log(n)}{c_1C_{\beta}}\mathbb{E}_{x, \delta, e, x^*, \delta^*, e^*, s}\bigg[\Big(\sup_{\substack{\|\varLambda\|\,\leq\, b \\ \|\nabla{G_K} \varLambda\|_1\,\leq\, 2V_n}}\frac{1}{\sum_{i = 1}^n  m_i}\sum_{i =1}^n \sum_{j=1}^{m_{i}}\varLambda_{ij}\tilde s_{ij}\Big) \cdot \indic{\Omega_\beta}\bigg],
-\bea
 % in Inequality~\eqref{knn_rada} is analyzed. 
 For the rest of the proofs we give the sketch, the exact proof is provided in Lemma~\ref{Lemma_18}. 
 
@@ -5120,21 +5126,21 @@ From Lemma~\ref{Lemma_18} and the observation after Equation~\eqref{knn_temp1}, 
 \]
 it is satisfied that
 \[
-\sup_{\|\varLambda\|_2 \,\leq\, b, \|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n} \frac{1}{\sum_{i = 1}^n m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij}s_{ij}
+\sup_{\|\varLambda\|_2 \,\leq\, b, \|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n} \frac{1}{\sum_{i = 1}^n m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij}\tilde s_{ij}
 \,\leq\, C_3  K \frac{\log^{\frac{1}{2}}(nm)}{\sum_{i = 1}^n  m_i}b + C_4  K \frac{\log(nm)}{\sum_{i = 1}^n  m_i}V_n,
 \]
 where \( \tilde b_2 \,\geq\, 0 \) is a constant depending on \( d \), \( C_3 \) and \( v_{max} \). Moreover, \( \tilde C \) is \( \frac{c_1c}{c_2C} \) with \( c_1 \) and \( c_2 \) positive constants.
 Here \( v_{max} \), \( v_{min} \), \( C \) and \( c \) are from Assumptions~\ref{asm:m} and \ref{ass_knn}. The positive constants \( C_3 \) and \( C_4 \) only depend on \( d \).
 % and the last inequality follows from the choice of \( \eta \) in Equation (162) for sufficiently large \( C_d \).
-To find the quantity $R_{\mathcal{J}_{e,l}}\left( \rev{\mathcal{K}(b, V_n)}\right)$,  we will analyze
+To find the Rademacher widths of the localized total-variation classes, we analyze
 \[
-\frac{ R_{\mathcal{J}_{e,l}}\left( \rev{\mathcal{K}(b, V_n)}\right)}{t^2} \\
-+ \frac{R_{\mathcal{J}_{o,l}}\left( \rev{\mathcal{K}(b, V_n)}\right)}{t^2}.
+\frac{R_{\mathcal{J}_{e,l}}\left(\set{\theta:\norm{\theta-\theta^*}\leq b,\ \|\nabla{G_K}\theta\|_1\leq V_n}\right)}{t^2} \\
++ \frac{R_{\mathcal{J}_{o,l}}\left(\set{\theta:\norm{\theta-\theta^*}\leq b,\ \|\nabla{G_K}\theta\|_1\leq V_n}\right)}{t^2}.
 \]
 See the equation (13.17) in \cite{wainwright2019high}. 
 Hence,
 \bea 
-&\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\|\varLambda\| \,\leq\, b, \|\nabla{G_K} \varLambda\|_1\,\leq\, V_n}\frac{1}{\sum_{i = 1}^n m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij} \tilde s_{ij}\Big) \cdot \indic{\Omega_\beta}} \\
+&\Ept{x^*,s}{\sup_{\|\varLambda\| \,\leq\, b, \|\nabla{G_K} \varLambda\|_1\,\leq\, 2V_n}\frac{1}{\sum_{i = 1}^n m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij} \tilde s_{ij}} \\
 &\,\leq\, C_3  K \frac{\log^{\frac{1}{2}}(nm)}{\sum_{i = 1}^n  m_i}b + C_4  K \frac{\log(nm)}{\sum_{i = 1}^n  m_i}V_n \\
 & \quad +  B  \cdot \left(\frac{2}{nm} + \frac{4}{C_{\beta}}C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) \right. \\
 & \left. \quad + \frac{3}{n} + \frac{4}{C_{\beta}} \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right).
@@ -5153,7 +5159,7 @@ Now, we analyze
 We assume $b^2 = O\left(\frac{1}{n} + \frac{1}{nm}\right)$, then we have 
 
 \bea
-&\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\varLambda} \leq b \\ \|\nabla{G_K} \varLambda\|_1 \leq \|\nabla{G_K} \theta\|_1 +  \|\nabla{G_K} \theta^*\|_1 \leq 2V_n} } \frac{1}{\sum_{i = 1}^n   m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij}s_{ij} \Big) \cdot \indic{\Omega_\beta}}   \\ 
+&\Ept{x^*,s}{\sup_{\substack{\norm{\varLambda} \leq b \\ \|\nabla{G_K}\varLambda\|_1 \leq 2V_n} } \frac{1}{\sum_{i = 1}^n   m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij}\tilde s_{ij}}   \\
 & \,\leq\,  C_3  K \frac{\log^{\frac{1}{2}}(nm)}{\sum_{i = 1}^n  m_i}b + C_4  K \frac{\log(nm)}{\sum_{i = 1}^n  m_i}V_n \\
 & \quad +  B  \cdot \left(\frac{2}{nm} + \frac{4}{C_{\beta}}C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) \right. \\
 & \left. \quad + \frac{3}{n} + \frac{4}{C_{\beta}} \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right) \\
@@ -5321,8 +5327,8 @@ Furthermore, by Assumption~\ref{asm:m}, $\frac{1}{\sum_{i = 1}^n   m_i} \,\leq\,
 The above results hold uniformly for $R_{\mathcal{J}_{e,l}}$ and $R_{\mathcal{J}_{o,l}}$ for all $l = 1, \dots, L$, then we can show that 
 
 \bea 
-& \frac{1}{t^2}\sum_{l=1}^L \left (R_{\mathcal{J}_{e,l}}\left( \|\nabla{G_K} \theta\|_1 \,\leq\, V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq  \max\set{1,B^{1/2}}t}\right)\right.\\
-&\quad \left. +R_{\mathcal{J}_{o,l}}\left( \|\nabla{G_K} \theta\|_1 \,\leq\, V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq  \max\set{1,B^{1/2}}t}\right) \right) \,=\, O\left(\frac{1}{\log(nm)}\right),
+& \frac{1}{t^2}\sum_{l=1}^L \left (R_{\mathcal{J}_{e,l}}\left( \rev{\set{\theta: \norm{\theta-\theta^*} \,\leq\,  \max\set{1,B^{1/2}}t,\ \|\nabla{G_K} \theta\|_1 \,\leq\, V_n}}\right)\right.\\
+&\quad \left. +R_{\mathcal{J}_{o,l}}\left( \rev{\set{\theta: \norm{\theta-\theta^*} \,\leq\,  \max\set{1,B^{1/2}}t,\ \|\nabla{G_K} \theta\|_1 \,\leq\, V_n}}\right) \right) \,=\, O\left(\frac{1}{\log(nm)}\right),
 \bea 
 by letting 
 \bea 
@@ -5349,8 +5355,8 @@ r_n^2 \asymp    \frac{ \max\set{B,1} \log^{5+\mu}(nm)V_n}{nm} + \frac{\log^2(nm)
 \end{proof}
 
 \begin{lemma}
-\label{Lemma_18}   
-Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let \(\{s_{ij}\}_{i=1,j=1}^{n,m_i} \in \mathbb{R}^{\sum_{i=1}^n m_i}\) be independent Rademacher variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$, and use the notation \(\varLambda = \theta_1 - \theta_2\), for \(\theta_1, \theta_2 \in \mathbb{R}^{\sum_{i=1}^n m_i}\). For some positive constants \(C_3\) and \(C_4\) we have that
+\label{Lemma_18}
+Let \(\{s_{ij}\}_{i=1,j=1}^{n,m_i} \in \mathbb{R}^{\sum_{i=1}^n m_i}\) be mutually independent and independent of the data, with each \(s_{ij}\) either a Rademacher variable or identically zero, and use the notation \(\varLambda = \theta_1 - \theta_2\), for \(\theta_1, \theta_2 \in \mathbb{R}^{\sum_{i=1}^n m_i}\). For some positive constants \(C_3\) and \(C_4\) we have that
 
 % \[
 % \sup_{\|\varLambda\| \leq b, \|\nabla{G_K} \varLambda\|_1 \leq 2V_n} \sum_{i=1}^n \sum_{j=1}^{m_i} \varLambda_{ij}s_{ij} \leq C_3 b\sqrt{K \log^{\frac{1}{2}}(nm)} + C_4 \sqrt{K \log(nm) V_n},
@@ -5358,7 +5364,7 @@ Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let \(\{s_{ij}\}_{i=1,j=1}^
 
 
 \bea 
-&\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\|\varLambda\| \,\leq\, b, \|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n} \frac{1}{\sum_{i = 1}^n   m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij}s_{ij}\Big) \cdot \indic{\Omega_\beta}} \\ & \,\leq\, 
+&\Ept{x,s}{\sup_{\|\varLambda\| \,\leq\, b, \|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n} \frac{1}{\sum_{i = 1}^n   m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij}s_{ij}} \\ & \,\leq\,
 C_3  K \frac{\log^{\frac{1}{2}}(nm)}{\sum_{i = 1}^n  m_i}b + C_4  K \frac{\log(nm)}{\sum_{i = 1}^n  m_i}V_n \\
 & \quad +  B  \cdot \left(\frac{2}{nm} + \frac{4}{C_{\beta}}C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) \right. \\ & \left. \quad + \frac{3}{n} + \frac{4}{C_{\beta}} \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right).
 \bea 
@@ -5446,7 +5452,7 @@ with probability at least \(1 - 2 \cdot \frac{1}{nm}\). Here, \(C(d) > 0\) is a 
 
 Then denote $\mathcal{E} \equiv \Omega \cap E_1 \cap E_2 \cap E_3 \cap E_4$, on the event $\mathcal{E}$, the following is satisfied. 
 
-Let \(\theta_1,\theta_2 \in \mathbb{R}^{\sum_{i = 1}^n   m_i}\) such that \(\|\varLambda\|_2 \,\leq\, b\) and \(\|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n\). And \(\{s_{ij}\}^{n,m_i}_{i=1,j=1} = s\in \mathbb{R}^{\sum_{i = 1}^n   m_i}\) are independent Rademacher variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$.
+Let \(\theta_1,\theta_2 \in \mathbb{R}^{\sum_{i = 1}^n   m_i}\) such that \(\|\varLambda\|_2 \,\leq\, b\) and \(\|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n\). The variables \(\{s_{ij}\}^{n,m_i}_{i=1,j=1}\) are as in the statement of the lemma.
 First, by Lemma~\ref{lemma_16} and \(E_3\), 
 \bea
 s^\top(\theta_1 - \theta_2) \,\leq\, 4\sqrt{2 \log\left(nm\right)} V_n + s^\top({\theta_1}_I - {\theta_2}_I).
@@ -5484,10 +5490,10 @@ Finally, on the event \(\mathcal{E}\) the following is satisfied. Thus,
 
 
 
-Under the event $\mathcal{E}^c$, we have that $R_{\mathcal{J}_{elmn}} ( \|\nabla{G_K} \theta\|_1 \,\leq\, V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq  b}) \,\leq\, B$. Therefore, splitting the expectation over $\mathcal{E}$ and $\mathcal{E}^c$, 
+Under the event $\mathcal{E}^c$, the supremum is bounded by $B$. Therefore, splitting the expectation over $\mathcal{E}$ and $\mathcal{E}^c$,
 \bea 
-&\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{\norm{\varLambda} \leq b \\ \|\nabla{G_K} \varLambda\|_1 \leq \|\nabla{G_K} \theta\|_1 +  \|\nabla{G_K} \theta^*\|_1 \leq 2V_n} } \frac{1}{\sum_{i = 1}^n   m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij}s_{ij} \Big) \cdot \indic{\Omega_\beta}}   \\ &=\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{R_{\mathcal{J}_{elmn}} ( \|\nabla{G_K} \theta\|_1 \leq V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq b}) }\\
-&\,\leq\, 
+&\Ept{x,s}{\sup_{\substack{\norm{\varLambda} \leq b \\ \|\nabla{G_K}\varLambda\|_1 \leq 2V_n} } \frac{1}{\sum_{i = 1}^n   m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij}s_{ij}} \\
+&\,\leq\,
 C_3  K \frac{\log^{\frac{1}{2}}(nm)}{\sum_{i = 1}^n  m_i}b + C_4  K \frac{\log(nm)}{\sum_{i = 1}^n  m_i}V_n \\
 & \quad +  B  \cdot \left(\frac{2}{nm} + \frac{4}{C_{\beta}}C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) \right. \\ & \left. \quad + \frac{3}{n} + \frac{4}{C_{\beta}} \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right)
 \bea 
