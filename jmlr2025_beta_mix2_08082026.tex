@@ -360,7 +360,8 @@ The rate has a term $A$ equal to local Rademacher complexity terms that depend o
 
 % To estimate the optimal function $f^*$,
 
-\rev{For a nonconvex class $\gF$, we also relax the requirement that $f^*$ belong to $\gF$.} We first introduce the projection of $f^*$ in $\gF$ as $f_{\text{Proj}} \,\coloneqq\, \inf_{f \in \mathcal{F}(L,r)} \lVert f - f^* \rVert_{\infty}$. Then we define $\phi_{nm}$ as an upper bound of error between the projection of $f^*$ in $\gF$ and itself, $\| f_{\text{Proj}} - f^\ast \|_{\infty} \,\leq\, \phi_{nm}$. 
+\rev{For a nonconvex class $\gF$, we also relax the requirement that $f^*$ belong to $\gF$.} We first introduce \rev{a near-best approximation of $f^*$ in $\gF$: we choose $f_{\text{Proj}} \in \gF$ such that
+$\lVert f_{\text{Proj}} - f^* \rVert_{\infty} \,\leq\, \inf_{f \in \mathcal{F}(L,r)} \lVert f - f^* \rVert_{\infty} \,+\, n^{-1}$, where the additional $n^{-1}$ allows a near-minimizer without assuming that the infimum is attained}. Then we define $\phi_{nm}$ as an upper bound of error between \rev{this near-best approximation} of $f^*$ in $\gF$ and itself, $\| f_{\text{Proj}} - f^\ast \|_{\infty} \,\leq\, \phi_{nm}$.
 We give the convergence rate for non-convex $\gF$ in Theorem~\ref{Theorem_non_convex}, satisfying 
 \bea 
 \left\|\hat f - f^*\right\|_2^2 &\,=\, O_p \left\{ b^2(B) \left( A_1 \,+\,  \phi_{nm}^2 \,+\,  \frac{s\cdot\text{poly}(\log n)\log (T_n)}{n} \right)\right\}. 
@@ -1106,7 +1107,7 @@ where the $f_{\text{Proj}}$ denotes the projection of $f^{\ast}$ in $\gF$, and $
 
  
 Theorem~\ref{Theorem_non_convex} establishes that risk bounds for the quantile spatial estimator within the non convex function class can be derived from the localized Rademacher width term \\ $\sum_{l=1}^L R_{\mathcal{J}_{e,l}}\left(\text{Star}(\gF, f^\ast)\cap \left\{f: \norm{f-f^*}_2\,\leq\, c_0^{-\frac{1}{2}}\cdot b(B)\cdot t\right\}\right)$. Compared to the convex function class where $\gF$ is used, the nonconvex use the $\text{Star}(\gF, f^\ast)$. One of our key derivations involve conversion of Huber-type loss to the local-Rademacker Complexity, the  $\text{Star}(\gF, f^\ast)$ \rev{guarantees} all the estimators we are focusing belong to  $\text{Star}(\gF, f^\ast)$, a larger set compared to $\gF$, the details are in Corollary~\ref{cor:huber loss}. 
-The rate of convergence has an additional term $\gC\phi_{nm}^2$ which is attributed to the approximation error $\phi_{nm}\,\coloneqq\, \sup_{f_{\text{Proj}} \in \gF} \| f_{\text{Proj}} - f^\ast \|_{\infty}$. In the next part, we will consider the non-convex Neural Network function class. 
+The rate of convergence has an additional term $\gC\phi_{nm}^2$ which is attributed to the approximation error \rev{$\phi_{nm}$, which upper bounds $\| f_{\text{Proj}} - f^\ast \|_{\infty}$ for the near-best approximation $f_{\text{Proj}} \in \gF$ of $f^\ast$}. In the next part, we will consider the non-convex Neural Network function class. 
 
 \section{Application to Neural Networks}
 
@@ -6405,9 +6406,9 @@ Z_{ij}(f) - Z_{ij}(f^*) \,=\,& \int_{0}^{h(x_{ij})} \set{F_{y_{ij}|x_{ij}}( f^*(
 
 \begin{corollary}
 \label{cor:huber loss} On event $\Omega$, 
-let $\hat f$, belong to $\mathcal{F}$, and $f^*$  not necessarily in $\mathcal{F}$, where $\gF$ is not necessarily convex,  and let $\Delta^2(\hat f - f^*)$ be the huber loss. Let $f_{\text{Proj}}$ in $\gF$ be 
-\beq 
-f_{\text{Proj}} \,\coloneqq\, \inf_{f \in \mathcal{F}(L,r)} \lVert f - f^* \rVert_{\infty}, 
+let $\hat f$, belong to $\mathcal{F}$, and $f^*$  not necessarily in $\mathcal{F}$, where $\gF$ is not necessarily convex,  and let $\Delta^2(\hat f - f^*)$ be the huber loss. Let \rev{$f_{\text{Proj}} \in \gF$ satisfy}
+\beq
+\rev{\lVert f_{\text{Proj}} - f^* \rVert_{\infty} \,\leq\, \inf_{f \in \mathcal{F}(L,r)} \lVert f - f^* \rVert_{\infty} \,+\, n^{-1},}
 \beq such that
 \begin{align*}
 \| f_{\text{Proj}} - f^\ast \|_{\infty} &\,\leq\, \phi_{nm}.
