@@ -217,14 +217,15 @@ Given a quantile level $\tau \in (0,1)$, let
 $f^* : [0, 1]^d \to \mathbb{R}$ denote the deterministic target function.
 Our goal is to estimate $f^*(x_{ij})$, the conditional $\tau$-quantile of $y_{ij}$, given by
 \bea
-f^*(x_{ij}) \,=\, F_{y_{ij}|x_{ij}}^{-1}(\tau), \quad \text{for } i = 1, \ldots, n.
+f^*(x_{ij}) \,\rev{\coloneqq}\, \rev{\inf\set{t \in \R : \, F_{y_{ij}|x_{ij}}(t) \,\ge\, \tau}}, \quad \text{for } i = 1, \ldots, n.
 \bea
-Here, $F_{y_{ij}|x_{ij}}$ is the conditional cumulative distribution function of $y_{ij}$ given $x_{ij}$. 
-Equivalently,
-\bea 
+Here, $F_{y_{ij}|x_{ij}}$ is the conditional cumulative distribution function of $y_{ij}$ given $x_{ij}$.
+\rev{Assumption~\ref{assumptionA} implies that the conditional CDF is continuous at $f^*(x_{ij})$. Therefore,}
+\beq
+\label{exact_calibration}
 \mathbb{P}\paren{y_{ij} \,\le\,  f^{*}(x_{ij}) |x_{ij}} \,=\,
-\mathbb{P}\paren{\delta_i(x_{ij}) \,+\, e_{ij} \,\le\,  0 |x_{ij}} \,=\, \tau. 
-\bea 
+\mathbb{P}\paren{\delta_i(x_{ij}) \,+\, e_{ij} \,\le\,  0 |x_{ij}} \,=\, \tau.
+\beq
 \end{revision}
 
 % are generated based on
@@ -2201,7 +2202,7 @@ We have
 
 \begin{lemma}
 \label{lemma12}
-For any $f, f^* \in \mathcal{F}$, let $h = f - f^*$, and let $h(x_{ij}) \,=\, (f - f^*)(x_{ij})$. Then we have 
+For any $f \in \mathcal{F}$, \rev{with $f^* \in \mathcal{F}$ the fixed target satisfying \eqref{exact_calibration}}, let $h = f - f^*$, and let $h(x_{ij}) \,=\, (f - f^*)(x_{ij})$. Then we have
     \bea 
 Z_{ij}(f) - Z_{ij}(f^*) &\,=\, \int_{0}^{h(x_{ij})} \set{F_{y_{ij}|x_{ij}}(f^*(x_{ij}) + z) - F_{y_{ij}|x_{ij}}(f^*(x_{ij}))}dz.
 \bea 
@@ -2220,9 +2221,9 @@ above equation with respect to $y_{ij}$ conditioned on $x_{ij}$ on both sides, w
 Z_{ij}( f) - Z_{ij}(f^*) &\,=\, \Ept{\delta, e \mid x_{ij}}{  \rho_{\tau}(y_{ij}  - f(x_{ij})) - \rho_{\tau}(y_{ij}  - f^*(x_{ij}))} \\
 &\,=\, \Ept{\delta, e \mid x_{ij}}{-h(x_{ij})(\tau-I(y_{ij}  - f^*(x_{ij}) \,\le\, 0))} \\
 &+ \Ept{\delta, e \mid x_{ij}}{\int_{0}^{h(x_{ij})} \set{I(y_{ij}  - f^*(x_{ij}) \le  z) - I(y_{ij}  - f^*(x_{ij}))\le  0}dz}\\
-&\,=\, 0 + \int_{0}^{h(x_{ij})} \set{F_{y_{ij}|x_{ij}}( f^*(x_{ij}) + z) - F_{y_{ij}|x_{ij}}( f^*(x_{ij}))}dz \\
+& \rev{\labelrel={eq_lemma12_vanish}} 0 + \int_{0}^{h(x_{ij})} \set{F_{y_{ij}|x_{ij}}( f^*(x_{ij}) + z) - F_{y_{ij}|x_{ij}}( f^*(x_{ij}))}dz \\
 &\,=\, \int_{0}^{h(x_{ij})} \set{F_{y_{ij}|x_{ij}}( f^*(x_{ij}) + z) - F_{y_{ij}|x_{ij}}( f^*(x_{ij}))}dz,  \\
-\beq for all $i=1, \dots, n$. 
+\beq for all $i=1, \dots, n$. \rev{The equality \eqref{eq_lemma12_vanish} holds by the exact calibration \eqref{exact_calibration}, which gives $\tau - \mathbb{P}\paren{y_{ij} \,\le\, f^*(x_{ij}) \mid x_{ij}} \,=\, 0$, so that the linear term vanishes.}
 
 % \textcolor{red}{try to generate:}
 % \bea 
@@ -2927,8 +2928,8 @@ Substituting $v = f(x_{ij}) - f^*(x_{ij})$ and $w = y_{ij} - f^*(x_{ij})$, we ob
 
 \begin{lemma}[Simplify $Z_{ij}(f)$]
 \label{lem_for_A1_2}
-For any $f, f^* \in \mathcal{F}$, and $t\in\R$, 
-we have 
+For any $f \in \mathcal{F}$, and $t\in\R$, \rev{with $f^* \in \mathcal{F}$ the fixed target satisfying \eqref{exact_calibration}},
+we have
 \bea 
 Z_{ij}(f) \,\coloneqq\, \mathbb{E} \left[ \hat Z_{i,j} (f)| x_{ij} \right] 
 &\,=\,\int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t|x_{ij}) - \mathbb{P}( y_{i,j} \,\le\, f^*(x_{ij})|x_{ij}) \right\} dt.
@@ -2957,7 +2958,7 @@ Substituting gives
 &\quad + \int_{0}^{v} \left(I(w \,\leq\, t) - I(w \,\leq\, 0)\right) dt. \nonumber
 \bea
 
-By the definition of $f^*$ as the conditional $\tau$-quantile:
+\rev{By the exact calibration \eqref{exact_calibration},}
 \bea
 &\mathbb{E}\left[ \tau - I(y_{ij} \,\leq\, f^*(x_{ij})) \,\big|\, x_{ij} \right] = \tau - \mathbb{P}(y_{ij} \,\leq\, f^*(x_{ij}) \,\big|\, x_{ij}) \nonumber \\
 &\,=\, 0. \quad \nonumber
@@ -3010,7 +3011,7 @@ By Lemma~\ref{lem_for_A1_2} where $Z_{ij}(f) \,=\, \Ept{\delta, e \mid x_{ij}}{\
 Z_{ij}(f) &\,=\,  \left( f^*(x_{ij}) - f(x_{ij}) \right)\left(\tau - \mathbb{P}(y_{i,j} \,\le\, f^*(x_{ij}) \mid x_{ij}) \right)  \\ &\quad + \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t \mid x_{ij}) - \mathbb{P}( y_{i,j} \,\le\, f^*(x_{ij}) \mid x_{ij}) \right\} dt \\
  & \labelrel={eq:Zij_linear_vanish} \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t \mid x_{ij}) - \mathbb{P}( y_{i,j} \,\le\, f^*(x_{ij}) \mid x_{ij}) \right\} dt.
 \beq
-The equality \eqref{eq:Zij_linear_vanish} holds because $f^*(x_{ij})$ is the conditional $\tau$-quantile given $x_{ij}$, so $\tau - \mathbb{P}(y_{i,j} \,\le\, f^*(x_{ij}) \mid x_{ij}) \,=\, 0$.
+The equality \eqref{eq:Zij_linear_vanish} holds \rev{by the exact calibration \eqref{exact_calibration}}, so $\tau - \mathbb{P}(y_{i,j} \,\le\, f^*(x_{ij}) \mid x_{ij}) \,=\, 0$.
 
 By Lemma~\ref{lem_for_A1_1}, since $\tilde Z_{ij}(f) \,=\, \Ept{e \mid \delta_i, x_{ij}}{\hat Z_{ij}(f)}$ conditions on both $x_{ij}$ and $\delta_i$,
 \beq
