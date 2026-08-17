@@ -5008,34 +5008,7 @@ r_n^2 \asymp    \frac{ \max\set{B,1} \log^{5+\mu}(nm)V_n}{nm} + \frac{\log^2(nm)
 
 \end{lemma}
 \begin{proof}
-% \bea 
-%   &R\left( \|\nabla{G_K} \theta\|_1 \leq V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq b}\right) \\ &= \ept{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}} \frac{1}{n}\sum_{i=1}^n \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} \theta_{ij}}  
-%   \\ & =   \ept{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}}  \frac{1}{n}\sum_{i=1}^n \frac{1}{m}\sum_{j=1}^{m_{i}} \frac{m}{m_i}s_{ij} \theta_{ij}} \\ 
-%   & \leq \frac{C}{c'}\ept{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}} \frac{1}{\sum_{i=1}^n m_i}\sum_{i=1}^n \sum_{j=1}^{m_{i}}s_{ij}  \theta_{ij} } \\ 
-%   & \leq  \frac{C}{c'}\ept{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n} } \frac{1}{\sum_{i=1}^n m_i}\sum_{i=1}^n \sum_{j=1}^{m_{i}} (\theta_{ij} - \theta^*_{ij})s_{ij}  }
-%   \bea 
 
-% From now along the proof we define
-% \beq 
-% \label{tilde_sij}
-% \tilde s_{ij} = \frac{m}{m_i}s_{ij}
-% \beq , then we have $\tilde s_{ij}$ are Sub-Gaussians with parameter $\frac{m^2}{m_i^2}$. Since across $i$, $\frac{m}{m_i} \leq \frac{1}{c'}$ are uniformly bounded, we have that each $\tilde s_{ij}$ are at least sub-Gaussians with parameter $\frac{1}{c'^2}$.
-% The first inequality holds by using Assumption we have $\frac{\sum_{i=1}^n m_i}{nm_i} \leq \frac{C}{c'} $ and by Ledoux–Talagrand contraction inequality (see Proposition 5.28 in \cite{wainwright2019high}). 
-
-% \bea 
-%   &R\left( \|\nabla{G_K} \theta\|_1 \leq V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq b}\right) \\ &= \ept{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}} \frac{1}{n}\sum_{i=1}^n \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} \theta_{ij}}  
-%   \\ & =   \ept{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}}  \frac{1}{n}\sum_{i=1}^n \frac{1}{m}\sum_{j=1}^{m_{i}} \frac{m}{m_i}s_{ij} \theta_{ij}} \\ 
-%   & \leq \frac{C}{c'}\ept{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n}} \frac{1}{\sum_{i=1}^n m_i}\sum_{i=1}^n \sum_{j=1}^{m_{i}}s_{ij}  \theta_{ij} } \\ 
-%   & \leq  \frac{C}{c'}\ept{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K} \theta\|_1 \leq V_n} } \frac{1}{\sum_{i=1}^n m_i}\sum_{i=1}^n \sum_{j=1}^{m_{i}} (\theta_{ij} - \theta^*_{ij})s_{ij}  }
-%   \bea
-
-
-% \bea 
-% \left(\tilde s\right)_{i,j} = \begin{cases}
-% (\theta)_{i,j}, \text{ for } i \in \mathcal{J}_{e,l}, \text{and } j \in m_i,\\
-% 0, \text{ for } i \notin \mathcal{J}_{e,l}, \text{and } j \notin m_i.\\
-% \end{cases}  
-% \bea 
 Define: 
 \beq 
 \label{tilde_s}
