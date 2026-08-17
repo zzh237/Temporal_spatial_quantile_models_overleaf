@@ -292,7 +292,7 @@ For any $A \subseteq \mathbb{R}^d$ consider $1_A(x) \,=\, \begin{cases} 1 & \tex
 
 
 \subsection{Summary of Results}
-\rev{Let $ \rho_\tau (c) \,=\, \max\{\tau c, (\tau-1)c\} $ be the usual check function for quantile regression. Let $\{ (x_{i1}, \dots, x_{im_i}) \}^{n}_{i=1}$ and $\{ (y_{i1}, \dots, y_{im_i}) \}^{n}_{i=1}$ be sequences of independent random variables. For a given quantile level $\tau \in (0, 1)$, let $f^{*}(x_{ij})$ be the conditional $\tau$-quantile of $y_{ij}$. We study the optimization problem}
+\rev{Let $ \rho_\tau (c) \,=\, \max\{\tau c, (\tau-1)c\} $ be the usual check function for quantile regression. Let $\{ (x_{i1}, \dots, x_{im_i}) \}^{n}_{i=1}$ and $\{ (y_{i1}, \dots, y_{im_i}) \}^{n}_{i=1}$ be sequences of random vectors. For a given quantile level $\tau \in (0, 1)$, let $f^{*}(x_{ij})$ be the conditional $\tau$-quantile of $y_{ij}$. We study the optimization problem}
 \begin{align}
 \label{loss_quantile}
 \hat f \,=\, \argmin_{f \in \mathcal{F}} \sum_{i=1}^{n} \frac{1}{n}\sum_{j=1}^{m_i} \frac{1}{m_i} \rho_\tau\left( y_{ij} - f(x_{ij}) \right),
@@ -304,7 +304,7 @@ Our investigation utilizes two distinct loss functions. The estimation loss, as 
 which, modulo constants, corresponds to a Huber loss, as delineated in \cite{huber1992robust}. The primary rationale for focusing on the Huber loss stems from its emergence as a natural lower bound to the quantile population loss, and it is smooth and used in our derivation of theorems.
 
 
-Our framework supposes that the sequences $\{(x_{i1}, \dots, x_{im_i}) \}^{n}_{i=1}$ and $\{e_{ij}\}_{i=1,j=1}^{n,m_i}$ and $\{\delta_i\}_{i=1}^{n} \subset L_2([0,1])$ have elements that are identically distributed and $\beta$-mixing with coefficients having exponential decay, see the introduction below and Assumption~\ref{Assumption 1.} for the explicit details. We have temporal-dependent data across $i$. At every location $i \in \set{1, \dots, n}$, we also assume that data have spatial dependence across $j$, which means $\delta_i(x_{ij})$ and $\delta_i(x_{ik})$ are dependent for $k\neq j$.
+\rev{Our framework supposes that the joint time-cluster process consisting of $\{(x_{i1}, \dots, x_{im_i}),\delta_i,(e_{i1},\dots,e_{im_i})\}_{i=1}^n$ is $\beta$-mixing with coefficients having exponential decay; see Assumption~\ref{Assumption 1.} for the explicit details. Thus, the data may be temporally dependent across $i$.} At every location $i \in \set{1, \dots, n}$, we also assume that data have spatial dependence across $j$, which means $\delta_i(x_{ij})$ and $\delta_i(x_{ik})$ are dependent for $k\neq j$.
 \rev{The measurement errors $\{e_{ij}\}_{i=1,j=1}^{n,m_i}$ may be heavy-tailed, without moment assumptions.}
 
 We give a rigorous examination
@@ -502,14 +502,21 @@ where $B$ represents a bounded constant. This property is easily satisfied for s
 \label{ass_1_1_1} The design points \(\{x_{ij}\}_{i=1,j=1}^{n,m_i} \subseteq [0,1]^{d}\) are sampled from a common density function \(v : [0,1]^{d} \rightarrow \mathbb{R}\), such that \(0 < v_{\min} \,\leq\, v(x) \,\leq\, v_{\max}\) for all \(x \in [0,1]^{d}\). 
 \item 
 \label{ass_1_2}For each fixed $i \in \set{1, \dots, n}$, the $\set{x_{ij}}_{j=1}^{m_i}$ are independent. 
-\item 
+\item \label{ass_1_3}\rev{The spatial noise $\{\delta_i\}_{i=1}^{n}$ is a collection of identically distributed random functions taking values in a Polish function space.}
+\item \label{ass_1_4}\rev{For every fixed $i \in \set{1,\dots,n}$, the measurement errors $\{e_{ij}\}_{j=1}^{m_i}$ are independent random variables, and $e_{ij} \indep x_{i'j'}$ for all $(i',j') \neq (i,j)$.}
+\item
 \label{ass_c_beta}
-Let \(\sigma_x(i) \,=\, \sigma(x_{ij}, j\in \{1,...,m_i\})\), and suppose that \(\{\sigma_x(i)\}^{n}_{i=1}\) is \(\beta\)-mixing with beta coefficients \(\beta(l)\). See Appendix J for the \(\beta\)-mixing definition. The beta coefficients are assumed to have exponential decay, \(\beta(l) \,\leq\, e^{-C_{\beta}l}\) for some constant \(C_{\beta} > 0\). 
-
-\item \label{ass_1_3}The spatial noise $\{\delta_i\}_{i=1}^{n}$ is a collection of independently distributed random functions. 
-\item  Moreover, let \(\sigma_{\delta}(i) \,\coloneqq\, \sigma(\delta_i), i \in \{1,...,n\}\) and suppose that \(\{\sigma_{\delta}(i)\}^n_{i=1}\) are \(\beta\)-mixing with beta coefficients \(\beta_{\delta}(l)\). The beta coefficients are assumed to have exponential decay, \(\beta_{\delta}(l) \leq  e^{-C_\beta l}\).
-\item \label{ass_1_4}The measurement errors $\{e_{ij}\}_{i=1,j=1}^{n,m_i}$ are a collection of independently distributed random variables such that $e_{ij} \indep x_{i'j'} $ for all $(i',j') \neq (i,j)$.
-\item  Moreover, let \( \sigma_{e}(i) =  \sigma(e_i, j \in \{1,...,m_i\}) \) and suppose that \( \{\sigma_e(i)\}^n_{i=1} \) are \(\beta\)-mixing with beta coefficients \( \beta(l) \). The beta coefficients are assumed to have exponential decay, \( \beta_e(l) \leq  e^{-C_\beta l} \). 
+\rev{Let
+\[
+X_i \,\coloneqq\, (x_{i1},\dots,x_{im_i}), \qquad
+E_i \,\coloneqq\, (e_{i1},\dots,e_{im_i}), \qquad
+W_i \,\coloneqq\, (X_i,\delta_i,E_i),
+\]
+and let $\sigma_W(i) \,\coloneqq\, \sigma(W_i)$. Suppose that
+$\{\sigma_W(i)\}_{i=1}^n$ is $\beta$-mixing with coefficients
+$\beta_W(l)$. See Appendix J for the $\beta$-mixing definition. The
+coefficients satisfy $\beta_W(l) \,\leq\, e^{-C_\beta l}$ for some
+constant $C_\beta>0$.}
 \item \label{asm:m} For any $i \in \{1,...,n\}$, we assume that $cm \leq  m_i \leq  Cm$, where $m$ is the harmonic mean of $m_i$ defined by
 \begin{align}
 m = \left( \frac{1}{n} \sum_{i=1}^n \frac{1}{m_i} \right)^{-1}.
@@ -526,7 +533,7 @@ Assumption~\ref{ass_1_1} facilitates the representation of observed temporal-spa
 
 Our model acknowledges two primary sources of variation impacting the observed temporal-spatial data. The initial source, spatial noise, stems from the intrinsic variability within the temporal-spatial processes themselves. This implies that even in the absence of any measurement errors, observable variability would persist due to natural randomness, biological variation, or application-specific variation. This form of noise is delineated under Assumption~\ref{ass_1_3} in our framework, a notion that finds parallel in Assumption 1.c of \cite{padilla2023temporal}. A notable distinction in our approach is the absence of a constraint on \(\delta_i\) to adhere to a subGaussian distribution, thereby accommodating the potential for heavy-tailed distributions.
 
-The secondary source, measurement error, represented as \(\{e_{ij}\}_{i=1,j=1}^{n,m}\), emerges from the limitations of measurement instruments or external disturbances. Such errors can impose systematic biases or random deviations in the observed dataset \(\{y_{ij}\}_{i=1,j=1}^{n,m}\) that do not accurately represent the actual process. This aspect is encapsulated in Assumption~\ref{ass_1_4} of our model. While a similar postulation regarding measurement error is present as 1.d in \cite{padilla2023temporal}, our model diverges by permitting errors to follow heavy-tailed and non-identical distributions, thus encompassing a broader range of processes. Additionally, we stipulate independence among error sequences and data across different indices, aligning with conventional practices in nonparametric regression analysis.
+The secondary source, measurement error, represented as \(\{e_{ij}\}_{i=1,j=1}^{n,m}\), emerges from the limitations of measurement instruments or external disturbances. Such errors can impose systematic biases or random deviations in the observed dataset \(\{y_{ij}\}_{i=1,j=1}^{n,m}\) that do not accurately represent the actual process. This aspect is encapsulated in Assumption~\ref{ass_1_4} of our model. While a similar postulation regarding measurement error is present as 1.d in \cite{padilla2023temporal}, our model diverges by permitting errors to follow heavy-tailed and non-identical distributions, thus encompassing a broader range of processes. \rev{Within each time cluster the errors are independent, while their temporal dependence is governed by the joint $\beta$-mixing condition in Assumption~\ref{ass_c_beta}.}
 
 Incorporating both spatial noise and measurement error, our model pragmatically accounts for discrepancies between observed data and the true underlying phenomena, acknowledging the inherent variability and errors essential for a comprehensive data analysis framework.
 
@@ -1964,24 +1971,20 @@ To get the convergence rate of $\Delta^2(\hat f - f^*)$, we will control the qua
 
 We will first consider the temporal dependence. To control 
 that, we would need to use the $\beta-$mixing concept that are constructed in Appendix~\ref{beta_mix_intro}.
-We then get the setup of the indices for \( |\mathcal{J}_{e,l}|, |\mathcal{J}_{o,l}| \asymp n/L \) in \eqref{odd_even_indices}. We let $\gI \,\coloneqq\, \bigcup_{l=1}^{L}(\mathcal J_{e,l}\cup \mathcal J_{o,l})$. For each fixed $l \in [L]$, we construct copies $x_{ij}^{*}, e_{ij}^{*}, \delta_i^{*}$ for $i \in \mathcal{J}_{e,l}$ (and similarly for $\mathcal{J}_{o,l}$) via the coupling in Appendix~\ref{beta_mix_intro}. These copies have the same marginal distribution as $x_{ij}, e_{ij}, \delta_i$, and are mutually independent within each block $\mathcal{J}_{e,l}$ (but not across different blocks). Next, we let
+We then get the setup of the indices for \( |\mathcal{J}_{e,l}|, |\mathcal{J}_{o,l}| \asymp n/L \) in \eqref{odd_even_indices}. We let $\gI \,\coloneqq\, \bigcup_{l=1}^{L}(\mathcal J_{e,l}\cup \mathcal J_{o,l})$. \rev{For each fixed $l \in [L]$, we apply the coupling in Appendix~\ref{beta_mix_intro} to the joint clusters $W_i=(X_i,\delta_i,E_i)$ for $i\in\mathcal J_{e,l}$ (and similarly for $\mathcal J_{o,l}$). This constructs coupled clusters
 \[
-X_i \,\coloneqq\, (x_{i1},\dots,x_{im_i}),\qquad
-E_i \,\coloneqq\, (e_{i1},\dots,e_{im_i}),\qquad
-\Delta_i \,\coloneqq\, (\delta_{i1},\dots,\delta_{im_i}),
+W_i^* \,=\, (X_i^*,\delta_i^*,E_i^*),
+\qquad
+X_i^* \,=\, (x_{i1}^*,\dots,x_{im_i}^*),
+\qquad
+E_i^* \,=\, (e_{i1}^*,\dots,e_{im_i}^*),
 \]
-and their coupled copies
-\[
-X_i^{*} \,\coloneqq\, (x_{i1}^{*},\dots,x_{im_i}^{*}),\qquad 
-E_i^{*} \,\coloneqq\, (e_{i1}^{*},\dots,e_{im_i}^{*}),\qquad
-\Delta_i^{*} \,\coloneqq\, (\delta_{i1}^{*},\dots,\delta_{im_i}^{*}),
-\]
-and then we define 
+such that $W_i^*$ has the same joint distribution as $W_i$ and the coupled clusters are mutually independent over $i$ within each fixed block.} We then define
 \beq 
 \label{omega_definition}
 &\Omega_x \,:=\, \left\{ X_i = X_i^* \ \text{for all } i\in \gI \right\},\\
 &\Omega_e \,:=\, \left\{ E_i = E_i^* \ \text{for all } i\in \gI \right\}, \\
-&\Omega_\delta \,:=\, \left\{ \Delta_i = \Delta_i^* \ \text{for all } i\in \gI \right\}, \\
+&\Omega_\delta \,:=\, \left\{ \delta_i = \delta_i^* \ \text{for all } i\in \gI \right\}, \\
 &\Omega_\beta \,:=\, \Omega_x\cap \Omega_e\cap \Omega_\delta. 
 \beq 
 
@@ -2068,9 +2071,9 @@ L = \left\lceil \frac{1}{C_{\beta}} 2\log(n) \right\rceil,
 leading us to the conclusion that
 \begin{equation}
 \label{beta_decay_rate}
-\beta_{x}(L) \,\leq\, \frac{1}{n^{2}},
-\end{equation} where $\beta_{x}$ is defined in Assumption~\ref{ass_c_beta}.
-This bound is equivalently satisfied by \( \beta_{\delta}(L) \) and \( \beta_{e}(L) \). Subsequently, throughout our discussion, we make frequent references to the copies of the random variables \(x_{ij}\), \( e_{ij} \), and \( \delta_i \) as they are constructed in Appendix~\ref{beta_mix_intro}. These copies are denoted as \( x_{ij}^{*} \), \( e_{ij}^{*} \), and \( \delta_{i}^{*} \), respectively. Furthermore, as delineated in Appendix~\ref{beta_mix_intro}, during the formation of these copies the quantities \( |\mathcal{J}_{e,l}| \) and \( |\mathcal{J}_{o,l}| \) in \eqref{odd_even_indices}, which represent the count of even and odd blocks respectively, satisfy \( |\mathcal{J}_{e,l}|, |\mathcal{J}_{o,l}| \asymp n/L \). Thus, there exist positive constants \( c_1 \) and \( c_2 \) such that
+\beta_W(L) \,\leq\, \frac{1}{n^{2}},
+\end{equation} where $\beta_W$ is defined in Assumption~\ref{ass_c_beta}.
+\rev{Throughout our discussion, $W_i^*=(X_i^*,\delta_i^*,E_i^*)$ denotes the coupled cluster constructed in Appendix~\ref{beta_mix_intro}; its coordinates are denoted by $x_{ij}^*$, $\delta_i^*$, and $e_{ij}^*$.} Furthermore, as delineated in Appendix~\ref{beta_mix_intro}, during the formation of these copies the quantities \( |\mathcal{J}_{e,l}| \) and \( |\mathcal{J}_{o,l}| \) in \eqref{odd_even_indices}, which represent the count of even and odd blocks respectively, satisfy \( |\mathcal{J}_{e,l}|, |\mathcal{J}_{o,l}| \asymp n/L \). Thus, there exist positive constants \( c_1 \) and \( c_2 \) such that
  \begin{equation}
  \label{beta_constants}
 c_1 n/L \,\leq\, |\mathcal{J}_{e,l}|, |\mathcal{J}_{o,l}| \,\leq\, c_2 n/L, 
@@ -2079,7 +2082,7 @@ c_1 n/L \,\leq\, |\mathcal{J}_{e,l}|, |\mathcal{J}_{o,l}| \,\leq\, c_2 n/L,
 
 \begin{lemma}
 \label{lemma_beta_decomp}  
-Let $\hat f$, $f^*$ belong to $\mathcal{F}$, and let $\Delta^2(\hat f - f^*)$ be the Huber loss. Suppose Assumption~\ref{Assumption 1.} holds with the $\beta$-mixing condition satisfied in \eqref{beta_decay_rate} and the block indices $\mathcal{J}_{e,l}, \mathcal{J}_{o,l}$ satisfying $|\mathcal{J}_{e,l}|, |\mathcal{J}_{o,l}| \asymp n/L$ as in \eqref{odd_even_indices}. For each fixed $l \in [L]$, we construct identically distributed copies $\{x_{ij}^{*}, e_{ij}^{*}, \delta_i^{*}\}_{i \in \mathcal{J}_{e,l}}$ that are mutually independent within the block $\mathcal{J}_{e,l}$ (and similarly for $\mathcal{J}_{o,l}$), via the coupling in Appendix~\ref{beta_mix_intro}. Let
+Let $\hat f$, $f^*$ belong to $\mathcal{F}$, and let $\Delta^2(\hat f - f^*)$ be the Huber loss. Suppose Assumption~\ref{Assumption 1.} holds with the $\beta$-mixing condition satisfied in \eqref{beta_decay_rate} and the block indices $\mathcal{J}_{e,l}, \mathcal{J}_{o,l}$ satisfying $|\mathcal{J}_{e,l}|, |\mathcal{J}_{o,l}| \asymp n/L$ as in \eqref{odd_even_indices}. \rev{For each fixed $l \in [L]$, construct the coupled clusters $\{W_i^*\}_{i\in\mathcal J_{e,l}}$ that are mutually independent within $\mathcal J_{e,l}$ (and similarly for $\mathcal J_{o,l}$) via Lemma~\ref{Lemma_9}.} Let
 $\Omega_{x}, \Omega_{e}, \Omega_{\delta}, \Omega_{\beta}$ be defined in \eqref{omega_definition}. 
 % \(\Omega_{x} = \{i: x_{ij} = x_{ij}^{*} \ \forall j \in [m_i]\}\), \(\Omega_{e} = \{i: e_{ij} = e_{ij}^{*} \ \forall j \in [m_i]\}\) and \(\Omega_{\delta} = \{i: \delta_{i} = \delta_{i}^{*}\}\), let \(\Omega_{\beta} = \Omega_{x} \cap \Omega_{e} \cap \Omega_{\delta} \).
 Then we have 
@@ -2089,14 +2092,14 @@ Then we have
 \end{lemma}
 
 \begin{proof}
-    Using a union bound argument and invoking Lemmas \ref{Lemma_9}, \ref{Lemma 10.}, and \ref{Lemma 11.}, we note that the following sets, 
-    $\Omega_{x}, \Omega_{e}, \Omega_{\delta}$ in \eqref{omega_definition},
-    % \(\Omega_{x} = \{i: x_{ij} = x_{ij}^{*} \ \forall j \in [m_i]\}\), \(\Omega_{e} = \{i: e_{ij} = e_{ij}^{*} \ \forall j \in [m_i]\}\) and \(\Omega_{\delta} = \{i: \delta_{i} = \delta_{i}^{*}\}\),
-    satisfy the conditions
+\rev{By Lemma~\ref{Lemma_9} and a union bound over the $n$ time clusters,
 \[
-\sP(\Omega_{x}^{c}) \,\leq\, n\beta_{x}(L) \,\leq\, \frac{1}{n}, \quad \sP(\Omega_{e}^{c}) \,\leq\, n\beta_{e}(L) \,\leq\, \frac{1}{n}, \quad \,\,\,\text{and}\,\,\, \quad \sP(\Omega_{\delta}^{c}) \,\leq\, n\beta_{\delta}(L) \,\leq\, \frac{1}{n}.
-\]
-Therefore letting 
+\sP(\Omega_\beta^c)
+\,\leq\, \sum_{i=1}^n \sP(W_i\neq W_i^*)
+\,\leq\, n\beta_W(L)
+\,\leq\, \frac{1}{n}.
+\]}
+Therefore letting
 \beq 
 \label{event_beta}
 \Omega_{\beta} \,=\, \Omega_{x} \cap \Omega_{e} \cap \Omega_{\delta} 
@@ -2104,7 +2107,7 @@ Therefore letting
 we have that
 \bea  
 \sP\left( c_0\Delta^2(\hat f - f^*) > t^2 \right) &\,=\, \sP\left(\left\{ c_0\Delta^2(\hat f - f^*) > t^2\right\} \cap \Omega_{\beta}  \right) \,+\, \sP\left(\left\{ c_0\Delta^2(\hat f - f^*) > t^2\right\} \cap \Omega_{\beta}^{c}\right) \\
-&\,\leq\, \sP\left(\left\{ c_0\Delta^2(\hat f - f^*) > t^2\right\} \cap \Omega_{\beta} \right) \,+\, \frac{3}{n}
+&\,\leq\, \sP\left(\left\{ c_0\Delta^2(\hat f - f^*) > t^2\right\} \cap \Omega_{\beta} \right) \,+\, \frac{1}{n}
 \\
 &\,\leq\, \sP\left(\left\{ c_0\Delta^2(\hat f - f^*) > t^2\right\} \cap \Omega_{\beta} \right) \,+\, \frac{\varepsilon}{2} \\
 % & = \sP\paren{c_0\Delta^2(\hat f - f^*) > t^2|\Omega_\beta} \sP\paren{\Omega_\beta} + \frac{\varepsilon}{2}\\ 
@@ -2135,8 +2138,8 @@ to denote the expectation of $X$ restricted to the coupling event $\Omega_\beta$
 \label{remark:joint}
 
 
-Moreover, on $\Omega_\beta$ we work with the coupled sample
-$\{(x_{ij}^*,y_{ij}^*)\}_{i \in \mathcal{J}_{e,l},j\in[m_i]}$, which are i.i.d.\ within each fixed block $\mathcal{J}_{e,l}$.
+\rev{Moreover, on $\Omega_\beta$ we work with the coupled sample
+$\{(x_{ij}^*,y_{ij}^*)\}_{i \in \mathcal{J}_{e,l},j\in[m_i]}$, whose time clusters are independent within each fixed block $\mathcal{J}_{e,l}$.}
 We now define the star versions of the loss quantities.
 The star empirical loss is
 \beq 
@@ -2149,7 +2152,7 @@ Z_{ij}^*(f) &\,\coloneqq\,  \Ept{\delta^*, e^* \mid x_{ij}^*}{ \hat Z_{ij}^*(f)}
 \tilde Z_{ij}^*(f) &\,\coloneqq\,  \Ept{e^* \mid \delta_i^*, x_{ij}^*}{ \hat Z_{ij}^*(f)}, \\
 \bar Z_{ij}^*(f) &\,\coloneqq\,  \Ept{x^*, \delta^*, e^*}{ \hat Z_{ij}^*(f)}.
 \bea 
-By construction, for each fixed $l \in [L]$, the star quantities $\{\hat Z_{ij}^*(f)\}_{i \in \mathcal{J}_{e,l}, j \in [m_i]}$ are built from the i.i.d.\ copies $(x_{ij}^*, e_{ij}^*, \delta_i^*)_{i \in \mathcal{J}_{e,l}}$, and hence the indices $i \in \mathcal{J}_{e,l}$ are independent (similarly for $\mathcal{J}_{o,l}$). However, the copies across different blocks $l$ are not mutually independent.
+\rev{By construction, for each fixed $l \in [L]$, the star quantities $\{\hat Z_{ij}^*(f)\}_{i \in \mathcal{J}_{e,l}, j \in [m_i]}$ are built from the coupled clusters $\{W_i^*\}_{i \in \mathcal{J}_{e,l}}$, and hence the indices $i \in \mathcal{J}_{e,l}$ are independent (similarly for $\mathcal{J}_{o,l}$). Each $W_i^*$ has the same joint distribution as $W_i$; the copies across different blocks $l$ need not be mutually independent.}
 On the coupling event $\Omega_\beta$ we have $(x_{ij}, e_{ij}, \delta_i) \,=\, (x_{ij}^*, e_{ij}^*, \delta_i^*)$ for all $i \in \gI$ and $j \in [m_i]$, so that
 \beq 
 \label{eq:Z_equal_on_Omega}
@@ -8150,17 +8153,34 @@ where the \(\beta\) coefficients are defined as,
 Note, that the right-hand side is the worst-case scenario of how much the past could influence the future. Hence, intuitively, larger $\beta$-mixing coefficients indicate a higher degree of dependence, while smaller values suggest more independence.
 
 
-\begin{theorem}[\cite{doukhan2012mixing} Theorem 1].
-\label{thm_beta_mix}Let \(E\) and \(F\) be two polish spaces and \((X, Y)\) some \(E \times F\)-valued random variables. A random variable \(Y^*\) can be defined with the same probability distribution as \(Y\), independent of \(X\) and such that
-
+\begin{revision}
+\begin{theorem}[{\cite[Theorem 1, Section 1.2.1]{doukhan2012mixing}}]
+\label{thm_beta_mix}
+Let $E$ and $F$ be two Polish spaces, and let $(X,Y)$ be an
+$E\times F$-valued random element. Set
 \[
-P(Y \neq Y^*) \,=\, \beta(\sigma(X), \sigma(Y)).
+\beta \,=\, \beta(\sigma(X),\sigma(Y)).
 \]
-
-For some measurable function \(f\) on \(E \times F \times [0,1]\), and some uniform random variable \(\Delta\) on the interval \([0,1]\), \(Y^*\) takes the form \(Y^* = f(X, Y, \Delta)\).    
+Suppose that the probability space supports a random variable
+$\Delta\sim\operatorname{Unif}[0,1]$ independent of $\sigma(X,Y)$.
+Then there exists an $F$-valued random element $Y^*$ such that $Y^*$
+has the same distribution as $Y$, $Y^*$ is independent of $X$, and
+\[
+\sP(Y\neq Y^*) \,=\, \beta.
+\]
+Moreover, for some measurable function
+$f:E\times F\times[0,1]\to F$, the coupled variable can be written as
+$Y^*=f(X,Y,\Delta)$.
 \end{theorem}
 
-Note that Theorem~\ref{thm_beta_mix} says that \(Y\) is originally dependent on \(X\), and \(Y^*\) is constructed such that retains \(Y\)'s distribution but is independent of \(X\), by introducing the \(\Delta\). 
+We apply Theorem~\ref{thm_beta_mix} repeatedly. Accordingly, we enlarge
+the probability space, if necessary, so that it supports an i.i.d.\
+sequence $\{\Delta_i\}_{i\geq1}$ of
+$\operatorname{Unif}[0,1]$ random variables independent of the original
+process. Thus each application of the theorem uses fresh independent
+randomness.
+\end{revision}
+
 Let's divide the sequence $[1\dots n]$ into $K$ groups of size $L$. For any \(L \in \{1, \ldots, n\}\) and \(K = \lfloor n/L \rfloor\), denote
 
 \[
@@ -8195,108 +8215,127 @@ and that
 \bigcup_{l=1}^L \mathcal{J}_{e,l} \cup \bigcup_{l=1}^L \mathcal{J}_{o,l} = \{1, \ldots, n\}.
 \]
 
+\begin{revision}
 \begin{lemma}
-\label{Lemma_9}  
-Let \(\{x_{ij}\}^{n,m_i}_{i=1} \in [0,1]^d\) are identically distributed random variables such that \(\{\sigma(i)\}^{n}_{i=1}\) are \(\beta\)-mixing, where \(\sigma(i) \,=\, \sigma(x_{ij}, j \in [m_i])\). Moreover, suppose that for any \(i \in [n]\) fixed, \(\{x_{ij}\}^{m_i}_{j=1}\) are independent. For any \(l \in [1, L]\), there exists a collection of independent identically distributed random variables \(\{x_{ij}^*\}_{j \,\leq\, m_i, i \in \mathcal{J}_{e,l}}\), with same distribution as \(x_{11}\), such that for any \(i \in \mathcal{J}_{e,l}\),
-
+\label{Lemma_9}
+Let $X_i=(x_{i1},\dots,x_{im_i})$,
+$E_i=(e_{i1},\dots,e_{im_i})$, and $W_i=(X_i,\delta_i,E_i)$, and
+suppose that $\{\sigma_W(i)\}_{i=1}^n$ satisfies the joint
+$\beta$-mixing condition in Assumption~\ref{ass_c_beta}. For every fixed
+$l\in[L]$, there is a collection
 \[
-P(x_{ij}^* \neq x_{ij} \text{ for some } j \in [1, \ldots, m_i]) \,\leq\, \beta(L).
+\{W_i^*=(X_i^*,\delta_i^*,E_i^*):i\in\mathcal J_{e,l}\}
 \]
-
-The exact same result is attained for \(\mathcal{J}_{o,l}\).
-
-and denote,
-
+such that:
+\begin{enumerate}
+\item $W_i^*$ has the same joint distribution as $W_i$ for every
+$i\in\mathcal J_{e,l}$;
+\item the family $\{W_i^*:i\in\mathcal J_{e,l}\}$ is jointly
+independent;
+\item for every $i\in\mathcal J_{e,l}$,
 \[
-\mathcal{J}_{o,l,K} = \{l, 2L + l, 4L + l, \ldots, (2K)L + l\} \cap [1,n],
+\sP(W_i^*\neq W_i)
+\,=\,
+\sP\bigl(
+X_i^*\neq X_i\ \text{or}\quad
+\delta_i^*\neq\delta_i\ \text{or}\quad
+E_i^*\neq E_i
+\bigr)
+\,\leq\,\beta_W(L).
 \]
-
-which implies \(\bigcup_{k \,\geq\, 0}\mathcal{J}_{o,l,K} = \mathcal{J}_{o,l}\). Therefore, the result is followed by replicating the analysis performed above.
-\end{lemma}
- 
-
-
-\begin{proof} By Theorem 5, for any $i \in \{1, \ldots, n\}$, there exists $\{x_{i,j}^*\}_{j=1}^{m_i}$ such that
-\begin{align}
-    P(x_{i,j}^* \neq x_{i,j} \text{ for some } j \in \{0, \ldots, m_i\}) \,=\, \beta(L), \label{eq:264}
-\end{align}
-where $\{x_{i,j}^*\}_{j=1}^{m_i}$ and $\{x_{i,j}\}_{j=1}^{m_i}$ have the same marginal distribution, and that $\{x_{i,j}^*\}_{j=1}^{m_i}$ is independent of $\sigma(\{x_{t,s}\}_{t=1,s=1}^{n,m_t \setminus \{i,j\}})$. In addition, there exists a uniform random variable $\Delta_i$, independent of $\sigma_z$, such that $\{x_{i,j}^*\}_{j=1}^{m_i}$ is measurable with respect to $\sigma(\{x_{i,j}\}_{j=1}^{m_i}, \Delta)$. Note that $\{x_{i,j}\}_{j\in I_{r}}$ are identically distributed because $\{x_{i,j}^*\}_{j\in I_{r}}$ have the same marginal density. Therefore it suffices to justify the independence.
-
-Note that $J_{l,1}$ is defined as
-\begin{align}
-    J_{l,1} &\,=\, \{L + l, 3L + l, 5L + l, \ldots \} \cap [1,n].
-\end{align}
-Denote
-\begin{align}
-    J_{l,K} &\,=\, \{L + l, 3L + l, 5L + l, \ldots, (2K + 1)L + l\} \cap [1,n],
-\end{align}
-and so $\bigcup_{k=0}^{K}J_{l,k} = J_{l,1}$. By induction, suppose $\{x_{i,j}^*\}_{i\in J_{l,K}, 1\,\leq\, j \,\leq\, m_i}$ are jointly independent. Let $\{B_{i,j}\}_{i\in J_{l,1},1\,\leq\, j\,\leq\, m_i}$ be any collection of Borel sets in $[0,1]^d$. Then
-\begin{align}
-    \sP\left( x_{i,j}^* \in B_{i,j}, i \in J_{l,K+1}, 1 \,\leq\, j \,\leq\, m_i \right) 
-    &\,=\, \sP\left( x_{i,j}^* \in B_{i,j}, i \in J_{l,K}, 1 \,\leq\, j \,\leq\, m_i \right) \times \nonumber \\
-    & \qquad \sP\left( x_{i,j}^* \in B_{i,j}, i \in J_{l,K+1}\setminus J_{l,K}, 1 \,\leq\, j \,\leq\, m_i \right), \label{eq:induction_step}
-\end{align}
-where the equation follows because $\{x_{i,j}^*\}_{i\in J_{l,K+1}\setminus J_{l,K}, 1\,\leq\, j\,\leq\, m_i}$ are independent of $\{x_{i,j}^*\}_{i\in J_{l,K}, 1\,\leq\, j\,\leq\, m_i}$. By induction,
-\begin{align}
-    \sP\left( x_{i,j}^* \in B_{i,j}, i \in J_{l,K}, 1 \,\leq\, j \,\leq\, m_i \right) 
-    = \prod_{i\in J_{l,K}, 1\,\leq\, j\,\leq\, m_i} \sP\left( x_{i,j}^* \in B_{i,j} \right).
-\end{align}
-
-Since for any \( i \in \{1, \ldots, n\} \), \(\{x_{i,j}^*\}_{j=1}^{m_i}\) and \(\{x_{i,j}\}_{j=1}^{m_i}\) have the same marginal distribution,
-\begin{align}
-    \sP\left(\bigcap_{j=1}^{m_i} \left\{x_{i,j}^* \in B_{(2k+3)L+j}\right\}\right) \,=\, \prod_{j=1}^{m_i} \sP\left(x_{i,j}^* \in B_{(2k+3)L+j}\right).
-\end{align}
-So
-\begin{align}
-    \sP\left(\bigcap_{i \in J_{l,K+1}, 1 \,\leq\, j \,\leq\, m_i} \left\{x_{i,j}^* \in B_{i,j}\right\}\right) \,=\, \prod_{i \in J_{l,K+1}, 1 \,\leq\, j \,\leq\, m_i} \sP\left(x_{i,j}^* \in B_{i,j}\right).
-\end{align}
-This implies that \(\{x_{i,j}^*\}_{i\in J_{l,K+1},1\,\leq\, j\,\leq\, m_i}\) are jointly independent. To analyze the case where the indices are considered in \(J_{0,l}\), we follow the same line of arguments, but now we note that
-\begin{align}
-    J_{0,l} &\,=\, \{l,2L + l, 4L + l, \ldots \} \cap [1,n],
-\end{align}
-and denote,
-\begin{align}
-    J_{0,l,K} &\,=\, \{l, 2L + l, 4L + l, \ldots, (2K)L + l\} \cap [1,n],
-\end{align}
-which implies \(\bigcup_{k \,\geq\, 0} J_{0,l,K} = J_{0,l}\). Therefore, the result is followed by replicating the analysis performed above. 
-\end{proof}
-
-\begin{lemma}
-\label{Lemma 10.} Let \(\{\varepsilon_{ij}\}^{n,m_i}_{i=1}\) in \(\mathbb{R}\) are identically distributed random variables such that \(\{\sigma(i)\}^{n}_{i=1}\) are \(\beta\)-mixing, where \(\sigma(i) \,=\, \sigma(\varepsilon_{ij}, j \in [m_i])\). Moreover, suppose that for any \(i \in [n]\) fixed, \(\{\varepsilon_{ij}\}^{m_i}_{j=1}\) are independent. For any \(l \in [1, L]\), there exists a collection of independent identically distributed random variables \(\{\varepsilon_{ij}^*\}_{j \,\leq\, m_i, i \in \mathcal{J}_{e,l}}\), with same distribution as \(\varepsilon_{11}\), such that for any \(i \in \mathcal{J}_{e,l}\),
-
-\[
-P(\varepsilon_{ij}^* \neq \varepsilon_{ij} \text{ for some } j \in [1, \ldots, m_i]) \,\leq\, \beta(L).
-\]
-
-The exact same result is attained for \(\mathcal{J}_{o,l}\).
+\end{enumerate}
+The same conclusion holds with $\mathcal J_{e,l}$ replaced by
+$\mathcal J_{o,l}$.
 \end{lemma}
 
-\begin{proof} The arguments used in this proof parallel to those employed in the proof of Lemma~\ref{Lemma_9}. The key distinction lies in our utilization of Borel sets within \(\mathbb{R}\) for the present context. 
-\end{proof}
+\begin{proof}
+We prove the result for $\mathcal J_{e,l}$; the proof for
+$\mathcal J_{o,l}$ is identical. For each $i\in[n]$, define
+\[
+\mathcal F_{i-L}^W
+\,\coloneqq\,
+\sigma(W_t:1\leq t\leq i-L),
+\]
+with the convention that this sigma-field is trivial when $i-L\leq0$.
+Let $\mathcal W_i$ denote the Polish state space of $W_i$, and define
+\[
+\mathbf W_i^{\mathrm{past}}
+\,\coloneqq\,
+(W_t)_{1\leq t\leq i-L}
+\quad\text{and}\quad
+\mathbf Y_i^W
+\,\coloneqq\,
+W_i.
+\]
+The corresponding state spaces
+$\prod_{1\leq t\leq i-L}\mathcal W_t$ and $\mathcal W_i$ are Polish, and
+\[
+\sigma(\mathbf W_i^{\mathrm{past}})=\mathcal F_{i-L}^W,
+\qquad
+\sigma(\mathbf Y_i^W)=\sigma(W_i).
+\]
 
-\begin{lemma}
-\label{Lemma 11.} Let \(\{\theta_{i,j}\}_{i=1,j=1}^{n,m_i}\) be identically distributed random functions in \([0,1]^d\), such that \(\{\sigma(\theta_{i,j})\}_{j=1}^{m_i}\) are \(\sigma\)-mixing, where \(\sigma(\delta_i) \,=\, \sigma(\delta)\). For any \(l \in [0, \ldots, L-1]\), there exists a collection \(\{\theta_{i,j}^*\}_{j \in J_{l}}\) of independent identically distributed random functions in \([0,1]^d\), with the same distribution as \(\delta_i\), such that for any \(i \in J_{l}\),
-\begin{align}
-    P(\theta_{i}^* \neq \theta_i) \,\leq\, \beta(L). \label{eq:independence_lemma}
-\end{align}
+Apply Theorem~\ref{thm_beta_mix} to
+$(\mathbf W_i^{\mathrm{past}},\mathbf Y_i^W)$ using the fresh auxiliary
+variable $\Delta_i$. The joint mixing assumption gives
+\[
+\beta\bigl(\mathcal F_{i-L}^W,\sigma(W_i)\bigr)
+\,\leq\,
+\beta_W(L).
+\]
+Therefore, there is a measurable map $g_i$ and a coupled cluster
+\[
+W_i^*
+\,=\,
+g_i(\mathbf W_i^{\mathrm{past}},W_i,\Delta_i)
+\]
+such that $W_i^*$ has the same joint distribution as $W_i$, is
+independent of $\mathcal F_{i-L}^W$, and satisfies
+\[
+\sP(W_i^*\neq W_i)
+\,=\,
+\beta\bigl(\mathcal F_{i-L}^W,\sigma(W_i)\bigr)
+\,\leq\,
+\beta_W(L).
+\]
 
-The exact same result is attained for \(J_{0,l}\).
-\end{lemma}
-\begin{proof} By Theorem 5, for any \(i \in [1, \ldots, n]\), there exists \(\theta_{i}^*\) such that
-\begin{align}
-    P(\theta_{i}^* \neq \theta_i) \,=\, \beta(L), \label{eq:theorem_application}
-\end{align}
-where equation \eqref{eq:theorem_application} follows because \(\theta_{i}^*\) is independent of \(\sigma(\{\theta_{t}\}_{t \in \mathcal{J}_{e,l}})\). By induction,
-\begin{align}
-    P(\theta_{i}^*(t) \in B_{i}, i \in J_{l,K+1}, 1 \,\leq\, t \,\leq\, m_i) &\,=\, \prod_{i \in J_{l,K+1}, 1 \,\leq\, t \,\leq\, m_i} P(\theta_{i}^*(t) \in B_{i}). \label{eq:independence_joint}
-\end{align}
-This implies that \(\{\theta_{i}^*\}_{i\in J_{l,K+1}}\) are jointly independent. To analyze the case where the indices are considered in \(J_{0,l}\), we note that
-\begin{align}
-    J_{0,l} &\,=\, \{l, 2L + l, 4L + l, \ldots\} \cap [1,n], \\
-    J_{0,l,K} &\,=\, \{l, 2L + l, 4L + l, \ldots, (2K)L + l\} \cap [1,n],
-\end{align}
-which implies \(\bigcup_{k \,\geq\, 0} J_{0,l,K} = J_{0,l}\). Therefore, the result is followed by replicating the analysis performed above. 
+It remains to verify joint independence within $\mathcal J_{e,l}$.
+Write its elements in increasing order as
+\[
+i_1<i_2<\cdots<i_M.
+\]
+By construction of the interlaced sets,
+\[
+i_{r+1}-i_r\geq2L,
+\qquad r=1,\dots,M-1.
+\]
+We proceed by induction. Suppose
+$W_{i_1}^*,\dots,W_{i_{r-1}}^*$ are jointly independent. Since
+$i_q\leq i_r-2L<i_r-L$ for every $q<r$, all original variables used to
+construct these preceding copies belong to the past up to time
+$i_r-L$. Hence
+\[
+\sigma(W_{i_1}^*,\dots,W_{i_{r-1}}^*)
+\subseteq
+\sigma\bigl(
+\mathcal F_{i_r-L}^W,
+\Delta_{i_1},\dots,\Delta_{i_{r-1}}
+\bigr).
+\]
+The coupling theorem makes $W_{i_r}^*$ independent of
+$\mathcal F_{i_r-L}^W$. In addition,
+$\Delta_{i_1},\dots,\Delta_{i_{r-1}}$ are independent of the original
+process and of $\Delta_{i_r}$, and hence are independent of the pair
+$(W_{i_r}^*,\mathcal F_{i_r-L}^W)$. Consequently, $W_{i_r}^*$ is
+independent of the sigma-field on the right-hand side and therefore of
+$(W_{i_1}^*,\dots,W_{i_{r-1}}^*)$. This completes the induction.
+
+Thus the coupled clusters are jointly independent within
+$\mathcal J_{e,l}$, retain their respective joint distributions, and
+satisfy the stated coupling bound. The proof for
+$\mathcal J_{o,l}$ is identical.
 \end{proof}
+\end{revision}
 
 
 % Note: in this sample, the section number is hard-coded in. Following
