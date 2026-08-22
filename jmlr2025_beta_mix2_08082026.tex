@@ -502,7 +502,7 @@ where $B$ represents a bounded constant. This property is easily satisfied for s
 \label{ass_1_1_1} The design points \(\{x_{ij}\}_{i=1,j=1}^{n,m_i} \subseteq [0,1]^{d}\) are sampled from a common density function \(v : [0,1]^{d} \rightarrow \mathbb{R}\), such that \(0 < v_{\min} \,\leq\, v(x) \,\leq\, v_{\max}\) for all \(x \in [0,1]^{d}\). 
 \item 
 \label{ass_1_2}For each fixed $i \in \set{1, \dots, n}$, the $\set{x_{ij}}_{j=1}^{m_i}$ are independent. 
-\item \label{ass_1_3}\rev{The spatial noise $\{\delta_i\}_{i=1}^{n}$ is a collection of identically distributed random functions taking values in a Polish function space.}
+\item \label{ass_1_3}\rev{The spatial noise $\{\delta_i\}_{i=1}^{n}$ is a collection of identically distributed random functions.}
 \item \label{ass_1_4}\rev{For every fixed $i \in \set{1,\dots,n}$, the measurement errors $\{e_{ij}\}_{j=1}^{m_i}$ are independent random variables, and $e_{ij} \indep x_{i'j'}$ for all $(i',j') \neq (i,j)$.}
 \item
 \label{ass_c_beta}
@@ -5078,7 +5078,7 @@ Then $\{\tilde s_{ij}\}_{i=1,j=1}^{n,m_{i}}$ are independent, mean-zero Sub-Gaus
 &\leq \frac{2\log(n)}{c_1C_{\beta}}
 \Ept{x^*,s}{\sup_{\substack{\norm{\varLambda}\leq b \\ \|\nabla{G_K}\varLambda\|_1\leq 2V_n}}
 \frac{1}{\sum_{i=1}^n m_i}
-\sum_{i=1}^n\sum_{j=1}^{m_i}\varLambda_{ij}\tilde s_{ij}},
+\sum_{i=1}^n\sum_{j=1}^{m_i}\varLambda_{ij}\tilde s_{ij}}.
 \bea
 
 \rev{The first equality follows by writing
