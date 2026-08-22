@@ -555,10 +555,9 @@ Assumption~\ref{asm:m} is standard in the literature with spatial noise. For ins
 \label{assumptionA}
 There exists a constant $R > 0$ and $\ubar{f} > 0$  
 and $\bar{f} > 0$
-such that for %positive integer $n$ and 
-any function $\phi$ with $\norm{\phi}_{\infty} \,\le\, R$ we have that
+\rev{such that, almost surely, for every $i \in \set{1,\dots,n}$, every $j \in \set{1,\dots,m_i}$, and every function $\phi:[0,1]^d \rightarrow \mathbb{R}$ with $\norm{\phi}_{\infty} \,\le\, R$, we have}
 \beq
-\bar{f}\abs{\phi(x_{ij})} \,\geq\, \abs{F_{y_{ij}|x_{ij}}( f^*(x_{ij}) + \phi(x_{ij})) - F_{y_{ij}|x_{ij}}( f^*(x_{ij})} \,\ge\, \ubar{f} \abs{\phi(x_{ij})},
+\bar{f}\abs{\phi(x_{ij})} \,\geq\, \abs{F_{y_{ij}|x_{ij}}( f^*(x_{ij}) + \phi(x_{ij})) - F_{y_{ij}|x_{ij}}( f^*(x_{ij})\rev{)}} \,\ge\, \ubar{f} \abs{\phi(x_{ij})},
 \beq     
 where $F_{y_{ij}|x_{ij}}$ is the conditional CDF of $y_{ij}$. 
 \end{assumption}
@@ -2305,7 +2304,7 @@ Let $h(x_{ij}) \,\coloneqq\, f(x_{ij}) - f^*(x_{ij})$. By Lemma~\ref{lemma12}, w
 Z_{ij}(f) - Z_{ij}(f^*) \,=\, \int_{0}^{h(x_{ij})} \set{F_{y_{ij}|x_{ij}}(f^*(x_{ij}) + z) - F_{y_{ij}|x_{ij}}(f^*(x_{ij}))}dz.
 \bea
 
-First, suppose $h(x_{ij}) \in [0, R]$. By Assumption~\ref{assumptionA}, for any $z$ with $\abs{z} \,\le\, R$, we have $F_{y_{ij}|x_{ij}}(f^*(x_{ij}) + z) - F_{y_{ij}|x_{ij}}(f^*(x_{ij})) \,\ge\, \ubar{f}\, z$. Therefore,
+First, suppose $h(x_{ij}) \in [0, R]$. By Assumption~\ref{assumptionA}, \rev{applied with the constant function $\phi(\cdot) \,=\, z$}, for any $z$ with $\abs{z} \,\le\, R$, we have $F_{y_{ij}|x_{ij}}(f^*(x_{ij}) + z) - F_{y_{ij}|x_{ij}}(f^*(x_{ij})) \,\ge\, \ubar{f}\, z$. Therefore,
 \bea
 Z_{ij}(f) - Z_{ij}(f^*) \,\geq\, \int_{0}^{h(x_{ij})} \ubar{f}\, z \, dz \,=\, \frac{\ubar{f}\, h(x_{ij})^2}{2}.
 \bea
