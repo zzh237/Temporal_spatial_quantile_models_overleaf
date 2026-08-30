@@ -2996,11 +2996,11 @@ Z_{ij}(f)  = \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,
 \subsubsection{Bound of $A_1$}
 
 \begin{lemma}[Decomposition of $A_1$]\label{lem267}
-   Let $\tilde Z(f)$ and $Z(f)$ be defined in \eqref{def_tilde_zf} and \eqref{def_zf}, respectively. Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let $\ell(f)$ be as in \eqref{def_df}, and let $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},\, j \in [m_i]}$ be independent Rademacher random variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$. Let $A_1$ be the quantity introduced in \eqref{inq_a1a2a3}.  Suppose $\tilde c_0$ is a small constant from Assumption~\ref{ass:tail_multi_d}, and let $c_4 > 0$ be any fixed positive constant. Let $L$ be as defined in \eqref{equation}, and assume $s < d$ as in Assumption~\ref{assump:lip}, and $T_n$ as in Assumption~\ref{ass:tail_multi_d}.
+   Let $\tilde Z(f)$ and $Z(f)$ be defined in \eqref{def_tilde_zf} and \eqref{def_zf}, respectively. Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let $\ell(f)$ be as in \eqref{def_df}, and \rev{let $c_0$ satisfy \eqref{eq_c0_range}.} Let $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},\, j \in [m_i]}$ be independent Rademacher random variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$. Let $A_1$ be the quantity introduced in \eqref{inq_a1a2a3}.  Suppose $\tilde c_0$ is the \rev{positive} constant from Assumption~\ref{ass:tail_multi_d}, and \rev{let $c_4 > 0$ be the constant from Lemma~\ref{lem_a6_core}.} Let $L$ be as defined in \eqref{equation}, and assume $s < d$ as in Assumption~\ref{assump:lip}, and $T_n$ as in Assumption~\ref{ass:tail_multi_d}.
 Define the remainder term as \bea r_{ij}(f) \,=\, \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + u\mid x_{ij}) - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + u |\delta_i, x_{ij})\right\} du,\bea for $u\in \R$. Then for any $t>0$, we have   
 \bea 
-&A_1 \,\coloneqq\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}}\frac{1}{m_i}\sum_{j=1}^{m_i} Z_{ij}(f) - \tilde Z_{ij}(f) - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}} \\
-& \,\leq\, 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}r_{ij}\Big) \cdot \indic{\Omega_\beta}} \\
+&A_1 \,\coloneqq\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}}\frac{1}{m_i}\sum_{j=1}^{m_i} \rev{\left\{Z_{ij}(f) - \tilde Z_{ij}(f)\right\}} - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}} \\
+& \,\leq\, 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\rev{r_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
 &\quad +  \frac{c_4}{L}\frac{s\log n\log T_n}{n}.
 \bea
 \end{lemma}
@@ -3058,7 +3058,7 @@ r_{ij}(f) \,\coloneqq\, \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}(
 Then, we have 
 \beq 
 \label{blk-a1-a4}
-A_1 \coloneqq & \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}}\frac{1}{m_i}\sum_{j=1}^{m_i}Z_{ij}(f) - \tilde Z_{ij}(f)-\frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}
+A_1 \coloneqq & \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}}\frac{1}{m_i}\sum_{j=1}^{m_i}\rev{\left\{Z_{ij}(f) - \tilde Z_{ij}(f)\right\}}-\frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}
 \\ \le & \underbrace{\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}r_{ij}(f) - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}}_{A_4}.
 \beq
 
@@ -3087,13 +3087,13 @@ Then by Lemma~\ref{lem_a5} and \ref{lem_a6_core}, we get the bound for terms $A_
 
 \begin{corollary}[Bound of $A_1$]
 \label{col_A_1}
- Let  $\tilde Z(f)$,  $Z(f)$ been defined in \eqref{def_tilde_zf} and \eqref{def_zf}. Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let $\ell(f)$ be defined in \eqref{def_df}, let  $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be independent Rademacher variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$, let $A_1$ be the quantity introduced in \eqref{inq_a1a2a3}, then we have
+ Let  $\tilde Z(f)$,  $Z(f)$ been defined in \eqref{def_tilde_zf} and \eqref{def_zf}. Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let $\ell(f)$ be defined in \eqref{def_df}, and \rev{let $c_0$ satisfy \eqref{eq_c0_range}.} Let  $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be independent Rademacher variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$. Let $A_1$ be the quantity introduced in \eqref{inq_a1a2a3}. Then we have
     \bea 
-    A_1 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i}Z_{ij}(f) - \tilde Z_{ij}(f) - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}
-    \\ &\,\leq\, 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}r_{ij}\Big) \cdot \indic{\Omega_\beta}} \\
+    A_1 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i}\rev{\left\{Z_{ij}(f) - \tilde Z_{ij}(f)\right\}} - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}
+    \\ &\,\leq\, 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\rev{r_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
     &\quad +  \frac{c_4}{L}\frac{s\log n\log T_n}{n} \\
     &\,\leq\, \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n},
-    \bea with a small constant $c_4$ that depends on $\tilde c_0$ in Assumption~\ref{ass:tail_multi_d}, $C_{\beta}$ in Assumption~\ref{ass_c_beta}, and $c_1$, $c_2$ in \eqref{beta_constants}, and $c_5$ is a constant that depends on constants $C$ and $c$ in Assumption~\ref{asm:m}, and $R_{\mathcal{J}_{e,l}}$ is defined in \eqref{rademacher_def_blocks}.
+    \bea \rev{Here $c_4$ is a positive constant that depends on $\tilde c_0$ in Assumption~\ref{ass:tail_multi_d}, $C_{\beta}$ in Assumption~\ref{ass_c_beta}, and $c_1$, $c_2$ in \eqref{beta_constants}. Moreover, $c_5 \,=\, 2c_2C/c$ depends on $c_2$ and the constants $C$, $c$ in Assumption~\ref{asm:m}, and $R_{\mathcal{J}_{e,l}}$ is defined in \eqref{rademacher_def_blocks}.}
 \end{corollary}
 \begin{proof}
 \rev{We keep $\ell(f)$ fixed as in \eqref{def_df}. By \eqref{eq_c0_range}, it satisfies
@@ -3115,7 +3115,7 @@ $\ell(f) \,\geq\, 4\tilde c_0c_2\Delta^2(f-f^*)$; this is the absorption inequal
 
 We have
 \bea
-& \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i}Z_{ij}(f) - \tilde Z_{ij}(f) -\frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}} \\
+& \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i}\rev{\left\{Z_{ij}(f) - \tilde Z_{ij}(f)\right\}} -\frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}} \\
 \labelrel\le{a1_step_sym}& 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}r_{ij}(f)\Big) \cdot \indic{\Omega_\beta}} \\
 &\quad +  \frac{c_4}{L}\frac{s\log n\log T_n}{n} \\
 \labelrel\le{a1_step_contraction}& 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} f(x_{ij}^*)\Big) \cdot \indic{\Omega_\beta}} \\
