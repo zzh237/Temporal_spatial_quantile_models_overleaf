@@ -3343,16 +3343,16 @@ By Assumption~\ref{assump:lip}, $\Pi$ is Lipschitz, leading to the following pro
 
 \begin{align*}
     &\mathbb{P}\left(\max_{x_S \in [0,1]^s} \max_{u \in [-T_n,T_n]} |\Pi(x_S,u)| - \frac{sT_n}{M} \,\ge\, t\right) \\ &\,\leq\, \mathbb{P}\left ( \max_{k1= 1, \dots, M} \max_{k2= 1, \dots, M} \cdots \max_{ks= 1, \dots, M} \max_{l= 1, \dots, M} |\Pi((c_{k1}, c_{k2}, \ldots, c_{ks}), d_l)| \,\ge\, t \right ) \\
-    &\,\le\, M^s e^{-2\left|\mathcal{J}_{e,l} \right| t^2} \,\leq\, M^s e^{-\frac{2 c_1C_{\beta} n t^2}{\log n}},
+    &\,\le\, \rev{2M^{s+1}} e^{-2\left|\mathcal{J}_{e,l} \right| t^2} \,\leq\, \rev{2M^{s+1}} e^{-\frac{2 c_1C_{\beta} n t^2}{\log n}},
 \end{align*}
-where the second last inequality holds since $\abs{\Pi(\cdot)} \,\leq\, 1$ uniformly, and then using the Hoeffding's inequality and union bound for the $\Pi(\cdot)$ defined in \eqref{pi_def}. 
+\rev{There are $M^s$ grid points for $x_S$ and $M$ grid points for $u$, hence $M^{s+1}$ grid points in total. The second inequality then follows from the two-sided Hoeffding inequality and a union bound, since $\abs{\Pi(\cdot)} \,\leq\, 1$ uniformly.}
 Take $M = \left(sT_n \cdot \sqrt{\frac{n}{\log n}}\right)$, therefore:
 
 \beq 
 \label{in1116}
-    &\max_{x_S \in [0,1]^s} \max_{u \in [-T_n, T_n]} |\Pi(\rev{x_S},u)| \,\leq\, c_3\sqrt{\frac{s\log n \log T_n}{n}} \,=\, O_p \left(\sqrt{\frac{s\log n\log T_n}{n}}\right).
+    &\max_{x_S \in [0,1]^s} \max_{u \in [-T_n, T_n]} |\Pi(\rev{x_S},u)| \,\leq\, c_3\sqrt{\frac{\rev{(s+1)}\log n \log T_n}{n}} \,\leq\, \rev{\sqrt{2}}c_3\sqrt{\frac{s\log n \log T_n}{n}} \,=\, O_p \left(\sqrt{\frac{s\log n\log T_n}{n}}\right).
 \beq 
-where the $c_3$ is a constant that depends on $c_1$ and $C_{\beta}$. 
+\rev{Here we use $s\geq 1$, so $s+1\leq 2s$; thus the additional threshold coordinate changes only the constant in the final order.} The $c_3$ is a constant that depends on $c_1$ and $C_{\beta}$.
 
 \paragraph{Step 3}:
 Returning to \eqref{blk_856}, using Assumption $|\mathcal{J}_{e,l}| \,\leq\, c_2 n/L$ in \eqref{beta_constants}, we have:
@@ -6989,7 +6989,7 @@ The \eqref{leq925} holds by Assumption~\ref{ass:tail_multi_d}.
 
 Next, for $u \in [-T_n, T_n]$, we can follow the proof for \eqref{in1116} to get, 
 \begin{align*}
-    &\max_{x_S \in [0,1]^s} \max_{u \in [-T_n, T_n]} |\Pi(\rev{x_S},u)| \,\leq\, c_3\sqrt{\frac{s\log n \log T_n}{n}} \,=\, O_p \left(\sqrt{\frac{s\log n\log T_n}{n}}\right).
+    &\max_{x_S \in [0,1]^s} \max_{u \in [-T_n, T_n]} |\Pi(\rev{x_S},u)| \,\leq\, c_3\sqrt{\frac{\rev{(s+1)}\log n \log T_n}{n}} \,\leq\, \rev{\sqrt{2}}c_3\sqrt{\frac{s\log n \log T_n}{n}} \,=\, O_p \left(\sqrt{\frac{s\log n\log T_n}{n}}\right).
 \end{align*}
 where the $c_3$ is a constant that depends on $c_1$ and $C_{\beta}$. 
 
