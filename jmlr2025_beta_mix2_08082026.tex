@@ -647,7 +647,7 @@ must be Lipschitz continuous with respect to both $u$ and $x$, characterized by 
 
 Another assumption we make is about the tail probability our spatial noise function $\delta_i$ and our measurement error $e_{ij}$, stated as below. 
 \begin{assumption}[Tail Probability]
-\label{ass:tail_multi_d} For all $e_{ij}$, $x_{ij}$, and $\delta_i: [0,1]^d \rightarrow \R$, that satisfy all the existing Assumptions ~\ref{Assumption 1.}, there exists a constant $T_n$ that depends on $n$, and a small constant $\tilde c_0$ such that the below tail probabilities are bounded with high probability. 
+\label{ass:tail_multi_d} For all $e_{ij}$, $x_{ij}$, and $\delta_i: [0,1]^d \rightarrow \R$, that satisfy all the existing Assumptions ~\ref{Assumption 1.}, there exists a constant $T_n$ that depends on $n$, and a \rev{positive} constant $\tilde c_0$ such that the below tail probabilities are bounded with high probability.
     \beq 
     \label{ass923}
    \max_{x\in [0,1]^d} \max_{i= 1,\dots, n}  \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\geq\, T_n \mid \delta_i, x_{i1} = x) + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\geq\, T_n\mid x_{i1} = x)\right] \,\leq\, \tilde c_0 \text{ and}
@@ -658,6 +658,7 @@ Another assumption we make is about the tail probability our spatial noise funct
  \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\leq\, -T_n \mid \delta_i, x_{i1} = x) + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\leq\, -T_n\mid x_{i1} = x)\right] \,\leq\, \tilde c_0
     \beq
 \end{assumption}
+\rev{The constant $\tilde c_0$ is required to satisfy the quantitative curvature-margin condition in \eqref{eq_c0_range}.}
 
 
 \rev{Theorem~\ref{Theorem_1} relies on Assumptions~\ref{assump:lip} and \ref{ass:tail_multi_d}. We now provide an example satisfying these assumptions.}
@@ -2455,7 +2456,7 @@ Let $\hat f, f^* \in \mathcal{F}$ and let $\Omega_\beta$ be as defined in \eqref
 Let $C_0$ be the constant from Corollary~\ref{extension of lemma13} (defined in \eqref{def_C0}), satisfying $\bar Z(f) \,\ge\, C_0 \Delta^2(f - f^*)$. Let $c_0$ be any constant satisfying
 \beq
 \label{eq_c0_range}
-0<c_0<C_0.
+\rev{0<c_0<C_0,\qquad 4\tilde c_0c_2 \,\leq\, C_0-c_0.}
 \beq
 Then for any $t>0$,
 \bea
@@ -3095,11 +3096,8 @@ Then by Lemma~\ref{lem_a5} and \ref{lem_a6_core}, we get the bound for terms $A_
     \bea with a small constant $c_4$ that depends on $\tilde c_0$ in Assumption~\ref{ass:tail_multi_d}, $C_{\beta}$ in Assumption~\ref{ass_c_beta}, and $c_1$, $c_2$ in \eqref{beta_constants}, and $c_5$ is a constant that depends on constants $C$ and $c$ in Assumption~\ref{asm:m}, and $R_{\mathcal{J}_{e,l}}$ is defined in \eqref{rademacher_def_blocks}.
 \end{corollary}
 \begin{proof}
-Let 
-    \bea 
-    \ell(f) \,=\, \frac{4\tilde c_0C}{c}  \Delta^2(f-f^*),
-    \bea    by Lemma~\ref{lem267} \textcolor{red}{incomplete sentence}   
-    we get the bound of $A_1$.
+\rev{We keep $\ell(f)$ fixed as in \eqref{def_df}. By \eqref{eq_c0_range}, it satisfies
+$\ell(f) \,\geq\, 4\tilde c_0c_2\Delta^2(f-f^*)$; this is the absorption inequality used in Lemma~\ref{lem267}.}
 
 % We apply the Lipschitz condition of $\hat Z_{ij}(f)$, $Z_{ij}(f)$ and $r_{ij}(f)$ in Lemma~\ref{lem:lip}, and then apply the 
 % Ledoux-Talagrand contraction principle in Theorem~\ref{lem:Theorem 7}, and apply the Lemma~\ref{side_lemma_for_block}. 
@@ -3212,14 +3210,14 @@ Taking expectation of $\{ ( \delta_{i1}^*, \dots, \delta_{im_i}^*) \}_{i \in \ma
 \label{lem_a6_core}
 In the multi-dimensional setting where $x_{ij} \in [0,1]^d$, let $\Omega_\beta$ be defined in \eqref{event_beta}. Let $A_6$ be defined as 
 \bea 
-A_6 &\coloneqq \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big( \sup_{\substack{f \in \mathcal{F} \\ c_0\Delta^2(f - f^*) \le t^2}} \frac{1}{n} \sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i} \sum_{j=1}^{m_i} \left( \Ept{x, e \mid \delta_i}{ r_{ij}(f)} - \frac{\ell(f)}{2L} \right)\Big) \cdot \indic{\Omega_\beta}},
+A_6 &\coloneqq \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big( \sup_{\substack{f \in \mathcal{F} \\ c_0\Delta^2(f - f^*) \le t^2}} \rev{\left\{\frac{1}{n} \sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i} \sum_{j=1}^{m_i} \Ept{x, e \mid \delta_i}{ r_{ij}(f)} - \frac{\ell(f)}{2L}\right\}}\Big) \cdot \indic{\Omega_\beta}},
 \bea
- $\ell(f)$ be defined in \eqref{def_df}, and $r_{ij}(f)$ be defined in \eqref{def_rij} as 
+\rev{Let $\ell(f)$ be defined in \eqref{def_df}, and let $r_{ij}(f)$ be defined in \eqref{def_rij} as}
 \begin{align*}
 r_{ij}(f) &\,=\, \int_{0}^{f(x_{ij}) - f^*(x_{ij})} \left\{ \mathbb{P}( y_{ij} \,\le\, f^*(x_{ij}) + t \mid x_{ij}) - \mathbb{P}( y_{ij} \,\le\, f^*(x_{ij}) + t \mid \delta_i, x_{ij}) \right\} dt.
 \end{align*}
 
-Under Assumptions~\ref{assump:lip} and \ref{ass:tail_multi_d}, and if $\ell(f) \,=\, 4\tilde c_0 c_2 \Delta^2(f - f^*)$, then the following bound holds:
+\rev{Under Assumptions~\ref{assump:lip} and \ref{ass:tail_multi_d}, with $c_0$ satisfying \eqref{eq_c0_range}, the following bound holds:}
 \bea
 A_6 \,\le\, \frac{c_2}{L} \cdot \frac{c_3^2}{4\tilde c_0} \cdot \frac{s \log n \log T_n}{n} \,=\, \frac{c_4}{L} \cdot \frac{s \log n \log T_n}{n},
 \bea
@@ -3231,10 +3229,13 @@ We first show the following bound holds in a multidimensional setting where $x_{
 &\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}\Ept{x, e \mid \delta_i}{r_{ij}(f)}\,\le\, \frac{2\tilde c_0c_2}{L}  \Delta^2(f-f^*)+ \frac{c_2}{L}\frac{c_3^2}{4\tilde c_0}\frac{s\log n\log T_n}{n}.
 \bea 
 
-We then obtain the result by taking expectations and setting 
+ \rev{By \eqref{def_df} and \eqref{eq_c0_range}, the fixed curvature penalty satisfies}
 \bea 
-\ell(f) \,=\, 4\tilde c_0c_2  \Delta^2(f-f^*).
+\rev{\frac{\ell(f)}{2L}
+\,=\, \frac{C_0-c_0}{2L}\Delta^2(f-f^*)
+\,\geq\, \frac{2\tilde c_0c_2}{L}\Delta^2(f-f^*).}
 \bea  
+\rev{Thus, the preceding bound implies the result after subtracting $\ell(f)/(2L)$ and taking the supremum and expectations.}
 
 Given that
 \beq 
@@ -3377,11 +3378,10 @@ Thus, we have
 \bea 
 \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}\Ept{x, e \mid \delta_i}{r_{ij}(f)} \,\leq\, \frac{2\tilde c_0c_2}{L}  \Delta^2(f-f^*)+ \frac{c_2}{L}\frac{c_3^2}{4\tilde c_0}\frac{s\log n\log T_n}{n}. 
 \bea 
-Adding expectation and supremum on both sides, we get  
+\rev{Subtracting the fixed penalty using \eqref{eq_c0_range}, and then taking the supremum and expectations, gives}
 \beq
 \label{b_in_1144}
-&\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}\Ept{x, e \mid \delta_i}{r_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \nonumber\\
-&\quad \,\leq\, \frac{2\tilde c_0c_2}{L}  \Delta^2(f-f^*)+ \frac{c_2}{L}\frac{c_3^2}{4\tilde c_0}\frac{s\log n\log T_n}{n}.
+\rev{A_6 \,\leq\, \frac{c_2}{L}\frac{c_3^2}{4\tilde c_0}\frac{s\log n\log T_n}{n}.}
 \beq 
 \end{proof}
 
@@ -6920,7 +6920,7 @@ The \eqref{in300} follows because $\set{-s_{ij}}_{i \in \mathcal{J}_{e,l},j\in[m
 Taking expectation of $\{ ( \delta_{i1}, \dots, \delta_{im_i}) \}_{i \in \mathcal{J}_{e,l}}$ \rev{on both sides}, we obtain the result.     
 
 \paragraph{Step 3}:
-Next, we will show that under the Assumption~\ref{assump:lip}, and if $\ell(f) \,=\, 4\tilde c_0  \Delta^2(f-f^*)$, we have
+\rev{Next, under Assumption~\ref{assump:lip}, with $\ell(f)$ fixed as in \eqref{def_tilde_l} and $c_0$ satisfying \eqref{eq_c0_range}, we have}
 \beq 
 \label{eq_c_482}
 E_6 &\coloneqq \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}\Ept{x, e \mid \delta_i}{u_{ij}(f)}-\frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}.
@@ -6937,9 +6937,11 @@ We first show the following bound holds in a multidimensional setting where $x_{
 &\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}\ept{u_{ij}(f)|\delta_i}\,\le\, \frac{2\tilde c_0c_2}{L}  \Delta^2(f-f^*)+ \frac{c_2}{L}\frac{c_3^2}{4\tilde c_0}\frac{s\log n\log T_n}{n}.
 \bea 
 
-We then obtain the result by taking expectations and setting 
+\rev{As in the convex case, \eqref{def_tilde_l} and \eqref{eq_c0_range} give}
 \bea 
-\ell(f) \,=\, 4\tilde c_0c_2  \Delta^2(f-f^*).
+\rev{\frac{\ell(f)}{2L}
+\,=\, \frac{C_0-c_0}{2L}\Delta^2(f-f^*)
+\,\geq\, \frac{2\tilde c_0c_2}{L}\Delta^2(f-f^*).}
 \bea  
 
 Given that
@@ -7004,13 +7006,7 @@ Returning to \eqref{eq_c_482}, we obtain:
 &\,\leq\, \frac{2\tilde c_0c_2}{L}  \Delta^2(f-f^*)+ \frac{c_2}{L}\frac{c_3^2}{4\tilde c_0}\frac{s\log n\log T_n}{n}.
 \end{align*}
 
-Thus, similar to \eqref{b_in_1144}, we get   
-\bea 
-&\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast) \\ c_0\Delta^2(f - f^*)\le \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{u_{ij}(f)|\delta_i}\Big) \cdot \indic{\Omega_\beta}} \\
-&\leq \frac{2\tilde c_0c_2}{L}  \Delta^2(f-f^*)+ \frac{c_2}{L}\frac{c_3^2}{4\tilde c_0}\frac{s\log n\log T_n}{n}.
-\bea 
-
-By letting $\ell(f) \,=\, 4\tilde c_0  \Delta^2(f-f^*)$, we have
+\rev{Thus, as in \eqref{b_in_1144}, subtracting the fixed penalty using \eqref{eq_c0_range}, and then taking the supremum and expectations, gives}
 \bea
 &E_6 \coloneqq \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}\Ept{x, e \mid \delta_i}{u_{ij}(f)}-\frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}} \\
 &\,\leq\, \frac{c_2}{L}\frac{c_3^2}{4\tilde c_0}\frac{s\log n\log T_n}{n}.
