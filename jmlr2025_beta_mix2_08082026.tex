@@ -581,25 +581,23 @@ x'_k & \text{if } j = k.
 \end{cases}
 \bea
 \rev{That is, $x^{\backslash k}$ is obtained by replacing the $k$th coordinate of $x$ with the $k$th coordinate of $x'$.}
-Let $u \in \R$. For $l=1, \dots, L$, define functions $\Pi_{e,l}$ on $x$ and $u$, 
-which satisfies $\Pi_{e,l}(x,u) \,=\, \Pi_{e,l}(x_S, u)$ \rev{for all $x$}, where $S$ is a subset of $\set{1, \dots, d}$ such that $\abs{S} = s$. Thus, we have 
+\rev{Fix a coordinate set $S \subseteq \set{1,\dots,d}$ with $\abs{S}=s$, common to all even and odd blocks, and write $x_S=(x_k)_{k\in S}\in[0,1]^s$. Let $u \in \R$. For $l=1, \dots, L$, define functions $\Pi_{e,l}$ on $x$ and $u$ by}
 \beq
 \label{pi_def_assump}
-\Pi_{e,l}(x,u) &\,=\, \Pi_{e,l}(x_S,u) \,=\,  \frac{1}{|\mathcal{J}_{e,l}|} \sum_{i\in \mathcal{J}_{e,l}} \left[ \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u\mid x_{i1} = x_S) - \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u \mid \delta_i,x_{i1}=x_S) \right] \\
-&\,=\, \frac{1}{|\mathcal{J}_{e,l}|} \sum_{i\in \mathcal{J}_{e,l}} \left[ \mathbb{P}(\delta_i(x_{i1}) + e_{i1} \,\leq\, u\mid x_{i1}=x_S) - \mathbb{P}(\delta_i(x_{i1}) + e_{i1} \,\leq\, u \mid \delta_i,x_{i1}=x_S) \right].
+\Pi_{e,l}(x,u) &\,=\,  \frac{1}{|\mathcal{J}_{e,l}|} \sum_{i\in \mathcal{J}_{e,l}} \left[ \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u\mid x_{i1} = \rev{x}) - \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u \mid \delta_i,x_{i1}=\rev{x}) \right] \\
+&\,=\, \frac{1}{|\mathcal{J}_{e,l}|} \sum_{i\in \mathcal{J}_{e,l}} \left[ \mathbb{P}(\delta_i(x_{i1}) + e_{i1} \,\leq\, u\mid x_{i1}=\rev{x}) - \mathbb{P}(\delta_i(x_{i1}) + e_{i1} \,\leq\, u \mid \delta_i,x_{i1}=\rev{x}) \right].
 % \\
 % \Pi_{o,l}(x,u) &= \Pi_{o,l}(x_S,u) =  \frac{1}{|\mathcal{J}_{o,l}|} \sum_{i\in \mathcal{J}_{o,l}} \left[ \mathbb{P}(y_{i1} \leq f^*(x_{i1}) + u\mid x_{i1} = x_S) - \mathbb{P}(y_{i1} \leq f^*(x_{i1}) + u \mid \delta_i,x_{i1}=x_S) \right] \\
 % &= \frac{1}{|\mathcal{J}_{o,l}|} \sum_{i\in \mathcal{J}_{o,l}} \left[ \mathbb{P}(\delta_i(x_{i1}) + e_{i1} \leq u\mid x_{i1}=x_S) - \mathbb{P}(\delta_i(x_{i1}) + e_{i1} \leq u \mid \delta_i,x_{i1}=x_S) \right].
 \beq
 
-
-We assume that $\Pi_{e,l}$ satisfies the Lipschitz condition with a positive constant $\alpha$ almost surely for each coordinate with high probability in the multidimensional space. For any $(x,u)$ and $(x', u')$ in its domain, where $x, x' \in [0,1]^d$ and $u, u' \in \mathbb{R}$, we have 
+\rev{Assume that every $\Pi_{e,l}(x,u)$ depends on $x$ only through $x_S$, and use the same notation $\Pi_{e,l}(x_S,u)$ for the resulting function on $[0,1]^s\times\mathbb{R}$. Define $\Pi_{o,l}$ in the same way using $\mathcal{J}_{o,l}$ and the same set $S$. Assume further that, with high probability, the following Lipschitz bounds hold with one constant $\alpha>0$, uniformly over $l$ and for both the even and odd block functions.} For any $(x,u)$ and $(x', u')$ in its domain, where $x, x' \in [0,1]^d$ and $u, u' \in \mathbb{R}$, we have
 \beq
 \label{lip_for_Pi}
 {}&|\Pi_{e,l}(x,u)- \Pi_{e,l}(x, u')| \,\leq\, \alpha|u-u'| \\
 &|\Pi_{e,l}(x,u) - \Pi_{e,l}(x^{\backslash \rev{k}},u)| \,\leq\, \alpha|x - x^{\backslash k}| \quad \forall k = 1, 2, \ldots, d.
 \beq 
-We also define $\Pi_{o,l}$ the same way in \eqref{pi_def_assump} and have condition~\eqref{lip_for_Pi} holds for $\Pi_{o,l}$.
+\rev{The same bounds hold with $\Pi_{e,l}$ replaced by $\Pi_{o,l}$.}
 \end{assumption}
 
 
@@ -3245,11 +3243,12 @@ Given that
 & \left. \left. - \mathbb{P}\left( y_{ij} \,\leq\, f^*(x_{ij}) + u \mid \delta_i, x_{ij} =x\right) \right) du \right) dx. 
 \beq 
 
-Thus, we modify the function $\Pi(x,u)$ in \eqref{pi_def_assump} as follows:
+\rev{For this fixed even block, write $\Pi(x,u)\coloneqq\Pi_{e,l}(x,u)$, where $\Pi_{e,l}$ is defined in \eqref{pi_def_assump}; equivalently,}
 \beq
 \label{pi_def}
 \Pi(x,u) &\,\coloneqq\, \frac{1}{|\mathcal{J}_{e,l}|} \sum_{i\in \mathcal{J}_{e,l}} \left[ \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u\mid x_{i1} = x) - \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u \mid \delta_i,x_{i1}=x) \right].
 \beq
+\rev{By Assumption~\ref{assump:lip}, $\Pi(x,u)$ depends on $x$ only through $x_S$.}
 
 We then have that 
 \beq 
@@ -3299,9 +3298,10 @@ Since
 \bea 
 
 \paragraph{Step 2:}
-Next, for $u \in [-T_n, T_n]$, we define:
+\rev{For $u \in [-T_n,T_n]$, the low-dimensional condition in Assumption~\ref{assump:lip} gives}
 \bea
-\max_{x_S\in[0,1]^s} \max_{u \in [-T_n,T_n]} \set{\underbrace{\left[ \mathbb{P}(y_{i1} \leq  f^*(x_{i1}) + u\mid x_{i1} = x_S)   - \mathbb{P}(y_{i1} \leq  f^*(x_{i1}) + u|\delta_i,x_{i1} = x_S) \right]}_{\,\coloneqq\, \Pi(x_S,u)}}.
+\rev{\max_{x\in[0,1]^d}\max_{u\in[-T_n,T_n]}|\Pi(x,u)|
+\,=\,\max_{x_S\in[0,1]^s}\max_{u\in[-T_n,T_n]}|\Pi(x_S,u)|.}
 \bea 
 
 
@@ -3350,7 +3350,7 @@ Take $M = \left(sT_n \cdot \sqrt{\frac{n}{\log n}}\right)$, therefore:
 
 \beq 
 \label{in1116}
-    &\max_{x_S \in [0,1]^s} \max_{u \in [-T_n, T_n]} |\Pi(x,u)| \,\leq\, c_3\sqrt{\frac{s\log n \log T_n}{n}} \,=\, O_p \left(\sqrt{\frac{s\log n\log T_n}{n}}\right).
+    &\max_{x_S \in [0,1]^s} \max_{u \in [-T_n, T_n]} |\Pi(\rev{x_S},u)| \,\leq\, c_3\sqrt{\frac{s\log n \log T_n}{n}} \,=\, O_p \left(\sqrt{\frac{s\log n\log T_n}{n}}\right).
 \beq 
 where the $c_3$ is a constant that depends on $c_1$ and $C_{\beta}$. 
 
@@ -6949,11 +6949,12 @@ Given that
 & \left. \left. - \mathbb{P}\left( y_{ij} \,\leq\, f^*(x_{ij}) + u \mid  x_{ij} =x\right) \right) du \right) dx. 
 \beq 
 
-Thus, we modify the function $\Pi(x,u)$ in \eqref{pi_def_assump} as follows:
+\rev{For this fixed even block, again write $\Pi(x,u)\coloneqq\Pi_{e,l}(x,u)$, where $\Pi_{e,l}$ is defined in \eqref{pi_def_assump}; equivalently,}
 \beq
 \label{pi_def}
 \Pi(x,u) &\,\coloneqq\, \frac{1}{|\mathcal{J}_{e,l}|} \sum_{i\in \mathcal{J}_{e,l}} \left[ \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u\mid x_{i1} = x) - \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u \mid \delta_i,x_{i1}=x) \right].
 \beq
+\rev{By Assumption~\ref{assump:lip}, $\Pi(x,u)$ depends on $x$ only through $x_S$.}
 
 Similarly, as~\eqref{in1031}, we then have that 
 \begin{align*}
@@ -6988,7 +6989,7 @@ The \eqref{leq925} holds by Assumption~\ref{ass:tail_multi_d}.
 
 Next, for $u \in [-T_n, T_n]$, we can follow the proof for \eqref{in1116} to get, 
 \begin{align*}
-    &\max_{x_S \in [0,1]^s} \max_{u \in [-T_n, T_n]} |\Pi(x,u)| \,\leq\, c_3\sqrt{\frac{s\log n \log T_n}{n}} \,=\, O_p \left(\sqrt{\frac{s\log n\log T_n}{n}}\right).
+    &\max_{x_S \in [0,1]^s} \max_{u \in [-T_n, T_n]} |\Pi(\rev{x_S},u)| \,\leq\, c_3\sqrt{\frac{s\log n \log T_n}{n}} \,=\, O_p \left(\sqrt{\frac{s\log n\log T_n}{n}}\right).
 \end{align*}
 where the $c_3$ is a constant that depends on $c_1$ and $C_{\beta}$. 
 
