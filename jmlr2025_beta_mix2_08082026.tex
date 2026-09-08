@@ -661,52 +661,37 @@ Another assumption we make is about the tail probability our spatial noise funct
 \rev{The constant $\tilde c_0$ is required to satisfy the quantitative curvature-margin condition in \eqref{eq_c0_range}.}
 
 
-\rev{Theorem~\ref{Theorem_1} relies on Assumptions~\ref{assump:lip} and \ref{ass:tail_multi_d}. We now provide an example satisfying these assumptions.}
+\rev{Theorem~\ref{Theorem_1} relies on Assumptions~\ref{assump:lip} and \ref{ass:tail_multi_d}. We now provide an example satisfying Assumption~\ref{ass:tail_multi_d}.}
 
 \begin{example}[Example for Assumption~\ref{ass:tail_multi_d}]\label{exp_tail}
-Below, we provide highlights of conditions under which Assumptions \eqref{ass923} and \eqref{ass927} from Assumption~\ref{ass:tail_multi_d} are satisfied. The details of the conditions and derivations are in Appendix Example~\ref{ass_5_exp}. 
-Assume the event 
-\bea 
-\Omega_1 = \set{\max_{i=1,\dots, n} \norm{\delta_i}_{\infty} \leq  R_n}
-\bea 
-occurs with high probability. Furthermore, define $e_{i1} = g(x_{i1})V_{i1}$ where $\set{V_{i1}}$ is independent from $\set{x_{i1}}$, and consider the event 
-\bea 
-\Omega_2 = \set{\max_{i =1,\dots,n} |g(x_{i1})| \leq  s_n}
-\bea 
-also occurring with high probability. We then introduce $T_n$ as
-\bea
-T_n = \max_{i =1,\dots,n}\{2R_n, s_n\phi_n\},
-\bea 
-with $\phi_n$ being a sequence tending to infinity. \rev{Suppose that}
-\beq
-\label{exp2_cond}
-\mathbb{P}(\Omega_1^c) \to 0, \quad \mathbb{P}(\Omega_2^c) \to 0, \quad  \max_{i =1,\dots, n} \mathbb{P} (\abs{V_{i1}} \,\geq\, \phi_n) \to 0, \quad \text{and } T_n \,\geq\,  \max \set{2R_{n}, \phi_ns_n}.
-\beq 
-\rev{hold. Then, on the multidimensional domain $[0,1]^d$,}
-\bea
-&\max_{x\in [0,1]^d} \max_{i= 1,\dots, n}  \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\geq\, T_n \mid \delta_i, x_{i1} = x)\right. \\ 
-&\left. \quad + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\geq\, T_n\mid x_{i1} = x)\right]
-\\&\,\leq\, \tilde c_0,
-\bea
-and 
-\bea
-&\max_{x\in [0,1]^d} \max_{i= 1,\dots, n}  \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\leq\, -T_n \mid \delta_i, x_{i1} = x)\right. \\ 
-&\left. \quad + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\leq\, -T_n\mid x_{i1} = x)\right]
-\\
-&\,\leq\, \tilde c_0.
-\bea for some positive constant $\tilde c_0$. 
-
-We then provide a concrete example of a class of functions that satisfy condition~\eqref{exp2_cond}. 
-For $i = 1, \dots, n$, we let \(\delta_i(x) \,=\, 0.5\delta_{i-1}(x) +  \sum_{t=1}^{50} t^{-1}b_{i,t}h_t(x)\), where
+\begin{revision}
+Suppose that Assumption~\ref{Assumption 1.} holds and that there exist deterministic sequences $R_n>0$ and $\phi_n>0$ such that
 \[
-h_t(x) \,=\, \prod_{j=1}^d\left(\frac{1}{\sqrt{2}\pi} \sin(t\pi x^{(j)})\right),
+\mathbb{P}\left(\max_{i=1,\dots,n}\|\delta_i\|_{\infty}>R_n\right)\to0,
+\qquad
+\max_{i=1,\dots,n}\mathbb{P}\left(|e_{i1}|\geq\phi_n\right)\to0.
 \]
-are basis functions and \(\{b_{i,t}\}_{t=1,i=1}^{50,n}\) are considered to be i.i.d. subGaussian.
-The $\delta_i$ is a linear combination of the sequence of functions in $L^2$ space, with coefficients are subGaussian or let $\delta_i$ to be a bounded function. Then by the general Hoeffiding inequalities for bounded functions, we can find many sequences of $\log(R_n) \,=\, o(n)$ to have the $\mathbb{P}(\Omega_1^c) \to 0$ as $n \rightarrow \infty$.  
-Furthermore, suppose we consider the $V_{i1}$ be $t$ distributed or Cauchy distributed, at the same time, there are many sequences of $\log(\phi_n) \,=\, o(n) $ that satisfy the third condition in \eqref{exp2_cond} for $V_{i1}$. And we can find 
-$g(x_{i1})$ with a sequence of $s_n$, which does not go to infinity too fast, for example, let $\log(s_n) \,=\, o(n)$. Then we have the first three conditions in \eqref{exp2_cond} satisfied. It is not difficult to find such $T_n \,\geq\, \max\set{2R_n, \phi_n s_n}$ such that $\log(T_n) \,=\, o(n)$ to satisfy the fourth condition. \rev{Then condition~\eqref{exp2_cond} is satisfied.}
-
-% So in summary, \eqref{ass923} and \eqref{ass927} of Assumption~\ref{ass:tail_multi_d} hold if the above conditions hold for the multidimensional domain $[0,1]^d$.
+Set $T_n=R_n+\phi_n$ and define
+\[
+\Omega_1=\left\{\max_{i=1,\dots,n}\|\delta_i\|_{\infty}\leq R_n\right\}.
+\]
+On $\Omega_1$, the mutual independence in Assumption~\ref{Assumption 1.} implies
+\begin{align*}
+&\max_{x\in[0,1]^d}\max_{i=1,\dots,n}
+\bigg[
+\mathbb{P}\left(\delta_i(x_{i1})+e_{i1}\geq T_n
+\mid\delta_i,x_{i1}=x\right)\\
+&\qquad\qquad\qquad\qquad
++\mathbb{P}\left(\delta_i(x_{i1})+e_{i1}\geq T_n
+\mid x_{i1}=x\right)
+\bigg]\\
+&\quad\leq
+\mathbb{P}(\Omega_1^c)
++2\max_{i=1,\dots,n}\mathbb{P}\left(|e_{i1}|\geq\phi_n\right)
+=o(1).
+\end{align*}
+The same bound holds for the lower-tail probabilities in \eqref{ass927}. Consequently, for the fixed positive constant $\tilde c_0$ satisfying \eqref{eq_c0_range}, both \eqref{ass923} and \eqref{ass927} hold with high probability for all sufficiently large $n$. If $\log(R_n+\phi_n)=o(n)$, then $\log(T_n)=o(n)$.
+\end{revision}
 \end{example}
 
 \subsection{Results for General Methods}
@@ -3614,66 +3599,6 @@ Thus, we have
 % \bea 
 % and we let $p = 2\tilde c_0.$
 % \end{proof}
-
-Below, we provide examples under which Assumptions \eqref{ass923} and \eqref{ass927} from Assumption~\ref{ass:tail_multi_d} are satisfied. 
-\begin{example}
-\label{ass_5_exp}
-Assume the event 
-\bea 
-\Omega_1 = \set{\max_{i=1,\dots, n} \norm{\delta_i}_{\infty} \leq  R_n}
-\bea 
-occurs with high probability. Furthermore, define $e_{i1} = g(x_{i1})V_{i1}$ where $\set{V_{i1}}$ is independent from $\set{x_{i1}}$, and consider the event 
-\bea 
-\Omega_2 = \set{\max_{i =1,\dots,n} |g(x_{i1})| \leq  s_n}
-\bea 
-also occurring with high probability. We then introduce $T_n$ as
-\bea
-T_n = \max_{i =1,\dots,n}\{2R_n, s_n\phi_n\},
-\bea 
-with $\phi_n$ being a sequence tending to infinity.
-Then we have 
-\bea
-&\max_{x\in [0,1]^d} \max_{i= 1,\dots, n}  \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\geq\, T_n \mid \delta_i, x_{i1} = x)\right. \\ 
-&\left. \quad + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\geq\, T_n\mid x_{i1} = x)\right]
-\\
-& \labelrel\leq{in963}  \max_{x\in [0,1]^d} \max_{i= 1,\dots, n} \left[2\mathbb{P}\left(\norm{\delta_i}_{\infty} \,\ge\, R_{n} \right) \right. \\
-&\quad \left. + 2\mathbb{P}(\Omega_2^c) \right. \\ 
-& \quad \left.+  2\mathbb{P}\left(\abs{V_{i1}} \,\geq\, \max\left\{\frac{R_{n}}{s_n}, \frac{\phi_n}{2}\right\} \right)\right] \\
-&\,\leq\, \tilde c_0.
-\bea
-
-The \eqref{in963} holds since we have 
-\bea
-&\max_{x\in [0,1]^d} \max_{i= 1,\dots, n}  \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\geq\, T_n \mid \delta_i, x_{i1} = x)\right. \\ 
-&\left. \quad + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\geq\, T_n\mid x_{i1} = x)\right]
-\\
-&\,\leq\, \max_{x\in [0,1]^d} \max_{i= 1,\dots, n} \left[\mathbb{P}\left(g(x_{i1})V_{i1} \,\geq\, \max \left\{R_{n}, \frac{s_n\phi_n}{2}\right\}  | x_{i1} = x\right)\right. \\ 
-& \quad \left. + 2\mathbb{P}\left(\norm{\delta_i}_{\infty} \,\ge\, \max\left\{R_{n}, \frac{s_n\phi_n}{2}\right\} \right) \right. \\
-& \quad \left.+ \mathbb{P}\left(\set{g(x_{i1})V_{i1} \geq  \max\left\{R_{n}, \frac{s_n\phi_n}{2}\right\}}|x_{i1} = x\right)\right] \\
-&\,\leq\, \max_{x\in [0,1]^d} \max_{i= 1,\dots, n}\left[2\mathbb{P}\left(\norm{\delta_i}_{\infty} \,\ge\, \max\left\{R_{n}, \frac{s_n\phi_n}{2}\right\} \right) \right. \\
-& \quad \left.+ 2\mathbb{P}( \Omega_2^c \mid x_{i1}=x) \right. \\
-& \quad \left.+ 2\mathbb{P}\left(g(x_{i1})V_{i1} \,\geq\, \max\left\{R_{n}, \frac{s_n\phi_n}{2}\right\}|\Omega_2, x_{i1} = x\right)\right] \\
-&\,\leq\, \tilde c_0.
-\bea 
-
-Provided
-
-\begin{enumerate}
-\item $\mathbb{P}(\Omega_1^c) \to 0.$ 
-\item $\mathbb{P}(\Omega_2^c) \to 0.$ 
-\item $\max_{i =1,\dots, n} \mathbb{P} (\abs{V_{i1}} \geq  \phi_n) \to 0.$
-\item $T_n \geq   \max \set{2R_{n}, \phi_ns_n}.$
-\end{enumerate}
-Similarly, we can get for the multidimensional domain $[0,1]^d$
-\bea
-&\max_{x\in [0,1]^d} \max_{i= 1,\dots, n}  \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\leq\, -T_n \mid \delta_i, x_{i1} = x)\right. \\ 
-&\left. \quad + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\leq\, -T_n\mid x_{i1} = x)\right]
-\\
-&\,\leq\, \tilde c_0.
-\bea
-
-So in summary, \eqref{ass923} and \eqref{ass927} of Assumption~\ref{ass:tail_multi_d} hold if the above conditions hold for the multidimensional domain $[0,1]^d$.
-\end{example}
 
 \begin{lemma}[Bound of $A_3$]
 \label{col_A_3}
