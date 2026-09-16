@@ -665,17 +665,34 @@ Another assumption we make is about the tail probability our spatial noise funct
 
 \begin{example}[Example for Assumption~\ref{ass:tail_multi_d}]\label{exp_tail}
 \begin{revision}
-Suppose that Assumption~\ref{Assumption 1.} holds and that there exist deterministic sequences $R_n>0$ and $\phi_n>0$ such that
+Below, we give conditions under which \eqref{ass923} and \eqref{ass927} hold. The derivation is in Appendix Example~\ref{ass_5_exp}.
+Suppose that the design points and spatial noise satisfy the corresponding conditions in Assumption~\ref{Assumption 1.}, and assume that
 \[
-\mathbb{P}\left(\max_{i=1,\dots,n}\|\delta_i\|_{\infty}>R_n\right)\to0,
-\qquad
-\max_{i=1,\dots,n}\mathbb{P}\left(|e_{i1}|\geq\phi_n\right)\to0.
+\Omega_1=\left\{\max_{i=1,\dots,n}\|\delta_i\|_{\infty}\leq R_n\right\}
 \]
-Set $T_n=R_n+\phi_n$ and define
+occurs with high probability for a deterministic sequence $R_n>0$.
+For each $i$, choose a deterministic constant $a_i>0$ and let $g_i(x)=a_i$ for every $x\in[0,1]^d$. Let $\{V_{ij}\}_{i,j}$ be independent and identically distributed with a common distribution that does not depend on $n$, and independent of the entire collection of design points and spatial noise. Define
 \[
-\Omega_1=\left\{\max_{i=1,\dots,n}\|\delta_i\|_{\infty}\leq R_n\right\}.
+e_{ij}=g_i(x_{ij})V_{ij}=a_iV_{ij}.
 \]
-On $\Omega_1$, the mutual independence in Assumption~\ref{Assumption 1.} implies
+The scales $a_i$ may differ across $i$, while the measurement-error independence conditions in Assumption~\ref{ass_1_4} hold.
+Set $s_n=\max_{i=1,\dots,n}a_i$ and define the event
+\[
+\Omega_2=\left\{\max_{i=1,\dots,n}|g_i(x_{i1})|\leq s_n\right\}.
+\]
+Since $\max_{i=1,\dots,n}\sup_{x\in[0,1]^d}|g_i(x)|=s_n$, this event has probability one, and the same bound holds at every $x$.
+For a deterministic sequence $\phi_n\to\infty$, define
+\[
+T_n=\max\{2R_n,s_n\phi_n\}.
+\]
+Under the conditions
+\begin{equation}
+\label{exp2_cond}
+\mathbb{P}(\Omega_1^c)\to0,\qquad
+\mathbb{P}(\Omega_2^c)=0,\qquad
+\max_{i=1,\dots,n}\mathbb{P}(|V_{i1}|\geq\phi_n/2)\to0,
+\end{equation}
+the following bounds hold on $\Omega_1$ for all sufficiently large $n$:
 \begin{align*}
 &\max_{x\in[0,1]^d}\max_{i=1,\dots,n}
 \bigg[
@@ -684,13 +701,28 @@ On $\Omega_1$, the mutual independence in Assumption~\ref{Assumption 1.} implies
 &\qquad\qquad\qquad\qquad
 +\mathbb{P}\left(\delta_i(x_{i1})+e_{i1}\geq T_n
 \mid x_{i1}=x\right)
-\bigg]\\
-&\quad\leq
-\mathbb{P}(\Omega_1^c)
-+2\max_{i=1,\dots,n}\mathbb{P}\left(|e_{i1}|\geq\phi_n\right)
-=o(1).
+\bigg]\leq\tilde c_0
 \end{align*}
-The same bound holds for the lower-tail probabilities in \eqref{ass927}. Consequently, for the fixed positive constant $\tilde c_0$ satisfying \eqref{eq_c0_range}, both \eqref{ass923} and \eqref{ass927} hold with high probability for all sufficiently large $n$. If $\log(R_n+\phi_n)=o(n)$, then $\log(T_n)=o(n)$.
+and
+\begin{align*}
+&\max_{x\in[0,1]^d}\max_{i=1,\dots,n}
+\bigg[
+\mathbb{P}\left(\delta_i(x_{i1})+e_{i1}\leq -T_n
+\mid\delta_i,x_{i1}=x\right)\\
+&\qquad\qquad\qquad\qquad
++\mathbb{P}\left(\delta_i(x_{i1})+e_{i1}\leq -T_n
+\mid x_{i1}=x\right)
+\bigg]\leq\tilde c_0,
+\end{align*}
+where $\tilde c_0$ is the fixed positive constant satisfying \eqref{eq_c0_range}. Thus both bounds hold with high probability.
+
+For a concrete example satisfying \eqref{exp2_cond}, consider the spatial-noise recursion
+\begin{align*}
+\delta_i(x)&=0.5\delta_{i-1}(x)+\sum_{t=1}^{50}t^{-1}b_{i,t}h_t(x),\\
+h_t(x)&=\prod_{j=1}^d\left(\frac{1}{\sqrt{2}\pi}\sin(t\pi x^{(j)})\right).
+\end{align*}
+Take the $b_{i,t}$ to be independent standard Gaussian variables, which are subGaussian, and initialize $\delta_0$ from the stationary distribution independently of subsequent innovations. Construct the spatial-noise process independently of the design points and the $V_{ij}$. The finite sum of bounded basis functions has Gaussian coefficients with uniformly bounded variances. Gaussian tail bounds and a union bound therefore give $\mathbb{P}(\Omega_1^c)\to0$ for $R_n=\log(n+1)$, as verified in Appendix Example~\ref{ass_5_exp}.
+Take $a_i=1+1/i$, so that $s_n=2$, and let the common distribution of $V_{ij}$ be a standard Cauchy distribution or a Student $t$ distribution with fixed degrees of freedom. With $\phi_n=n$, the third condition in \eqref{exp2_cond} holds, and the definition above gives $T_n=2n$. Consequently, $\log(T_n)=O(\log n)=o(n)$.
 \end{revision}
 \end{example}
 
@@ -3600,6 +3632,60 @@ Thus, we have
 % \bea 
 % and we let $p = 2\tilde c_0.$
 % \end{proof}
+
+\begin{revision}
+\begin{example}[Derivation for Example~\ref{exp_tail}]
+\label{ass_5_exp}
+Use the construction and conditions in Example~\ref{exp_tail}. Since $a_i\leq s_n$ and
+\[
+T_n-R_n\geq T_n/2\geq s_n\phi_n/2,
+\]
+on $\Omega_1$ the independence of $V_{i1}$ from the spatial noise and design points gives, for every $i$ and $x$,
+\[
+\mathbb{P}\left(\delta_i(x_{i1})+a_iV_{i1}\geq T_n
+\mid\delta_i,x_{i1}=x\right)
+\leq\mathbb{P}(|V_{i1}|\geq\phi_n/2).
+\]
+For the probability conditioned only on the design point, a union bound and independence from the design give
+\begin{align*}
+&\mathbb{P}\left(\delta_i(x_{i1})+a_iV_{i1}\geq T_n
+\mid x_{i1}=x\right)\\
+&\quad\leq
+\mathbb{P}(\|\delta_i\|_\infty>R_n)
++\mathbb{P}(a_i|V_{i1}|\geq T_n-R_n)\\
+&\quad\leq
+\mathbb{P}(\Omega_1^c)+\mathbb{P}(|V_{i1}|\geq\phi_n/2).
+\end{align*}
+Combining these bounds, on $\Omega_1$ we obtain
+\begin{equation}
+\label{in963}
+\begin{aligned}
+&\max_{x\in[0,1]^d}\max_{i=1,\dots,n}
+\bigg[
+\mathbb{P}\left(\delta_i(x_{i1})+e_{i1}\geq T_n
+\mid\delta_i,x_{i1}=x\right)\\
+&\qquad\qquad\qquad\qquad
++\mathbb{P}\left(\delta_i(x_{i1})+e_{i1}\geq T_n
+\mid x_{i1}=x\right)
+\bigg]\\
+&\quad\leq
+\mathbb{P}(\Omega_1^c)
++2\max_{i=1,\dots,n}\mathbb{P}(|V_{i1}|\geq\phi_n/2)
+=o(1).
+\end{aligned}
+\end{equation}
+Applying the same argument to $-\delta_i$ and $-e_{i1}$ gives the identical bound for the lower-tail sum in \eqref{ass927}. Since $\mathbb{P}(\Omega_1)\to1$, both tail sums are at most the fixed positive $\tilde c_0$ with high probability for all sufficiently large $n$.
+
+For the concrete spatial-noise recursion in Example~\ref{exp_tail}, the stationary coefficient of $t^{-1}h_t$ is Gaussian with mean zero and variance $\sum_{k=0}^{\infty}4^{-k}=4/3$. A Gaussian tail bound and a union bound over the $50$ coefficients and $n$ time indices give
+\[
+\mathbb{P}(\Omega_1^c)
+\leq 100n\exp\left\{
+-\frac{3R_n^2}{8\left(\sum_{t=1}^{50}t^{-1}\|h_t\|_\infty\right)^2}
+\right\}\to0
+\]
+when $R_n=\log(n+1)$. This argument does not require independence across time indices.
+\end{example}
+\end{revision}
 
 \begin{lemma}[Bound of $A_3$]
 \label{col_A_3}
