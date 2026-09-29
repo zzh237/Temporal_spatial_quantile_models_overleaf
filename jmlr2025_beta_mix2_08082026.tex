@@ -741,6 +741,16 @@ using the function class \eqref{F_1} and \eqref{F_2}. First, let $K$ be a functi
 R_{\mathcal{J}_{o,l}}(K) \,\coloneqq\, \Ept{x^*, s}{\sup_{\substack{f\in K \\ }} \frac{1}{\sum_{i \in \mathcal{J}_{o,l}}  m_i}\sum_{i \in \mathcal{J}_{o,l}} \sum_{j=1}^{m_{i}}s_{ij}  f(x_{ij}^*)}. 
 \beq 
 
+\begin{revision}
+For a nonempty class $K$ independent of the Rademacher variables, write
+$K-f^*=\{f-f^*:f\in K\}$. For either an even or an odd block $\mathcal J$,
+\begin{equation}
+\label{eq_rademacher_translation}
+R_{\mathcal J}(K-f^*)=R_{\mathcal J}(K).
+\end{equation}
+Indeed, subtracting $f^*$ subtracts the same signed sum from every term in the supremum, and that sum has expectation zero over the signs conditional on the design points. This identity also holds for the conditional Rademacher widths below; it is an identity of expectations, not of realized suprema. The risk proofs use the centered process indexed by $f-f^*$. If $f^*\in K$, then $0\in K-f^*$, so its supremum is nonnegative for every realization. We retain $R_{\mathcal J}(K)$ in the rate statements using \eqref{eq_rademacher_translation}.
+\end{revision}
+
 
 \subsection{For $\gF$ as Convex Set}
 \begin{theorem}[Temporal-Spatial Data When $\gF$ as Convex Set]
@@ -1075,6 +1085,9 @@ For $\gF$, and $f^\ast$ not necessarily in $\gF$, we define a star-shaped set as
 \label{star_shaped}
 \text{Star}(\gF, f^\ast) \,\coloneqq\, \set{(1-\mu)f^\ast + \mu f: f \in \gF} \quad \text{for any } \mu \in [0,1].
 \beq 
+\rev{The centered class used in the nonconvex risk proof is
+$\text{Star}(\gF,f^*)-f^*=\{\mu(f-f^*):f\in\gF,\ \mu\in[0,1]\}$.
+It contains zero even when $f^*\notin\gF$.}
 With the all assumptions \ref{Assumption 1.}, \ref{asm:m}, \ref{assumptionA}, \ref{assump:lip}, and \ref{ass:tail_multi_d} satisfied, no more assumptions needed as Theorem~\ref{Theorem_1}, we have the convergence rate for Temporal-Spatial Data presented in below Theorem. 
 
 \begin{theorem}[Temporal-Spatial Data When $\gF$ as Non-Convex Set]
@@ -2644,34 +2657,36 @@ For $B_1$, $B_2$ $B_3$, we will just give the conclusion, as the analysis is sim
 
 
 \begin{revision}
-For this subsection, write
+For the bounds of $A_1$, $A_2$, and $A_3$, write the centered localized class as
 \[
-\mathcal F_t\coloneqq\{f\in\mathcal F:c_0\Delta^2(f-f^*)\leq t^2\}.
+\mathcal F_t\coloneqq\{f-f^*:f\in\mathcal F,\ c_0\Delta^2(f-f^*)\leq t^2\}.
 \]
+Since $f^*\in\mathcal F$, this class contains zero.
 \end{revision}
 \begin{lemma}
 \label{side_lemma_for_block}
-    Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let  $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be independent Rademacher variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$. Then we have
+    Let $\Omega_\beta$ be defined in \eqref{event_beta}. \rev{Suppose $f^*\in\mathcal F$.} Let  $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be independent Rademacher variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$. Then we have
 \bea 
-&\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} f(x_{ij}^*)\Big) \cdot \indic{\Omega_\beta}} \\
+&\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} \rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)}\Big) \cdot \indic{\Omega_\beta}} \\
 &\quad \,\leq\, \rev{\frac{c_5}{2L}R_{\mathcal{J}_{e,l}}(\mathcal F_t)},
-\bea \rev{where $c_5$ is a constant depending only on the constants $C$ and $c$ in Assumption~\ref{asm:m}, and $R_{\mathcal{J}_{e,l}}$ is defined in \eqref{rademacher_def_blocks}.}
+\bea \rev{where $c_5=2c_2C/c$, with $c_2$ from \eqref{beta_constants} and $C$, $c$ from Assumption~\ref{asm:m}. The width $R_{\mathcal{J}_{e,l}}$ is defined in \eqref{rademacher_def_blocks}. The same bound holds without the indicator, and for odd blocks.}
 \end{lemma}
 
 \begin{proof}
 % all probability and expectation statements are implicitly conditioned on the event $\Omega_\beta$; see Remark~\ref{remark:joint}, 
 We have 
 \beq
-&\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} f(x_{ij}^*)\Big) \cdot \indic{\Omega_\beta}} \\
+&\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} \rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)}\Big) \cdot \indic{\Omega_\beta}} \\
 &\,=\, \mathbb{E}_{x, \delta, e, x^*, \delta^*, e^*, s}\bigg[\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{\sum_{i' \in \mathcal{J}_{e,l}} m_{i'}}\sum_{i \in \mathcal{J}_{e,l}} \\
-&\quad \sum_{j=1}^{m_{i}}s_{ij}\frac{\sum_{i' \in \mathcal{J}_{e,l}} m_{i'}}{nm_i}  f(x_{ij}^*) \cdot \indic{\Omega_\beta}\bigg].
+&\quad \sum_{j=1}^{m_{i}}s_{ij}\frac{\sum_{i' \in \mathcal{J}_{e,l}} m_{i'}}{nm_i}  \rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)} \cdot \indic{\Omega_\beta}\bigg].
 \beq
 Next, by Assumption~\ref{asm:m}, for every $i\in\mathcal{J}_{e,l}$ we have
 $cm \,\leq\, m_i \,\leq\, Cm$. Combined with \eqref{beta_constants}, which gives $|\mathcal{J}_{e,l}| \,\leq\, c_2 n/L$ (where $c_2$ is from \eqref{beta_constants}), we obtain
 \beq
 \label{eq_120}
 \frac{\sum_{i'\in\mathcal{J}_{e,l}} m_{i'}}{n\,m_i}\,\le\, \frac{|\mathcal{J}_{e,l}|\cdot Cm}{n\cdot cm} \,\leq\, \frac{c_2 C}{cL}.
-\beq  Then by Ledoux Talagrand contraction inequality (see Proposition 5.28 in \cite{wainwright2019high}), we have 
+\beq
+\rev{Taking $f=f^*$ gives zero in the weighted supremum below, so that supremum is nonnegative for every realization of the data and signs. We may therefore remove $\indic{\Omega_\beta}$ for an upper bound. We then apply the Ledoux-Talagrand contraction inequality to the centered evaluations, using \eqref{eq_120} (see Proposition 5.28 in \cite{wainwright2019high}).}
 
 
 % \beq
@@ -2686,12 +2701,12 @@ $cm \,\leq\, m_i \,\leq\, Cm$. Combined with \eqref{beta_constants}, which gives
 % % where \eqref{in411} holds since , 
 % % On event $\Omega_\beta$, 
 \bea 
-&\mathbb{E}_{x, \delta, e, x^*, \delta^*, e^*, s}\bigg[\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{\sum_{i' \in \mathcal{J}_{e,l}} m_{i'}}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}\frac{\sum_{i' \in \mathcal{J}_{e,l}} m_{i'}}{nm_i}  f(x_{ij}^*) \\
+&\mathbb{E}_{x, \delta, e, x^*, \delta^*, e^*, s}\bigg[\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{\sum_{i' \in \mathcal{J}_{e,l}} m_{i'}}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}\frac{\sum_{i' \in \mathcal{J}_{e,l}} m_{i'}}{nm_i}  \rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)} \\
 &\quad \cdot \indic{\Omega_\beta}\bigg] \\
 \,\leq\,
-&\mathbb{E}_{x^*, s}\bigg[\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{\sum_{i' \in \mathcal{J}_{e,l}} m_{i'}}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}\frac{\sum_{i' \in \mathcal{J}_{e,l}} m_{i'}}{nm_i}  f(x_{ij}^*) \bigg] 
+&\mathbb{E}_{x^*, s}\bigg[\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{\sum_{i' \in \mathcal{J}_{e,l}} m_{i'}}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}\frac{\sum_{i' \in \mathcal{J}_{e,l}} m_{i'}}{nm_i}  \rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)} \bigg]
 \\ & \labelrel\leq{in411}
-\frac{c_2C}{cL}\Ept{x^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{\sum_{i' \in \mathcal{J}_{e,l}}  m_{i'}}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  f(x_{ij}^*)\Big)}
+\frac{c_2C}{cL}\Ept{x^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{\sum_{i' \in \mathcal{J}_{e,l}}  m_{i'}}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  \rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)}\Big)}
 \\ & = 
 \rev{\frac{c_2C}{cL}R_{\mathcal{J}_{e,l}}(\mathcal F_t) \,=\, \frac{c_5}{2L}R_{\mathcal{J}_{e,l}}(\mathcal F_t)}.
 \bea 
@@ -2722,7 +2737,7 @@ Equivalently, letting $c_5 := 2c_2C/c$, the prefactor becomes $\frac{c_5}{2L}$.
 A_2 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\tilde Z_{ij}(f) - \hat Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
 &\,\le\,  \rev{\frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\mathcal F_t)},
 \bea
-\rev{Here $c_5$ depends only on the constants $C$ and $c$ in Assumption~\ref{asm:m}, and $R_{\mathcal{J}_{e,l}}$ is defined in \eqref{rademacher_def_blocks}.}
+\rev{Here $c_5=2c_2C/c$ is as in Lemma~\ref{side_lemma_for_block}, and $R_{\mathcal{J}_{e,l}}$ is defined in \eqref{rademacher_def_blocks}.}
 \end{lemma}
 \begin{proof}
 We pass from $A_2$ to a star-world quantity $A_2^*$ via the coupling, and then bound $A_2^*$.
@@ -2758,12 +2773,12 @@ Conditioned on $\delta^*$ and $x^*$, the quantity $\tilde Z_{ij}^*(f) \,=\, \Ept
 A_2^* &\,\le\, 2\,\mathbb{E}_{\delta^*, x^*}\bigg[\mathbb{E}_{e^*, s \mid \delta^*, x^*}\bigg[\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\hat Z_{ij}^*(f) \bigg]\bigg] \\
 &\,=\, 2\Ept{x^*, \delta^*, e^*, s}{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\hat Z_{ij}^* (f)}.
 \bea
-We then apply the Lipschitz condition from Lemma~\ref{lem:lip} and the Ledoux-Talagrand contraction principle (Theorem~\ref{lem:Theorem 7}) to obtain
+We then apply the Lipschitz condition from Lemma~\ref{lem:lip} and the Ledoux-Talagrand contraction principle (Theorem~\ref{lem:Theorem 7}) \rev{to the increments $f(x_{ij}^*)-f^*(x_{ij}^*)$, noting that $\hat Z_{ij}^*(f^*)=0$,} to obtain
 \bea
-A_2^* &\,\le\, 2\Ept{x^*, s}{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} f(x_{ij}^*)} \\
-&\,=\,  \rev{\frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\mathcal F_t)},
+A_2^* &\,\le\, 2\Ept{x^*, s}{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} \rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)}} \\
+&\,\rev{\leq}\,  \rev{\frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\mathcal F_t)},
 \bea
-\rev{The last equality follows from the definition of $R_{\mathcal{J}_{e,l}}$ in \eqref{rademacher_def_blocks}.}
+\rev{The last inequality is the indicator-free bound in Lemma~\ref{side_lemma_for_block}.}
 \end{proof}
 
 
@@ -3109,7 +3124,7 @@ Then by Lemma~\ref{lem_a5} and \ref{lem_a6_core}, we get the bound for terms $A_
     A_1 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i}\rev{\left\{Z_{ij}(f) - \tilde Z_{ij}(f)\right\}} - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}
     \\ &\,\leq\, 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\rev{r_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
     &\quad +  \frac{c_4}{L}\frac{s\log n\log T_n}{n} \\
-    &\,\leq\, \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n},
+    &\,\leq\, \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_t})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n},
     \bea \rev{Here $c_4$ is a positive constant that depends on $\tilde c_0$ in Assumption~\ref{ass:tail_multi_d}, $C_{\beta}$ in Assumption~\ref{ass_c_beta}, and $c_1$, $c_2$ in \eqref{beta_constants}. Moreover, $c_5 \,=\, 2c_2C/c$ depends on $c_2$ and the constants $C$, $c$ in Assumption~\ref{asm:m}, and $R_{\mathcal{J}_{e,l}}$ is defined in \eqref{rademacher_def_blocks}.}
 \end{corollary}
 \begin{proof}
@@ -3136,11 +3151,12 @@ We have
 & \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i}\rev{\left\{Z_{ij}(f) - \tilde Z_{ij}(f)\right\}} -\frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}} \\
 \labelrel\le{a1_step_sym}& 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}r_{ij}(f)\Big) \cdot \indic{\Omega_\beta}} \\
 &\quad +  \frac{c_4}{L}\frac{s\log n\log T_n}{n} \\
-\labelrel\le{a1_step_contraction}& 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} f(x_{ij}^*)\Big) \cdot \indic{\Omega_\beta}} \\
+\labelrel\le{a1_step_contraction}& 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} \rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)}\Big) \cdot \indic{\Omega_\beta}} \\
 &\quad + \frac{c_4}{L}\frac{s\log n\log T_n}{n} \\
-\labelrel\le{a1_step_rade}& \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n}  .
+\labelrel\le{a1_step_rade}& \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_t})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n}  .
 \bea
 Here \eqref{a1_step_sym} follows from the decomposition in Lemma~\ref{lem267}; \eqref{a1_step_contraction} follows from the Lipschitz condition of $r_{ij}(f)$ in Lemma~\ref{lem:lip} together with the Ledoux-Talagrand contraction principle in Theorem~\ref{lem:Theorem 7}; and \eqref{a1_step_rade} follows from Lemma~\ref{side_lemma_for_block}.
+\rev{The contraction is applied to $f(x_{ij}^*)-f^*(x_{ij}^*)$, since $r_{ij}(f^*)=0$.}
 
 
     \textcolor{red}{say which line is due to what. Oscar pauses here}
@@ -3693,8 +3709,8 @@ Let $\bar Z(f)$ and $Z(f)$ be defined in \eqref{305} and \eqref{def_zf}, respect
 \bea 
 A_3 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big( \sup_{\substack{f \in \mathcal{F} \\ c_0\Delta^2(f - f^*) \le t^2}} \frac{1}{n} \sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i} \sum_{j=1}^{m_i} \left( \bar Z_{ij}(f) - Z_{ij}(f) \right)\Big) \cdot \indic{\Omega_\beta}} \\
 &\,\le\, 2 \Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big( \sup_{\substack{f \in \mathcal{F} \\ c_0\Delta^2(f - f^*) \le t^2}} \frac{1}{n} \sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i} \sum_{j=1}^{m_i} s_{ij} Z_{ij}(f)\Big) \cdot \indic{\Omega_\beta}} \\
-&\,=\, \frac{c_5}{L} R_{\mathcal{J}_{e,l}} \left( \gF \cap \left\{ c_0\Delta^2(f - f^*) \,\le\, t^2 \right\} \right),
-\bea where $c_5$ depends only on the constants $C$ and $c$ in Assumption~\ref{asm:m}, and $R_{\mathcal{J}_{e,l}}$ is defined in \eqref{rademacher_def_blocks}.
+&\,\rev{\leq}\, \frac{c_5}{L} R_{\mathcal{J}_{e,l}} \left( \rev{\mathcal F_t} \right),
+\bea \rev{where $c_5=2c_2C/c$ is as in Lemma~\ref{side_lemma_for_block},} and $R_{\mathcal{J}_{e,l}}$ is defined in \eqref{rademacher_def_blocks}.
 \end{lemma}
 \begin{proof}
 We pass from $A_3$ to a star-world quantity $A_3^*$ via the coupling, and then bound $A_3^*$.
@@ -3754,10 +3770,10 @@ Ledoux-Talagrand contraction principle in Theorem~\ref{lem:Theorem 7}.
 Then we have
 \beq
 &A_3 \,\le\, A_3^* \,\le\, 2\Ept{x^*, \delta^*, e^*, s}{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} Z_{ij}^* (f)} \\
-& \,\le\, 2\Ept{x^*, s}{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} f(x_{ij}^*)} \\
-&\,=\,\frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}).
+& \,\le\, 2\Ept{x^*, s}{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} \rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)}} \\
+&\,\rev{\leq}\,\frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_t}).
 \beq
-Where the second inequality follows from the Lipschitz condition and the Ledoux-Talagrand contraction principle, and the last equality follows from Lemma~\ref{side_lemma_for_block}.
+\rev{The contraction step uses the Lipschitz condition, $Z_{ij}^*(f^*)=0$, and the increments $f(x_{ij}^*)-f^*(x_{ij}^*)$. The last inequality is the indicator-free bound in Lemma~\ref{side_lemma_for_block}.}
 \end{proof}
 
 
@@ -3861,7 +3877,7 @@ Then, for any $t > 0$, the following inequality holds:
 &\,\le\, \frac{c_5}{t^2} \sum_{l=1}^L \Big( R_{\mathcal{J}_{e,l}} \left( \gF \cap \set{c_0\Delta^2(f - f^*) \le  t^2} \right) \\
 &\qquad + R_{\mathcal{J}_{o,l}} \left( \gF \cap \set{c_0\Delta^2(f - f^*) \le  t^2} \right) \Big) + \frac{c_4}{t^2} \cdot \frac{s \log n \log T_n}{n},
 \beq
-where $c_5$ depends only on the constants $C$ and $c$ in Assumption~\ref{asm:m}, $c_4$ depends on $\tilde c_0$ in Assumption~\ref{ass:tail_multi_d}, $C_{\beta}$ in Assumption~\ref{ass_c_beta}, and $c_1$, $c_2$ in \eqref{beta_constants},
+\rev{where $c_5=2c_2C/c$, with $c_2$ from \eqref{beta_constants} and $C$, $c$ from Assumption~\ref{asm:m};} $c_4$ depends on $\tilde c_0$ in Assumption~\ref{ass:tail_multi_d}, $C_{\beta}$ in Assumption~\ref{ass_c_beta}, and $c_1$, $c_2$ in \eqref{beta_constants},
 and $R_{\mathcal{J}_{e,l}}$, $R_{\mathcal{J}_{o,l}}$ are defined in \eqref{rademacher_def_blocks}.
 \end{lemma} 
 \begin{proof}
@@ -3873,36 +3889,43 @@ let $A_1$ be the quantity introduced in \eqref{inq_a1a2a3},
 By Lemma~\ref{col_A_1}, we have 
 \bea 
 A_1 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i}Z_{ij}(f) - \tilde Z_{ij}(f) - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}} \\
-&\,\le\, \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le t^2})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n}.
+&\,\le\, \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_t})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n}.
 \bea
 Similarly,  we have for  $B_1$ in \eqref{inq_a1a2a3}
 
 \bea
-B_1 \,\le\, \frac{c_5}{L}R_{\mathcal{J}_{o,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n}.
+B_1 \,\le\, \frac{c_5}{L}R_{\mathcal{J}_{o,l}}(\rev{\mathcal F_t})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n}.
 \bea 
 
 Let $A_2$ be the quantity introduced in \eqref{inq_a1a2a3}, by Lemma~\ref{col_A_2}, we have 
 
 \bea 
 A_2 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\tilde Z_{ij}(f) - \hat Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
-&\,\le\,  \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}).
+&\,\le\,  \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_t}).
 \bea
 Similarly, we have
 \bea
-B_2 \,\le\,  \frac{c_5}{L}R_{\mathcal{J}_{o,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}). 
+B_2 \,\le\,  \frac{c_5}{L}R_{\mathcal{J}_{o,l}}(\rev{\mathcal F_t}).
 \bea  
 
 
 By Lemma~\ref{col_A_3}  we have 
 \beq 
 A_3 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\bar Z_{ij}(f) - Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
-&\,\le\, \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}).
+&\,\le\, \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_t}).
 \beq 
 
 Similarly, we have 
 \bea 
-B_3 \,\le\,  \frac{c_5}{L}R_{\mathcal{J}_{o,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}). 
+B_3 \,\le\,  \frac{c_5}{L}R_{\mathcal{J}_{o,l}}(\rev{\mathcal F_t}).
 \bea  
+
+\rev{By \eqref{eq_rademacher_translation}, for either an even or an odd block $\mathcal J$,
+\[
+R_{\mathcal J}(\mathcal F_t)
+=R_{\mathcal J}\left(\gF\cap\set{c_0\Delta^2(f-f^*)\leq t^2}\right).
+\]
+Thus, substituting the six centered bounds above gives the uncentered but equivalent widths in \eqref{exp:bridge}.}
 
 Thus, by Theorem~\ref{Theorem_1}, with $\Omega_\beta$ defined in \eqref{event_beta}, we have  
 \bea
@@ -6708,6 +6731,17 @@ Similarly, we only need to analyze the $\tilde E_1$, $\tilde E_2$, and $\tilde E
 \end{proof}
 
 
+\begin{revision}
+For the nonconvex bounds below, write
+\[
+\mathcal F_{\tilde t}^{\star}
+\coloneqq
+\left\{f-f^*:f\in\text{Star}(\gF,f^*),\;
+c_0\Delta^2(f-f^*)\leq\tilde t^2\right\}.
+\]
+Because $f^*\in\text{Star}(\gF,f^*)$, this centered class contains zero. Hence every centered supremum below is nonnegative, and its coupling indicator can be removed for an upper bound as in Lemma~\ref{side_lemma_for_block}.
+\end{revision}
+
 
 \begin{corollary}[Bound of  $\tilde A_2$, $\tilde B_2$]
 \label{col_tilde_A_2}
@@ -6717,11 +6751,11 @@ Similarly, we only need to analyze the $\tilde E_1$, $\tilde E_2$, and $\tilde E
 \bea 
 \tilde A_2 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\tilde Z_{ij}(f) - \hat Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
 &\le  2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\hat Z_{ij} (f)\Big) \cdot \indic{\Omega_\beta}} \\
-&= \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le \tilde t^2}).
+&\rev{\leq} \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}}).
 \bea
 Similarly, for $\tilde B_2$ in \eqref{tilde_B} we have
 \bea     
-\tilde B_2 \,\leq\, \frac{c_5}{L} R_{\mathcal{J}_{o,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}). 
+\tilde B_2 \,\leq\, \frac{c_5}{L} R_{\mathcal{J}_{o,l}}(\rev{\mathcal F_{\tilde t}^{\star}}).
 \bea   
 
 \end{corollary}
@@ -6734,11 +6768,11 @@ The proof is a direct application of Corollary~\ref{col_A_2} by replacing $\gF$ 
  Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let  $\tilde Z(f)$,  $Z(f)$ been defined in \eqref{def_tilde_zf} and \eqref{def_zf}, let $\ell(f)$ be defined in \eqref{def_tilde_l}, let  $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be independent Rademacher variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$, let $\tilde A_1$ be the quantity introduced in \eqref{tilde_A}, then we have
     \bea 
     \tilde A_1 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i}\tilde Z_{ij}(f) -  Z_{ij}(f) - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}  
-    \\ &\leq 2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}u_{ij}\Big) \cdot \indic{\Omega_\beta}} +  \frac{c_4}{L}\frac{s\log n\log T_n}{n} \\ &=\frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le \tilde t^2})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n},
+    \\ &\leq 2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}u_{ij}\Big) \cdot \indic{\Omega_\beta}} +  \frac{c_4}{L}\frac{s\log n\log T_n}{n} \\ &\rev{\leq}\frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n},
     \bea with a small constant $c_4$ that depends on $\tilde c_0$ is given in Assumption~\ref{ass:tail_multi_d}, and $c_1$, $c_2$, $C_{\beta}$. 
     Similarly, for $\tilde B_1$ in \eqref{tilde_B},  we have
     \bea 
-    \tilde B_1  &\,\leq\, \frac{c_5}{L} \rev{R_{\mathcal{J}_{o,l}}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n},
+    \tilde B_1  &\,\leq\, \frac{c_5}{L} \rev{R_{\mathcal{J}_{o,l}}(\mathcal F_{\tilde t}^{\star})}  + \frac{c_4}{L}\frac{s\log n\log T_n}{n},
     \bea
 \end{corollary}
 \begin{proof}
@@ -6752,12 +6786,12 @@ let  $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be independent Rademac
 \bea 
 \tilde A_3&\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\bar Z_{ij}(f) - Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
 &\le  2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} Z_{ij} (f)\Big) \cdot \indic{\Omega_\beta}} \\
-&= \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le \tilde t^2}).
+&\rev{\leq} \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}}).
 \bea
 Similarly, for $\tilde B_3$ in \eqref{tilde_B} we have
 \bea 
 \tilde B_3&\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{o,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\bar Z_{ij}(f) - Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
-&\,\le\,  \frac{c_5}{L} R_{\mathcal{J}_{o,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}). 
+&\,\le\,  \frac{c_5}{L} R_{\mathcal{J}_{o,l}}(\rev{\mathcal F_{\tilde t}^{\star}}).
 \bea   
 \end{corollary}
 \begin{proof}
@@ -6772,11 +6806,11 @@ The proof is a direct application of Corollary~\ref{col_A_3} by replacing $\gF$ 
 \bea 
 \tilde E_2 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\hat Z_{ij}(f) - \tilde Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
 &\le  2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\hat Z_{ij} (f)\Big) \cdot \indic{\Omega_\beta}} \\
-&= \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le \tilde t^2}).
+&\rev{\leq} \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}}).
 \bea
 Similarly, for $\tilde F_2$ in \eqref{tilde_F} we have
 \bea     
-\tilde F_2 \,\leq\, \frac{c_5}{L} R_{\mathcal{J}_{o,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}). 
+\tilde F_2 \,\leq\, \frac{c_5}{L} R_{\mathcal{J}_{o,l}}(\rev{\mathcal F_{\tilde t}^{\star}}).
 \bea   
 
 \end{corollary}
@@ -6837,9 +6871,11 @@ Ledoux-Talagrand contraction principle in Theorem~\ref{lem:Theorem 7}.
 
 \bea 
 &\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\hat Z_{ij}(f) -  \tilde Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\ 
-&\le  2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\hat Z_{ij} (f)\Big) \cdot \indic{\Omega_\beta}}  \\ & \labelrel\le{inq493} 2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} f(x_{ij}^*)\Big) \cdot \indic{\Omega_\beta}} \\
-&\,=\, \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}) . 
+&\le  2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\hat Z_{ij} (f)\Big) \cdot \indic{\Omega_\beta}}  \\ & \labelrel\le{inq493} 2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)}\Big) \cdot \indic{\Omega_\beta}} \\
+&\,\rev{\leq}\, \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}}).
 \bea 
+
+\rev{Here \eqref{inq493} uses $\hat Z_{ij}(f^*)=0$. The final inequality follows from the indicator-free argument in Lemma~\ref{side_lemma_for_block}, applied to the centered star class.}
 
 \end{proof}
 
@@ -6850,11 +6886,11 @@ Ledoux-Talagrand contraction principle in Theorem~\ref{lem:Theorem 7}.
    Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let  $\tilde Z(f)$,  $Z(f)$ been defined in \eqref{def_tilde_zf} and \eqref{def_zf}, and $\ell(f)$ be defined in \eqref{def_tilde_l}, let  $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be independent Rademacher variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$, let $\tilde E_1$ be the quantity introduced in \eqref{tilde_E}, with a small constant $\tilde c_0$ is given in Assumption~\ref{ass:tail_multi_d}, then we have
 \bea 
 &\tilde E_1 \coloneqq \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}}\tilde Z_{ij}(f) -  Z_{ij}(f) - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}} \\
-& \,\leq\, \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}) +  \frac{c_4}{L}\frac{s\log n\log T_n}{n}.
+& \,\leq\, \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}}) +  \frac{c_4}{L}\frac{s\log n\log T_n}{n}.
 \bea   
 Similarly, for $\tilde F_1$ in \eqref{tilde_F} we have
 \bea     
-\tilde F_1 \,\leq\, \frac{c_5}{L} R_{\mathcal{J}_{o,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}) +  \frac{c_4}{L}\frac{s\log n\log T_n}{n}. 
+\tilde F_1 \,\leq\, \frac{c_5}{L} R_{\mathcal{J}_{o,l}}(\rev{\mathcal F_{\tilde t}^{\star}}) +  \frac{c_4}{L}\frac{s\log n\log T_n}{n}.
 \bea   
 \end{lemma}
 \begin{proof}
@@ -7028,11 +7064,10 @@ Back to \eqref{c_blk-a1-a4}, we have
 \bea 
 &\tilde E_1 \coloneqq \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}}\tilde Z_{ij}(f) -  Z_{ij}(f) - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}} \\
 & \leq 2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}u_{ij}(f)\Big) \cdot \indic{\Omega_\beta}} +  \frac{c_4}{L}\frac{s\log n\log T_n}{n} \\ 
-& \labelrel\le{c_in573} 2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} f(x_{ij}^*)\Big) \cdot \indic{\Omega_\beta}} + \frac{c_4}{L}\frac{s\log n\log T_n}{n} \\
-& \labelrel\leq{c_in574} \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n} .
+& \labelrel\le{c_in573} 2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)}\Big) \cdot \indic{\Omega_\beta}} + \frac{c_4}{L}\frac{s\log n\log T_n}{n} \\
+& \labelrel\leq{c_in574} \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n}.
 \bea   
-Where \eqref{c_in573} follows the Lipschitz condition of $u_{ij}(f)$ in Lemma~\ref{lem:lip}, and then apply the 
-Ledoux-Talagrand contraction principle in Theorem~\ref{lem:Theorem 7}, and apply the Lemma~\ref{side_lemma_for_block}. 
+\rev{Equation \eqref{c_in573} follows from the Lipschitz condition of $u_{ij}(f)$ in Lemma~\ref{lem:lip}, the identity $u_{ij}(f^*)=0$, and the Ledoux-Talagrand contraction principle in Theorem~\ref{lem:Theorem 7}. Equation \eqref{c_in574} follows from the indicator-free argument in Lemma~\ref{side_lemma_for_block}, applied to the centered star class.}
 Finally, we get the conclusion.
 \end{proof}
 
@@ -7044,12 +7079,12 @@ Finally, we get the conclusion.
 \bea 
 \tilde E_3&\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{ Z_{ij}(f) - \bar Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
 &\le  2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} Z_{ij} (f)\Big) \cdot \indic{\Omega_\beta}} \\
-&= \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le \tilde t^2}).
+&\rev{\leq} \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}}).
 \bea
 
 Similarly, for $\tilde F_3$ in \eqref{tilde_F} we have
 \bea     
-\tilde F_3 \,\leq\,  \frac{c_5}{L} R_{\mathcal{J}_{o,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}). 
+\tilde F_3 \,\leq\,  \frac{c_5}{L} R_{\mathcal{J}_{o,l}}(\rev{\mathcal F_{\tilde t}^{\star}}).
 \bea   
 
 \end{corollary}
@@ -7095,10 +7130,10 @@ Then we have
 \beq 
 &\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast) \\ c_0\Delta^2(f - f^*)\le \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\bar Z_{ij}(f) - Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
 &\le 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast) \\ c_0\Delta^2(f - f^*)\le \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} Z_{ij} (f) \Big) \cdot \indic{\Omega_\beta}} \\
-& \le 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast) \\ c_0\Delta^2(f - f^*)\le \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} f(x_{ij}^*)\Big) \cdot \indic{\Omega_\beta}} \\
-&\,=\,\frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}).
+& \le 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast) \\ c_0\Delta^2(f - f^*)\le \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)}\Big) \cdot \indic{\Omega_\beta}} \\
+&\,\rev{\leq}\,\frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}}).
 \beq 
-Where the last equality follows from Lemma~\ref{side_lemma_for_block}.
+\rev{The contraction uses $Z_{ij}(f^*)=0$. The last inequality follows from the indicator-free argument in Lemma~\ref{side_lemma_for_block}, applied to the centered star class.}
 \end{proof}
 
 
@@ -7152,8 +7187,8 @@ Then by Corollary~\ref{col_tilde_A_2}, \ref{col_tilde_A_1}, \ref{col_tilde_A_3},
 \beq
  \label{3_exp:bridge}
 &\sP\paren{c_0\Delta^2(\hat f - f^*) >\tilde t^2}  
-\\ & \,\leq\, \frac{24c_5}{\dbtilde t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}) \\
-&\qquad + R_{\mathcal{J}_{o,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2})\Big) \\
+\\ & \,\leq\, \frac{24c_5}{\dbtilde t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}}) \\
+&\qquad + R_{\mathcal{J}_{o,l}}(\rev{\mathcal F_{\tilde t}^{\star}})\Big) \\
 & \quad + \frac{16c_4}{\dbtilde t^2}\frac{s\log n\log T_n}{n}. 
 \beq  
 
@@ -7161,13 +7196,21 @@ Based on the results in Lemma~\ref{lem_huber_rate} and Lemma~\ref{lemma_beta_dec
 \beq
 \label{c_final_rate}
 &\sP\paren{c_0\Delta^2(\hat f - f^*) > \tilde t^2}  
-\\ & \,\leq\, \frac{24c_5}{\dbtilde t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}) \\
-&\qquad + R_{\mathcal{J}_{o,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2})\Big) \\
+\\ & \,\leq\, \frac{24c_5}{\dbtilde t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}}) \\
+&\qquad + R_{\mathcal{J}_{o,l}}(\rev{\mathcal F_{\tilde t}^{\star}})\Big) \\
 & \quad + \frac{16c_4}{t^2}\frac{s\log n\log T_n}{n} + \frac{1}{\dbtilde t^2}\frac{3}{n}.
-\\&\,\leq\, \frac{24c_5}{\dbtilde t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}) \\
-&\qquad + R_{\mathcal{J}_{o,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2})\Big) \\
+\\&\,\leq\, \frac{24c_5}{\dbtilde t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}}) \\
+&\qquad + R_{\mathcal{J}_{o,l}}(\rev{\mathcal F_{\tilde t}^{\star}})\Big) \\
 & \quad + \frac{c_{12}}{\dbtilde t^2}\frac{s\log n\log T_n}{n}.
 \beq 
+
+\rev{By \eqref{eq_rademacher_translation}, for either an even or an odd block $\mathcal J$,
+\[
+R_{\mathcal J}(\mathcal F_{\tilde t}^{\star})
+=R_{\mathcal J}\left(\text{Star}(\gF,f^*)\cap
+\set{c_0\Delta^2(f-f^*)\leq\tilde t^2}\right).
+\]
+Thus the centered widths above equal the affine star-class widths used in the theorem statement and in the application of Lemma~\ref{lem_17}.}
 
 By Lemma~\ref{lem_17}, we have 
 \bea 
