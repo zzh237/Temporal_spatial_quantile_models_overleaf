@@ -371,8 +371,17 @@ Coefficient consistency requires population prediction error divided by
 $v_{\min}$ to tend to zero in probability. This adds no sample restricted-
 eigenvalue assumption and does not establish exact support recovery.
 The T29/T71 risk claims and T84 response-state conditions remain separate.}\\
-T29 & 15 & Linear-rate summary & \deferred & A corrected summary must be derived from
-the unresolved weighted design and block normalization.\\
+% Original T29 disposition retained for provenance:
+% T29 & 15 & Linear-rate summary & \deferred & A corrected summary must be derived from
+% the unresolved weighted design and block normalization.\\
+T29 & 15 & Linear-rate summary & \pairreviewed &
+\textcolor{deferredred}{Replaced the parameter-free rate summary by an explicit
+calculation for the theorem's displayed expression. Under the stated valid
+block-size conditions, $A\leq2\sqrt{Cc_2Lnm}$; the dependence on $B,V,d,L,T_n$
+and the spatial remainder is retained. The condition $s=o(n)$ alone is
+insufficient. The T28 population Gram and coefficient comparison are preserved.
+This local calculation does not validate the protected T04 block construction
+or the T65/T71 risk chain and T84 response-state assumptions.}\\
 % Original T30 disposition retained for provenance:
 % \rowcolor{lightgray}T30 & 16 & Graph total-variation scaling & \deferred & Changing
 % the exponent must be propagated through the graph theorem and proof.\\
