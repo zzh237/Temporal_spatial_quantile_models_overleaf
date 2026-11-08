@@ -412,8 +412,16 @@ the symmetric union graph and the same OR rule as the introduction.
 The actual experimental graph-construction implementation remains
 unverified and requires the project code or author confirmation.
 This does not establish the remaining KNN risk claims; T31 remains open.}\\
-\rowcolor{lightgray}T32 & 17, 68--75 & $K$-NN norm scaling & \deferred & Normalizing the norm
-changes the theorem statement and all downstream rate comparisons.\\
+% Original T32 disposition retained for provenance:
+% \rowcolor{lightgray}T32 & 17, 68--75 & $K$-NN norm scaling & \deferred & Normalizing the norm
+% changes the theorem statement and all downstream rate comparisons.\\
+\rowcolor{lightgray}T32 & 17, 68--75 & $K$-NN norm scaling &
+\deferred & \textcolor{deferredred}{The normalization defect and its
+downstream uses are repaired by the published conditional,
+original-weight Huber training and prediction result in T73--T75.
+This replacement does not prove the original same-order squared-risk
+claim; its retention or withdrawal requires author review.
+T84 model applicability remains separate.}\\
 % Original T33 disposition retained for provenance:
 % T33 & 17 & Undefined graph radius and polylogarithmic factor & \deferred & A valid
 % replacement depends on the unresolved graph-TV scaling and theorem
