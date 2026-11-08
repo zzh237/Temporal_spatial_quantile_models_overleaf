@@ -1209,7 +1209,7 @@ Let \( \{(x_{ij}, y_{ij})\}_{i=1,j=1}^{n,m_i} \) follow the Assumptions with \( 
 \bea 
 \norm{\hat{\theta}_{V_n} - \theta^*}^2 \,=\, O_p \paren{ \frac{\text{poly}(B)\text{poly}(\log(nm))}{mn}V_n \,+\, \frac{\text{poly}(B)\text{poly}(\log(nm))}{n}\,+\, \frac{\text{poly}(B)\cdot d\cdot \text{poly}(\log n)\log(T_n)}{n}},
 \bea  
-and provided that \( V_n \,\geq\, \|V_{G^*}\| \). In addition, \( \hat{f}_{V_n}\), defined in \eqref{np_knn1}--\eqref{np_knn2} satisfies that
+and provided that \( V_n \,\geq\, \rev{\|\nabla_{G_K}\theta^*\|_1} \). In addition, \( \hat{f}_{V_n}\), defined in \eqref{np_knn1}--\eqref{np_knn2} satisfies that
 
 % \[
 % \Delta^2(\hat{f}_{V_n} - f^*)  = O_p\left(\frac{\text{poly}(B)\text{poly}(\log(nm))}{mn}V_n + \frac{\text{poly}(B)\text{poly}(\log(nm))}{n}+ \frac{d\cdot \text{poly}(\log n)\log(T_n)}{n} + \frac{\paren{\text{poly}(\log(nm))}^{1/d}}{(nm)^{1/d}} \right)
@@ -1220,7 +1220,7 @@ and provided that \( V_n \,\geq\, \|V_{G^*}\| \). In addition, \( \hat{f}_{V_n}\
 \end{theorem}
 
 \rev{For the fixed targets and choice of $K$ covered by Lemma~\ref{lem_knn_bv_graph_tv}, a sufficient deterministic radius is $V_n=C_{f^*}(\sum_{i=1}^n m_i)^{1-1/d}K^{1+1/d}$ with a sufficiently large fixed $C_{f^*}>0$. The lemma proves $\mathbb P\{\|\nabla_{G_K}\theta^*\|_1\leq V_n\}\to1$. Since $\sum_i m_i\asymp nm$, this choice makes $V_n/(nm)$ of order $(nm)^{-1/d}K^{1+1/d}$.}
-Theorem~\ref{Theorem_5} then indicates that, for temporal-spatial data and in terms of the Huber-type loss defined in \eqref{huber_def}, the \(K\)-NN-FL estimator presented in \eqref{np_knn1} and \eqref{np_knn2} attains a convergence rate of \(\text{poly}(nm) \text{poly}(B)\cdot (nm)^{-1/d} + \log(n)d \cdot n^{-1}\). With respect to the \(\ell_2\) loss, this rate is \(\text{poly}(nm) \text{poly}(B)\cdot (nm)^{-1/d} + \log(n)d \text{poly}(B) \cdot n^{-1}\), where \(\text{poly}(\cdot)\) denotes a polynomial function. This achieves an upper bound on the convergence rate, \((nm)^{-1/d}\), as detailed in
+Theorem~\ref{Theorem_5} then indicates that, for temporal-spatial data and in terms of the Huber-type loss defined in \eqref{huber_def}, the \(K\)-NN-FL estimator presented in \eqref{np_knn1} and \eqref{np_knn2} attains a convergence rate of \(\rev{\text{poly}(\log(nm))} \text{poly}(B)\cdot (nm)^{-1/d} + \log(n)d \cdot n^{-1}\). With respect to the \(\ell_2\) loss, this rate is \(\rev{\text{poly}(\log(nm))} \text{poly}(B)\cdot (nm)^{-1/d} + \log(n)d \text{poly}(B) \cdot n^{-1}\), where \(\text{poly}(\cdot)\) denotes a polynomial function. This achieves an upper bound on the convergence rate, \((nm)^{-1/d}\), as detailed in
 % Theorem 6 of \cite{ye2021non} and 
 Theorem 3 of \cite{padilla2023temporal} for the quantile \(K\)-NN fused lasso, but extends the applicability to include dependent measurements and spatial noise.
 
@@ -5471,7 +5471,7 @@ Suppose in addition that \( K \asymp \log^{2+\mu}(nm) \) for some \( \mu > 0 \).
 \bea  
 
 
-and provided that \( V_n \,\geq\, \|V_{G^*}\| \). 
+and provided that \( V_n \,\geq\, \rev{\|\nabla_{G_K}\theta^*\|_1} \).
 
 
 In addition, based on the result from Lemma~\ref{knn_f}, \( \hat{f}_{V_n} \), defined in \eqref{np_knn1}--\eqref{np_knn2} satisfies that

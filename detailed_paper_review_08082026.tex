@@ -400,9 +400,18 @@ depends on the actual implementation; choosing ``and'' or ``or'' without the
 code would be speculative.\\
 \rowcolor{lightgray}T32 & 17, 68--75 & $K$-NN norm scaling & \deferred & Normalizing the norm
 changes the theorem statement and all downstream rate comparisons.\\
-T33 & 17 & Undefined graph radius and polylogarithmic factor & \deferred & A valid
-replacement depends on the unresolved graph-TV scaling and theorem
-normalization.\\
+% Original T33 disposition retained for provenance:
+% T33 & 17 & Undefined graph radius and polylogarithmic factor & \deferred & A valid
+% replacement depends on the unresolved graph-TV scaling and theorem
+% normalization.\\
+T33 & 17 & Undefined graph radius and polylogarithmic factor & \pairreviewed &
+\textcolor{deferredred}{Replaced two undefined graph-radius expressions by the
+existing graph-TV feasibility condition $V_n\geq\|\nabla_{G_K}\theta^*\|_1$
+and corrected two polynomial factors to $\operatorname{poly}(\log(nm))$.
+The published T30 fixed-target graph-TV bound and deterministic-radius sentence
+are preserved. These local corrections do not validate the complete KNN risk,
+Huber-to-squared-loss transfer, T32/T73, T84 or historical implementation;
+the separate comparator route is not required to make the truth feasible.}\\
 \rowcolor{lightgray}T34 & 17 & Out-of-sample extension and ties & \deferred & The
 tie-breaking rule and admissible $K$ are method-design choices not documented
 in the source.\\
