@@ -22,6 +22,7 @@
 \newcommand{\applied}{\textcolor{appliedgreen}{\textbf{Applied}}}
 \newcommand{\partialapplied}{\textcolor{partialorange}{\textbf{Partially applied}}}
 \newcommand{\deferred}{\textcolor{deferredred}{\textbf{Deferred}}}
+\newcommand{\pairreviewed}{\textcolor{deferredred}{\textbf{Pair-reviewed; user review pending}}}
 
 \title{Disposition of the Detailed Paper Review\\
 \large Conservative Revision Dated 8 August 2026}
@@ -49,6 +50,8 @@ curvature and low-dimensional Lipschitz spatial fluctuation were not adopted.
 pagination of the original manuscript reviewed in
 \path{detailed_paper_review_addressed.pdf}, not to pages in this disposition
 report.
+
+\textcolor{deferredred}{\textbf{Team revision update (7 November 2026).} The original section grouping and existing Applied labels below are retained. A Pair-reviewed entry records agreement by the fixer and independent domain reviewer; it does not mean that the author has manually reviewed the new changes.}
 
 \begin{landscape}
 \section*{Part I. Applied changes}
@@ -358,8 +361,14 @@ part of the asymptotic proof and cannot be safely changed in isolation.\\
 \rowcolor{lightgray}T50 & 34--35 & Independence within coupled blocks & \deferred & A
 correction requires either a new conditional-independence assumption or a
 cluster-level symmetrization proof.\\
-T51 & 36--37 & Curvature outside the local neighborhood & \deferred & Rescaling the
-Huber threshold and constants depends on the disputed curvature assumption.\\
+% Original T51 disposition retained for provenance:
+% T51 & 36--37 & Curvature outside the local neighborhood & \deferred & Rescaling the
+% Huber threshold and constants depends on the disputed curvature assumption.\\
+T51 & 36--37 & Curvature outside the local neighborhood & \pairreviewed &
+\textcolor{deferredred}{The current and April manuscripts already contain the valid
+$R$-dependent constant. Corrected the positive integration range and an indicator
+parenthesis; expanded the negative tail and the conditional-risk argument with
+the existing weights. No Huber rescaling or new assumption was needed.}\\
 \rowcolor{lightgray}T54 & 42--43 & Conditional symmetrization & \deferred & The required
 within-cluster independence is not established, and the alternative is a new
 cluster-level argument.\\

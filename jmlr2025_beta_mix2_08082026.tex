@@ -2344,7 +2344,7 @@ above equation with respect to $y_{ij}$ conditioned on $x_{ij}$ on both sides, w
 \beq 
 Z_{ij}( f) - Z_{ij}(f^*) &\,=\, \Ept{\delta, e \mid x_{ij}}{  \rho_{\tau}(y_{ij}  - f(x_{ij})) - \rho_{\tau}(y_{ij}  - f^*(x_{ij}))} \\
 &\,=\, \Ept{\delta, e \mid x_{ij}}{-h(x_{ij})(\tau-I(y_{ij}  - f^*(x_{ij}) \,\le\, 0))} \\
-&+ \Ept{\delta, e \mid x_{ij}}{\int_{0}^{h(x_{ij})} \set{I(y_{ij}  - f^*(x_{ij}) \le  z) - I(y_{ij}  - f^*(x_{ij}))\le  0}dz}\\
+&+ \Ept{\delta, e \mid x_{ij}}{\int_{0}^{h(x_{ij})} \set{I(y_{ij}  - f^*(x_{ij}) \le  z) - \rev{I(y_{ij}  - f^*(x_{ij}) \le 0)}}dz}\\
 & \rev{\labelrel={eq_lemma12_vanish}} 0 + \int_{0}^{h(x_{ij})} \set{F_{y_{ij}|x_{ij}}( f^*(x_{ij}) + z) - F_{y_{ij}|x_{ij}}( f^*(x_{ij}))}dz \\
 &\,=\, \int_{0}^{h(x_{ij})} \set{F_{y_{ij}|x_{ij}}( f^*(x_{ij}) + z) - F_{y_{ij}|x_{ij}}( f^*(x_{ij}))}dz,  \\
 \beq for all $i=1, \dots, n$. \rev{The equality \eqref{eq_lemma12_vanish} holds by the exact calibration \eqref{exact_calibration}, which gives $\tau - \mathbb{P}\paren{y_{ij} \,\le\, f^*(x_{ij}) \mid x_{ij}} \,=\, 0$, so that the linear term vanishes.}
@@ -2408,12 +2408,12 @@ Z_{ij}( f) - Z_{ij}(f^*) &\,=\, \Ept{\delta, e \mid x_{ij}}{  \rho_{\tau}(y_{ij}
 
 \begin{lemma}
 \label{lemma13}
-Under Assumption~\ref{assumptionA}, with $R$ and $\ubar{f}$ from Assumption~\ref{assumptionA}, let
+\rev{Under Assumptions~\ref{Assumption 1.} and~\ref{assumptionA},} with $R$ and $\ubar{f}$ from Assumption~\ref{assumptionA}, let
 \beq
 \label{def_C0}
 C_0 \,\coloneqq\, \min\left\{\frac{\ubar{f}}{2},\; \frac{R\ubar{f}}{4}\right\}.
 \beq
-Then for all $f, f^* \in \mathcal{F}$, we have
+\rev{Then, for the fixed target $f^* \in \mathcal{F}$ and every $f \in \mathcal{F}$, we have}
 \bea
 Z(f) \,\ge\, C_0 \Delta_{nm}^2(f - f^*).
 \bea
@@ -2425,7 +2425,7 @@ Let $h(x_{ij}) \,\coloneqq\, f(x_{ij}) - f^*(x_{ij})$. By Lemma~\ref{lemma12}, w
 Z_{ij}(f) - Z_{ij}(f^*) \,=\, \int_{0}^{h(x_{ij})} \set{F_{y_{ij}|x_{ij}}(f^*(x_{ij}) + z) - F_{y_{ij}|x_{ij}}(f^*(x_{ij}))}dz.
 \bea
 
-First, suppose $h(x_{ij}) \in [0, R]$. By Assumption~\ref{assumptionA}, \rev{taking $u \,=\, z$}, for any $z$ with $\abs{z} \,\le\, R$, we have $F_{y_{ij}|x_{ij}}(f^*(x_{ij}) + z) - F_{y_{ij}|x_{ij}}(f^*(x_{ij})) \,\ge\, \ubar{f}\, z$. Therefore,
+First, suppose $h(x_{ij}) \in [0, R]$. By Assumption~\ref{assumptionA}, \rev{taking $u \,=\, z$}, \rev{for any $z$ with $0 \,\le\, z \,\le\, h(x_{ij}) \,\le\, R$,} we have $F_{y_{ij}|x_{ij}}(f^*(x_{ij}) + z) - F_{y_{ij}|x_{ij}}(f^*(x_{ij})) \,\ge\, \ubar{f}\, z$. Therefore,
 \bea
 Z_{ij}(f) - Z_{ij}(f^*) \,\geq\, \int_{0}^{h(x_{ij})} \ubar{f}\, z \, dz \,=\, \frac{\ubar{f}\, h(x_{ij})^2}{2}.
 \bea
@@ -2445,17 +2445,59 @@ Z_{ij}(f) - Z_{ij}(f^*) &\,\ge\, \int_{R/2}^{h(x_{ij})} \set{F_{y_{ij}|x_{ij}}(f
 \beq
 where the first inequality holds since the integrand is non-negative on $[0, R/2]$, the second by monotonicity of $F_{y_{ij}|x_{ij}}$, and the penultimate uses $h(x_{ij}) - R/2 \,\ge\, h(x_{ij})/2$ (since $h(x_{ij}) > R$).
 
-The case $h(x_{ij}) < -R$ is analogous (by reversing the direction of integration) and yields the same bound $Z_{ij}(f) - Z_{ij}(f^*) \,\ge\, C_0 \abs{h(x_{ij})}$.
+\begin{revision}
+Finally, suppose $h(x_{ij}) < -R$. Reversing the direction of integration gives
+\bea
+Z_{ij}(f) - Z_{ij}(f^*)
+&\,=\, \int_{h(x_{ij})}^{0}
+\set{F_{y_{ij}|x_{ij}}(f^*(x_{ij})) - F_{y_{ij}|x_{ij}}(f^*(x_{ij}) + z)}\,dz\\
+&\labelrel\ge{eq_curvature_negative_restrict} \int_{h(x_{ij})}^{-R/2}
+\set{F_{y_{ij}|x_{ij}}(f^*(x_{ij})) - F_{y_{ij}|x_{ij}}(f^*(x_{ij}) + z)}\,dz\\
+&\labelrel\ge{eq_curvature_negative_monotone}
+(\abs{h(x_{ij})}-R/2)
+\set{F_{y_{ij}|x_{ij}}(f^*(x_{ij})) - F_{y_{ij}|x_{ij}}(f^*(x_{ij})-R/2)}\\
+&\labelrel\ge{eq_curvature_negative_local}
+(\abs{h(x_{ij})}-R/2)\frac{R\ubar{f}}{2}\\
+&\labelrel\ge{eq_curvature_negative_linear}
+\frac{R\ubar{f}}{4}\abs{h(x_{ij})}
+\,\ge\, C_0\abs{h(x_{ij})}.
+\bea
+Inequality \eqref{eq_curvature_negative_restrict} holds because the omitted
+integrand is nonnegative on $[-R/2,0]$.
+Inequality \eqref{eq_curvature_negative_monotone} follows from monotonicity of the CDF
+for $z\le -R/2$. Inequality \eqref{eq_curvature_negative_local} uses
+Assumption~\ref{assumptionA} at $u=-R/2$, and
+\eqref{eq_curvature_negative_linear} uses
+$\abs{h(x_{ij})}-R/2\ge\abs{h(x_{ij})}/2$.
+\end{revision}
 
-Combining the four cases, for all $(i,j)$ we have
+\rev{For every real $h$, $\min\{\abs{h},h^2\}\le h^2$ and
+$\min\{\abs{h},h^2\}\le\abs{h}$. Applying the first comparison to
+$\abs{h(x_{ij})}\le R$ and the second to $\abs{h(x_{ij})}>R$,
+the four cases therefore give, for every $R>0$ and all $(i,j)$,}
 \bea
 Z_{ij}(f) - Z_{ij}(f^*) \,\ge\, C_0 \min\set{\abs{h(x_{ij})}, h(x_{ij})^2}.
 \bea
-Summing over all $(i,j)$ and using $Z_{ij}(f^*) \,=\, 0$, we obtain
+\begin{revision}
+For a fixed $f$, the design--noise independence in
+Assumption~\ref{Assumption 1.} and the model \eqref{eq:data_model} imply
 \bea
-Z(f) \,\ge\, C_0 \Delta_{nm}^2(f - f^*),
+\Ept{\delta,e\mid\{x_{kl}\}}{\hat Z_{ij}(f)}
+\,=\,\Ept{\delta,e\mid x_{ij}}{\hat Z_{ij}(f)}
+\,=\,Z_{ij}(f).
+\bea
+Using \eqref{def_zf}, $Z_{ij}(f^*)=0$, and the original empirical weights,
+we obtain
+\bea
+Z(f)
+&\,=\,\frac{1}{n}\sum_{i=1}^{n}\frac{1}{m_i}
+\sum_{j=1}^{m_i}Z_{ij}(f)\\
+&\,\ge\,\frac{C_0}{n}\sum_{i=1}^{n}\frac{1}{m_i}
+\sum_{j=1}^{m_i}\min\set{\abs{h(x_{ij})},h(x_{ij})^2}\\
+&\,=\,C_0\Delta_{nm}^2(f-f^*),
 \bea
 where $\Delta_{nm}^2(\cdot)$ is the empirical Huber loss defined in \eqref{huber loss}.
+\end{revision}
 \end{proof}
 
 
