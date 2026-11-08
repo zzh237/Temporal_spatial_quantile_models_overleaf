@@ -965,22 +965,41 @@ Equation~\eqref{eq172} outlines a constrained version of Quantile Trend Filterin
 \label{Theorem_2}
 \begin{revision}
 Consider \(k\geq1\) and observations \(\{(x_{ij},y_{ij})\}_{i=1,j=1}^{n,m_i}\) satisfying Assumptions~\ref{Assumption 1.}--\ref{ass_tf}. Let \(f^*(x_{ij})\) be the conditional \(\tau\)-quantiles of \(y_{ij}\). Choose \(V\geq V^*\) with \(V>0\) and \(V=\gO(1)\), and let \(\hat f\in F_k(V)\) be the estimator defined in \eqref{eq172}, with \(J_k(f)=TV(f^{(k-1)})\).
-\end{revision}
-It holds that
-% \beq 
-% \Delta^2(\hat f - f^*) = O_p \paren{\frac{ \max\set{B^{\frac{6k+1}{2k+1}}, 
-%  B^{\frac{2k-1}{2k+1}}} {\log(n)}^{\frac{6k+1}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}} + \frac{s\cdot\text{poly}(\log n) \log(T_n)}{n}}, \,\,\,\text{and}\,\,\,
-% \beq    
-\beq 
+Suppose also that all hypotheses of Lemma~\ref{lem_huber_rate} hold for
+this class and estimator for all sufficiently large $n$, with
+$k,c,C,C_\beta,C_0,c_0$ fixed and $0<c_0<C_0$.
+Write
+\[
+S=\max\{V,B\},\qquad q=\max\{1,B\},\qquad
+L=\left\lceil\frac{2\log n}{C_\beta}\right\rceil.
+\]
+Then
+\beq
 \label{tf_rate}
-\left\|\hat f - f^*\right\|_2^2 \,=\, O_p \paren{\frac{ \max\set{B^{\frac{6k+1}{2k+1}},
- B^{\frac{2k-1}{2k+1}}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}} \,+\, \frac{\max\set{B,1}\cdot s\cdot\text{poly}(\log n) \log(T_n)}{n}}.
-\beq  
-
+\|\hat f-f^*\|_2^2
+\,=\,O_P\left(
+S^{2/(2k+1)}q^{4k/(2k+1)}
+\left(\frac{L}{nm}\right)^{2k/(2k+1)}
++\frac{q^2L}{n}
+\right).
+\beq
+\end{revision}
 \end{theorem}
 
 
-Theorem~\ref{Theorem_1} elucidates that, within the function classes defined in \eqref{F_1} and \eqref{F_2}, the estimator attains a convergence rate, disregarding logarithmic factors, characterized by a Huber type loss of order \((mn)^{-\frac{2k}{2k+1}} + sn^{-1}\), assuming \(V \,\geq\, TV((f^*)^{(k-1)})\),  and with the proper choice of $\log(T_n) \,=\, o(n)$ which is discussed in Example~\ref{exp_tail}. Thus, \eqref{tf_rate} indicates a convergence rate for \(\hat{f}\) of \((mn)^{-\frac{2k}{2k+1}} + sn^{-1}\), excluding logarithmic considerations and letting $L = o(mn)$.
+\begin{revision}
+If $B=\gO(1)$, the bounded radius $V=\gO(1)$ and fixed $C_\beta>0$
+in Theorem~\ref{Theorem_2} give
+\[
+\|\hat f-f^*\|_2^2
+=O_P\left\{
+\left(\frac{\log n}{nm}\right)^{2k/(2k+1)}
++\frac{\log n}{n}
+\right\}.
+\]
+The first term comes from the localized complexity bound and the second
+from the spatial remainder.
+\end{revision}
 
 Previous research \cite{madrid2022risk} determined the convergence rate of the univariate quantile Trend Filtering estimator under fixed design and \(m_i = O(1)\), and \cite{zhang2023risk} developed the convergence rate for quantile regression in the context of additive Trend Filtering with \(m_i = O(1)\). Our convergence rate \eqref{tf_rate} addresses a more intricate scenario that includes temporal-spatial dependence, thereby expanding upon prior rates to accommodate varying \(m_i\)'s, dependent data, and temporal-spatial noise.
 
@@ -2299,39 +2318,39 @@ in terms of the corresponding blockwise Rademacher width terms.
 % \bea 
 % Z(f) =  \ept{\hat Z(f)|\set{x_{ij}}}, \quad \tilde Z(f) \coloneqq  \ept{\hat Z(f)|\set{\delta_i},\set{x_{ij}}}, \quad \bar Z(f) \coloneqq  \ept{\hat Z(f)}. 
 % \bea 
-\step{Step 4} 
-In details, with the above two steps, under Assumptions~\ref{Assumption 1.}, \ref{assumptionA}, \ref{assump:lip}, and \ref{ass:tail_multi_d}, the following results hold for any $t > 0$, 
+\step{Step 4}
+\begin{revision}
+Under the hypotheses of Lemma~\ref{lem_huber_rate}, use the auxiliary
+response groups $\mathcal A_r$ in
+Lemma~\ref{lem_nonconvex_auxiliary_groups}. Direct aggregation with
+the original empirical weights gives, for every $t>0$,
 \bea
-&\sP\paren{c_0\Delta^2(\hat f - f^*) > t^2}  
-\\ & \,\leq\, \frac{c_5}{t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2})+ R_{\mathcal{J}_{o,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2})\Big) \,+\, \frac{c_4}{t^2}\frac{s\log n\log T_n}{n}, 
-\bea  where $s = |S|$ is the intrinsic dimension from Assumption~\ref{assump:lip} (the number of active coordinates of $\Pi$), $T_n$ is from Assumption~\ref{ass:tail_multi_d}. Constant $c_{4}$ depends on $\tilde c_0$ in Assumption~\ref{ass:tail_multi_d}, $C_{\beta}$ in Assumption~\ref{ass_c_beta}, and $c_1$, $c_2$ in \eqref{beta_constants}, and $c_5$ depends on constants $C$ and $c$ in Assumption~\ref{asm:m}.
+\mathbb P\{c_0\Delta^2(\hat f-f^*)>t^2\}
+&\le\frac1n+\frac{9C}{cLt^2}
+ \sum_{r=1}^L R_{\mathcal A_r}
+ \left(\{f-f^*:f\in\mathcal F,\ c_0\Delta^2(f-f^*)\le t^2\}\right)\\
+&\quad+\frac{4\max\{1,2B\}L}{(C_0-c_0)nt^2}.
+\bea
+The term $1/n$ bounds the failure probability of the common response
+coupling. The remaining terms follow by summing the three conditional
+loss components and allocating $\ell(f)/L$ to each auxiliary group.
+\end{revision}
+
 
 \step{Step 5}
-\rev{By Lemma~\ref{lem_l2}, we have}
-\bea
-&R_{\mathcal{J}_{e,l}}\left(\gF\cap \set{f: c_0\Delta^2(f - f^*) \leq  t^2}\right) \,\leq\, \rev{\sqrt{2}}\,R_{\mathcal{J}_{e,l}}\left(\gF\cap \set{f:\norm{f-f^*} \leq  c_0^{-1/2}\cdot b(B)\cdot t}\right), \,\,\,\text{and}\,\,\, \\
-&R_{\mathcal{J}_{o,l}}\left(\gF\cap \set{f: c_0\Delta^2(f - f^*) \leq  t^2}\right) \,\leq\, \rev{\sqrt{2}}\,R_{\mathcal{J}_{o,l}}\left(\gF\cap \set{f:\norm{f-f^*} \leq  c_0^{-1/2}\cdot b(B)\cdot t}\right),
-\bea 
-where $b(B) \,=\, \max\set{B^{1/2},1}$ is a constant that depends on $B$, with $B$ introduced in \eqref{F_2}. 
-
-Let 
-\bea
-r_n^2 &\,\asymp\, \sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot r_n\right)\right) \\
-&\qquad + R_{\mathcal{J}_{o,l}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot r_n\right)\right)\Big) \,+\, \frac{s\cdot \text{poly}(\log n)\log T_n}{n}.
-\bea
-
-Then we get the convergence rate of 
-\beq
-\label{eq828}
-\Delta^2(\hat f - f^*)  \,=\, O_p \left(r_n^2\right).
-\beq
-This follows from Lemma~\ref{lem_huber_rate} and Corollary~\ref{cor_op}. 
- 
-% Then we have 
-% \bea 
-% \Delta^2(\hat{f} - f^*) &= O_p \left(\sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(\mathcal{F}\cap \left\{f: \norm{f-f^*}_2\leq c_0^{-\frac{1}{2}}\cdot b(B)\cdot t\right\}\right)\right.\right. \\
-% &\quad \left.\left. +R_{\mathcal{J}_{o,l}}\left(\mathcal{F}\cap \left\{f: \norm{f-f^*}_2\leq c_0^{-\frac{1}{2}}\cdot b(B)\cdot t\right\}\right) + \frac{s\cdot\text{poly}(\log n)\log (T_n)}{n}\right)\right).
-% \bea  
+\begin{revision}
+Under the hypotheses of Lemma~\ref{lem_huber_rate}, use
+Lemma~\ref{lem_l2} to convert the Huber-localized widths to
+$L_2(Q)$-localized widths in each auxiliary group. Choose a
+deterministic sequence $r_n>0$ satisfying
+\eqref{eq_op_sufficient_radius} for some constant $A$ independent
+of $n$. Corollary~\ref{cor_op} then gives
+\[
+\Delta^2(\hat f-f^*)\,=\,O_P(r_n^2).
+\]
+Lemma~\ref{lem_17} converts this to
+$\|\hat f-f^*\|_2^2=O_P(b^2(B)r_n^2)$.
+\end{revision}
 
 The details of the proofs of the above steps are provided as follows. 
 
@@ -2472,14 +2491,27 @@ The quantities $\hat Z_{ij}(f)$ (defined in \eqref{348}), $Z_{ij}(f)$ (defined i
 \begin{proof}
 
 For $\hat Z_{ij}(f)$ and $Z_{ij}(f)$, their Lipschitz condition can be seen in the Lemma A.11 of \cite{zhang2023risk}. 
-For 
-\bea r_{ij}(f) \,=\, \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t\mid x_{ij}) - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t |\delta_i, x_{ij})\right\} dt.\bea
-We have 
-\bea 
-&\abs{r_{ij}(f) - r_{ij}(g)} \\ &\,=\,
-\int_{0}^{f(x_{ij}) - g(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t\mid x_{ij}) - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t |\delta_i, x_{ij})\right\} dt.\\
-&\,\leq\, \abs{f(x_{ij}) - g(x_{ij})}. 
-\bea 
+\begin{revision}
+For the remainder, fix $(i,j)$ and write
+$a=f(x_{ij})-f^*(x_{ij})$ and $b=g(x_{ij})-f^*(x_{ij})$.
+Using the same conditional CDF kernels in \eqref{def_rij}, we have
+\bea
+\abs{r_{ij}(f)-r_{ij}(g)}
+&\labelrel = {eq_rij_lip_integral}
+\Bigg|\int_b^a\Big\{
+\mathbb P(y_{ij}\leq f^*(x_{ij})+u\mid x_{ij})\\
+&\qquad-\mathbb P(y_{ij}\leq f^*(x_{ij})+u
+                  \mid\delta_i,x_{ij})\Big\}\,du\Bigg|\\
+&\,\leq\,\int_{\min\{a,b\}}^{\max\{a,b\}}1\,du
+\,=\,|a-b|
+\,=\,|f(x_{ij})-g(x_{ij})|.
+\bea
+Equality \eqref{eq_rij_lip_integral} subtracts the two oriented
+integrals. The inequality uses that the difference of two
+probabilities has absolute value at most one.
+Also, $r_{ij}(f^*)=0$. These facts hold for the same kernels
+evaluated at the copied or ghost design points.
+\end{revision}
 
 \end{proof}
 
@@ -2776,7 +2808,7 @@ Lemma~\ref{lemma:huber loss}--\ref{col_A_3} are used to bound the term \eqref{bo
 
 \begin{lemma}
 \label{lemma:huber loss}
-Let $\hat f, f^* \in \mathcal{F}$ and let $\Omega_\beta$ be as defined in \eqref{event_beta}.
+\rev{Let $\mathcal F$ be a deterministic convex class satisfying \eqref{F_2}, let $f^*\in\mathcal F$, and let $\hat f$ be a measurable minimizer in \eqref{main_est}. Let $\Omega_\beta$ be as defined in \eqref{event_beta}.}
 Let $C_0$ be the constant from Corollary~\ref{extension of lemma13} (defined in \eqref{def_C0}), satisfying $\bar Z(f) \,\ge\, C_0 \Delta^2(f - f^*)$. Let $c_0$ be any constant satisfying
 \beq
 \label{eq_c0_range}
@@ -2786,7 +2818,7 @@ Then for any $t>0$,
 \bea
 \sP\!\left(\{c_0\Delta^2(\hat f-f^*)>t^2\}\cap \Omega_\beta\right)
 \le
-\sP\!\left(\left\{\sup_{\substack{f\in\mathcal F\\ c_0\Delta^2(f-f^*)\le t^2}}\big(\bar Z(f)-\hat Z(f)-\ell(f)\big)>t^2\right\}\cap \Omega_\beta\right),
+\sP\!\left(\left\{\sup_{\substack{f\in\mathcal F\\ c_0\Delta^2(f-f^*)\le t^2}}\big(\bar Z(f)-\hat Z(f)-\ell(f)\big)\rev{\geq}t^2\right\}\cap \Omega_\beta\right),
 \bea
 where $\ell(f)\,\coloneqq\, (C_0-c_0)\Delta^2(f-f^*)$.
 \end{lemma}
@@ -2796,7 +2828,7 @@ where $\ell(f)\,\coloneqq\, (C_0-c_0)\Delta^2(f-f^*)$.
 % &\sP\paren{c_0\Delta^2(\hat f - f^*) > t^2} =  \sP\paren{c_0\Delta^2(\hat f - f^*) > t^2|\Omega_\beta} \sP\paren{\Omega_\beta} + \sP\paren{c_0\Delta^2(\hat f - f^*) > t^2|\Omega_\beta^c} \sP\paren{\Omega_\beta^c} \\
 % &\leq \sP\paren{c_0\Delta^2(\hat f - f^*) > t^2|\Omega_\beta} + \sP\paren{\Omega_\beta^c}.   
 % \bea 
-    Assume $c_0\Delta^2(\hat f - f^*) > t^2 $, where $c_0$ satisfies \eqref{eq_c0_range}. We know $\Delta^2$ is continuous.  
+    Assume $c_0\Delta^2(\hat f - f^*) > t^2 $, where $c_0$ satisfies \eqref{eq_c0_range}. \rev{The map $\mu\mapsto\Delta^2(\mu(\hat f-f^*))$ is continuous on $[0,1]$ by dominated convergence, since $|\hat f-f^*|\le2B$.}  
     Next, define $g: \bracket{0,1} \rightarrow \R$ as $g(\mu) \,=\, c_0\Delta^2((1-\mu)f^* + \mu\hat f - f^*)$. Clearly, $g$ is a continuous function with $g(0) \,=\, 0$ and $g(1) \,=\, c_0\Delta^2(\hat f - f^*)$.  Therefore, there exists $\mu_{\hat f} \in \bracket{0,1}$ such that $g(\mu_{\hat f}) \,=\, t^2$. We then let $\tilde f \,=\, (1-\mu_{\hat f}) f^* + \mu_{\hat f}\hat f$, so that by construction $c_0\Delta^{2}(\tilde f-f^*) \,=\, t^2$.
 
  Then we have 
@@ -2827,7 +2859,7 @@ The \eqref{in377} follows by expression in the line~\eqref{eq436}.
 Thus, we have 
 \bea
 \sP\paren{\set{c_0\Delta^2(\hat f - f^*) > t^2} \cap \Omega_\beta}
-\le & \sP\paren{\set{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\paren{\bar Z(f) - \hat Z(f) -\ell(f)} > t^2} \cap \Omega_\beta}.
+\le & \sP\paren{\set{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\paren{\bar Z(f) - \hat Z(f) -\ell(f)} \rev{\geq} t^2} \cap \Omega_\beta}.
 \bea 
 % \bea
 % \sP\paren{c_0\Delta^2(\hat f - f^*) > t^2} \le & \sP\paren{ \sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\paren{Z(f) - \hat Z(f)} + \sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\paren{\bar Z(f) - Z(f)} > t^2} \\
@@ -2887,7 +2919,7 @@ To control the quantity on the right-hand side, we apply Markov's inequality and
 
 \begin{theorem}[Conversion of Huber loss]
 Let $\hat f, f^* \in \mathcal{F}$, let $\Omega_\beta$ be defined in \eqref{event_beta}. Suppose the distribution of $\{(x_{ij}, y_{i,j})\}_{i=1,j=1}^{n,m_i}$  obey Assumption~\ref{assumptionA},  where $c_0$ satisfies \eqref{eq_c0_range}, and $\ell(f)$ is defined in \eqref{def_df}, 
- the following inequality is true for any $t > 0$, 
+\rev{Assume also the hypotheses of Lemma~\ref{lemma:huber loss}, and, for this decomposition, that the $2L$ even and odd index sets are nonempty and form a partition of $[n]$. The following inequality holds for any $t>0$:} 
 \beq
 \label{inq_a1a2a3}
 &\sP\paren{\set{c_0\Delta^2(\hat f - f^*) > t^2} \cap \Omega_\beta} \\
@@ -2905,17 +2937,17 @@ By Lemma~\ref{lemma:huber loss}, it is true that
 
 \bea 
 &\sP\paren{\set{c_0\Delta^2(\hat f - f^*) > t^2} \cap \Omega_\beta} \\ & \labelrel\le{in505} 
-\sP\paren{\set{  \sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\paren{\bar Z(f) - \hat Z(f) -\ell(f)} > t^2} \cap \Omega_\beta} 
+\sP\paren{\set{  \sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\paren{\bar Z(f) - \hat Z(f) -\ell(f)} \rev{\geq} t^2} \cap \Omega_\beta} 
 \\& =  \sP\Bigg(\left\{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\left(\frac{1}{n}\sum_{l=1}^{L} \sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar Z_{ij}(f) - \hat Z_{ij}(f) - \frac{\ell(f)}{2}\right.\right.\\
-&\quad + \left.\left.\frac{1}{n}\sum_{l=1}^{L} \sum_{i \in \mathcal{J}_{o,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar Z_{ij}(f) - \hat Z_{ij}(f) - \frac{\ell(f)}{2}\right) > t^2\right\} \cap \Omega_\beta\Bigg)\\
-\\&\leq \sP\left(\left\{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\left(\frac{1}{n}\sum_{l=1}^{L} \sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar Z_{ij}(f) - \hat Z_{ij}(f) - \frac{\ell(f)}{2}\right) > \frac{t^2}{2}\right\} \cap \Omega_\beta\right)\\
-&\quad + \sP\left(\left\{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\left(\frac{1}{n}\sum_{l=1}^{L} \sum_{i \in \mathcal{J}_{o,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar Z_{ij}(f) - \hat Z_{ij}(f) - \frac{\ell(f)}{2}\right) > \frac{t^2}{2}\right\} \cap \Omega_\beta\right)\\
-&\leq \sum_{l=1}^{L} \sP\left(\left\{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\left(\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar Z_{ij}(f) - \hat Z_{ij}(f) - \frac{\ell(f)}{2L}\right) > \frac{t^2}{2L}\right\} \cap \Omega_\beta\right)\\
-&\quad + \sum_{l=1}^{L} \sP\left(\left\{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\left(\frac{1}{n}\sum_{i \in \mathcal{J}_{o,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar Z_{ij}(f) - \hat Z_{ij}(f) - \frac{\ell(f)}{2L}\right) > \frac{t^2}{2L}\right\} \cap \Omega_\beta\right).
+&\quad + \left.\left.\frac{1}{n}\sum_{l=1}^{L} \sum_{i \in \mathcal{J}_{o,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar Z_{ij}(f) - \hat Z_{ij}(f) - \frac{\ell(f)}{2}\right) \rev{\geq} t^2\right\} \cap \Omega_\beta\Bigg)\\
+\\&\leq \sP\left(\left\{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\left(\frac{1}{n}\sum_{l=1}^{L} \sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar Z_{ij}(f) - \hat Z_{ij}(f) - \frac{\ell(f)}{2}\right) \rev{\geq} \frac{t^2}{2}\right\} \cap \Omega_\beta\right)\\
+&\quad + \sP\left(\left\{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\left(\frac{1}{n}\sum_{l=1}^{L} \sum_{i \in \mathcal{J}_{o,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar Z_{ij}(f) - \hat Z_{ij}(f) - \frac{\ell(f)}{2}\right) \rev{\geq} \frac{t^2}{2}\right\} \cap \Omega_\beta\right)\\
+&\leq \sum_{l=1}^{L} \sP\left(\left\{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\left(\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar Z_{ij}(f) - \hat Z_{ij}(f) - \frac{\ell(f)}{2L}\right) \rev{\geq} \frac{t^2}{2L}\right\} \cap \Omega_\beta\right)\\
+&\quad + \sum_{l=1}^{L} \sP\left(\left\{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\left(\frac{1}{n}\sum_{i \in \mathcal{J}_{o,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar Z_{ij}(f) - \hat Z_{ij}(f) - \frac{\ell(f)}{2L}\right) \rev{\geq} \frac{t^2}{2L}\right\} \cap \Omega_\beta\right).
 \bea 
 Now we analyze each of the terms above, 
 \bea 
-&\sP\left(\left\{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\left(\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar Z_{ij}(f) - \hat Z_{ij}(f) - \frac{\ell(f)}{2L}\right) > \frac{t^2}{2L}\right\} \cap \Omega_\beta\right)
+&\sP\left(\left\{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\left(\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar Z_{ij}(f) - \hat Z_{ij}(f) - \frac{\ell(f)}{2L}\right) \rev{\geq} \frac{t^2}{2L}\right\} \cap \Omega_\beta\right)
 \\& \labelrel\le{in506}  \frac{2L}{t^2}\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\left(\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar Z_{ij}(f) - \hat Z_{ij}(f) - \frac{\ell(f)}{2L}\right)\Big) \cdot \indic{\Omega_\beta}}
 \\ & \labelrel\le{in507} 
 \frac{2L}{t^2}{\E}_{x, \delta, e, x^*, \delta^*, e^*}\Big[\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i}Z_{ij}(f) - \tilde Z_{ij}(f)-\frac{\ell(f)}{2L}+ \\ 
@@ -2928,13 +2960,13 @@ Now we analyze each of the terms above,
 \bea 
 
 
-The inequality \eqref{in506} follows from Markov’s inequality
+\rev{Every displayed block supremum is nonnegative because $f=f^*$ contributes zero.} The inequality \eqref{in506} follows from Markov’s inequality
   ,and the third inequality \eqref{in507} follows from the triangle inequality.   
 
 
 Similarly, we have 
 \bea 
-&\sP\left(\left\{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\left(\frac{1}{n}\sum_{i \in \mathcal{J}_{o,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \bar z_{ij}(f) - \hat z_{ij}(f) - \frac{\ell(f)}{2L}\right) > \frac{t^2}{2L}\right\} \cap \Omega_\beta\right) \\
+&\sP\left(\left\{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\left(\frac{1}{n}\sum_{i \in \mathcal{J}_{o,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \rev{\bar Z_{ij}(f)} - \rev{\hat Z_{ij}(f)} - \frac{\ell(f)}{2L}\right) \rev{\geq} \frac{t^2}{2L}\right\} \cap \Omega_\beta\right) \\
 & \,\leq\, 
 % \frac{2L}{t^2}\underbrace{\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{o,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} Z_{ij}(f) - \tilde Z_{ij}(f) - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}}_{B_1} \\
 % &\quad + \frac{2L}{t^2}\underbrace{\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{o,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \tilde Z_{ij}(f) - \hat Z_{ij}(f)\Big) \cdot \indic{\Omega_\beta}}}_{B_2}
@@ -3232,58 +3264,67 @@ indicator-free bound of Lemma~\ref{side_lemma_for_block}.}
 
 \begin{lemma}[Simplify $\tilde Z_{ij}(f)$]
 \label{lem_for_A1_1}
-For any $f, f^* \in \mathcal{F}$, and $t\in \R$, we have 
+\rev{For every fixed $f\in\mathcal F$, with $f^*\in\mathcal F$ the fixed target, we have almost surely}
 \bea 
 \tilde Z_{ij}(f) \,\coloneqq\, {\E}_{e \mid x_{ij},\delta_i}\left[ \hat Z_{i,j} (f) \right]
 &\,=\, \left( f^*(x_{ij}) - f(x_{ij}) \right)\left(\tau - \mathbb{P}\left( y_{i,j} \,\leq\, f^*(x_{ij}) \,\big|\, x_{ij}, \delta_i \right)\right) \nonumber \\
 &\quad + \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \Big( \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t \,\big|\, x_{ij}, \delta_i) \nonumber \\
 &\qquad\qquad - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) \,\big|\, x_{ij}, \delta_i) \Big) dt. \nonumber
 \bea
-\textcolor{red}{right hand side needs to be conditioning on x}
 \end{lemma}
 
 \begin{proof}
-Let $I(\cdot)$ denote the indicator function. 
-% Start with the decomposition of the quantile loss function. 
-From equation (B.3) in \cite{belloni2011}, for any scalars $w, v$: 
+\begin{revision}
+Let $I(\cdot)$ denote the indicator function. Equation (B.3) in
+\cite{belloni2011} gives, for any real $w,v$,
 \beq
-\rho_{\tau}(w - v) - \rho_{\tau}(w) \,=\, -v(\tau - I(w \,\leq\, 0)) + \int_{0}^v \left(I(w \,\leq\, z) - I(w \,\leq\, 0)\right) dz. \nonumber
+\rho_\tau(w-v)-\rho_\tau(w)
+\,=\, -v\{\tau-I(w\leq0)\}
++\int_0^v\{I(w\leq t)-I(w\leq0)\}\,dt. \nonumber
 \beq
-
-
-Let $w = y_{ij} - f^*(x_{ij})$ and $v = f(x_{ij}) - f^*(x_{ij})$. Substituting these into the equation: 
-% \bea
-% \hat Z_{ij}(f) &=& \rho_{\tau}(y_{ij} - f(x_{ij})) - \rho_{\tau}(y_{ij} - f^*(x_{ij})) \nonumber \\
-% &=& \left( f^*(x_{ij}) - f(x_{ij}) \right)\left(\tau - I(y_{ij} \leq f^*(x_{ij}))\right) \nonumber \\
-% && + \int_{0}^{f(x_{ij}) - f^*(x_{ij})} \left(I(y_{ij} - f^*(x_{ij}) \leq t) - I(y_{ij} - f^*(x_{ij}) \leq 0)\right) dt. \nonumber
-% \bea
+Set $w=y_{ij}-f^*(x_{ij})$ and $v=f(x_{ij})-f^*(x_{ij})$.
+Then
 \bea
-\hat Z_{ij}(f) &\,=\, \rho_{\tau}(y_{ij} - f(x_{ij})) - \rho_{\tau}(y_{ij} - f^*(x_{ij})) \\
-&\,=\, (f^*(x_{ij}) - f(x_{ij}))\left(\tau - I(y_{ij} - f^*(x_{ij}) \,\leq\, 0)\right) \\
-&\quad + \int_{0}^{f(x_{ij}) - f^*(x_{ij})} \left\{I(y_{ij} - f^*(x_{ij}) \,\leq\, t) - I(y_{ij} - f^*(x_{ij}) \,\leq\, 0)\right\} dt.
+\hat Z_{ij}(f)
+&\,=\, -v\{\tau-I(w\leq0)\}
++\int_0^v\{I(w\leq t)-I(w\leq0)\}\,dt.
 \bea
-
-
-
-Take conditional expectation ${\E}_{e \mid x_{ij}, \delta_i}[\cdot]$ on both sides:
-
-For linear term,  
+Conditional on $(x_{ij},\delta_i)$, the value $v$ is fixed. Therefore
 \bea
-&{\E}_{e \mid x_{ij}, \delta_i}\left[ \left( f^*(x_{ij}) - f(x_{ij}) \right)\left(\tau - I(y_{ij} \,\leq\, f^*(x_{ij})) \right) \right] \nonumber \\
-&\,=\, \left( f^*(x_{ij}) - f(x_{ij}) \right)\left( \tau - \mathbb{P}(y_{ij} \,\leq\, f^*(x_{ij}) \,\big|\, x_{ij}, \delta_i \right). \nonumber
+&\mathbb E_{e\mid x_{ij},\delta_i}
+\left[-v\{\tau-I(w\leq0)\}\right]\\
+&\labelrel = {eq_tilde_linear_mean}
+-v\left\{\tau-\mathbb P\left(y_{ij}\leq f^*(x_{ij})
+\mid x_{ij},\delta_i\right)\right\}.
 \bea
-
-For integral term, for $w = y_{ij} - f^*(x_{ij})$ and $v = f(x_{ij}) - f^*(x_{ij})$, define it as: 
+Moreover,
+\[
+\int_{\min(0,v)}^{\max(0,v)}
+\left|I(w\leq t)-I(w\leq0)\right|\,dt
+\leq |v|\leq2B.
+\]
+For $v<0$, the integral is understood as
+$\int_0^v=-\int_v^0$. Conditional Fubini consequently gives
 \bea
-& {\E}_{e \mid x_{ij}, \delta_i}\left[ \int_{0}^{v} \left(I(w \,\leq\, t) - I(w \,\leq\, 0)\right) dt \right] \nonumber \\
-&\,=\, \int_{0}^{v} {\E}_{e \mid x_{ij}, \delta_i}\left[ I(w \,\leq\, t) - I(w \,\leq\, 0) \right] dt \quad \text{(Fubini's theorem)} \nonumber \\
-&\,=\,\int_{0}^{v} \left( \mathbb{P}(w \,\leq\, t \,\big|\, x_{ij}, \delta_i) - \mathbb{P}(w \,\leq\, 0 \,\big|\, x_{ij}, \delta_i) \right) dt. \nonumber
+&\mathbb E_{e\mid x_{ij},\delta_i}
+\left[\int_0^v\{I(w\leq t)-I(w\leq0)\}\,dt\right]\\
+&\labelrel = {eq_tilde_cond_fubini}
+\int_0^v\mathbb E_{e\mid x_{ij},\delta_i}
+\left[I(w\leq t)-I(w\leq0)\right]\,dt\\
+&\,=\,\int_0^v
+\Big\{\mathbb P\left(y_{ij}\leq f^*(x_{ij})+t
+\mid x_{ij},\delta_i\right)\\
+&\qquad-\mathbb P\left(y_{ij}\leq f^*(x_{ij})
+\mid x_{ij},\delta_i\right)\Big\}\,dt.
 \bea
-Substituting $v = f(x_{ij}) - f^*(x_{ij})$ and $w = y_{ij} - f^*(x_{ij})$, we obtain: 
-\bea
-\tilde Z_{ij}(f) &\,=\, \left( f^*(x_{ij}) - f(x_{ij}) \right)\left(\tau - \mathbb{P}(y_{ij} \,\leq\, f^*(x_{ij}) \,\big|\, x_{ij}, \delta_i \right) \nonumber \\
-&\quad + \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left( \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t \,\big|\, x_{ij},  \delta_i) - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) \,\big|\, x_{ij}, \delta_i) \right) dt. \nonumber
-\bea 
+Equality \eqref{eq_tilde_linear_mean} uses the conditional expectation
+of the indicator and measurability of $v$; equality
+\eqref{eq_tilde_cond_fubini} uses the displayed integrable bound.
+Adding the two conditional expectations proves the statement.
+The exact calibration \eqref{exact_calibration} conditions only on
+$x_{ij}$ and does not, in general, make the linear term
+\eqref{eq_tilde_linear_mean} vanish after conditioning also on $\delta_i$.
+\end{revision}
 \end{proof}
 
 
@@ -3440,16 +3481,23 @@ Z_{ij}(f)  = \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,
 \subsubsection{Bound of $A_1$}
 
 \begin{lemma}[Decomposition of $A_1$]\label{lem267}
-   Let $\tilde Z(f)$ and $Z(f)$ be defined in \eqref{def_tilde_zf} and \eqref{def_zf}, respectively. Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let $\ell(f)$ be as in \eqref{def_df}, and \rev{let $c_0$ satisfy \eqref{eq_c0_range}.} Let $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},\, j \in [m_i]}$ be independent Rademacher random variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$. Let $A_1$ be the quantity introduced in \eqref{inq_a1a2a3}.  Suppose $\tilde c_0$ is the \rev{positive} constant from Assumption~\ref{ass:tail_multi_d}, and \rev{let $c_4 > 0$ be the constant from Lemma~\ref{lem_a6_core}.} Let $L$ be as defined in \eqref{equation}, and assume $s < d$ as in Assumption~\ref{assump:lip}, and $T_n$ as in Assumption~\ref{ass:tail_multi_d}.
-Define the remainder term as \bea r_{ij}(f) \,=\, \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + u\mid x_{ij}) - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + u |\delta_i, x_{ij})\right\} du,\bea for $u\in \R$. Then for any $t>0$, we have   
+   Let $\tilde Z(f)$ and $Z(f)$ be defined in \eqref{def_tilde_zf} and \eqref{def_zf}, respectively. Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let $\ell(f)$ be as in \eqref{def_df}, and \rev{let $c_0$ satisfy \eqref{eq_c0_range}.} Let $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},\, j \in [m_i]}$ be independent Rademacher random variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$. Let $A_1$ be the quantity introduced in \eqref{inq_a1a2a3}. \rev{Let $n\geq2$ and $L$ be as in \eqref{equation}. Let $\mathcal F\subset B_\infty(B)$ be deterministic and contain $f^*$. Use a nonempty block with the copied-cluster law specified in Lemmas~\ref{lem_a5} and \ref{lem_a6_core}.}
+Define the remainder term as \bea r_{ij}(f) \,=\, \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + u\mid x_{ij}) - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + u |\delta_i, x_{ij})\right\} du,\bea
+\rev{Let $r_{ij}^*(f)$ denote the same measurable function of
+$(x_{ij},\delta_i)$ evaluated at $(x_{ij}^*,\delta_i^*)$, using the
+same conditional CDF kernels.}
+Then for any $t>0$, we have
 \bea 
 &A_1 \,\coloneqq\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}}\frac{1}{m_i}\sum_{j=1}^{m_i} \rev{\left\{Z_{ij}(f) - \tilde Z_{ij}(f)\right\}} - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}} \\
-& \,\leq\, 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\rev{r_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
-&\quad +  \frac{c_4}{L}\frac{s\log n\log T_n}{n}.
+& \,\leq\, \rev{2\mathbb E_{x^*,\delta^*,s}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}r_{ij}^*(f)\right]} \\
+&\quad +  \rev{\frac{8L(1\vee2B)|\mathcal J_{e,l}|}{(C_0-c_0)n^2}}.
 \bea
 \end{lemma}
 \begin{proof}
-By previous Lemmas~\ref{lem_for_A1_1} and \ref{lem_for_A1_2}, 
+\rev{We first compute the difference of the two conditional loss increments.}
 
 By Lemma~\ref{lem_for_A1_2} where $Z_{ij}(f) \,=\, \Ept{\delta, e \mid x_{ij}}{\hat Z_{ij}(f)}$, then by \cite{belloni2011} (Eq. B.3), we have 
 \beq
@@ -3467,30 +3515,48 @@ By Lemma~\ref{lem_for_A1_1}, since $\tilde Z_{ij}(f) \,=\, \Ept{e \mid \delta_i,
 \beq
 
 
-Subtracting \eqref{eq:tildeZij_simplified} and \eqref{eq:Zij_simplified}, we obtain
+\begin{revision}
+For the subtraction below, set $v=f(x_{ij})-f^*(x_{ij})$.
+Subtract the full conditional expressions in
+\eqref{eq:Zij_simplified} and \eqref{eq:tildeZij_simplified},
+using the same conditional CDF kernels throughout:
 \bea
-&Z_{ij}(f) - \tilde Z_{ij}(f) \\
-&\,=\, \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t \mid x_{ij}) - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t \mid \delta_i, x_{ij}) \right\} dt \\
-&\quad + \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\le\, f^*(x_{ij}) \mid \delta_i, x_{ij}) - \mathbb{P}( y_{i,j} \,\le\, f^*(x_{ij}) \mid x_{ij}) \right\} dt \\
-&\quad - \left( f^*(x_{ij}) - f(x_{ij}) \right)\left(\tau - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) \mid x_{ij}, \delta_i)\right).
+Z_{ij}(f)-\tilde Z_{ij}(f)
+&\labelrel = {eq_rij_subtract}
+ v\left\{\mathbb P(y_{ij}\leq f^*(x_{ij})\mid x_{ij})
+ -\mathbb P(y_{ij}\leq f^*(x_{ij})\mid x_{ij},\delta_i)\right\}\\
+&\quad+\int_0^v\Big\{
+ \mathbb P(y_{ij}\leq f^*(x_{ij})+u\mid x_{ij})
+ -\mathbb P(y_{ij}\leq f^*(x_{ij})+u\mid x_{ij},\delta_i)\\
+&\qquad\qquad
+ -\mathbb P(y_{ij}\leq f^*(x_{ij})\mid x_{ij})
+ +\mathbb P(y_{ij}\leq f^*(x_{ij})\mid x_{ij},\delta_i)
+ \Big\}\,du\\
+&\labelrel = {eq_rij_baseline_integral}
+ v\left\{\mathbb P(y_{ij}\leq f^*(x_{ij})\mid x_{ij})
+ -\mathbb P(y_{ij}\leq f^*(x_{ij})\mid x_{ij},\delta_i)\right\}\\
+&\quad+\int_0^v\left\{
+ \mathbb P(y_{ij}\leq f^*(x_{ij})+u\mid x_{ij})
+ -\mathbb P(y_{ij}\leq f^*(x_{ij})+u\mid x_{ij},\delta_i)
+ \right\}\,du\\
+&\quad-v\left\{\mathbb P(y_{ij}\leq f^*(x_{ij})\mid x_{ij})
+ -\mathbb P(y_{ij}\leq f^*(x_{ij})\mid x_{ij},\delta_i)\right\}\\
+&\labelrel = {eq_rij_cancel}
+ \int_0^v\left\{
+ \mathbb P(y_{ij}\leq f^*(x_{ij})+u\mid x_{ij})
+ -\mathbb P(y_{ij}\leq f^*(x_{ij})+u\mid x_{ij},\delta_i)
+ \right\}\,du.
 \bea
-
-Thus, we have 
-\bea 
-&Z_{ij}(f) - \tilde Z_{ij}(f)\\ &\,=\, \Ept{\delta, e \mid x_{ij}}{\hat Z_{ij}(f)} - \Ept{e \mid \delta_i,x_{ij}}{\hat Z_{ij}(f)} \\
-&\,=\, \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t \mid x_{ij}) - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t \mid \delta_i, x_{ij}) \right\} dt \\
-&\quad + \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\le\, f^*(x_{ij}) \mid \delta_i, x_{ij}) - \mathbb{P}( y_{i,j} \,\le\, f^*(x_{ij}) \mid x_{ij}) \right\} dt \\
-&\quad - \left( f^*(x_{ij}) - f(x_{ij}) \right)\left(\tau - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) \mid x_{ij}, \delta_i)\right).\\
-&\,=\,-\left( f^*(x_{ij}) - f(x_{ij}) \right)(\tau - \mathbb{P}\left( y_{i,j} - f^*(x_{ij}) \,\leq\, 0  | \delta_i,x_{ij} \right) \\
-&\quad + \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t|x_{ij}) - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t |\delta_i,x_{ij})\right\} dt \\ 
-&\quad+ \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ - \mathbb{P}( y_{i,j} \,\le\, f^*(x_{ij})|x_{ij}) + \mathbb{P}( y_{i,j} \,\le\, f^*(x_{ij}) | \delta_i,x_{ij}) \right\} dt
-\\&\,=\,-\left( f^*(x_{ij}) - f(x_{ij}) \right)(\tau - \mathbb{P}\left( y_{i,j} - f^*(x_{ij}) \,\leq\, 0  | \delta_i,x_{ij} \right) \\
-&\quad+ \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t|x_{ij}) - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t |\delta_i,x_{ij})\right\} dt \\ 
-&\quad+ (f(x_{ij}) - f^{*}(x_{ij})) \left( - \tau + \mathbb{P}( y_{i,j} \,\le\, f^*(x_{ij}) | \delta_i,x_{ij}) \right)\\
-&\,=\, \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t|x_{ij}) - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t |\delta_i,x_{ij})\right\} dt. \\ 
-\bea 
-\textcolor{red}{first equality seems wrong}
-We define $r_{ij}(f)$ the as the integral expression given by the last line:
+Equality \eqref{eq_rij_subtract} subtracts both linear terms
+and both integrals before any conditional score is set to zero.
+Equality \eqref{eq_rij_baseline_integral} integrates the two baseline
+probabilities, which do not depend on $u$.
+Equality \eqref{eq_rij_cancel} cancels that integrated baseline with
+the difference of the linear terms. The same calculation holds for
+$v<0$ with directed integrals. This cancellation does not require
+exact calibration, although \eqref{eq:Zij_linear_vanish} above does.
+Denote the resulting integral by $r_{ij}(f)$:
+\end{revision}
 \beq 
 \label{def_rij}
 r_{ij}(f) \,\coloneqq\, \int_{0}^{f(x_{ij}) - f^{*}(x_{ij})} \left\{ \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t\mid x_{ij}) - \mathbb{P}( y_{i,j} \,\leq\, f^*(x_{ij}) + t |\delta_i, x_{ij})\right\} dt.
@@ -3503,23 +3569,38 @@ Then, we have
 \beq 
 \label{blk-a1-a4}
 A_1 \coloneqq & \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}}\frac{1}{m_i}\sum_{j=1}^{m_i}\rev{\left\{Z_{ij}(f) - \tilde Z_{ij}(f)\right\}}-\frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}
-\\ \le & \underbrace{\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}r_{ij}(f) - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}}_{A_4}.
+\\ \rev{=} & \underbrace{\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}r_{ij}(f) - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}}_{A_4}.
 \beq
 
 Now we bound $A_4$,and we have
+\begin{revision}
 \beq
 \label{blk-a4-a5-a6}
-A_4 \le & \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}r_{ij}(f) - \Ept{x, e \mid \delta_i}{r_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
-&+  \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}\Ept{x, e \mid \delta_i}{r_{ij}(f)} -\frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}
-\\ =& \mathbb{E}_{\delta, \delta^*}\bigg[
-\underbrace{\Ept{x, e \mid \delta}{\left(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}r_{ij}(f) - \Ept{x, e \mid \delta_i}{r_{ij}(f)}\right) \cdot \indic{\Omega_\beta}} }_{A_5}\bigg] \\
-&\quad +    \underbrace{\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}\Ept{x, e \mid \delta_i}{r_{ij}(f)}-\frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}}_{A_6}.
+A_4
+&\,\leq\,\mathbb E_{x,\delta,e,x^*,\delta^*,e^*}\Bigg[
+\Bigg(\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+\bigl\{r_{ij}(f)-\mathbb E_{x,e\mid\delta_i}[r_{ij}(f)]\bigr\}
+\Bigg)\mathbbm1_{\Omega_\beta}\Bigg]\\
+&\quad+\mathbb E_{x,\delta,e,x^*,\delta^*,e^*}\Bigg[
+\Bigg(\sup_{f-f^*\in\mathcal F_t}
+\bigg\{\frac1n\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}
+\sum_{j=1}^{m_i}\mathbb E_{x,e\mid\delta_i}[r_{ij}(f)]
+-\frac{\ell(f)}{2L}\bigg\}\Bigg)\mathbbm1_{\Omega_\beta}\Bigg]\\
+&\,=\,A_5+A_6,
 \beq
-where we denote
+where $A_5$ includes the expectation over both the original data
+and the coupled data:
 \beq
 \label{def_A5}
-A_5 &\,\coloneqq\, \Ept{x, e \mid \set{\delta_i}}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}r_{ij}(f) - \Ept{x, e \mid \delta_i}{r_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}},
+A_5
+&\,\coloneqq\,\mathbb E_{x,\delta,e,x^*,\delta^*,e^*}\Bigg[
+\Bigg(\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+\bigl\{r_{ij}(f)-\mathbb E_{x,e\mid\delta_i}[r_{ij}(f)]\bigr\}
+\Bigg)\mathbbm1_{\Omega_\beta}\Bigg].
 \beq
+\end{revision}
 and
 \beq
 \label{def_A6}
@@ -3531,18 +3612,20 @@ Then by Lemma~\ref{lem_a5} and \ref{lem_a6_core}, we get the bound for terms $A_
 
 \begin{corollary}[Bound of $A_1$]
 \label{col_A_1}
+\rev{Assume the conditions of Lemma~\ref{lem267}, the size bounds in \eqref{beta_constants}, and Assumption~\ref{asm:m}.}
  Let  $\tilde Z(f)$,  $Z(f)$ been defined in \eqref{def_tilde_zf} and \eqref{def_zf}. Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let $\ell(f)$ be defined in \eqref{def_df}, and \rev{let $c_0$ satisfy \eqref{eq_c0_range}.} Let  $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be independent Rademacher variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$. Let $A_1$ be the quantity introduced in \eqref{inq_a1a2a3}. Then we have
     \bea 
     A_1 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i}\rev{\left\{Z_{ij}(f) - \tilde Z_{ij}(f)\right\}} - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}}
-    \\ &\,\leq\, 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\rev{r_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
-    &\quad +  \frac{c_4}{L}\frac{s\log n\log T_n}{n} \\
-    &\,\leq\, \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_t})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n},
-    \bea \rev{Here $c_4$ is a positive constant that depends on $\tilde c_0$ in Assumption~\ref{ass:tail_multi_d}, $C_{\beta}$ in Assumption~\ref{ass_c_beta}, and $c_1$, $c_2$ in \eqref{beta_constants}. Moreover, $c_5 \,=\, 2c_2C/c$ depends on $c_2$ and the constants $C$, $c$ in Assumption~\ref{asm:m}, and $R_{\mathcal{J}_{e,l}}$ is defined in \eqref{rademacher_def_blocks}.}
+    \\ &\,\leq\, \rev{2\mathbb E_{x^*,\delta^*,s}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}r_{ij}^*(f)\right]} \\
+    &\quad +  \rev{\frac{8L(1\vee2B)|\mathcal J_{e,l}|}{(C_0-c_0)n^2}} \\
+    &\,\leq\, \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_t})  + \rev{\frac{8L(1\vee2B)|\mathcal J_{e,l}|}{(C_0-c_0)n^2}},
+    \bea \rev{Here $c_5 \,=\, 2c_2C/c$ depends on $c_2$ and the constants $C$, $c$ in Assumption~\ref{asm:m}, and $R_{\mathcal{J}_{e,l}}$ is defined in \eqref{rademacher_def_blocks}.}
 \end{corollary}
 \begin{proof}
-we should reminder the tilte c0 and c2 meanining
-\rev{We keep $\ell(f)$ fixed as in \eqref{def_df}. By \eqref{eq_c0_range}, it satisfies
-$\ell(f) \,\geq\, 4\tilde c_0c_2\Delta^2(f-f^*)$; this is the absorption inequality used in Lemma~\ref{lem267}.}
+\rev{The penalty remains fixed as in \eqref{def_df}. The decomposition in Lemma~\ref{lem267} gives $A_1=A_4\leq A_5+A_6$. Substituting the bounds for these two terms gives the first inequality below.}
 
 % We apply the Lipschitz condition of $\hat Z_{ij}(f)$, $Z_{ij}(f)$ and $r_{ij}(f)$ in Lemma~\ref{lem:lip}, and then apply the 
 % Ledoux-Talagrand contraction principle in Theorem~\ref{lem:Theorem 7}, and apply the Lemma~\ref{side_lemma_for_block}. 
@@ -3561,17 +3644,28 @@ $\ell(f) \,\geq\, 4\tilde c_0c_2\Delta^2(f-f^*)$; this is the absorption inequal
 We have
 \bea
 & \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i}\rev{\left\{Z_{ij}(f) - \tilde Z_{ij}(f)\right\}} -\frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}} \\
-\labelrel\le{a1_step_sym}& 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}r_{ij}(f)\Big) \cdot \indic{\Omega_\beta}} \\
-&\quad +  \frac{c_4}{L}\frac{s\log n\log T_n}{n} \\
-\labelrel\le{a1_step_contraction}& 2\Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} \rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)}\Big) \cdot \indic{\Omega_\beta}} \\
-&\quad + \frac{c_4}{L}\frac{s\log n\log T_n}{n} \\
-\labelrel\le{a1_step_rade}& \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_t})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n}  .
+\labelrel\le{a1_step_sym}& \rev{2\mathbb E_{x^*,\delta^*,s}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}r_{ij}^*(f)\right]} \\
+&\quad +  \rev{\frac{8L(1\vee2B)|\mathcal J_{e,l}|}{(C_0-c_0)n^2}} \\
+\labelrel\le{a1_step_contraction}& \rev{2\mathbb E_{x^*,s}\left[
+\sup_{h\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}h(x_{ij}^*)\right]} \\
+&\quad + \rev{\frac{8L(1\vee2B)|\mathcal J_{e,l}|}{(C_0-c_0)n^2}} \\
+\labelrel\le{a1_step_rade}& \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_t})  + \rev{\frac{8L(1\vee2B)|\mathcal J_{e,l}|}{(C_0-c_0)n^2}}  .
 \bea
-Here \eqref{a1_step_sym} follows from the decomposition in Lemma~\ref{lem267}; \eqref{a1_step_contraction} follows from the Lipschitz condition of $r_{ij}(f)$ in Lemma~\ref{lem:lip} together with the Ledoux-Talagrand contraction principle in Theorem~\ref{lem:Theorem 7}; and \eqref{a1_step_rade} follows from Lemma~\ref{side_lemma_for_block}.
+\rev{Inequality \eqref{a1_step_sym} uses the decomposition in
+Lemma~\ref{lem267}, the unconditional copied-block bound in
+Lemma~\ref{lem_a5}, and the spatial-mean bound in Lemma~\ref{lem_a6_core}.
+Inequality \eqref{a1_step_contraction} uses Lemma~\ref{lem:lip} and
+the one-sided contraction proved in Lemma~\ref{col_A_2}.
+Inequality \eqref{a1_step_rade} uses the indicator-free version of
+Lemma~\ref{side_lemma_for_block}.}
 \rev{The contraction is applied to $f(x_{ij}^*)-f^*(x_{ij}^*)$, since $r_{ij}(f^*)=0$.}
 
 
-    \textcolor{red}{say which line is due to what. Oscar pauses here}
 \end{proof}
 
 
@@ -3594,242 +3688,313 @@ Here \eqref{a1_step_sym} follows from the decomposition in Lemma~\ref{lem267}; \
 % \end{lemma}
 
 
-\begin{lemma}[Bound of  $A_5$]
+\begin{lemma}[Bound of $A_5$]
 \label{lem_a5}
-    Let $A_5$ be the term defined in \eqref{def_A5}. Let $\set{s_{ij}}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]}$ be independent Rademacher variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$. Let $\Omega_\beta$ be defined in \eqref{event_beta}. The remainder term $r_{ij}(f)$ is defined in Lemma~\ref{lem267}. Then the following inequality holds:
+\begin{revision}
+Let $A_5$ be the full expectation defined in \eqref{def_A5}, and
+let $\mathcal J_{e,l}$ be a nonempty coupled block as in
+Lemma~\ref{Lemma_9}. Suppose the class $\mathcal F$ is fixed and
+$f^*\in\mathcal F$. Let $r_{ij}^*(f)$ be the copied remainder
+from Lemma~\ref{lem267}, and let the signs $s_{ij}$ be
+independent Rademacher variables, independent of the data and copies.
+Then
 \bea
-A_5 \,\le\, 2\Ept{x, e, s \mid \delta}{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}r_{ij}(f) \cdot \indic{\Omega_\beta}}.
-    \bea
+A_5
+&\,\leq\,2\mathbb E_{x^*,\delta^*,s}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}r_{ij}^*(f)\right]\\
+&\,\leq\,\frac{c_5}{L}R_{\mathcal J_{e,l}}(\mathcal F_t),
+\bea
+where $\mathcal F_t$ is the centered class defined above and
+$c_5=2c_2C/c$ is as in Lemma~\ref{side_lemma_for_block}.
+\end{revision}
 \end{lemma}
-
 \begin{proof}
-By the coupling identity \eqref{eq:Z_equal_on_Omega}, on $\Omega_\beta$ we have $(x_{ij},\delta_i)=(x_{ij}^*,\delta_i^*)$ for all $i\in\mathcal{J}_{e,l}$, $j\in[m_i]$. Since $\{x_{ij}^*\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]}$ are i.i.d.\ by construction, and $\{\delta_i^*\}_{i \in \mathcal{J}_{e,l}}$ are i.i.d., the quantities $\{r_{ij}(f)\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]}$ are conditionally independent given $\{\delta_i^*\}_{i \in \mathcal{J}_{e,l}}$ on the event $\Omega_\beta$.
-
-Let $\{\tilde x_{ij}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be an independent and identically distributed copy of $\{x_{ij}^*\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $, correspondingly, we let $\{\tilde y_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be the copy of $y_{ij}^*$, where each $\tilde y_{ij}$ and $y_{ij}^*$ share the same $\{ (\delta_{i1}^*, \dots, \delta_{im_i}^*) \}_{i \in \mathcal{J}_{e,l}}$, $\{e_{i,j}^*\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $, but \rev{differ only in} $\{\tilde x_{ij}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ and $\{x_{ij}^*\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $. Then we define the independent and identically distributed copy of $ r_{ij}(f)$ as
+\begin{revision}
+Throughout this proof, $x^*$ and $\delta^*$ denote only the design
+coordinates and the complete random functions in $\mathcal J_{e,l}$.
+We use the same conditional CDF kernels as in \eqref{def_rij}.
+Since $r_{ij}(f^*)=r_{ij}^*(f^*)=0$, the centered suprema below
+are nonnegative. On $\Omega_\beta$, the remainders and their
+conditional means agree with the copied versions. Hence
 \bea
-\tilde r_{ij}(f, \delta_i^*, \tilde x_{ij}) \,\coloneqq\,
-\int_{0}^{f(\tilde x_{ij}) - f^{*}(\tilde x_{ij})} \left\{ \mathbb{P}( \tilde y_{i,j} \,\leq\, f^*(\tilde x_{ij}) + t) - \mathbb{P}(\tilde y_{i,j} \,\leq\, f^*(\tilde x_{ij}) + t |\delta_i^*)\right\} dt.
+A_5
+&\,=\,\mathbb E_{x,\delta,e,x^*,\delta^*,e^*}\Bigg[
+\Bigg(\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+\bigl\{r_{ij}^*(f)
+-\mathbb E_{x^*\mid\delta_i^*}[r_{ij}^*(f)]\bigr\}\Bigg)
+\mathbbm 1_{\Omega_\beta}\Bigg]\\
+&\labelrel \leq {eq_A5_remove_indicator}
+\mathbb E_{x^*,\delta^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+\bigl\{r_{ij}^*(f)
+-\mathbb E_{x^*\mid\delta_i^*}[r_{ij}^*(f)]\bigr\}\right].
 \bea
-Now we control the $\Ept{\tilde x, x, e \mid \set{\delta_i^*}}{r_{ij}(f) - \tilde r_{ij}(f)}$, the expectation takes on $\{\tilde x_{ij}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ and conditioned on  $\{ ( \delta_{i1}^*, \dots, \delta_{im_i}^*) \}_{i \in \mathcal{J}_{e,l}}$. So we have 
-\beq
-\label{eq289-49}
-& \sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{ \Ept{x, e \mid \delta_i}{ r_{ij}(f)}   - \Ept{\tilde x \mid \delta_i}{\tilde r_{ij}(f)}  } \\
-&\quad \cdot \indic{\Omega_\beta} \\
-&\labelrel\le{288}  \mathbb{E}_{\tilde x, x, e \mid \delta_i}\bigg[\Big( \sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}    \set{ r_{ij}(f) - \tilde r_{ij}(f)} \Big) \\
-&\quad \cdot \indic{\Omega_\beta}\bigg].
-\beq
-The inequality $\eqref{288}$ is held by Jensen's inequality.
-Then, the left-hand side of the above, can be further written as
-\beq
-\label{eq295-49}
-{}&\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{ \Ept{x, e \mid \delta_i}{ r_{ij}(f)}   - \Ept{\tilde x \mid \delta_i}{\tilde r_{ij}(f)}  } \\
-&\quad \cdot \indic{\Omega_\beta} \\
-& \labelrel={298}  \sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{r_{ij}(f) - \Ept{x, e \mid \delta_i}{ r_{ij}(f) }}\cdot \indic{\Omega_\beta}.
-\beq 
-The expectation $\Ept{x, e \mid \delta_i}{ r_{ij}(f)}$ takes on $\{x_{ij}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ (which equal $\{x_{ij}^*\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ on $\Omega_\beta$) and conditioned on  $\{ ( \delta_{i1}^*, \dots, \delta_{im_i}^*) \}_{i \in \mathcal{J}_{e,l}}$.
-The equality $\eqref{298}$ holds since $\Ept{x, e \mid \delta_i^*}{ r_{ij}(f)}$ and $\Ept{\tilde x \mid \delta_i^*}{\tilde r_{ij}(f)}$ are identically distributed.
+Inequality \eqref{eq_A5_remove_indicator} uses this nonnegativity.
+The independence statements that follow concern the unconditional
+copied block.
 
-\rev{Combining} \eqref{eq289-49} and \eqref{eq295-49}, taking expectation of $\{x_{ij}^*\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ conditioning on $\{ ( \delta_{i1}^*, \dots, \delta_{im_i}^*) \}_{i \in \mathcal{J}_{e,l}}$ we have 
+By Assumption~\ref{Assumption 1.} and the joint-cluster construction,
+\[
+\mathcal L\bigl((x_{ij}^*)_{i\in\mathcal J_{e,l},\,j\in[m_i]}
+                 \mid\delta^*\bigr)
+=\bigotimes_{i\in\mathcal J_{e,l}}Q^{\otimes m_i}.
+\]
+Conditional on $\delta^*$, draw independent $\tilde x_{ij}\sim Q$,
+independent of $x^*$, and set
+\[
+\tilde r_{ij}(f)
+=\left.r_{ij}(f)\right|_{(x_{ij},\delta_i)
+                         =(\tilde x_{ij},\delta_i^*)}.
+\]
+This substitution evaluates $f$, $f^*$, and the same whole function
+$\delta_i^*$ at $\tilde x_{ij}$. The probabilities in the remainder
+already average over the measurement error, so no response or
+realized error is copied in this step. Each coordinate retains its
+own conditional CDF kernels. The product law gives
+\beq
+\label{eq_A5_matching_mean}
+\mathbb E_{\tilde x\mid\delta^*}[\tilde r_{ij}(f)]
+=\mathbb E_{x^*\mid\delta^*}[r_{ij}^*(f)]
+=\mathbb E_{x^*\mid\delta_i^*}[r_{ij}^*(f)].
+\beq
+These expectations are finite since both remainders are bounded
+in absolute value by $2B$. Expectations over $\tilde x$ below
+hold $x^*$ fixed. Conditional Jensen and pairwise exchange give
 \bea
-A_5 &\,=\, \mathbb{E}_{x, e \mid \set{\delta_i}}\bigg[\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{  r_{ij}(f) -\Ept{x, e \mid \delta_i}{ r_{ij}(f)}  } \Big) \\
-&\quad \cdot \indic{\Omega_\beta}\bigg] \\
-&\,\le\,
-\mathbb{E}_{\tilde x, x, e \mid \set{\delta_i}}\bigg[\Big( \sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}    \set{ r_{ij}(f) - \tilde r_{ij}(f)} \Big) \\
-&\quad \cdot \indic{\Omega_\beta}\bigg]
-\\
-&\labelrel\le{in299}   \mathbb{E}_{\tilde x, x, e, s \mid \set{\delta_i}}\bigg[\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}s_{ij}\set{ r_{ij} (f) -  \tilde r_{ij} (f)} \Big) \\
-&\quad \cdot \indic{\Omega_\beta}\bigg] \\
-&\labelrel\le{in300} 2\mathbb{E}_{x, e, s \mid \set{\delta_i}}\bigg[\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} r_{ij} (f)  \Big) \\
-&\quad \cdot \indic{\Omega_\beta}\bigg].
-\bea 
+&\mathbb E_{x^*\mid\delta^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+\bigl\{r_{ij}^*(f)
+-\mathbb E_{x^*\mid\delta_i^*}[r_{ij}^*(f)]\bigr\}\right]\\
+&\,=\,\mathbb E_{x^*\mid\delta^*}\left[
+\sup_{f-f^*\in\mathcal F_t}
+\mathbb E_{\tilde x\mid\delta^*}\left[
+\frac1n\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+\bigl\{r_{ij}^*(f)-\tilde r_{ij}(f)\bigr\}\right]\right]\\
+&\labelrel \leq {eq_A5_ghost_jensen}
+\mathbb E_{x^*,\tilde x\mid\delta^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+\bigl\{r_{ij}^*(f)-\tilde r_{ij}(f)\bigr\}\right]\\
+&\labelrel = {eq_A5_ghost_signs}
+\mathbb E_{x^*,\tilde x,s\mid\delta^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}\bigl\{r_{ij}^*(f)-\tilde r_{ij}(f)\bigr\}\right]\\
+&\labelrel \leq {eq_A5_ghost_split}
+\mathbb E_{x^*,s\mid\delta^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}r_{ij}^*(f)\right]\\
+&\qquad+\mathbb E_{\tilde x,s\mid\delta^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+(-s_{ij})\tilde r_{ij}(f)\right]\\
+&\,=\,2\mathbb E_{x^*,s\mid\delta^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}r_{ij}^*(f)\right].
+\bea
+The first equality uses \eqref{eq_A5_matching_mean}.
+Inequality \eqref{eq_A5_ghost_jensen} is conditional Jensen.
+Equality \eqref{eq_A5_ghost_signs} follows by independently swapping
+each design pair $(x_{ij}^*,\tilde x_{ij})$ conditional on $\delta^*$;
+each swap acts on the entire process indexed by $f$.
+Inequality \eqref{eq_A5_ghost_split} separates the two suprema.
+The last equality uses the matching coordinate laws and sign symmetry.
+Taking expectation over $\delta^*$ proves the first claimed bound.
 
-The \eqref{in299} holds since on $\Omega_\beta$ we have $(x_{ij},\delta_i)=(x_{ij}^*,\delta_i^*)$, and $\{x_{ij}^*\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]}$ are i.i.d.\ by construction. Hence, conditioned on $\{ ( \delta_{i1}^*, \dots, \delta_{im_i}^*) \}_{i \in \mathcal{J}_{e,l}} $, the $ r_{ij}(f) - \tilde r_{ij}(f)$ is independently distributed and symmetric with mean zero, and $\set{s_{ij}( r_{ij} (f) -  \tilde r_{ij} (f))}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ and $\set{ r_{ij} (f) -  \tilde r_{ij} (f)}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ have the same distribution.
-The \eqref{in300} follows because $\set{-s_{ij}}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ are also independent Rademacher variables.
-
-
-Taking expectation of $\{ ( \delta_{i1}^*, \dots, \delta_{im_i}^*) \}_{i \in \mathcal{J}_{e,l}}$ \rev{on both sides}, we obtain the result.     
+For fixed $(x^*,\delta^*)$, Lemma~\ref{lem:lip} gives a
+$1$-Lipschitz map of $f(x_{ij}^*)-f^*(x_{ij}^*)$, vanishing at zero.
+The one-sided contraction proved in the proof of Lemma~\ref{col_A_2}
+and the indicator-free bound in Lemma~\ref{side_lemma_for_block} yield
+\bea
+&2\mathbb E_{x^*,\delta^*,s}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}r_{ij}^*(f)\right]\\
+&\,\leq\,2\mathbb E_{x^*,s}\left[
+\sup_{h\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}h(x_{ij}^*)\right]
+\,\leq\,\frac{c_5}{L}R_{\mathcal J_{e,l}}(\mathcal F_t).
+\bea
+This proves the second bound. The same argument applies to an odd block.
+\end{revision}
 \end{proof}
 
 
 
-\begin{lemma}[Generalized Bound of $A_6$]
+\begin{revision}
+\begin{lemma}[Bound of $A_6$]
 \label{lem_a6_core}
-In the multi-dimensional setting where $x_{ij} \in [0,1]^d$, let $\Omega_\beta$ be defined in \eqref{event_beta}. Let $A_6$ be defined as 
-\bea 
-A_6 &\coloneqq \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big( \sup_{\substack{f \in \mathcal{F} \\ c_0\Delta^2(f - f^*) \le t^2}} \rev{\left\{\frac{1}{n} \sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i} \sum_{j=1}^{m_i} \Ept{x, e \mid \delta_i}{ r_{ij}(f)} - \frac{\ell(f)}{2L}\right\}}\Big) \cdot \indic{\Omega_\beta}},
-\bea
-\rev{Let $\ell(f)$ be defined in \eqref{def_df}, and let $r_{ij}(f)$ be defined in \eqref{def_rij} as}
-\begin{align*}
-r_{ij}(f) &\,=\, \int_{0}^{f(x_{ij}) - f^*(x_{ij})} \left\{ \mathbb{P}( y_{ij} \,\le\, f^*(x_{ij}) + t \mid x_{ij}) - \mathbb{P}( y_{ij} \,\le\, f^*(x_{ij}) + t \mid \delta_i, x_{ij}) \right\} dt.
-\end{align*}
-
-\rev{Under Assumptions~\ref{assump:lip} and \ref{ass:tail_multi_d}, with $c_0$ satisfying \eqref{eq_c0_range}, the following bound holds:}
-\bea
-A_6 \,\le\, \frac{c_2}{L} \cdot \frac{c_3^2}{4\tilde c_0} \cdot \frac{s \log n \log T_n}{n} \,=\, \frac{c_4}{L} \cdot \frac{s \log n \log T_n}{n},
-\bea
-for some positive constant $c_4$ that depends on $\tilde c_0$, $C_\beta$, $c_1$, and $c_2$, where $c_3$ depends on $C_\beta$ and $c_1$, and where $s$ and $T_n$ are as defined in Assumption~\ref{ass:tail_multi_d}.
-\end{lemma}
-\begin{proof}
-We first show the following bound holds in a multidimensional setting where $x_{ij} \in [0,1]^d$:
-\bea 
-&\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}\Ept{x, e \mid \delta_i}{r_{ij}(f)}\,\le\, \frac{2\tilde c_0c_2}{L}  \Delta^2(f-f^*)+ \frac{c_2}{L}\frac{c_3^2}{4\tilde c_0}\frac{s\log n\log T_n}{n}.
-\bea 
-
- \rev{By \eqref{def_df} and \eqref{eq_c0_range}, the fixed curvature penalty satisfies}
-\bea 
-\rev{\frac{\ell(f)}{2L}
-\,=\, \frac{C_0-c_0}{2L}\Delta^2(f-f^*)
-\,\geq\, \frac{2\tilde c_0c_2}{L}\Delta^2(f-f^*).}
-\bea  
-\rev{Thus, the preceding bound implies the result after subtracting $\ell(f)/(2L)$ and taking the supremum and expectations.}
-
-Given that
-\beq 
-\label{blk_856}
-&\mathbb{E}\left( r_{ij}(f) | \delta_i \right) \,=\, \int_{[0,1]^d} \left( \int_0^{f(x) - f^*(x)} \left( \mathbb{P}\left(y_{ij} \,\leq\, f^*(x_{ij}) + u \mid x_{ij} = x\right) \right. \right. \\ 
-& \left. \left. - \mathbb{P}\left( y_{ij} \,\leq\, f^*(x_{ij}) + u \mid \delta_i, x_{ij} =x\right) \right) du \right) dx. 
-\beq 
-
-\rev{For this fixed even block, write $\Pi(x,u)\coloneqq\Pi_{e,l}(x,u)$, where $\Pi_{e,l}$ is defined in \eqref{pi_def_assump}; equivalently,}
-\beq
-\label{pi_def}
-\Pi(x,u) &\,\coloneqq\, \frac{1}{|\mathcal{J}_{e,l}|} \sum_{i\in \mathcal{J}_{e,l}} \left[ \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u\mid x_{i1} = x) - \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u \mid \delta_i,x_{i1}=x) \right].
-\beq
-\rev{By Assumption~\ref{assump:lip}, $\Pi(x,u)$ depends on $x$ only through $x_S$.}
-
-We then have that 
-\beq 
-\label{in1031}
-&\left| \int_{[0,1]^d} \int_0^{f(x) - f^*(x)} \Pi(x,u) \, du \, dx \right| \\ 
-&\,=\, \left| \int_{[0,1]^d} \left[\int_0^{|f(x) - f^*(x)|} \Pi(x,u) \, du\right]   \cdot \ind{\{\rev{\abs{f(x) - f^*(x)} \,\leq\, 1}\}} dx \right.\\
-&\quad  \left.+ \int_{[0,1]^d} \left[\int_0^{|f(x) - f^*(x)|} \Pi(x,u) \, du\right]   \cdot \ind{\rev{\abs{f(x) - f^*(x)} > 1}}\, dx \right| \\
-&\,\leq\, \int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \max_{x\in[0,1]^d}\max_{u \in [-1,1]} \abs{\Pi(x,u)} \cdot \ind{\rev{\abs{f(x) - f^*(x)} \,\leq\, 1}} \, dx \\
-&\quad + \int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \max_{x\in[0,1]^d}\max_{u \in [-\abs{f(x) - f^*(x)}, \abs{f(x) - f^*(x)}]} \abs{\Pi(x,u)} \\
-&\quad \cdot \ind{\rev{\abs{f(x) - f^*(x)} > 1}}  \, dx\\
-\beq 
-\paragraph{Step 1:}
-Now, for the $\max_{x\in[0,1]^d}\max_{u \in [-\abs{f(x) - f^*(x)}, \abs{f(x) - f^*(x)}]} \abs{\Pi(x,u)}$ term above, we have
-\bea
-&\max_{x\in [0,1]^d}\max_{u} \bigg| \frac{1}{|\mathcal{J}_{e,l}|} \sum_{i\in \mathcal{J}_{e,l}} \bigg[ \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u\mid x_{i1} = x) \\
-&\quad - \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u \mid \delta_i, x_{i1} = x) \bigg] \bigg|.
-\bea
-This term represents the maximum discrepancy between the probabilities of $y_{i1}$ not exceeding the threshold defined by $f^*(x_{i1}) + u$, with and without the consideration of $\delta_i$.
-
-Let $T_n > 0$ be a constant that depends on $n$, then we have 
-\bea 
-&\max_{u>T_n}\max_{x\in [0,1]^d} \left| \frac{1}{|\mathcal{J}_{e,l}|} \sum_{i\in \mathcal{J}_{e,l}} \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\leq\, u \mid \delta_i, x_{i1} = x) - \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\leq\, u\mid x_{i1} = x)\right] \right| \\
-&\,\leq\, \max_{u>T_n}\max_{x\in [0,1]^d} \max_{i\in \mathcal{J}_{e,l}} \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\geq\, u \mid \delta_i, x_{i1} = x) + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\geq\, u\mid x_{i1} = x)\right] \\
-&\,\leq\, \max_{x\in [0,1]^d} \max_{i\in \mathcal{J}_{e,l}} \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\geq\, T_n \mid \delta_i, x_{i1} = x) + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\geq\, T_n\mid x_{i1} = x)\right] \\
-&\labelrel\leq{leq920} \tilde c_0 \text{ with high probability}.
-\bea 
-The \eqref{leq920} holds by Assumption~\ref{ass:tail_multi_d}. Since 
-\bea 
-& \max_{x\in [0,1]^d} \max_{i\in \mathcal{J}_{e,l}} \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\geq\, T_n \mid \delta_i, x_{i1} = x) + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\geq\, T_n\mid x_{i1} = x)\right] \\ 
-&\,\leq\, 
-\max_{x\in [0,1]^d} \max_{i= 1,\dots, n}  \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\geq\, T_n \mid \delta_i, x_{i1} = x) + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\geq\, T_n\mid x_{i1} = x)\right] \,\leq\, \tilde c_0
-\bea 
-
-Similarly, we have 
-\bea 
-&\max_{u<-T_n}\max_{x\in [0,1]^d} \left| \frac{1}{|\mathcal{J}_{e,l}|} \sum_{i\in \mathcal{J}_{e,l}} \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\leq\, u \mid \delta_i, x_{i1} = x) - \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\leq\, u\mid x_{i1} = x)\right] \right| \\
-&\,\leq\, \max_{u<-T_n}\max_{x\in [0,1]^d} \max_{i\in \mathcal{J}_{e,l}} \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\leq\, u \mid \delta_i, x_{i1} = x) + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\leq\, u\mid x_{i1} = x)\right] \\
-&\,\leq\, \max_{x\in [0,1]^d} \max_{i\in \mathcal{J}_{e,l}} \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\leq\, -T_n \mid \delta_i, x_{i1} = x) + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\leq\, -T_n\mid x_{i1} = x)\right] \\
-&\labelrel\leq{leq925} \tilde c_0 \text{ with high probability}.
-\bea 
-The \eqref{leq925} holds by Assumption~\ref{ass:tail_multi_d}.
-Since 
-\bea 
-& \max_{x\in [0,1]^d} \max_{i\in \mathcal{J}_{e,l}} \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\geq\, -T_n \mid \delta_i, x_{i1} = x) + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\geq\, -T_n\mid x_{i1} = x)\right] \\ 
-&\,\leq\, 
-\max_{x\in [0,1]^d} \max_{i= 1,\dots, n}  \left[\mathbb{P}(\delta_{i}(x_{i1}) + e_{i1} \,\geq\, -T_n \mid \delta_i, x_{i1} = x) + \mathbb{P}( \delta_{i}(x_{i1}) + e_{i1} \,\geq\, -T_n\mid x_{i1} = x)\right] \,\leq\, \tilde c_0.
-\bea 
-
-\paragraph{Step 2:}
-\rev{For $u \in [-T_n,T_n]$, the low-dimensional condition in Assumption~\ref{assump:lip} gives}
-\bea
-\rev{\max_{x\in[0,1]^d}\max_{u\in[-T_n,T_n]}|\Pi(x,u)|
-\,=\,\max_{x_S\in[0,1]^s}\max_{u\in[-T_n,T_n]}|\Pi(x_S,u)|.}
-\bea 
-
-
-Consider the space $[0,1]^s$. For the $i$-th dimension of $[0,1]^s$, let $0 = a_{1,i} < \cdots < a_{M,i} \,\leq\, a_{M+1,i} = 1$ be an evenly spaced partition. Let $c_{k,i}$ be the midpoint of $[a_{k,i}, a_{k+1,i}]$ for $k = 1, \ldots, M$. Define the multi-dimensional grid points in $[0,1]^s$ as $c_k = (c_{k,1}, c_{k,2}, \ldots, c_{k,s})$. Similarly, let $ -T_n = b_1 < \cdots < b_M \,\leq\, b_{M+1} = T_n $, partition the interval $[-T_n, T_n]$ into $M$ equal parts with midpoints $d_l$. 
-For each $k = 1, \dots, M$, 
-given vectors $x_S, c_k \in \mathbb{R}^s$ and an index $i \in \{1, 2, \ldots, s\}$, we define a new vector $x_S^{\backslash ki} \in \mathbb{R}^s$ via
-\bea
-x^{\backslash ki}_{Sj} := 
-\begin{cases} 
-x_{Sj} & \text{if } j \neq i,\\
-c_{k,i} & \text{if } j = i.
-\end{cases}
-\bea
-The $x_S^{\backslash ki}$, $i = 1, \dots, s$ indicates with $i$-th entry of $x_S$ replaced with $c_{ki}$. 
-
-
-Given a Lipschitz function $\Pi: [0,1]^s \times [-T_n, T_n] \to \mathbb{R}$, we approximate $\Pi(x_S,u)$ as follows:
-
-\begin{align*}
-    &\max_{x_S \in [0,1]^s} \max_{u \in [-T_n, T_n]} |\Pi(x_S,u)| \\
-    &\,\le\, \max_{k1= 1, \dots, M} \max_{k2= 1, \dots, M} \cdots \max_{ks= 1, \dots, M} \max_{l= 1, \dots, M} |\Pi((c_{k1}, c_{k2}, \ldots, c_{ks}), d_l)| \\
-    &\quad + \max_{x_S \in [0,1]^s} \max_{u\in[-T_n,T_n]} \min_{l= 1, \dots, M}\min_{k1 = 1, \dots, M} |\Pi(x_S^{\backslash k1}, d_l) - \Pi(x_S,u)|
-    \\
-    &\quad+ \cdots \\
-    &\quad + \max_{x_S \in [0,1]^s} \max_{u\in[-T_n,T_n]} \min_{l= 1, \dots, M}\min_{ks = 1, \dots, M} |\Pi(x_S^{\backslash ks}, d_l) - \Pi(x_S,u)|.
-\end{align*}
-
-
-
-For $x_S \in [a_{k,1}, a_{k+1,1}] \times \cdots \times [a_{k,s}, a_{k+1,s}]$ and $u \in [b_l, b_{l+1}]$, we estimate:
-
-\begin{align*}
-    &|\Pi(x_S^{\backslash ki}, d_l) - \Pi(x_S,u)| \\
-    &\,\le\, |\Pi(x_S^{\backslash ki},u) - \Pi(x_S^{\backslash ki}, d_l)| + |\Pi(x_S^{\backslash ki}, u) - \Pi(x_S,u)| \\
-    &\,\le\, \frac{\alpha \cdot 2T_n}{M} + \frac{\alpha}{M} \lesssim \frac{T_n}{M}.
-\end{align*}
-The last inequality follows by ~\eqref{lip_for_Pi}. 
-By Assumption~\ref{assump:lip}, $\Pi$ is Lipschitz, leading to the following probability bound:
-
-\begin{align*}
-    &\mathbb{P}\left(\max_{x_S \in [0,1]^s} \max_{u \in [-T_n,T_n]} |\Pi(x_S,u)| - \frac{sT_n}{M} \,\ge\, t\right) \\ &\,\leq\, \mathbb{P}\left ( \max_{k1= 1, \dots, M} \max_{k2= 1, \dots, M} \cdots \max_{ks= 1, \dots, M} \max_{l= 1, \dots, M} |\Pi((c_{k1}, c_{k2}, \ldots, c_{ks}), d_l)| \,\ge\, t \right ) \\
-    &\,\le\, \rev{2M^{s+1}} e^{-2\left|\mathcal{J}_{e,l} \right| t^2} \,\leq\, \rev{2M^{s+1}} e^{-\frac{2 c_1C_{\beta} n t^2}{\log n}},
-\end{align*}
-\rev{There are $M^s$ grid points for $x_S$ and $M$ grid points for $u$, hence $M^{s+1}$ grid points in total. The second inequality then follows from the two-sided Hoeffding inequality and a union bound, since $\abs{\Pi(\cdot)} \,\leq\, 1$ uniformly.}
-Take $M = \left(sT_n \cdot \sqrt{\frac{n}{\log n}}\right)$, therefore:
-
-\beq 
-\label{in1116}
-    &\max_{x_S \in [0,1]^s} \max_{u \in [-T_n, T_n]} |\Pi(\rev{x_S},u)| \,\leq\, c_3\sqrt{\frac{\rev{(s+1)}\log n \log T_n}{n}} \,\leq\, \rev{\sqrt{2}}c_3\sqrt{\frac{s\log n \log T_n}{n}} \,=\, O_p \left(\sqrt{\frac{s\log n\log T_n}{n}}\right).
-\beq 
-\rev{Here we use $s\geq 1$, so $s+1\leq 2s$; thus the additional threshold coordinate changes only the constant in the final order.} The $c_3$ is a constant that depends on $c_1$ and $C_{\beta}$.
-
-\paragraph{Step 3}:
-Returning to \eqref{blk_856}, using Assumption $|\mathcal{J}_{e,l}| \,\leq\, c_2 n/L$ in \eqref{beta_constants}, we have:
-\begin{align*}
-    &\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}\left|\mathbb{E}[r_{ij}(f)|\delta_i]\right| \labelrel={eq1171} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \left|\mathbb{E}[r_{ij}(f)|\delta_i]\right|  \\
-    & \labelrel\leq{eq1170} \frac{c_2}{L}\bigg| \frac{1}{|\mathcal{J}_{e,l}|} \sum_{i\in \mathcal{J}_{e,l}} \int_{[0,1]^d}\int_0^{f(x) - f^*(x)} \Big[ \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u \mid x_{i1}=x) \\
-    &\qquad\qquad - \mathbb{P}(y_{i1} \,\leq\, f^*(x_{i1}) + u \mid \delta_i, x_{i1} = x) \Big] du \, dx \bigg| \\
-    &\,\leq\, \frac{c_2}{L}\int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \max_{x\in[0,1]^d}\max_{u \in [-1,1]} |\Pi(x,u)| \cdot \mathbbm{1}_{\{\rev{\abs{f(x) - f^*(x)} \,\leq\, 1}\}} \, dx \\
-    &\quad + \frac{c_2}{L}\int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \max_{x\in[0,1]^d}\max_{u \in [-|f(x) - f^*(x)|, |f(x) - f^*(x)|]}|\Pi(x,u)| \cdot \mathbbm{1}_{\{\rev{\abs{f(x) - f^*(x)} > 1}\}} \, dx \\
-    &\,\leq\, \tilde c_0 \frac{c_2}{L}\int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \mathbbm{1}_{\{\rev{\abs{f(x) - f^*(x)} > 1}\}} \, dx \\
-    &\quad + \frac{c_2}{L}\int_{[0,1]^d} \left| f(x) - f^*(x) \right| \cdot \mathbbm{1}_{\{\rev{\abs{f(x) - f^*(x)} \,\leq\, 1}\}} \, dx \cdot c_3\sqrt{\frac{s\log n \log T_n}{n}} \\
-    &\,\leq\, \tilde c_0 \frac{c_2}{L} \Delta^2(f-f^*) + \frac{c_2}{L}\Delta(f-f^*)\cdot c_3\sqrt{\frac{s\log n \log T_n}{n}} \\
-    & \labelrel\leq{eq1033}  \tilde c_0\frac{c_2}{L}  \Delta^2(f-f^*) + \tilde c_0 \frac{c_2}{L}\Delta^2(f-f^*)+ \frac{c_3^2c_2}{L}\frac{1}{4\tilde c_0}\frac{s\log n\log T_n}{n}  \\
-&\,\leq\, \frac{2\tilde c_0c_2}{L}  \Delta^2(f-f^*)+ \frac{c_2}{L}\frac{c_3^2}{4\tilde c_0}\frac{s\log n\log T_n}{n},
-\end{align*}
-% where the inequality~\eqref{eq1171} uses $\frac{\sum_{i \in \mathcal{J}_{e,l}} m_i}{nm_i} \leq \frac{c_2}{L} $ and the fact for fixed $i$, $\mathbb{E}[r_{ij}(f)|\delta_i] = \mathbb{E}[r_{i1}(f)|\delta_i]$ for all $j=1, \dots, m_i$,
-% where the inequality~\eqref{eq1033} uses the bound $ab \leq  \frac{pa^2}{2} + \frac{b^2}{2p}$ for any $p > 0$, setting $p = 2\tilde c_0$.
-where the equality~\eqref{eq1171} uses the fact for fixed $i$, $\mathbb{E}[r_{ij}(f)|\delta_i] = \mathbb{E}[r_{i1}(f)|\delta_i]$ for all $j=1, \dots, m_i$, where the equality~\eqref{eq1170} follows by $|\mathcal{J}_{e,l}| \,\leq\, c_2 n/L$, 
-where the inequality~\eqref{eq1033} uses the bound $ab \,\leq\,  \frac{pa^2}{2} + \frac{b^2}{2p}$ for any $p > 0$, setting $p = 2\tilde c_0$.
-
-Thus, we have 
-\bea 
-\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}\Ept{x, e \mid \delta_i}{r_{ij}(f)} \,\leq\, \frac{2\tilde c_0c_2}{L}  \Delta^2(f-f^*)+ \frac{c_2}{L}\frac{c_3^2}{4\tilde c_0}\frac{s\log n\log T_n}{n}. 
-\bea 
-\rev{Subtracting the fixed penalty using \eqref{eq_c0_range}, and then taking the supremum and expectations, gives}
+Let $n\geq2$ and use $L$ from \eqref{equation}, so $L\geq1$.
+Let $\mathcal F\subset B_\infty(B)$ be deterministic and contain $f^*$,
+let $0<c_0<C_0$, and keep
+$\ell(f)=(C_0-c_0)\Delta^2(f-f^*)$ as in \eqref{def_df}.
+Fix a nonempty block $I=\mathcal J_{e,l}$, with independent coupled
+clusters having their original marginal laws and matching the original
+clusters on $\Omega_\beta$. In particular, the whole random functions
+$\{\delta_i^*\}_{i\in I}$ are independent. For $A_6$ in \eqref{def_A6},
 \beq
 \label{b_in_1144}
-\rev{A_6 \,\leq\, \frac{c_2}{L}\frac{c_3^2}{4\tilde c_0}\frac{s\log n\log T_n}{n}.}
-\beq 
+A_6 \,\leq\,
+\frac{8L(1\vee2B)|I|}{(C_0-c_0)n^2}.
+\beq
+The same conclusion holds for an odd block. The bound uses the original
+weights $1/(nm_i)$ and allows different measurement-error distributions
+for different $(i,j)$.
+\end{lemma}
+\begin{proof}
+Write $k=|I|$, $\kappa=C_0-c_0>0$, and $q_B=1\vee2B$.
+Let $F_{e_{ij}}$ be the marginal CDF of $e_{ij}$. Define
+\bea
+G_i(u)&\,\coloneqq\,\frac1{m_i}\sum_{j=1}^{m_i}F_{e_{ij}}(u),\\
+\overline\Pi_I^*(x,u)&\,\coloneqq\,\frac1k\sum_{i\in I}
+\left\{\mathbb E_{\delta_i^*}G_i(u-\delta_i^*(x))
+                         -G_i(u-\delta_i^*(x))\right\},\\
+V_I(x)&\,\coloneqq\,\sup_{u\in\mathbb R}
+                         |\overline\Pi_I^*(x,u)|.
+\bea
+Here the expectation in each summand uses that summand's marginal
+field law. In particular, each summand is centered, even when the
+$G_i$ differ. All field evaluations and conditional CDFs use the same
+measurable versions as the observation model.
+
+Let $r_{ij}^*(f)$ be the kernel in \eqref{def_rij} evaluated at
+$(x_{ij}^*,\delta_i^*)$. Independence of the design, the field, and the
+measurement errors in Assumption~\ref{ass_1_4}, and Fubini's theorem give
+\beq
+\label{eq_A6_signed_mean}
+M_I(f)
+&\,\coloneqq\,\frac1n\sum_{i\in I}\frac1{m_i}\sum_{j=1}^{m_i}
+          \mathbb E_{x^*,e^*\mid\delta_i^*}[r_{ij}^*(f)]\\
+&\,=\,\frac{k}{n}\int_{[0,1]^d}
+       \int_0^{f(x)-f^*(x)}\overline\Pi_I^*(x,u)\,du\,dQ(x).
+\beq
+The integrals retain their orientation when $f(x)-f^*(x)<0$.
+The mixture $G_i$ retains the average over all $j$; no equality of
+their conditional means is needed.
+
+On $\Omega_\beta$, the original conditional-mean functional in
+\eqref{def_A6} equals $M_I(f)$ for every $f$. At $f=f^*$ both $M_I(f)$
+and $\ell(f)$ are zero. Thus its supremum is nonnegative, and
+\beq
+\label{eq_A6_remove_indicator}
+A_6
+&\,=\,\mathbb E\left[
+ \left(\sup_{f-f^*\in\mathcal F_t}
+        \left\{M_I(f)-\frac{\ell(f)}{2L}\right\}\right)
+        \mathbbm1_{\Omega_\beta}\right]\\
+&\,\leq\,\mathbb E_{\delta^*}
+       \sup_{f-f^*\in\mathcal F_t}
+        \left\{M_I(f)-\frac{\ell(f)}{2L}\right\}.
+\beq
+All subsequent independence statements concern this unconditional
+copied-block law.
+
+We first prove a second-moment bound for $V_I(x)$ at each fixed $x$.
+Introduce independent auxiliary variables $\eta_i$ with CDFs $G_i$,
+independent of the copied fields, and put
+$Y_i=\delta_i^*(x)+\eta_i$. Then
+\[
+\mathbb E_\eta[\mathbbm1_{\{Y_i\leq u\}}\mid\delta^*]
+\,=\,G_i(u-\delta_i^*(x)).
+\]
+Let $Y_i'$ be independent copies matching each $Y_i$ separately,
+and let $\epsilon_i$ be independent Rademacher signs, independent of
+both arrays. Conditional Jensen, followed by exchange of the
+independent matched pairs, gives
+\bea
+\mathbb E_{\delta^*}V_I(x)^2
+&\,\leq\,\frac1{k^2}\mathbb E_Y
+  \sup_u\left|\sum_{i\in I}
+       \{\mathbb P(Y_i\leq u)-\mathbbm1_{\{Y_i\leq u\}}\}\right|^2\\
+&\labelrel\leq{eq_A6_cdf_ghost}
+  \frac1{k^2}\mathbb E_{Y,Y'}
+  \sup_u\left|\sum_{i\in I}
+       \{\mathbbm1_{\{Y_i'\leq u\}}-\mathbbm1_{\{Y_i\leq u\}}\}\right|^2\\
+&\labelrel={eq_A6_cdf_swaps}
+  \frac1{k^2}\mathbb E_{Y,Y',\epsilon}
+  \sup_u\left|\sum_{i\in I}\epsilon_i
+       \{\mathbbm1_{\{Y_i'\leq u\}}-\mathbbm1_{\{Y_i\leq u\}}\}\right|^2\\
+&\labelrel\leq{eq_A6_cdf_split}
+  \frac4{k^2}\mathbb E_{Y,\epsilon}
+  \sup_u\left|\sum_{i\in I}\epsilon_i\mathbbm1_{\{Y_i\leq u\}}\right|^2.
+\bea
+The first inequality conditions on the fields and averages the
+auxiliary variables. Inequality \eqref{eq_A6_cdf_ghost} is Jensen's
+inequality over $Y'$. Equality \eqref{eq_A6_cdf_swaps} exchanges each
+matched pair in the whole threshold process. Inequality
+\eqref{eq_A6_cdf_split} uses $(a+b)^2\leq2a^2+2b^2$ and the matching
+laws of the two arrays.
+
+Conditional on $Y$, order the observations increasingly, breaking
+ties by their indices. A threshold selects a prefix of this order.
+Let $S_r$ be the sum of the first $r$ signs in that order, with
+$S_0=0$, and let $M=\max_{0\leq r\leq k}|S_r|$. Then
+\[
+\sup_u\left|\sum_{i\in I}\epsilon_i\mathbbm1_{\{Y_i\leq u\}}\right|^2
+\,\leq\,M^2.
+\]
+For $\lambda>0$, split $\{M\geq\lambda\}$ by the first index at
+which $|S_r|\geq\lambda$. The remaining increments have conditional
+mean zero, so conditional Jensen gives
+\[
+\lambda\,\mathbb P_\epsilon(M\geq\lambda)
+\,\leq\,\mathbb E_\epsilon[
+              |S_k|\mathbbm1_{\{M\geq\lambda\}}].
+\]
+Integrating in $\lambda$ and applying Cauchy--Schwarz yields
+\bea
+\mathbb E_\epsilon M^2
+&\,\leq\,2\mathbb E_\epsilon(|S_k|M)\\
+&\,\leq\,2\sqrt{\mathbb E_\epsilon S_k^2\,
+                       \mathbb E_\epsilon M^2}
+\,=\,2\sqrt{k\,\mathbb E_\epsilon M^2}.
+\bea
+Since $M\leq k$, this implies $\mathbb E_\epsilon M^2\leq4k$.
+Consequently,
+\beq
+\label{eq_A6_cdf_second_moment}
+\mathbb E_{\delta^*}V_I(x)^2\,\leq\,\frac{16}{k},
+\qquad
+\mathbb E_{\delta^*}\int_{[0,1]^d}V_I(x)^2\,dQ(x)
+\,\leq\,\frac{16}{k}.
+\beq
+The last inequality is Tonelli's theorem. Right-continuity of the
+CDFs lets us take the threshold suprema over the rationals.
+No common distribution across $i$ or noise moment assumption was used.
+
+For $h=f-f^*$, the bound $|h|\leq2B$ implies
+$h^2\leq q_B\min(|h|,h^2)$. By \eqref{eq_A6_signed_mean},
+Cauchy--Schwarz, and completion of the square,
+\bea
+M_I(f)-\frac{\ell(f)}{2L}
+&\,\leq\,\frac{k}{n}\int_{[0,1]^d}|h(x)|V_I(x)\,dQ(x)
+              -\frac{\kappa}{2L}\Delta^2(h)\\
+&\,\leq\,\frac{k}{n}\sqrt{q_B}\,\Delta(h)\|V_I\|_{L_2(Q)}
+              -\frac{\kappa}{2L}\Delta^2(h)\\
+&\labelrel\leq{eq_A6_complete_square}
+ \frac{Lq_Bk^2}{2\kappa n^2}\|V_I\|_{L_2(Q)}^2.
+\bea
+Inequality \eqref{eq_A6_complete_square} applies
+$az-bz^2\leq a^2/(4b)$ with $z=\Delta(h)$ and
+$b=\kappa/(2L)$. Its right-hand side is independent of $f$.
+Taking the supremum, then expectation in
+\eqref{eq_A6_remove_indicator}, and using
+\eqref{eq_A6_cdf_second_moment}, gives
+\[
+A_6\,\leq\,\frac{Lq_Bk^2}{2\kappa n^2}\frac{16}{k}
+\,=\,\frac{8Lq_Bk}{\kappa n^2},
+\]
+which proves \eqref{b_in_1144}.
 \end{proof}
+\end{revision}
 
 
 
@@ -4117,75 +4282,174 @@ when $R_n=\log(n+1)$. This argument does not require independence across time in
 
 \begin{lemma}[Bound of $A_3$]
 \label{col_A_3}
-Let $\bar Z(f)$ and $Z(f)$ be defined in \eqref{305} and \eqref{def_zf}, respectively. Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let $\{s_{ij}\}_{i \in \mathcal{J}_{e,l},\, j \in [m_i]}$ be independent Rademacher random variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$. Let $A_3$ be the quantity introduced in \eqref{inq_a1a2a3}. Then, for any $t > 0$, we have
-\bea 
-A_3 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big( \sup_{\substack{f \in \mathcal{F} \\ c_0\Delta^2(f - f^*) \le t^2}} \frac{1}{n} \sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i} \sum_{j=1}^{m_i} \left( \bar Z_{ij}(f) - Z_{ij}(f) \right)\Big) \cdot \indic{\Omega_\beta}} \\
-&\,\le\, 2 \Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big( \sup_{\substack{f \in \mathcal{F} \\ c_0\Delta^2(f - f^*) \le t^2}} \frac{1}{n} \sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i} \sum_{j=1}^{m_i} s_{ij} Z_{ij}(f)\Big) \cdot \indic{\Omega_\beta}} \\
-&\,\rev{\leq}\, \frac{c_5}{L} R_{\mathcal{J}_{e,l}} \left( \rev{\mathcal F_t} \right),
-\bea \rev{where $c_5=2c_2C/c$ is as in Lemma~\ref{side_lemma_for_block},} and $R_{\mathcal{J}_{e,l}}$ is defined in \eqref{rademacher_def_blocks}.
+\begin{revision}
+Fix $t>0$ and a deterministic class $\mathcal F$ containing $f^*$.
+Assume that the centered class $\mathcal F_t$ defined above has a finite
+uniform envelope and that the suprema below are measurable.
+Let $\bar Z(f)$ and $Z(f)$ be defined in \eqref{305} and \eqref{def_zf},
+and let $A_3$ and $\Omega_\beta$ be as in \eqref{inq_a1a2a3} and
+\eqref{event_beta}. Suppose that $\mathcal J_{e,l}$ is nonempty, its
+copied design points are independent with law $Q$, and they agree with
+the original design points on $\Omega_\beta$. Use the same conditional
+response kernels for the original and copied losses. Assume $n\ge2$,
+$L\ge1$, the block-size bound \eqref{beta_constants}, and
+Assumption~\ref{asm:m}. Let $s_{ij}$ be independent Rademacher
+variables, independent of all data and their copies. Then
+\bea
+A_3
+&=\mathbb E_{x,\delta,e,x^*,\delta^*,e^*}\left[
+\left(\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+\{\bar Z_{ij}(f)-Z_{ij}(f)\}\right)\indic{\Omega_\beta}\right]\\
+&\le2\mathbb E_{x^*,s}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}Z_{ij}^*(f)\right]\\
+&\le\frac{c_5}{L}R_{\mathcal J_{e,l}}(\mathcal F_t),
+\bea
+where $c_5=2c_2C/c$ as in Lemma~\ref{side_lemma_for_block}, and
+$R_{\mathcal J_{e,l}}$ is defined in \eqref{rademacher_def_blocks}.
+The same bound holds for the corresponding odd-block term.
+\end{revision}
 \end{lemma}
 \begin{proof}
-We pass from $A_3$ to a star-world quantity $A_3^*$ via the coupling, and then bound $A_3^*$.
+\begin{revision}
+Write $I=\mathcal J_{e,l}$. For each $(i,j)$, fix a version of the
+conditional response law and write the deterministic value of
+$Z_{ij}(f)$ at a design point $x$ as
+\bea
+Z_{ij}(f;x)
+=\int_{\mathbb R}
+\{\rho_\tau(y-f(x))-\rho_\tau(y-f^*(x))\}
+\,dF_{y_{ij}\mid x_{ij}}(y\mid x).
+\bea
+The integrand is bounded in absolute value by $|f(x)-f^*(x)|$,
+so this loss-difference integral requires no noise moment.
+Using this same kernel for the original and copied designs gives
+\bea
+Z_{ij}(f)&=Z_{ij}(f;x_{ij}),\qquad
+Z_{ij}^*(f)=Z_{ij}(f;x_{ij}^*),\\
+\bar Z_{ij}^*(f)&=\bar Z_{ij}(f)
+=\int Z_{ij}(f;x)\,dQ(x).
+\bea
+The one-Lipschitz property of the check loss also gives, for every $x$,
+\bea
+Z_{ij}(f^*;x)=0,\qquad
+|Z_{ij}(f;x)-Z_{ij}(g;x)|\le |f(x)-g(x)|.
+\bea
+The kernels may differ across $(i,j)$.
 
-By the coupling identity \eqref{eq:Z_equal_on_Omega}, on $\Omega_\beta$
-we have $(x_{ij},e_{ij},\delta_i)=(x_{ij}^*,e_{ij}^*,\delta_i^*)$, so that
-\[
-\bar Z_{ij}(f)=\bar Z_{ij}^*(f), \qquad Z_{ij}(f)=Z_{ij}^*(f) \qquad\text{on }\Omega_\beta.
-\]
-Therefore,
-\beq
-\label{eq:A3_coupling_identity}
-&\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \left( \bar Z_{ij}(f) - Z_{ij}(f) \right)\Big) \cdot \indic{\Omega_\beta} \\
-&\,=\, \Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \left( \bar Z_{ij}^*(f) - Z_{ij}^*(f) \right)\Big) \cdot \indic{\Omega_\beta}.
-\beq
-Since $f^*$ belongs to the constraint set and $\bar Z_{ij}^*(f^*) - Z_{ij}^*(f^*) \,=\, 0$, the supremum is nonnegative. Hence $\indic{\Omega_\beta} \,\le\, 1$ implies
-\beq
-\label{eq:A3_le_A3star}
-A_3 &\le \Ept{x^*, \delta^*, e^*}{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i} \left( \bar Z_{ij}^*(f) - Z_{ij}^*(f) \right)} \eqqcolon A_3^*.
-\beq
-It remains to bound $A_3^*$. Let $\{\check x_{ij}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be an independent and identically distributed copy of $\{x^*_{ij}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $, then we define the independent and identically distributed copy of $Z_{ij}^*(f)$ as
+Consequently,
 \bea
-\check Z_{ij}(f) \,\coloneqq\,
-\Ept{\delta^*, e^* \mid \check x_{ij}}{\rho_{\tau}(f^*(\check x_{ij}) + \delta_i^*(\check x_{ij}) +  e_{ij}^*  - f(\check x_{ij})) - \rho_{\tau}(\delta_i^*(\check x_{ij}) +  e_{ij}^*)}.
+A_3
+&\labelrel = {eq:A3_coupling_identity}
+\mathbb E_{x,\delta,e,x^*,\delta^*,e^*}\left[
+\left(\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in I}\frac1{m_i}\sum_{j=1}^{m_i}
+\{\bar Z_{ij}^*(f)-Z_{ij}^*(f)\}\right)\indic{\Omega_\beta}\right]\\
+&\labelrel\le{eq:A3_le_A3star}
+\mathbb E_{x^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in I}\frac1{m_i}\sum_{j=1}^{m_i}
+\{\bar Z_{ij}^*(f)-Z_{ij}^*(f)\}\right]
+\eqqcolon A_3^*.
 \bea
-Now we control $\Ept{\check x \mid x^*, \delta^*, e^*}{\check Z_{ij}(f) - Z_{ij}^*(f)}$, the expectation takes on $\{\check x_{ij}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $. So we have
-\beq
-\label{eq289}
-& \sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{ \Ept{\check x}{\check Z_{ij}(f)}   - \Ept{\check x}{Z_{ij}^*(f) }  } \\
-& \quad \labelrel\le{288}  \Ept{\check x}{\Big( \sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}    \set{\check Z_{ij}(f) - Z_{ij}^*(f)} \Big)}.
-\beq
-The inequality $\eqref{288}$ is held by Jensen's inequality.
-Then, the left-hand side of the above, can be further written as
+Equality \eqref{eq:A3_coupling_identity} uses the identical kernels
+and matching designs on $\Omega_\beta$. Inequality
+\eqref{eq:A3_le_A3star} holds because $f=f^*$ contributes zero to
+the supremum, which is therefore nonnegative.
+
+Under the unconditional copied-design law, let $\check x_{ij}$ be
+independent with law $Q$, independent of $(x^*,s)$, and set
+$\check Z_{ij}(f)=Z_{ij}(f;\check x_{ij})$. For fixed $x^*$,
 \beq
 \label{eq295}
-{}&\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{ \Ept{\check x}{\check Z_{ij}(f)}   - Z_{ij}^*(f)  } \\
-& \quad \labelrel={298}  \sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{ \bar Z_{ij}^*(f)   - Z_{ij}^*(f)   }.
+\mathbb E_{\check x}[\check Z_{ij}(f)]
+=\int Z_{ij}(f;x)\,dQ(x)
+\labelrel = {298}\bar Z_{ij}^*(f).
 \beq
-The equality $\eqref{298}$ holds since given $\delta_i^*$, $\check Z_{ij}(f)$ is independent of $x^*, e^*$ and has the same conditional distribution as $Z_{ij}^*(f)$, so  $\Ept{\check x}{\check Z_{ij}(f)}$ and $\bar Z_{ij}^*(f) \,=\, \Ept{x^*, \delta^*, e^*}{\hat Z_{ij}^*(f)}$ are the same quantity.
-
-\rev{Combining} \eqref{eq289} and \eqref{eq295}, taking expectation of $\{x^*_{ij}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $  we have
+Equality \eqref{298} is the population identity above.
+Thus, holding $x^*$ fixed,
+\beq
+\label{eq289}
+&\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in I}\frac1{m_i}\sum_{j=1}^{m_i}
+\{\bar Z_{ij}^*(f)-Z_{ij}^*(f)\}\\
+&=\sup_{f-f^*\in\mathcal F_t}
+\mathbb E_{\check x}\left[
+\frac1n\sum_{i\in I}\frac1{m_i}\sum_{j=1}^{m_i}
+\{\check Z_{ij}(f)-Z_{ij}^*(f)\}\right]\\
+&\labelrel\le{288}\mathbb E_{\check x}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in I}\frac1{m_i}\sum_{j=1}^{m_i}
+\{\check Z_{ij}(f)-Z_{ij}^*(f)\}\right].
+\beq
+Inequality \eqref{288} holds because each fixed candidate is bounded
+by the supremum inside the expectation. Taking expectation over $x^*$
+and then symmetrizing yields
 \bea
-&A_3^* = \Ept{x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{ \bar Z_{ij}^*(f)  - Z_{ij}^*(f) }\Big)} \\
-&\le  \Ept{\check x, x^*, \delta^*, e^*}{\Big( \sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}    \set{\check Z_{ij}(f) - Z_{ij}^*(f)}\Big)}\\
-&\labelrel = {in299}   \Ept{\check x, x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}s_{ij}\set{\check Z_{ij} (f) -   Z_{ij}^* (f)}\Big)} \\
-&\labelrel\le{in300} 2\Ept{x^*, \delta^*, e^*, s}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} Z_{ij}^* (f)\Big)}.
+A_3^*
+&\le\mathbb E_{\check x,x^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in I}\frac1{m_i}\sum_{j=1}^{m_i}
+\{\check Z_{ij}(f)-Z_{ij}^*(f)\}\right]\\
+&\labelrel = {in299}\mathbb E_{\check x,x^*,s}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in I}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}\{\check Z_{ij}(f)-Z_{ij}^*(f)\}\right]\\
+&\le\mathbb E_{\check x,s}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in I}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}\check Z_{ij}(f)\right]\\
+&\quad+\mathbb E_{x^*,s}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in I}\frac1{m_i}\sum_{j=1}^{m_i}
+(-s_{ij})Z_{ij}^*(f)\right]\\
+&\labelrel = {in300}2\mathbb E_{x^*,s}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in I}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}Z_{ij}^*(f)\right].
 \bea
+For \eqref{in299}, each pair $(\check x_{ij},x_{ij}^*)$ is exchangeable,
+and these pairs are independent across $(i,j)$. Swapping a pair changes
+the sign of its difference for every $f$ simultaneously, which proves
+the identity for the whole function-indexed process.
+The intervening inequality splits the supremum of a sum.
+Equality \eqref{in300} uses the matching design laws and the equality
+in distribution of $s$ and $-s$.
 
-The \eqref{in299} holds since $\{x_{ij}^*\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]}$ are i.i.d.\ by construction, and $\{\check x_{ij}\}$ is an independent copy with the same distribution. Hence the $\set{\check Z_{ij} (f) -   Z_{ij}^* (f)}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ is independently distributed and symmetric with mean zero, and $\set{s_{ij}(\check Z_{ij} (f) -  Z_{ij}^* (f))}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ and $\set{\check Z_{ij} (f) -   Z_{ij}^* (f)}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ have the same distribution.
-The \eqref{in300} follows because $\set{-s_{ij}}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ are also independent Rademacher variables. 
-
-
-We apply the Lipschitz condition of $\hat Z_{ij}(f)$, $Z_{ij}(f)$ and $r_{ij}(f)$ in Lemma~\ref{lem:lip}, and then apply the 
-Ledoux-Talagrand contraction principle in Theorem~\ref{lem:Theorem 7}. 
-
-
-Then we have
-\beq
-&A_3 \,\le\, A_3^* \,\le\, 2\Ept{x^*, \delta^*, e^*, s}{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} Z_{ij}^* (f)} \\
-& \,\le\, 2\Ept{x^*, s}{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} \rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)}} \\
-&\,\rev{\leq}\,\frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_t}).
-\beq
-\rev{The contraction step uses the Lipschitz condition, $Z_{ij}^*(f^*)=0$, and the increments $f(x_{ij}^*)-f^*(x_{ij}^*)$. The last inequality is the indicator-free bound in Lemma~\ref{side_lemma_for_block}.}
+Conditional on $x^*$, the kernel at each coordinate is one-Lipschitz
+in $f(x_{ij}^*)-f^*(x_{ij}^*)$ and vanishes at zero.
+Applying \eqref{eq_A2_one_sided_contraction} with the original positive
+weights, and then the indicator-free bound in
+Lemma~\ref{side_lemma_for_block}, gives
+\bea
+A_3
+&\le2\mathbb E_{x^*,s}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in I}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}Z_{ij}^*(f)\right]\\
+&\labelrel\le{eq_A3_one_sided_contraction}
+2\mathbb E_{x^*,s}\left[
+\sup_{h\in\mathcal F_t}\frac1n
+\sum_{i\in I}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}h(x_{ij}^*)\right]\\
+&\le\frac{c_5}{L}R_I(\mathcal F_t).
+\bea
+For \eqref{eq_A3_one_sided_contraction}, multiplying both the input
+and the loss map by $1/(nm_i)$ preserves its Lipschitz constant one.
+For the last inequality, the block and sample-size bounds give
+\bea
+\frac{\sum_{k\in I}m_k}{nm_i}
+\le\frac{C|I|}{cn}
+\le\frac{c_2C}{cL}.
+\bea
+Dividing these multipliers by $c_2C/(cL)$ puts them in $[0,1]$.
+The same coordinate contraction therefore yields the factor
+$c_2C/(cL)$; the factor two comes
+from symmetrization. Every expectation after
+\eqref{eq:A3_le_A3star} uses the unconditional copied-design law.
+\end{revision}
 \end{proof}
 
 
@@ -4276,112 +4540,177 @@ Then we have
 
 \subsection{Proof of Step 4}
 
-\begin{lemma}[Bound of $A_1$, $A_2$, and $A_3$ by Rademacher width]
+\begin{lemma}[\rev{Aggregation with the empirical weights}]
 \label{lem_huber_rate}
-Let $\hat f, f^* \in \gF$. Let $\Omega_\beta$ be defined in \eqref{event_beta}. Suppose the distribution of $\{(x_{ij}, y_{ij})\}_{i=1,j=1}^{n,m_i}$ satisfies Assumption~\ref{assumptionA}.
+\begin{revision}
+Let $\mathcal F$ be a deterministic convex class satisfying
+\eqref{F_2}, with $f^*\in\mathcal F$, and let $\hat f$ be a measurable
+minimizer in \eqref{main_est}. Assume the hypotheses of
+Lemma~\ref{lem_nonconvex_auxiliary_groups}, including its state-space
+and measurable-evaluation conditions. Suppose
+$\bar Z(f)\ge C_0\Delta^2(f-f^*)$ on $\mathcal F$, with $C_0$ from
+\eqref{def_C0}, and fix $0<c_0<C_0$.
+Retain $\ell(f)$ from \eqref{def_df} and the centered class
+$\mathcal F_t$ defined above, and assume the displayed suprema are
+measurable.
 
-Let $c_0$ satisfy \eqref{eq_c0_range}. Let $R(\gF)$ denote the Rademacher width defined in \ref{definition213}, and let $\tilde c_0$ be the small constant given in Assumption~\ref{ass:tail_multi_d}.
-
-Then, for any $t > 0$, the following inequality holds:
+Use the auxiliary groups $\mathcal A_r$ and their joint response copies
+from \eqref{eq_nonconvex_auxiliary_groups}--\eqref{eq_nonconvex_auxiliary_product}.
+For these groups, use the normalized width
+\eqref{eq_nonconvex_general_block_width}, and write
+$q_B=\max\{1,2B\}$. Then, for every $t>0$,
 \beq
 \label{exp:bridge}
-\sP\paren{c_0 \Delta^2(\hat f - f^*) > t^2}
-&\,\le\, \frac{c_5}{t^2} \sum_{l=1}^L \Big( R_{\mathcal{J}_{e,l}} \left( \gF \cap \set{c_0\Delta^2(f - f^*) \le  t^2} \right) \\
-&\qquad + R_{\mathcal{J}_{o,l}} \left( \gF \cap \set{c_0\Delta^2(f - f^*) \le  t^2} \right) \Big) + \frac{c_4}{t^2} \cdot \frac{s \log n \log T_n}{n},
+\mathbb P\{c_0\Delta^2(\hat f-f^*)>t^2\}
+&\le\frac1n+\frac{9C}{cLt^2}
+       \sum_{r=1}^L R_{\mathcal A_r}(\mathcal F_t)\\
+&\quad+\frac{4q_B L}{(C_0-c_0)nt^2}.
 \beq
-\rev{where $c_5=2c_2C/c$, with $c_2$ from \eqref{beta_constants} and $C$, $c$ from Assumption~\ref{asm:m};} $c_4$ depends on $\tilde c_0$ in Assumption~\ref{ass:tail_multi_d}, $C_{\beta}$ in Assumption~\ref{ass_c_beta}, and $c_1$, $c_2$ in \eqref{beta_constants},
-and $R_{\mathcal{J}_{e,l}}$, $R_{\mathcal{J}_{o,l}}$ are defined in \eqref{rademacher_def_blocks}.
-\end{lemma} 
+Here $c,C$ are the sample-size constants in Assumption~\ref{asm:m}.
+\end{revision}
+\end{lemma}
 \begin{proof}
-
-We apply the Lipschitz condition of $\hat Z_{ij}(f)$, $Z_{ij}(f)$ and $r_{ij}(f)$ in Lemma~\ref{lem:lip}, and then apply the 
-Ledoux-Talagrand contraction principle in Theorem~\ref{lem:Theorem 7}. 
-We apply the Lemmas~\ref{col_A_1}, \ref{col_A_2} and \ref{col_A_3}. 
-let $A_1$ be the quantity introduced in \eqref{inq_a1a2a3},
-By Lemma~\ref{col_A_1}, we have 
-\bea 
-A_1 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i}Z_{ij}(f) - \tilde Z_{ij}(f) - \frac{\ell(f)}{2L}\Big) \cdot \indic{\Omega_\beta}} \\
-&\,\le\, \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_t})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n}.
-\bea
-Similarly,  we have for  $B_1$ in \eqref{inq_a1a2a3}
-
-\bea
-B_1 \,\le\, \frac{c_5}{L}R_{\mathcal{J}_{o,l}}(\rev{\mathcal F_t})  + \frac{c_4}{L}\frac{s\log n\log T_n}{n}.
-\bea 
-
-Let $A_2$ be the quantity introduced in \eqref{inq_a1a2a3}, by Lemma~\ref{col_A_2}, we have 
-
-\bea 
-A_2 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\tilde Z_{ij}(f) - \hat Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
-&\,\le\,  \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_t}).
-\bea
-Similarly, we have
-\bea
-B_2 \,\le\,  \frac{c_5}{L}R_{\mathcal{J}_{o,l}}(\rev{\mathcal F_t}).
-\bea  
-
-
-By Lemma~\ref{col_A_3}  we have 
-\beq 
-A_3 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\bar Z_{ij}(f) - Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
-&\,\le\, \frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_t}).
-\beq 
-
-Similarly, we have 
-\bea 
-B_3 \,\le\,  \frac{c_5}{L}R_{\mathcal{J}_{o,l}}(\rev{\mathcal F_t}).
-\bea  
-
-\rev{By \eqref{eq_rademacher_translation}, for either an even or an odd block $\mathcal J$,
+\begin{revision}
+For this proof, write
 \[
-R_{\mathcal J}(\mathcal F_t)
-=R_{\mathcal J}\left(\gF\cap\set{c_0\Delta^2(f-f^*)\leq t^2}\right).
+S_t=\sup_{f-f^*\in\mathcal F_t}
+ \{\bar Z(f)-\hat Z(f)-\ell(f)\}.
 \]
-Thus, substituting the six centered bounds above gives the uncentered but equivalent widths in \eqref{exp:bridge}.}
-
-Thus, by Theorem~\ref{Theorem_1}, with $\Omega_\beta$ defined in \eqref{event_beta}, we have  
+The candidate $f=f^*$ gives $S_t\ge0$. On the event
+$c_0\Delta^2(\hat f-f^*)>t^2$, continuity along the segment from
+$f^*$ to $\hat f$ gives $f_t\in\mathcal F$ such that
+$c_0\Delta^2(f_t-f^*)=t^2$. This continuity follows by dominated
+convergence from $|\hat f-f^*|\le2B$.
+Convexity of the empirical check loss and the minimizing property give
+$\hat Z(f_t)\le0$. Consequently,
 \bea
-&\sP\paren{c_0\Delta^2(\hat f - f^*) > t^2}  
-\\ & \labelrel\leq{in506} 
-\sum_{l=1}^{L}\bigg( 6c_5\frac{R_{\mathcal{J}_{e,l}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}\right)+ R_{\mathcal{J}_{o,l}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}\right)}{t^2} \\
-&\quad + \frac{2c_4}{Lt^2}\frac{s\log n\log T_n}{n}\bigg) \\
-&\,=\, 6c_5\frac{\sum_{l=1}^LR_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}\right)}{t^2} \\
-&\quad + \frac{2c_4}{t^2}\frac{s\log n\log T_n}{n} \\
-&\,=\,   \frac{c_5\left(\sum_{l=1}^LR_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}\right)\right)}{t^2} \\
-&\quad + \frac{c_4}{t^2}\frac{s\log n\log T_n}{n}
+S_t
+&\ge \bar Z(f_t)-\hat Z(f_t)-\ell(f_t)\\
+&\ge C_0\Delta^2(f_t-f^*)-(C_0-c_0)\Delta^2(f_t-f^*)\\
+&=t^2.
 \bea
+Thus the boundary event is $\{S_t\ge t^2\}$.
 
-% Furthermore, 
-% all probability and expectation statements are implicitly conditioned on the event $\Omega_\beta$; see Remark~\ref{remark:joint}, 
-% we have 
-% % \[
-% % \frac{K - 1}{2} \leq |\mathcal{J}_{e, l}| \leq \frac{K + 2}{2} \quad \,\,\,\text{and}\,\,\, \quad \frac{K - 1}{2} \leq |\mathcal{J}_{o, l}| \leq \frac{K + 2}{2},
-% % \].
+Let $S_t^\dagger$ denote the same supremum with the empirical loss
+evaluated at the joint response copies. The matching event
+$\Omega^\dagger$ in \eqref{eq_nonconvex_auxiliary_matching} gives
+$S_t=S_t^\dagger$ on $\Omega^\dagger$. Therefore,
+\bea
+\mathbb P\{c_0\Delta^2(\hat f-f^*)>t^2\}
+&\le\mathbb P((\Omega^\dagger)^c)
+       +\mathbb P\{S_t\ge t^2,\ \Omega^\dagger\}\\
+&\labelrel\le{eq_convex_auxiliary_markov}
+ \frac1n+\frac{\mathbb E[S_t\mathbf1_{\Omega^\dagger}]}{t^2}\\
+&=\frac1n+\frac{\mathbb E[S_t^\dagger\mathbf1_{\Omega^\dagger}]}{t^2}\\
+&\labelrel\le{eq_convex_auxiliary_remove_indicator}
+ \frac1n+\frac{\mathbb E S_t^\dagger}{t^2}.
+\bea
+Inequality \eqref{eq_convex_auxiliary_markov} applies Markov's
+inequality once to the full nonnegative supremum. Inequality
+\eqref{eq_convex_auxiliary_remove_indicator} uses the zero candidate
+in the copied supremum. All subsequent expectations use the
+unconditional copied law.
 
-% We also have for $s, l \in [1, \dots, L], s\neq l$, 
-% $\set{x_{ij}}_{i\in \mathcal{J}_{e, l} j \in [m_i]}
-% $, $\set{x_{ij}}_{i\in \mathcal{J}_{e, s} j \in [m_i]}
-% $, $\set{x_{ij}}_{i\in \mathcal{J}_{o, l} j \in [m_i]}
-% $ have the same distribution. 
-% Similarly, we have  $\set{e_{ij}}_{i\in \mathcal{J}_{e, l} j \in [m_i]}
-% $, $\set{e_{ij}}_{i\in \mathcal{J}_{e, s} j \in [m_i]}
-% $, $\set{e_{ij}}_{i\in \mathcal{J}_{o, l} j \in [m_i]}
-% $ have same distribution, and $\set{\delta_{i}}_{i\in \mathcal{J}_{e, l}}
-% $, $\set{\delta_{i}}_{i\in \mathcal{J}_{e, s}}
-% $, $\set{\delta_{i}}_{i\in \mathcal{J}_{o, l}}
-% $ have the same distribution by our assumption. 
-% Thus, Then by \eqref{beta_constants}, 
-% we have  there exists a constant $c_6$ such that 
+The groups partition $[n]$. For each coordinate, the three loss
+differences telescope:
+\[
+\begin{aligned}
+\bar Z_{ij}(f)-\hat Z_{ij}^\dagger(f)
+&=\{\tilde Z_{ij}^\dagger(f)-\hat Z_{ij}^\dagger(f)\}
+ +\{Z_{ij}^\dagger(f)-\tilde Z_{ij}^\dagger(f)\}\\
+&\quad+\{\bar Z_{ij}(f)-Z_{ij}^\dagger(f)\}.
+\end{aligned}
+\]
+Allocate $\ell(f)/L$ to the middle difference in each group.
+The original weights and the elementary supremum inequality give
+\bea
+\mathbb E S_t^\dagger
+&\le\sum_{r=1}^L\mathbb E\left[
+ \sup_{f-f^*\in\mathcal F_t}\frac1n
+ \sum_{i\in\mathcal A_r}\frac1{m_i}\sum_{j=1}^{m_i}
+ \{\tilde Z_{ij}^\dagger(f)-\hat Z_{ij}^\dagger(f)\}\right]\\
+&\quad+\sum_{r=1}^L\mathbb E\left[
+ \sup_{f-f^*\in\mathcal F_t}
+ \left\{\frac1n\sum_{i\in\mathcal A_r}\frac1{m_i}\sum_{j=1}^{m_i}
+ \{Z_{ij}^\dagger(f)-\tilde Z_{ij}^\dagger(f)\}
+ -\frac{\ell(f)}L\right\}\right]\\
+&\quad+\sum_{r=1}^L\mathbb E\left[
+ \sup_{f-f^*\in\mathcal F_t}\frac1n
+ \sum_{i\in\mathcal A_r}\frac1{m_i}\sum_{j=1}^{m_i}
+ \{\bar Z_{ij}(f)-Z_{ij}^\dagger(f)\}\right].
+\bea
+Each supremum contains the zero candidate.
+Fix a group and write $N_r=\sum_{i\in\mathcal A_r}m_i$,
+$m_{\min,r}=\min_{i\in\mathcal A_r}m_i$, and $k_r=|\mathcal A_r|$.
+By \eqref{eq_nonconvex_auxiliary_product}, conditional on the fields
+and designs in this group, its measurement errors are independent
+with their respective marginal laws. The matching-error ghost
+argument in Lemma~\ref{col_A_2}, followed by the contraction
+\eqref{eq_A2_one_sided_contraction}, gives
+\bea
+&\mathbb E\left[
+ \sup_{f-f^*\in\mathcal F_t}\frac1n
+ \sum_{i\in\mathcal A_r}\frac1{m_i}\sum_{j=1}^{m_i}
+ \{\tilde Z_{ij}^\dagger(f)-\hat Z_{ij}^\dagger(f)\}\right]\\
+&\quad\le2\mathbb E_{x^\dagger,s}\left[
+ \sup_{h\in\mathcal F_t}\frac1n
+ \sum_{i\in\mathcal A_r}\frac1{m_i}\sum_{j=1}^{m_i}
+ s_{ij}h(x_{ij}^\dagger)\right]\\
+&\quad\le\frac{2N_r}{nm_{\min,r}}R_{\mathcal A_r}(\mathcal F_t).
+\bea
+For the last inequality, factor out $N_r/(nm_{\min,r})$ and apply
+coordinate contraction to the multipliers $m_{\min,r}/m_i\in[0,1]$
+inside the expected supremum. The deterministic conditional-kernel
+ghost argument in Lemma~\ref{col_A_3} similarly gives
+\bea
+&\mathbb E\left[
+ \sup_{f-f^*\in\mathcal F_t}\frac1n
+ \sum_{i\in\mathcal A_r}\frac1{m_i}\sum_{j=1}^{m_i}
+ \{\bar Z_{ij}(f)-Z_{ij}^\dagger(f)\}\right]\\
+&\quad\le2\mathbb E_{x^\dagger,s}\left[
+ \sup_{h\in\mathcal F_t}\frac1n
+ \sum_{i\in\mathcal A_r}\frac1{m_i}\sum_{j=1}^{m_i}
+ s_{ij}h(x_{ij}^\dagger)\right]\\
+&\quad\le\frac{2N_r}{nm_{\min,r}}R_{\mathcal A_r}(\mathcal F_t).
+\bea
+These arguments apply to the present product-law group before the
+block-size comparison in those lemmas.
 
-% \beq
-% \label{simplify_rade_beta}
-% &\sP\paren{c_0\Delta^2(\hat f - f^*) > t^2}  
-% \\ &\leq    \frac{c_6LR_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le t^2}\right)}{t^2} + \frac{c_4}{t^2}\frac{s\log n\log T_n}{n}
-% \beq
-
-
-
-
+For the middle difference, convexity and $f^*\in\mathcal F$ imply
+$\operatorname{Star}(\mathcal F,f^*)=\mathcal F$.
+In \eqref{eq_nonconvex_spatial_component}, take
+$f_{\mathrm{Proj}}=f^*$, $\phi_{nm}=0$,
+$\varepsilon=-1$, and $a=(C_0-c_0)/L$.
+Its localized class is then $\mathcal F_t$, and its envelope
+constant is $q_H=q_B$. Hence
+\bea
+&\mathbb E\left[
+ \sup_{f-f^*\in\mathcal F_t}
+ \left\{\frac1n\sum_{i\in\mathcal A_r}\frac1{m_i}\sum_{j=1}^{m_i}
+ \{Z_{ij}^\dagger(f)-\tilde Z_{ij}^\dagger(f)\}
+ -\frac{\ell(f)}L\right\}\right]\\
+&\quad\le\frac{2N_r}{nm_{\min,r}}R_{\mathcal A_r}(\mathcal F_t)
+       +\frac{4q_B Lk_r}{(C_0-c_0)n^2}.
+\bea
+Combining the three bounds yields
+\bea
+\mathbb E S_t^\dagger
+&\le6\sum_{r=1}^L\frac{N_r}{nm_{\min,r}}
+                 R_{\mathcal A_r}(\mathcal F_t)
+       +\frac{4q_B L}{(C_0-c_0)n^2}\sum_{r=1}^L k_r\\
+&\le\frac{9C}{cL}\sum_{r=1}^L R_{\mathcal A_r}(\mathcal F_t)
+       +\frac{4q_B L}{(C_0-c_0)n}.
+\bea
+The last inequality uses \eqref{eq_nonconvex_auxiliary_sizes}:
+\[
+\frac{N_r}{nm_{\min,r}}
+\le\frac{Ck_r}{cn}
+\le\frac{3C}{2cL},
+\qquad \sum_{r=1}^L k_r=n.
+\]
+Substituting into \eqref{eq_convex_auxiliary_remove_indicator}
+proves \eqref{exp:bridge}.
+\end{revision}
 \end{proof}
 
 
@@ -4450,16 +4779,21 @@ Thus, by Theorem~\ref{Theorem_1}, with $\Omega_\beta$ defined in \eqref{event_be
 % The rest of the proofs will be focused on bounding the $B_1$ in Expression~\eqref{exp:bridge}. 
 
 
-Based on the results in Lemma~\ref{lem_huber_rate} and Lemma~\ref{lemma_beta_decomp}, we have on event $\Omega_{\beta} \cup \Omega_{\beta}^c$, 
+\begin{revision}
+Under the hypotheses of Lemma~\ref{lem_huber_rate}, the scaling argument
+in Lemma~\ref{lem_l2} applies to each nonempty auxiliary group with
+the normalized width \eqref{eq_nonconvex_general_block_width}.
+Using \eqref{eq_rademacher_translation} and writing
+$b(B)=\max\{1,B^{1/2}\}$, \eqref{exp:bridge} therefore gives
 \beq
 \label{final_rate}
-&\sP\paren{c_0\Delta^2(\hat f - f^*) > t^2}  
-\\&\,=\, \frac{c_5}{t^2}\Big(\sum_{l=1}^LR_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}\right) \\
-&\qquad + R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}\right)\Big) + \frac{c_4}{t^2}\frac{s\log n\log T_n}{n} + \frac{3}{nt^2}
-\\&\,=\, \frac{c_5}{t^2}\Big(\sum_{l=1}^LR_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}\right) \\
-&\qquad + R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}\right)\Big) + \frac{c_{4}}{t^2}\frac{s\log n\log T_n}{n}.
-\beq 
-In the last line, we combine the $c_4$ with some other numeric constant into one constant $c_4$.
+\mathbb P\{c_0\Delta^2(\hat f-f^*)>t^2\}
+&\le\frac1n+\frac{9\sqrt2\,C}{cLt^2}
+ \sum_{r=1}^L R_{\mathcal A_r}\left(
+ \mathcal F\cap B_2\left(c_0^{-1/2}b(B)t\right)\right)\\
+&\quad+\frac{4\max\{1,2B\}L}{(C_0-c_0)nt^2}.
+\beq
+\end{revision}
 % And based on the Inequality~\eqref{simplify_rade_beta}, we have 
 % \beq
 % \label{simplify_final_rate}
@@ -4621,96 +4955,128 @@ Thus the definition of $b(B)$ is unchanged. The numerical factors in the norm an
 
 % where $b(B)$ is a constant that depends on $L$.
 
-\begin{corollary}
-\label{cor_op} 
-% Consider the notation from Theorem 7. 
-Let $\kappa>0$ be a constant and if $\{r_n\}$ is a sequence such that
+\begin{corollary}[\rev{A sufficient radius for boundedness in probability}]
+\label{cor_op}
+\begin{revision}
+Suppose the hypotheses of Lemma~\ref{lem_huber_rate} hold for all
+sufficiently large $n$, with $c,C,C_0,c_0$ fixed and $0<c_0<C_0$.
+Use the auxiliary groups and normalized widths from that lemma.
+Let $r_n>0$ be deterministic. If
 \beq
 \label{find_rate_cor}
-&\lim_{\kappa \to \infty} \sup_{n \,\geq\, 1} 
-\left\{\frac{\rev{\sqrt{2}}c_5\sum_{l=1}^L R_{\mathcal{J}_{e,1}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \kappa r_n\right)\right)}{\kappa^2 r_n^2} \right. \\ &
-\left. +  \frac{\rev{\sqrt{2}}c_5\sum_{l=1}^L R_{\mathcal{J}_{o,1}}\left(\gF \cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \kappa r_n\right)\right)}{\kappa^2 r_n^2} + \frac{\frac{c_4 s\log n\log T_n}{n} + \frac{3}{n}}{\kappa^2 r_n^2 }\right\} = 0,
+&\lim_{M\to\infty}\limsup_{n\to\infty}
+\Biggl[
+\frac{9\sqrt2\,C}{cLM^2r_n^2}
+\sum_{r=1}^L R_{\mathcal A_r}\left(
+\mathcal F\cap B_2\left(c_0^{-1/2}b(B)Mr_n\right)\right)\\
+&\qquad+\frac{4\max\{1,2B\}L}{(C_0-c_0)nM^2r_n^2}
+\Biggr]=0,
 \beq
 then
 \beq
 \label{eq828}
-\Delta^2(\hat f - f^*)  \,=\, O_p \left(r_n^2\right).
+\Delta^2(\hat f-f^*)\,=\,O_P(r_n^2).
 \beq
-% Furthermore, if identically distributed across $i$, and the choice of $L$ in \eqref{beta_constants} we need such $\set{r_n}$ as
-% \beq 
-% \label{condition_converge}
-% \lim_{\kappa \to \infty} \sup_{n \geq 1} \frac{c_6LR_{\mathcal{J}_{e,1}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \kappa r_n\right)\right) + \frac{c_4 s\log n\log T_n}{n} + \frac{3}{n}}{\kappa^2 r_n^2 } = 0,
-% \beq 
+A sufficient condition for \eqref{find_rate_cor} is that, for a
+constant $0<A<\infty$ independent of $n$ and all sufficiently large $n$,
+\beq
+\label{eq_op_sufficient_radius}
+\frac1L\sum_{r=1}^L R_{\mathcal A_r}\left(
+\mathcal F\cap B_2\left(c_0^{-1/2}b(B)r_n\right)\right)
++\frac{\max\{1,2B\}L}{(C_0-c_0)n}
+\,\leq\,A r_n^2.
+\beq
+Under this condition, for every $M\ge1$ and all such $n$,
+\beq
+\label{eq_op_explicit_tail}
+\mathbb P\{c_0\Delta^2(\hat f-f^*)>M^2r_n^2\}
+\,\leq\,\frac1n+\frac{9\sqrt2\,CA}{cM}+\frac{4A}{M^2}.
+\beq
+\end{revision}
 \end{corollary}
-\begin{proof} Let $\varepsilon > 0$ be given. Notice that for any $\kappa > 0$ we have that, from Lemma~\ref{lem_huber_rate} and Lemma~\ref{lemma_beta_decomp}, 
+\begin{proof}
+\begin{revision}
+Substituting $t=Mr_n$ in \eqref{final_rate} gives
 \beq
 \label{prob_to_rademacker}
-&\sP\paren{c_0\Delta^2(\hat f - f^*) > \kappa^2 r_n^2} 
-\\ &  \,\leq\,  
-\frac{\rev{\sqrt{2}}c_5\sum_{l=1}^L R_{\mathcal{J}_{e,1}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \kappa r_n\right)\right)}{\kappa^2 r_n^2}  \\ & \quad +  \frac{\rev{\sqrt{2}}c_5\sum_{l=1}^L R_{\mathcal{J}_{o,1}}\left(\gF \cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \kappa r_n\right)\right)}{\kappa^2 r_n^2} + \frac{\frac{c_4 s\log n\log T_n}{n} + \frac{3}{n}}{\kappa^2 r_n^2 }  \\
-& \labelrel < {in506} \varepsilon,
+&\mathbb P\{c_0\Delta^2(\hat f-f^*)>M^2r_n^2\}\\
+&\quad\,\leq\,\frac1n+
+\frac{9\sqrt2\,C}{cLM^2r_n^2}
+\sum_{r=1}^L R_{\mathcal A_r}\left(
+\mathcal F\cap B_2\left(c_0^{-1/2}b(B)Mr_n\right)\right)\\
+&\quad+\frac{4\max\{1,2B\}L}{(C_0-c_0)nM^2r_n^2}.
 \beq
-where the inequality~\eqref{in506} holds  and the last by choosing $\kappa$ large enough.  
+For any $\varepsilon>0$, condition \eqref{find_rate_cor} permits
+a fixed $M$ for which the upper limit in $n$ of the last two terms
+is less than $\varepsilon/2$. Since $1/n\to0$, there is $n_0$ such that
+\[
+\mathbb P\left\{\Delta^2(\hat f-f^*)>
+\frac{M^2}{c_0}r_n^2\right\}<\varepsilon,
+\qquad n\ge n_0.
+\]
+This is \eqref{eq828}.
 
-Then we have
-\beq
-\label{eq828}
-\Delta^2(\hat f - f^*)  \,=\, O_p \left(r_n^2\right).
-\beq
-
-And by~\eqref{prob_to_rademacker} setting that 
+To verify the sufficient condition, fix $M\ge1$ and a group
+$\mathcal A_r$. For any
+$f\in\mathcal F\cap B_2(c_0^{-1/2}b(B)Mr_n)$, convexity and
+$f^*\in\mathcal F$ give
+\[
+g=f^*+\frac{f-f^*}{M}\in\mathcal F,
+\qquad
+\|g-f^*\|_2=\frac{\|f-f^*\|_2}{M}
+\le c_0^{-1/2}b(B)r_n.
+\]
+Write $N_r=\sum_{i\in\mathcal A_r}m_i$. For every realization
+of the copied design and signs,
 \bea
-r_n^2 \asymp 
-\sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot r_n\right)\right)+ R_{\mathcal{J}_{o,l}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot r_n\right)\right)\right) + \frac{s\cdot \text{poly}(\log n)\log T_n}{n}.
+&\sup_{f\in\mathcal F\cap B_2(c_0^{-1/2}b(B)Mr_n)}
+\frac1{N_r}\sum_{i\in\mathcal A_r}\sum_{j=1}^{m_i}
+s_{ij}(f-f^*)(x_{ij}^\dagger)\\
+&\labelrel\leq{eq_op_radial_sup}
+M\sup_{g\in\mathcal F\cap B_2(c_0^{-1/2}b(B)r_n)}
+\frac1{N_r}\sum_{i\in\mathcal A_r}\sum_{j=1}^{m_i}
+s_{ij}(g-f^*)(x_{ij}^\dagger).
 \bea
-
-
-% Furthermore, by the conditions of Equation~\eqref{simplify_rade_beta}, we have \eqref{condition_converge} holds, 
-% in that case we can let 
-% \bea
-% r_n^2 \asymp 
-% LR_{\mathcal{J}_{e,1}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot t\right)\right) + \frac{s\log n\log T_n}{n}.
-% \bea
+Inequality \eqref{eq_op_radial_sup} follows from the displayed map
+and $f-f^*=M(g-f^*)$. Taking expectations and using
+\eqref{eq_rademacher_translation} yields
+\beq
+\label{eq_op_width_scaling}
+R_{\mathcal A_r}\left(
+\mathcal F\cap B_2\left(c_0^{-1/2}b(B)Mr_n\right)\right)
+\,\leq\,M R_{\mathcal A_r}\left(
+\mathcal F\cap B_2\left(c_0^{-1/2}b(B)r_n\right)\right).
+\beq
+The widths are nonnegative because the centered classes contain
+zero. Thus \eqref{eq_op_sufficient_radius} bounds each of its two
+nonnegative summands by $A r_n^2$. Applying
+\eqref{eq_op_width_scaling} to every group in
+\eqref{prob_to_rademacker} proves \eqref{eq_op_explicit_tail};
+the two terms apart from $1/n$ are bounded by
+$9\sqrt2\,CA/(cM)+4A/M^2$, which tends to zero as $M\to\infty$.
+This proves \eqref{find_rate_cor} and completes the argument.
+\end{revision}
 \end{proof}
 
-\subsection{Proof of Theorem~\ref{Theorem_1}}
-Finally, we present the proof of Theorem~\ref{Theorem_1}.
-\rev{By Lemma~\ref{lem_l2}, we have}
-
-\bea
-R_{\mathcal{J}_{e,l}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}\right) \,\leq\, \rev{\sqrt{2}\,R_{\mathcal{J}_{e,l}}}\left(\gF\cap \set{f:\norm{f-f^*} \leq  c_0^{-1/2}\cdot b(B)\cdot t}\right),
-\bea 
-
-
-where $b(B) \,=\, \max\set{B^{1/2},1}$ is a constant that depends on $B$. 
-
-From Lemma~\ref{lem_huber_rate}, 
-we get 
-\bea 
-&\sP\paren{c_0\Delta^2(\hat f - f^*) > t^2}  
-\\ & \,\leq\, \frac{c_5}{t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2})+ R_{\mathcal{J}_{o,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2})\Big) + \frac{c_4}{t^2}\frac{s\log n\log T_n}{n}. 
-\bea 
-\rev{By Lemma~\ref{lem_l2}, we have}
-\bea 
-&\sP\paren{c_0\Delta^2(\hat f - f^*) > t^2}  
-\\ & \,\leq\, \frac{\rev{\sqrt{2}}c_5}{t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \rev{t}\right)\right) \\
-&\qquad + R_{\mathcal{J}_{o,l}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \rev{t}\right)\right)\Big) + \frac{c_4}{t^2}\frac{s\log n\log T_n}{n}.
-\bea 
-
-
-
-Then by Corollary~\ref{cor_op}, we have 
-
+\subsection{\rev{Consequence of the localization bound}}
+\begin{revision}
+Suppose the hypotheses of Lemma~\ref{lem_huber_rate} hold for all
+sufficiently large $n$, and let the deterministic sequence $r_n>0$
+satisfy \eqref{eq_op_sufficient_radius}. Corollary~\ref{cor_op}
+gives
 \beq
 \label{c_eq700}
-\Delta^2(\hat f - f^*)  \,=\, O_p \left(t^2\right),
-\beq where 
-
-\bea
-t^2 & \asymp
-\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot t\right)\right) \\
-&\qquad + R_{\mathcal{J}_{o,l}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot t\right)\right)\Big) + \frac{s\cdot \text{poly}(\log n)\log T_n}{n},
-\bea for some $\mu > 0$. 
+\Delta^2(\hat f-f^*)\,=\,O_P(r_n^2).
+\beq
+Moreover, Lemma~\ref{lem_17} gives
+\[
+\|\hat f-f^*\|_2^2
+\,\leq\,2b^2(B)\Delta^2(\hat f-f^*)
+\,=\,O_P\left(b^2(B)r_n^2\right).
+\]
+Thus an application reduces to verifying the sufficient radius
+inequality \eqref{eq_op_sufficient_radius} for its function class.
+\end{revision} 
 
 
 % \input{b_quantile_temporal_spatial_appendix_v14}
@@ -4746,15 +5112,19 @@ F_k(V) \,=\, \set{f\in F_k:J_k(f)\leq V},
 % \bea 
 
 
-By Corollary~\ref{cor_op} or Theorem~\ref{Theorem_1},  we would need to get  $R_{\mathcal{J}_{e,l}}\left(F_k(\rev{V})\cap B_2\left(c^{-\frac{1}{2}}\cdot b(B)\cdot t\right)\right)$ and $R_{\mathcal{J}_{o,l}}\left(F_k(\rev{V})\cap B_2\left(c^{-\frac{1}{2}}\cdot b(B)\cdot t\right)\right)$, to get that, we will use an existing Theorem that bounds local Rademacher complexity using the $L_2$ set with the empirical set.
-\bea
-&R_{\mathcal{J}_{e,l}}\left(F_k(\rev{V})\cap \set{f: \norm{f-f^*}\leq  b}\right) \,\leq\, R_{\mathcal{J}_{e,l}}\left(F_k(\rev{V})\cap \set{f: \norm{f-f^*}_{nm} \leq  \sqrt{2}b}\right), \,\,\,\text{and}\,\,\, \\
-&R_{\mathcal{J}_{o,l}}\left(F_k(\rev{V})\cap \set{f: \norm{f-f^*}\leq  b}\right) \,\leq\, R_{\mathcal{J}_{o,l}}\left(F_k(\rev{V})\cap \set{f: \norm{f-f^*}_{nm} \leq  \sqrt{2}b}\right).
-\bea 
-where $b>0$ is any constant, where 
-we denote $\norm{g}_{mn} = \left(\frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}} g(x_{ij})^2\right)^{1/2}$
-
-Lastly, we will apply Dudley's entropy integral (see \cite{dudley1967sizes}) to get the rate.  The Lemma~\ref{lem_tv_k} provides the details of the last two steps. 
+\begin{revision}
+Under the hypotheses of Lemma~\ref{lem_huber_rate}, use its auxiliary
+groups and normalized widths. Lemma~\ref{lem_tf_expected_width} applies
+the finite-design entropy estimate \eqref{eq_tf_radius_entropy}
+conditionally on the design, and then controls the empirical radius
+in expectation. Both terms in \eqref{eq_tf_expected_width} are
+inserted into the original-weight bound from
+Lemma~\ref{lem_huber_rate}. Summing over the groups yields
+\eqref{eq_tf_radius_tail}; the choice \eqref{eq_tf_risk_scale}
+then gives the Huber and $L_2$ bounds in \eqref{eq_tf_huber_rate}.
+Lemma~\ref{lem_tv_k} supplies the calculation, including the coupling
+probability and the spatial remainder.
+\end{revision}
 
 % \begin{lemma}
 %  \label{lem_tv_k} Let $J_k(\cdot)$, for $F_k(1,L)$, we have 
@@ -4881,169 +5251,243 @@ Lastly, we will apply Dudley's entropy integral (see \cite{dudley1967sizes}) to 
 % \end{proof}
 \subsection{Technical Results for Proof of Theorem~\ref{Theorem_2}}
 
-\begin{lemma}[Trend Filtering]
- \label{lem_tv_k}
- \label{col_tv_k} Let $J_k(\cdot) \,=\, TV(\cdot^{k-1})$, the $k$-th order trend filtering operator, for $F_k(\rev{V})$, we have
- \bea 
- \Delta^2(\hat f - f^*)  \,=\, O_p \left(\frac{\min\set{B^{\frac{4k}{2k+1}},
- B^{\frac{6k-1}{2k+1}}} }{(nm)^{\frac{2k}{2k+1}}} + \frac{\log n}{n}\right).
- \bea
+\begin{lemma}[\rev{Expected localized trend-filtering width}]
+\label{lem_tf_expected_width}
+\begin{revision}
+Let $k\ge1$ be fixed, let $\mathcal F\subseteq F_k(V)$ be deterministic
+with $f^*\in\mathcal F$, and assume $\|f\|_\infty\le B$ on
+$\mathcal F$, where $V,B>0$.
+Use the function representatives in Definition~\ref{def_tf}:
+pointwise bounded variation for $k=1$, and the continuous Sobolev
+representatives for $k\ge2$.
+Let $\mathcal A_r$ be a nonempty auxiliary group whose copied design
+points are independent with common law $Q$, and use the normalized
+width \eqref{eq_nonconvex_general_block_width}.
+Put $N_r=\sum_{i\in\mathcal A_r}m_i$ and $S=\max\{V,B\}$, and assume
+the displayed suprema are measurable. Then, for every $b\ge0$,
+\beq
+\label{eq_tf_expected_width}
+R_{\mathcal A_r}\{\mathcal F\cap B_2(b)\}
+&\,\leq\,C_k\frac{S^{1/(2k)}}{\sqrt{N_r}}b^{1-1/(2k)}\\
+&\quad+C_k
+\frac{S^{2/(2k+1)}B^{(2k-1)/(2k+1)}}{N_r^{2k/(2k+1)}},
+\beq
+where $C_k$ depends only on $k$.
+\end{revision}
 \end{lemma}
 \begin{proof}
-By Corollary~\ref{cor_op}, we look for the radius to satisfy \eqref{find_rate_cor}, 
-By using \eqref{final_rate}, we first analyze the below quantity, 
-\bea 
-&\frac{R_{\mathcal{J}_{e,l}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le  t^2}\right)+ R_{\mathcal{J}_{o,l}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le  t^2}\right)}{t^2}, 
-\bea 
-Also, let $b = c^{-1/2}\max\set{B^{1/2},1}\cdot t$.
+\begin{revision}
+For this proof, write
+\[
+\mathcal H_b=\{f-f^*:f\in\mathcal F,\ \|f-f^*\|_2\le b\},
+\qquad
+D^2=\sup_{h\in\mathcal H_b}
+\frac1{N_r}\sum_{i\in\mathcal A_r}\sum_{j=1}^{m_i}
+h(x_{ij}^\dagger)^2,
+\]
+and set $R=R_{\mathcal A_r}\{\mathcal F\cap B_2(b)\}$.
+The class $\mathcal H_b$ is deterministic, contains zero and has
+envelope $2B$. The uniform finite-design entropy estimate
+\eqref{eq_tf_radius_entropy}, before absorbing $V/B$ into a constant,
+gives
+\[
+\log N(\varepsilon,\mathcal H_b,\|\cdot\|_{\mathcal A_r})
+\le C_k(S/\varepsilon)^{1/k},
+\qquad
+\|h\|_{\mathcal A_r}^2
+=\frac1{N_r}\sum_{i\in\mathcal A_r}\sum_{j=1}^{m_i}
+h(x_{ij}^\dagger)^2.
+\]
+Translation preserves distances; restriction to the localized subclass
+changes only a fixed covering-radius factor, included in $C_k$.
+The finite-design entropy input is condition C3 and Corollary~1 of
+\cite[pp.~3050--3052]{sadhanala2017additive}. It is applied after fixing
+the design.
 
-For any function class $\gF \cap B_2(b)$, we have 
-\bea 
-R_{\mathcal{J}_{e,1}}\left(\gF \cap B_2(b)\right) \,=\, \Ept{x^*}{\mathbb{E}_{s} \Big[  \sup_{g \in \gF \cap B_2(b)}
-\frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  g(x_{ij}^*) \,\Big|\, \set{x_{ij}^*} \Big]} 
-\bea 
+Using \eqref{eq_rademacher_translation}, conditional entropy integration
+\cite[Theorem A.7]{bartlett2005local}, and then Jensen's inequality,
+\bea
+R
+&\,\leq\,\frac{C_kS^{1/(2k)}}{\sqrt{N_r}}
+ \mathbb E\int_0^D\varepsilon^{-1/(2k)}\,d\varepsilon\\
+&\,\leq\,\frac{C_kS^{1/(2k)}}{\sqrt{N_r}}
+ \mathbb E(D^2)^{(2k-1)/(4k)}\\
+&\labelrel\leq{eq_tf_radius_jensen}
+ \frac{C_kS^{1/(2k)}}{\sqrt{N_r}}
+ (\mathbb ED^2)^{(2k-1)/(4k)}.
+\bea
+The entropy integral is finite because $1/(2k)<1$.
+Its possible diameter factor is included in $C_k$.
+Inequality \eqref{eq_tf_radius_jensen} uses the concavity of
+$u\mapsto u^{(2k-1)/(4k)}$ on $[0,\infty)$.
 
-Denote 
-\beq 
-\label{eq_rade_b2}
-R_{\mathcal{J}_{elmn}}\left(\gF \cap B_2(b)\right) \,=\, \mathbb{E}_{s} \left[  \sup_{g \in \gF \cap B_2(b)}
-\frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  g(x_{ij}^*) \,\Big|\, \set{x_{ij}^*} \right]
+Since $Qh^2\le b^2$ for $h\in\mathcal H_b$, symmetrization and
+contraction give
+\bea
+\mathbb ED^2
+&\,\leq\,b^2+\mathbb E\sup_{h\in\mathcal H_b}
+\left\{\frac1{N_r}\sum_{i\in\mathcal A_r}\sum_{j=1}^{m_i}
+h(x_{ij}^\dagger)^2-Qh^2\right\}\\
+&\labelrel\leq{eq_tf_square_symmetrization}
+b^2+2\mathbb E_{x^\dagger,s}\sup_{h\in\mathcal H_b}
+\frac1{N_r}\sum_{i\in\mathcal A_r}\sum_{j=1}^{m_i}
+s_{ij}h(x_{ij}^\dagger)^2\\
+&\labelrel\leq{eq_tf_square_contraction}
+b^2+8BR.
+\bea
+Inequality \eqref{eq_tf_square_symmetrization} uses independent
+matching design copies and \cite[Lemma A.5]{bartlett2005local}.
+Inequality \eqref{eq_tf_square_contraction} uses that the square
+map is $4B$-Lipschitz on $[-2B,2B]$, together with
+\cite[Theorem A.6]{bartlett2005local}.
+
+Set $\theta=(2k-1)/(4k)$ and $a=C_kS^{1/(2k)}/\sqrt{N_r}$.
+The preceding bounds imply
+\[
+R\le a(b^2+8BR)^\theta
+\le ab^{2\theta}+a(8B)^\theta R^\theta.
+\]
+Either $R\le2ab^{2\theta}$, or
+\[
+R^{1-\theta}\le2a(8B)^\theta,
+\qquad
+R\le\{2a(8B)^\theta\}^{1/(1-\theta)}.
+\]
+Here
+\[
+\frac1{1-\theta}=\frac{4k}{2k+1},
+\qquad
+\frac{\theta}{1-\theta}=\frac{2k-1}{2k+1}.
+\]
+Substituting $a$ into these two alternatives proves
+\eqref{eq_tf_expected_width}. In particular, its second term is
+retained for every radius $b$.
+\end{revision}
+\end{proof}
+
+\begin{lemma}[\rev{Trend-filtering risk}]
+\label{lem_tv_k}
+\label{col_tv_k}
+\begin{revision}
+Let $k\ge1$ be fixed and use $\mathcal F=F_k(V)$ with the feasible
+radius and function representatives in Definition~\ref{def_tf}
+and Assumption~\ref{ass_tf}. Suppose the hypotheses of
+Lemma~\ref{lem_huber_rate} hold for this class for all sufficiently
+large $n$, with $c,C,C_0,c_0$ fixed and $0<c_0<C_0$.
+In particular, $\mathcal F$ is deterministic and convex, $f^*\in\mathcal F$,
+and $\hat f$ is a measurable exact minimizer of \eqref{eq172}.
+Use the auxiliary groups from that lemma, including
+$n\ge2$, $n\ge2L$, and their joint response-copy conditions.
+Write
+\[
+N=\sum_{i=1}^n m_i,\qquad
+S=\max\{V,B\},\qquad q=\max\{1,B\},\qquad q_B=\max\{1,2B\},
+\]
+and define
 \beq
-Also denote by $\norm{g}_{mn} = \left(\frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}} g(x_{ij}^*)^2\right)^{1/2}$
-
-
-
-
-Corollary 2.2 of \cite{bartlett2005local} gives
-
+\label{eq_tf_risk_scale}
+a_n=
+S^{2/(2k+1)}q^{(2k-1)/(2k+1)}
+\left(\frac LN\right)^{2k/(2k+1)}
++\frac{q_BL}{(C_0-c_0)n}.
+\beq
+Then
+\beq
+\label{eq_tf_huber_rate}
+\Delta^2(\hat f-f^*)\,=\,O_P(a_n),
+\qquad
+\|\hat f-f^*\|_2^2\,=\,O_P(q a_n).
+\beq
+\end{revision}
+\end{lemma}
+\begin{proof}
+\begin{revision}
+Retain $N_r=\sum_{i\in\mathcal A_r}m_i$ and
+$m_{\min,r}=\min_{i\in\mathcal A_r}m_i$, and put
+$m_{\min}=\min_{1\le i\le n}m_i$.
+Before comparing group sizes, the proof of Lemma~\ref{lem_huber_rate}
+gives
 \bea
-\gF \cap B_2(b) \subseteq \gF \cap B_{mn} (\sqrt{2}b),
+&\mathbb P\{c_0\Delta^2(\hat f-f^*)>t^2\}\\
+&\quad\le\frac1n+\frac6{t^2}
+\sum_{r=1}^L\frac{N_r}{nm_{\min,r}}R_{\mathcal A_r}(\mathcal F_t)
++\frac{4q_BL}{(C_0-c_0)nt^2}\\
+&\labelrel\leq{eq_tf_weighted_localization}
+\frac1n+\frac{6\sqrt2}{nm_{\min}t^2}
+\sum_{r=1}^L N_r R_{\mathcal A_r}
+\left\{\mathcal F\cap B_2\left(c_0^{-1/2}\sqrt q\,t\right)\right\}
++\frac{4q_BL}{(C_0-c_0)nt^2}.
 \bea
+Inequality \eqref{eq_tf_weighted_localization} uses
+$m_{\min,r}\ge m_{\min}$, the translation identity
+\eqref{eq_rademacher_translation}, and the width comparison in
+Lemma~\ref{lem_l2}, with $b(B)=\sqrt q$.
+The design law within each auxiliary group is a product of $Q$,
+by \eqref{eq_nonconvex_auxiliary_product}, so
+Lemma~\ref{lem_tf_expected_width} applies to every summand.
+The groups partition the time indices, and hence
+\[
+\sum_{r=1}^L N_r=N,\qquad
+\sum_{r=1}^L\sqrt{N_r}\le\sqrt{LN},\qquad
+\sum_{r=1}^L N_r^{1/(2k+1)}
+\le L^{2k/(2k+1)}N^{1/(2k+1)}.
+\]
+The last two inequalities are Cauchy--Schwarz and concavity,
+respectively. Also, Assumption~\ref{asm:m} gives
+\[
+\frac{N}{nm_{\min}}\le\frac Cc.
+\]
+Substituting \eqref{eq_tf_expected_width} and these inequalities
+into \eqref{eq_tf_weighted_localization} yields
+\beq
+\label{eq_tf_radius_tail}
+&\mathbb P\{c_0\Delta^2(\hat f-f^*)>t^2\}\\
+&\quad\le\frac1n+\frac{C_*}{t^2}
+\Biggl[
+S^{1/(2k)}q^{(2k-1)/(4k)}
+\sqrt{\frac LN}\,t^{(2k-1)/(2k)}
++S^{2/(2k+1)}B^{(2k-1)/(2k+1)}
+\left(\frac LN\right)^{2k/(2k+1)}
+\Biggr]\\
+&\qquad+\frac{4q_BL}{(C_0-c_0)nt^2},
+\beq
+where $C_*$ depends only on $k,c,C,c_0$.
 
-with probability at least $1 - \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}m_i} \,\geq\, 1 - \frac{1}{C_{\beta}}\frac{2\log n}{cc_1nm}$, where $c$ appears in Assumption~\ref{asm:m}. Define this good event as $\mathcal{E}$. On $\mathcal{E}$ using Dudley’s entropy integral (see \cite{dudley1967sizes}), Equation~\eqref{beta_constants}, and the assumption $m_i \asymp m$ specified in the statement of the Lemma, with $c$ defined in Assumption~\ref{asm:m}, we bound the empirical Rademacher complexity defined in Equation~\eqref{eq_rade_b2} as follows
-
+The coefficients in this bound satisfy
 \bea
-&R_{\mathcal{J}_{elmn}} (\gF \cap B_2(b)) \,\leq\, R_{\mathcal{J}_{elmn}} \left( \left\{ g \in F : ||g||_{mn}^2 \,\leq\, 2\tilde b^2 \right\} \right) \\
-&\,\leq\, \frac{C_{\text{Dud}}}{\sqrt{\sum_{i\in \mathcal{J}_{e,1} m_i}}} \int_0^{\sqrt{2}b} \sqrt{\log N(\epsilon, ||\cdot||_{mn}, \gF)} d\epsilon \\
-&\,\leq\, \frac{C_{\text{Dud}}}{\sqrt{C_{\beta}cc_1nm}} \int_0^{\sqrt{2}b} \sqrt{\log N(\epsilon, ||\cdot||_{mn}, \gF)} d\epsilon.
+S^{1/(2k)}q^{(2k-1)/(4k)}\sqrt{L/N}
+&=
+\left[
+S^{2/(2k+1)}q^{(2k-1)/(2k+1)}
+(L/N)^{2k/(2k+1)}
+\right]^{(2k+1)/(4k)}\\
+&\le a_n^{(2k+1)/(4k)}
 \bea
-
-Under the event $\mathcal{E}^c$, given that $F \subseteq B_{\infty}(B)$, we have that $R_{\mathcal{J}_{elmn}} (\gF \cap B_2(b)) \,\leq\, B$. Therefore, splitting the expectation over $\mathcal{E}$ and $\mathcal{E}^c$, 
-
-Set that $\gF \equiv F_k(\rev{V})$, we obtain that for some positive constant $c_7$, and $A > 0$ from Lemma~\ref{lem_pack}.
-
-
-% \bea
-% \frac{C_{\text{Dud}}}{\sqrt{C_{\beta}cc_1nm}} \int_0^{\sqrt{2}b} \sqrt{\log N (\epsilon, ||\cdot||_{mn}, F)} d\epsilon &\leq \frac{A C_{\text{Dud}}B^{1/2k} }{\sqrt{C_{\beta}cc_1nm}} \int_0^{\sqrt{2}b} \epsilon^{-1/(2k)} d\epsilon \\
-% &= \frac{c_4 B^{1/2k} b^{1-1/(2k)}}{\sqrt{C_{\beta}cc_1nm}},
-% \bea
-
-
-The Rademacher complexity defined in Equation~\eqref{eq_rade_b2} is bounded by
-
-\bea
-R_{\mathcal{J}_{e,1}}( F_k(\rev{V}) \cap B_2(b)) &\,=\, \mathbb{E}_{x^*}[R_{\mathcal{J}_{elmn}} ( F_k(\rev{V}) \cap B_2(b))] \\
-&\,\leq\,  \frac{C_{\text{Dud}}}{\sqrt{C_{\beta}cc_1nm}} \int_0^{\sqrt{2}b} \sqrt{\log N (\epsilon, ||\cdot||_{mn}, F_k(\rev{V}))} d\epsilon + \frac{2B\log(n)}{C_{\beta}cc_1nm} \\
-&\,\leq\, \frac{A C_{\text{Dud}}B^{1/2k} }{\sqrt{C_{\beta}cc_1nm}} \int_0^{\sqrt{2}b} \epsilon^{-1/(2k)} d\epsilon + \frac{2B\log(n)}{C_{\beta}cc_1nm} \\
-&\,=\, c_6 \frac{B^{1/2k} \sqrt{2\log(n)}}{\sqrt{C_{\beta}cc_1nm}}b^{1-1/(2k)} + \frac{2B\log(n)}{C_{\beta}cc_1nm}.
-\bea
-
-Throughout all
-the proofs, we will use $c_6$ to denote some absolute constant that only depends on $A$, $C_{\text{Dud}}$, $C_{\beta}$, $c$, $c_1$, which may change according to the context.
-
-% So $b^*$ is the minimal solution of
-
-% \bea
-% c_7 \frac{B^{1/2k}\sqrt{2\log(n)} }{\sqrt{C_{\beta}cc_1nm}}b^{1-1/(2k)} + \frac{2B\log(n)}{C_{\beta}cc_1nm} < \frac{b^2}{B}.
-% \bea
-
-Without loss of generality assume that $b \,\geq\, (nm)^{-1/2}$. Since $k/(2k-1) \,\geq\, 1/2$, we have that $b \,\geq\, (nm)^{-k/(2k-1)}$ and in consequence $b^{(2k-1)/k} \,\geq\, (nm)^{-1}$. Therefore $b^{(2k-1)/k} \,\geq\, (nm)^{-1/2}$, which can be written as $b^{1-1/(2k)} \,\geq\, (nm)^{-1/2}$, which implies $b^{1-1/(2k)}/\sqrt{nm} \,\geq\, (nm)^{-1}$. Thus we have that 
-\beq 
-\label{b_in256}
-c_6 \frac{B^{1/2k}\sqrt{2\log(n)} }{\sqrt{C_{\beta}cc_1nm}}b^{1-1/(2k)} + \frac{2B\log(n)}{C_{\beta}cc_1\sqrt{nm}}b^{1-1/(2k)} < c_6 B\frac{2\log(n) }{\sqrt{C_{\beta}cc_1nm}}b^{1-1/(2k)}.
-\beq 
-\rev{Using \eqref{b_in256} and the width comparison in Lemma~\ref{lem_l2}, with its factor $\sqrt{2}$ included in the generic constant $c_6$, we obtain}
-\beq 
-\label{in_271}
-&\frac{R_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le  t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le  t^2}\right)}{t^2} \\ 
-&\,\leq\, \frac{c_6  B\log(n)}{t^2\sqrt{C_{\beta}cc_1nm}}b^{1-1/(2k)} =  \frac{c_6c^{-1}   \max\set{B,B^2}\log(n)b^{1-1/(2k)}}{c^{-1}\max\set{B,1}t^2\sqrt{C_{\beta}cc_1nm}} = \frac{c_{6}   \max\set{B,B^2}\log(n)}{b^{(2k+1)/(2k)}\sqrt{C_{\beta}cc_1nm}}.
-\beq 
-
-
-% \beq 
-% \label{in_271}
-% c_8 B\frac{2\log(n) }{\sqrt{C_{\beta}cc_1nm}}b^{1-1/(2k)} < \frac{b^2}{B}.
-% \beq
-
-If $B \,\geq\, 1$, from Inequality \eqref{in_271},
-we get 
-\beq 
-\label{840}
-\frac{c_{6}   \max\set{B,B^2}\log(n)}{b^{(2k+1)/(2k)}\sqrt{C_{\beta}cc_1nm}} = \frac{c_{6}   B^2\log(n)}{b^{(2k+1)/(2k)}\sqrt{C_{\beta}cc_1nm}}.
-\beq 
-Then we let 
-\bea 
-b^2 = \frac{B^{\frac{8k}{2k+1}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}}
-\bea to make  
-the \eqref{840} be $O\left(\frac{1}{nm}\right)$. 
- 
-Furthermore, we know $b^2 = c^{-1}\max\set{B,1}t^2 = c^{-1}Bt^2$ when $B> 1$, so we get 
-\bea 
-t^2 = \frac{cB^{\frac{6k-1}{2k+1}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}}
-\bea 
-
-
-% By lemma~\ref{lem_l2}, we also have $b = c^{-1/2}\max\set{B^{1/2},1}\cdot t = c^{-1/2}\cdot B^{1/2} \cdot t$, thus,
-
-% \bea 
-% \frac{c_{10}B^{\frac{2k-1}{4k+2}} {\log(n)}^{\frac{2k}{2k+1}}}{(nm)^{\frac{k}{2k+1}}} \leq t, 
-% \bea 
-
-
-If  $B < 1$, from Inequality \eqref{in_271}, 
-
-\beq 
-\label{840}
-\frac{c_6\max\set{B,B^2}\log(n)}{b^{(2k+1)/(2k)}\sqrt{C_{\beta}cc_1nm}} = \frac{c_6   B\log(n)}{b^{(2k+1)/(2k)}\sqrt{C_{\beta}cc_1nm}}
-\beq 
-
-then we let 
-\bea 
-b^2 = \frac{B^{\frac{4k}{2k+1}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}}
-\bea 
-The \eqref{840} is $O\left(\frac{1}{nm}\right)$. 
- 
-Furthermore, we know $b^2 = c^{-1}\max\set{B,1}t^2 = c^{-1}t^2$ when $B\,\leq\, 1$, so we get 
-\bea 
-t^2 = \frac{c B^{\frac{4k}{2k+1}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}}
-\bea 
-
-
-Overall, we have 
-\bea
-t^2 = \frac{c\max\set{B^{\frac{4k}{2k+1}}, 
- B^{\frac{6k-1}{2k+1}}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}}.
-\bea
-and 
-\beq 
-\label{rade_trend_filtering}
-R_{\mathcal{J}_{e,l}}\left(F_k(\rev{V})\cap B_2\left(c^{-\frac{1}{2}}\cdot b(L)\cdot t\right)\right) \,\leq\, {t}^2 = \frac{c^2 \max\set{L^{\frac{4k}{2k+1}},
- L^{\frac{2k-1}{2k+1}}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}}.
-\beq  Similarly, we have 
-\bea 
-R_{\mathcal{J}_{o,l}}\left(F_k(\rev{V})\cap B_2\left(c^{-\frac{1}{2}}\cdot b(L)\cdot t\right)\right) \,\leq\, \frac{c^2 \max\set{L^{\frac{4k}{2k+1}},
- L^{\frac{2k-1}{2k+1}}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}}.
-\bea 
-
-Then by Theorem~\ref{Theorem_1} and  \eqref{rade_trend_filtering},  and the choice of $L = \left\lceil \frac{1}{C_{\beta}} 2\log(n) \right\rceil$ in \eqref{equation}, we have 
-\bea 
-\Delta^2(\hat f - f^*)  \,=\, O_p \left(r_n^2\right),
-\bea
-by setting that 
-\bea
-r_n^2 \asymp \frac{  
- \max\set{B^{\frac{4k}{2k+1}}, B^{\frac{6k-1}{2k+1}}} {\log(n)}^{\frac{6k+1}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}} + \frac{s \log^{1+\mu}(n) \log(T_n)}{n},
-\bea for some $\mu >0$.
+and, since $B\le q$,
+\[
+S^{2/(2k+1)}B^{(2k-1)/(2k+1)}(L/N)^{2k/(2k+1)}
+\le a_n,\qquad
+\frac{q_BL}{(C_0-c_0)n}\le a_n.
+\]
+Consequently, setting $t=M\sqrt{a_n}$ with $M\ge1$ in
+\eqref{eq_tf_radius_tail} gives
+\beq
+\label{eq_tf_explicit_tail}
+\mathbb P\{c_0\Delta^2(\hat f-f^*)>M^2a_n\}
+\,\leq\,\frac1n+
+\frac{C_*}{M^{(2k+1)/(2k)}}+\frac{C_*+4}{M^2}.
+\beq
+Given $\varepsilon>0$, first choose $M$ so that the last two
+terms sum to less than $\varepsilon/2$, and then take $n$ large
+enough that $1/n<\varepsilon/2$. Since $c_0$ is fixed, this proves
+the first conclusion in \eqref{eq_tf_huber_rate}.
+Finally, Lemma~\ref{lem_17} gives
+\[
+\|\hat f-f^*\|_2^2
+\le2q\Delta^2(\hat f-f^*)=O_P(q a_n),
+\]
+which proves the second conclusion.
+\end{revision}
 \end{proof}
 
 \begin{lemma}
@@ -5094,16 +5538,27 @@ In~\eqref{eq_tf_radius_entropy}, $C_k$ depends only on $k$ and includes the fixe
 
 \subsection{Proof of Theorem~\ref{Theorem_2}}
 \paragraph{Proof}
-By Lemma~\ref{lem_tv_k}, we have 
+\begin{revision}
+Use $N,S,q,q_B,a_n$ from Lemma~\ref{lem_tv_k}. Under the hypotheses
+of Theorem~\ref{Theorem_2}, that lemma gives
+$\Delta^2(\hat f-f^*)=O_P(a_n)$.
+Since $q\le q_B\le2q$ and $C_0-c_0$ is fixed and positive,
+Lemma~\ref{lem_17} yields
 \bea
-\Delta^2(\hat f - f^*) \,=\, O_p \paren{\frac{ \max\set{B^{\frac{6k+1}{2k+1}},
- B^{\frac{2k-1}{2k+1}}} {\log(n)}^{\frac{6k+1}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}} + \frac{s\cdot\text{poly}(\log n) \log(T_n)}{n}}, 
-\bea   
-So we get 
-\bea 
-\left\|\hat f - f^*\right\|_2^2 \,=\, O_p \paren{\frac{ \max\set{B^{\frac{6k+1}{2k+1}}, 
- B^{\frac{2k-1}{2k+1}}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}} + \frac{\max\set{B,1}\cdot s\cdot\text{poly}(\log n) \log(T_n)}{n}}.
-\bea  
+\|\hat f-f^*\|_2^2
+&\,\leq\,2q\Delta^2(\hat f-f^*)\\
+&\,=\,O_P(q a_n)\\
+&\,=\,O_P\left(
+S^{2/(2k+1)}q^{4k/(2k+1)}
+\left(\frac LN\right)^{2k/(2k+1)}
++\frac{q^2L}{n}
+\right).
+\bea
+Here the exponent of $q$ in the first term is
+$1+(2k-1)/(2k+1)=4k/(2k+1)$.
+Finally, Assumption~\ref{asm:m} gives $cnm\le N\le Cnm$, so the
+last display is \eqref{tf_rate}.
+\end{revision}
 
 
 
@@ -9275,7 +9730,7 @@ Where inequality~\eqref{in1028} follows the Corollary~\ref{cor_star_nn} and \eqr
 % \bea
 
 
-The Rademacher complexity defined in Equation~\eqref{eq_rade_b2} is bounded by
+The Rademacher complexity defined in Equation~\rev{\eqref{c_eq_rade_b2}} is bounded by
 
 \bea
 &R_{\mathcal{J}_{e,l}}( \text{Star}(F(\gL,r), f^\ast) \cap B_2(b)) \\ &\,=\, \mathbb{E}[R_{\mathcal{J}_{e1mn}} ( \text{Star}(F(\gL,r), f^\ast) \cap B_2(b))] \\ 
