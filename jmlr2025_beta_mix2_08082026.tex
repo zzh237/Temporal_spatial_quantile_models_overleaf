@@ -763,6 +763,34 @@ s_{ij}\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)
 \right]\\
 &\labelrel = {eq_rad_shift_split}
 \mathbb{E}_s\left[
+\begin{aligned}
+&\left(
+\sup_{f\in K}
+\frac{1}{\sum_{i\in\mathcal J}m_i}
+\sum_{i\in\mathcal J}\sum_{j=1}^{m_i}
+s_{ij}f(x_{ij}^*)
+\right)\\
+&\quad-
+\frac{1}{\sum_{i\in\mathcal J}m_i}
+\sum_{i\in\mathcal J}\sum_{j=1}^{m_i}
+s_{ij}f^*(x_{ij}^*)
+\end{aligned}
+\right]\\
+&\labelrel = {eq_rad_shift_expectation}
+\mathbb{E}_s\left[
+\sup_{f\in K}
+\frac{1}{\sum_{i\in\mathcal J}m_i}
+\sum_{i\in\mathcal J}\sum_{j=1}^{m_i}
+s_{ij}f(x_{ij}^*)
+\right]\\
+&\qquad-
+\mathbb{E}_s\left[
+\frac{1}{\sum_{i\in\mathcal J}m_i}
+\sum_{i\in\mathcal J}\sum_{j=1}^{m_i}
+s_{ij}f^*(x_{ij}^*)
+\right]\\
+&=
+\mathbb{E}_s\left[
 \sup_{f\in K}
 \frac{1}{\sum_{i\in\mathcal J}m_i}
 \sum_{i\in\mathcal J}\sum_{j=1}^{m_i}
@@ -781,16 +809,16 @@ s_{ij}f(x_{ij}^*)
 \right].
 \end{align*}
 Equality \eqref{eq_rad_shift_change} holds by the change of variable
-$g=f-f^*$. Equality \eqref{eq_rad_shift_split} holds since
-\[
-\frac{1}{\sum_{i\in\mathcal J}m_i}
-\sum_{i\in\mathcal J}\sum_{j=1}^{m_i}
-s_{ij}f^*(x_{ij}^*)
-\]
-does not depend on $f$ and can be taken outside the supremum,
-followed by linearity of expectation.
-Equality \eqref{eq_rad_shift_zero} holds since
-$\mathbb{E}_s[s_{ij}]=0$ conditional on the design points and $K$.
+$g=f-f^*$.
+Equality \eqref{eq_rad_shift_split} holds since the signed sum
+involving $f^*$ does not depend on the candidate $f$ and can
+therefore be taken outside the supremum.
+Equality \eqref{eq_rad_shift_expectation} follows from linearity
+of expectation. With the design points held fixed,
+$f^*(x_{ij}^*)$ is constant under $\mathbb{E}_s$ and can be taken
+outside this expectation.
+Equality \eqref{eq_rad_shift_zero} then follows from
+$\mathbb{E}_s[s_{ij}]=0$.
 Taking the remaining expectation in the definition of
 $R_{\mathcal J}$ yields
 \begin{equation}
