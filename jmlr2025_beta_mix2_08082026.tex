@@ -2202,13 +2202,16 @@ c_1 n/L \,\leq\, |\mathcal{J}_{e,l}|, |\mathcal{J}_{o,l}| \,\leq\, c_2 n/L,
 
 \begin{lemma}
 \label{lemma_beta_decomp}  
+\rev{Let $n\ge2$ and $t>0$.}
 Let $\hat f$, $f^*$ belong to $\mathcal{F}$, and let $\Delta^2(\hat f - f^*)$ be the Huber loss. Suppose Assumption~\ref{Assumption 1.} holds with the $\beta$-mixing condition satisfied in \eqref{beta_decay_rate} and the block indices $\mathcal{J}_{e,l}, \mathcal{J}_{o,l}$ satisfying $|\mathcal{J}_{e,l}|, |\mathcal{J}_{o,l}| \asymp n/L$ as in \eqref{odd_even_indices}. \rev{For each fixed $l \in [L]$, construct the coupled clusters $\{W_i^*\}_{i\in\mathcal J_{e,l}}$ that are mutually independent within $\mathcal J_{e,l}$ (and similarly for $\mathcal J_{o,l}$) via Lemma~\ref{Lemma_9}.} Let
 $\Omega_{x}, \Omega_{e}, \Omega_{\delta}, \Omega_{\beta}$ be defined in \eqref{omega_definition}. 
 % \(\Omega_{x} = \{i: x_{ij} = x_{ij}^{*} \ \forall j \in [m_i]\}\), \(\Omega_{e} = \{i: e_{ij} = e_{ij}^{*} \ \forall j \in [m_i]\}\) and \(\Omega_{\delta} = \{i: \delta_{i} = \delta_{i}^{*}\}\), let \(\Omega_{\beta} = \Omega_{x} \cap \Omega_{e} \cap \Omega_{\delta} \).
 Then we have 
 \bea  
-\sP\left( c_0\Delta^2(\hat f - f^*) > t^2 \right) \,\leq\,  \sP\left(\left\{ c_0\Delta^2(\hat f - f^*) > t^2\right\} \cap \Omega_{\beta} \right)  \,+\, \frac{\epsilon}{2}.
+\sP\left( c_0\Delta^2(\hat f - f^*) > t^2 \right) \,\leq\,  \sP\left(\left\{ c_0\Delta^2(\hat f - f^*) > t^2\right\} \cap \Omega_{\beta} \right)  \,+\, \rev{\frac{1}{n}}.
 \bea
+\rev{For any $\varepsilon>0$, the remainder is at most $\varepsilon/2$
+whenever $n\ge\lceil2/\varepsilon\rceil$, in addition to the stated block conditions.}
 \end{lemma}
 
 \begin{proof}
@@ -2228,12 +2231,11 @@ we have that
 \bea  
 \sP\left( c_0\Delta^2(\hat f - f^*) > t^2 \right) &\,=\, \sP\left(\left\{ c_0\Delta^2(\hat f - f^*) > t^2\right\} \cap \Omega_{\beta}  \right) \,+\, \sP\left(\left\{ c_0\Delta^2(\hat f - f^*) > t^2\right\} \cap \Omega_{\beta}^{c}\right) \\
 &\,\leq\, \sP\left(\left\{ c_0\Delta^2(\hat f - f^*) > t^2\right\} \cap \Omega_{\beta} \right) \,+\, \frac{1}{n}
-\\
-&\,\leq\, \sP\left(\left\{ c_0\Delta^2(\hat f - f^*) > t^2\right\} \cap \Omega_{\beta} \right) \,+\, \frac{\varepsilon}{2} \\
 % & = \sP\paren{c_0\Delta^2(\hat f - f^*) > t^2|\Omega_\beta} \sP\paren{\Omega_\beta} + \frac{\varepsilon}{2}\\ 
 % & \leq \sP\paren{c_0\Delta^2(\hat f - f^*) > t^2|\Omega_\beta}  + \frac{\varepsilon}{2}, 
 \bea 
-for any $\varepsilon > 0$ as $n$ large enough.
+\rev{If $n\ge\lceil2/\varepsilon\rceil$, then $1/n\le\varepsilon/2$,
+proving the final assertion.}
 \end{proof}
 By previous lemma, in consequence, it is enough to bound the term
 \beq 

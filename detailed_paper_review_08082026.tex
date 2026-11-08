@@ -352,8 +352,16 @@ tie-breaking rule and admissible $K$ are method-design choices not documented
 in the source.\\
 T35 & 17--18 & Convexity contradiction in the nonconvex theorem & \deferred & Removing
 convexity requires verifying that the full star-hull proof is valid without it.\\
-\rowcolor{lightgray}T36 & 18 & Approximation-error supremum & \deferred & Replacing it
-by a best or near-best approximant changes the nonconvex theorem and proof.\\
+% Original T36 disposition retained for provenance:
+% \rowcolor{lightgray}T36 & 18 & Approximation-error supremum & \deferred & Replacing it
+% by a best or near-best approximant changes the nonconvex theorem and proof.\\
+T36 & 18 & Approximation-error supremum & \pairreviewed &
+\textcolor{deferredred}{No new manuscript edit: the original worst-member
+supremum has already been replaced by an error bound for a selected
+feasible approximant. Matching the general and network classes, supplying
+an actual approximant or a positive tolerance at an unattained infimum,
+and the remaining nonconvex proof and rate obligations remain separate.
+This verification does not resolve protected T07 or T35/T37/T39--T41/T82--T84.}\\
 T37 & 18, 95--103 & Two-sided nonconvex empirical process & \deferred & The proposed symmetric
 bound is a proof replacement, not a localized correction.\\
 \rowcolor{lightgray}T38 & 19--20 & Neural-network recursion & \deferred & A new recursion
@@ -370,11 +378,25 @@ scratch.\\
 \rowcolor{lightgray}T42 & 22 & Trend-filtering penalty order in the algorithm &
 \deferred & The discrete operator convention must be reconciled jointly with
 the implementation and the theory before changing it.\\
-T49 & 34 & Coupling-error probability & \deferred & The probability bookkeeping is
-part of the asymptotic proof and cannot be safely changed in isolation.\\
-\rowcolor{lightgray}T50 & 34--35 & Independence within coupled blocks & \deferred & A
-correction requires either a new conditional-independence assumption or a
-cluster-level symmetrization proof.\\
+% Original T49 disposition retained for provenance:
+% T49 & 34 & Coupling-error probability & \deferred & The probability bookkeeping is
+% part of the asymptotic proof and cannot be safely changed in isolation.\\
+T49 & 34 & Coupling-error probability & \pairreviewed &
+\textcolor{deferredred}{Retained the additive $1/n$ coupling-failure probability
+for $n\ge2$, $t>0$, and stated $n\ge\lceil2/\varepsilon\rceil$ for the
+$\varepsilon/2$ relaxation. The numerical bound still requires valid block and
+coupling conditions; protected T04, T84 and downstream T65/risk propagation
+remain unresolved.}\\
+% Original T50 disposition retained for provenance:
+% \rowcolor{lightgray}T50 & 34--35 & Independence within coupled blocks & \deferred & A
+% correction requires either a new conditional-independence assumption or a
+% cluster-level symmetrization proof.\\
+\rowcolor{lightgray}T50 & 34--35 & Independence within coupled blocks & \pairreviewed &
+\textcolor{deferredred}{No manuscript change was needed for the original iid
+criticism: the current text distinguishes independent time clusters from
+possibly dependent within-cluster responses, removes the coupling indicator
+before conditioning, and conditions only on one block. This scoped verification
+uses the stated joint law; T04/T84 and the complete risk arguments remain open.}\\
 % Original T51 disposition retained for provenance:
 % T51 & 36--37 & Curvature outside the local neighborhood & \deferred & Rescaling the
 % Huber threshold and constants depends on the disputed curvature assumption.\\
