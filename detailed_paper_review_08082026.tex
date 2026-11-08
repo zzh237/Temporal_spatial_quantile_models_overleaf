@@ -419,9 +419,17 @@ The published T30 fixed-target graph-TV bound and deterministic-radius sentence
 are preserved. These local corrections do not validate the complete KNN risk,
 Huber-to-squared-loss transfer, T32/T73, T84 or historical implementation;
 the separate comparator route is not required to make the truth feasible.}\\
-\rowcolor{lightgray}T34 & 17 & Out-of-sample extension and ties & \deferred & The
-tie-breaking rule and admissible $K$ are method-design choices not documented
-in the source.\\
+% Original T34 disposition retained for provenance:
+% \rowcolor{lightgray}T34 & 17 & Out-of-sample extension and ties & \deferred & The
+% tie-breaking rule and admissible $K$ are method-design choices not documented
+% in the source.\\
+\rowcolor{lightgray}T34 & 17 & Out-of-sample extension and ties & \pairreviewed &
+\textcolor{deferredred}{Partial: defined neighbours by original observation indices,
+fixed tie-breaking and admissible $K$, retaining repeated locations. Prediction
+uses the original weighted pool at observed locations and indexed neighbours
+elsewhere, connected to the complete T75 Huber extension proof.
+Historical experimental graph and prediction implementations remain unverified;
+this does not certify squared prediction risk or resolve T84.}\\
 % Original T35 disposition retained for provenance:
 % T35 & 17--18 & Convexity contradiction in the nonconvex theorem & \deferred & Removing
 % convexity requires verifying that the full star-hull proof is valid without it.\\
@@ -562,13 +570,41 @@ T70 & 66 & Trend-filtering lemma/theorem rate mismatch & \deferred & Selecting o
 rate without a verified derivation would be arbitrary.\\
 \rowcolor{lightgray}T71 & 67--68 & Odd-block denominator in the linear proof & \deferred &
 The denominator is entangled with unresolved block-normalization conventions.\\
-T73 & 72--75 & Circular local-radius assumption in the $K$-NN proof & \deferred & The
-unknown radius must be retained and a new fixed-point inequality solved.\\
+% Original T73 disposition retained for provenance:
+% T73 & 72--75 & Circular local-radius assumption in the $K$-NN proof & \deferred & The
+% unknown radius must be retained and a new fixed-point inequality solved.\\
+T73 & 72--75 & Circular local-radius assumption in the $K$-NN proof & \pairreviewed &
+\textcolor{deferredred}{Established a conditional Huber training and prediction
+bound by retaining the unknown radius and solving the fixed-point inequality,
+with the deterministic cell comparator, original weights and explicit failure
+and approximation terms. Connected to the T34 definitions, T75 extension and
+T76 geometry; the T73--T74 shared proof and bibliography are applied once.
+Faithful joint response state and measurable exact minimization remain explicit
+premises; T84 model applicability, historical implementation, unbounded squared
+risk, minimax claims and growing dimension are not certified.}\\
+% Original T74 disposition retained for provenance:
+% \rowcolor{lightgray}T74 & 73--75 & Inconsistent logarithmic exponents and symbols &
+% \deferred & A single exponent and $K$ choice must follow from a checked graph
+% complexity proof.\\
 \rowcolor{lightgray}T74 & 73--75 & Inconsistent logarithmic exponents and symbols &
-\deferred & A single exponent and $K$ choice must follow from a checked graph
-complexity proof.\\
-T75 & 78--82 & Broken $K$-NN extension proof & \deferred & The unresolved reference,
-swapped terms, and radii require a full reorganization of the proof.\\
+\pairreviewed & \textcolor{deferredred}{Checked the fixed-dimension choices
+$K\asymp\log^{3+\mu}(2N)$ for $d=2$ and
+$K\asymp\log^{2+\mu}(2N)$ for fixed $d\geq3$, with fixed $\mu>0$.
+Both width terms, integer rounding, fixed positive tail constants, original
+weights and the stated group-size growth condition are retained in the shared
+T73 conditional proof. This does not establish tuning optimality, growing-$d$
+uniformity or the unresolved T84 response-model premises.}\\
+% Original T75 disposition retained for provenance:
+% T75 & 78--82 & Broken $K$-NN extension proof & \deferred & The unresolved reference,
+% swapped terms, and radii require a full reorganization of the proof.\\
+T75 & 78--82 & Broken $K$-NN extension proof & \pairreviewed &
+\textcolor{deferredred}{Replaced the full extension proof by an indexed Huber
+comparison with coefficients $4,4$, marginal-design BV translation and a single
+geometry-failure term. It uses the actual T34 weighted prediction definition
+and T76 geometry, with the training error as an external input supplied here
+by the conditional T73 theorem. This extension does not require target or fit
+amplitude bounds, but does not prove squared risk or certify historical code
+or the unresolved T84 model premises.}\\
 % Original T76 disposition retained for provenance:
 % \rowcolor{lightgray}T76 & 83--93 & Dependent-design $K$-NN geometry & \deferred & The
 % needed occupancy and degree proposition under mixing is not available in the

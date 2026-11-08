@@ -1120,7 +1120,16 @@ For dimensions \(d > 1\), in addition to exploring High-dimensional Quantile Lin
 % The work in \cite{ye2021non} has showed a convergence rate of quantile \(K\)-NN-FL for nondependent data, 
 \rev{The work in \cite{padilla2023temporal} has shown the convergence rate of temporal-spatial \(K\)-NN-FL.} Our implementation of quantile \(K\)-NN-FL, however, diverges from both works in terms of the loss function used for temporal-spatial data.
 
-Let \(G_K\) represent the \(K\)-NN graph with edge set \(E_K\), derived from \(\{x_{ij}\}_{i=1, j=1}^{n,m_i}\). For a signal \(\theta \in \mathbb{R}^{\sum_{i=1}^n m_i}\), its total variation along \(G_K\) is defined as
+Let \(G_K\) represent the \(K\)-NN graph with edge set \(E_K\),
+derived from \(\{x_{ij}\}_{i=1, j=1}^{n,m_i}\).
+\rev{Take an integer \(1\le K\le\sum_{i=1}^n m_i-1\). To select
+the neighbors of observation \((i,j)\), exclude only that index
+and rank the remaining observations by increasing Euclidean
+distance from \(x_{ij}\), breaking ties by the lexicographic order
+of their indices. Distinct indices are retained even when their
+locations coincide.}
+For a signal \(\theta \in \mathbb{R}^{\sum_{i=1}^n m_i}\),
+its total variation along \(G_K\) is defined as
 \begin{equation}
 \label{tv_knn}
 \rev{\|\nabla_{G_K} \theta\|_1} := \sum_{\{(i_1,j_1),(i_2,j_2)\} \in E_K} |\theta_{i_1,j_1} - \theta_{i_2,j_2}|.
@@ -1181,50 +1190,105 @@ Assumption~\ref{ass_knn_4} mirrors the function of Assumption~\ref{ass_6_2}.
 \hat{\theta}_n = \arg\min_{\theta \in \mathbb{R}^{\sum_{i=1}^n m_i}} \left\{ \frac{1}{n} \sum_{i=1}^n \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_{\tau}(y_{ij} - \theta_{ij}) \right\} \quad \text{s.t.} \quad \|\nabla_{G_k} \theta\|_1 \,\leq\, V_n,
 \end{equation}
 
-for a tuning parameter \( V_n > 0 \). Once \( \hat{\theta}_{V_n} \) is constructed, we let \( \hat{f}_{V_n} : [0,1]^d \to \mathbb{R} \) be given as
+for a tuning parameter \( V_n > 0 \).
+\begin{revision}
+Write \(\hat{\theta}_{V_n}=\hat{\theta}_n\) for the estimator in
+\eqref{def_knn}. For each \(x\in[0,1]^d\), order all observation
+indices \((i,j)\) by increasing \(\|x-x_{ij}\|_2\), breaking distance
+ties by the lexicographic order of \((i,j)\). Let \(N_K(x)\) be the
+set of the first \(K\) indices in this order. Thus
+\(|N_K(x)|=K\), and coincident observations retain their separate
+indices.
 
+At an observed location \(x\), define
 \begin{equation}
 \label{np_knn1}
-\hat{f}_{V_n}(x_{ij}) \,=\, (\hat{\theta}_{V_n})_{ij} \quad \text{for } i = 1, \ldots, n, \text{ } j = 1, \ldots, m_i,
+\hat{f}_{V_n}(x)
+\,=\,
+\frac{\displaystyle\sum_{i=1}^n\frac{1}{m_i}
+      \sum_{j=1}^{m_i}\mathbf{1}_{\{x_{ij}=x\}}
+      (\hat{\theta}_{V_n})_{ij}}
+     {\displaystyle\sum_{i=1}^n\frac{1}{m_i}
+      \sum_{j=1}^{m_i}\mathbf{1}_{\{x_{ij}=x\}}}.
 \end{equation}
-
-and
-
+This equals \((\hat{\theta}_{V_n})_{ij}\) when \(x=x_{ij}\)
+occurs only once. At every other location
+\(x\in[0,1]^d\setminus\{x_{ij}:1\le i\le n,\ 1\le j\le m_i\}\),
+define
 \begin{equation}
 \label{np_knn2}
-\hat{f}_{V_n}(x) \,=\, \frac{1}{\sum_{i=1}^n \sum_{j=1}^{m_i} I_{(x, x_{ij})}} \sum_{i=1}^n \sum_{j=1}^{m_i} I_{(x, x_{ij})} (\hat{\theta}_{n})_{ij},
+\hat{f}_{V_n}(x)
+\,=\, \frac{1}{K}\sum_{(i,j)\in N_K(x)}
+      (\hat{\theta}_{V_n})_{ij}.
 \end{equation}
-
-for \( x \in [0,1]^d \setminus \{x_{ij}\}_{i=1,j=1}^{n,m_i} \), where \( N_K(x) \) is the set of \( K \)-nearest neighbors of \( x \) among \( \{x_{ij}\}_{i=1,j=1}^{n,m_i} \), and \( I_{(x, x_{ij})} = 1 \) if \( x_{ij} \in N_K(x) \) and \( I_{(x, x_{ij})} = 0 \) otherwise. Notice in \eqref{np_knn1} we are using the same estimation rule described in \cite{madrid2020adaptive} and \cite{padilla2023temporal}.
+These rules define a single-valued function while retaining the
+fitted vector in \eqref{def_knn}. Since the design law \(Q\) has
+a density, its population risk is unaffected by the values assigned
+at the finitely many observed locations.
+\end{revision}
 
 With this notation, we are ready to state our main result regarding the constrained quantile \( K \)-NN fused lasso for temporal-spatial data \eqref{def_knn}--\eqref{np_knn2}.
 
+\begin{revision}
 \begin{theorem}
 \label{Theorem_5}
-Let \( \{(x_{ij}, y_{ij})\}_{i=1,j=1}^{n,m_i} \) follow the Assumptions with \( d > 1 \). Suppose in addition that \( K\) has a choice of \(\text{poly}(\log(nm)) \). The estimator \( \hat{\theta}_n \), defined in \eqref{def_knn} satisfies that
-% \begin{equation}
-% \Delta^2(\hat{\theta}_{V_n} - \theta^*) = O_p\left(\frac{\text{poly}(B)\text{poly}(\log(nm))}{mn}V_n + \frac{\text{poly}(B)\text{poly}(\log(nm))}{n}+ \frac{d\cdot \text{poly}(\log n)\log(T_n)}{n}\right) \tag{17}
-% \end{equation}
-% O_{\mathbb{P}}()
-\bea 
-\norm{\hat{\theta}_{V_n} - \theta^*}^2 \,=\, O_p \paren{ \frac{\text{poly}(B)\text{poly}(\log(nm))}{mn}V_n \,+\, \frac{\text{poly}(B)\text{poly}(\log(nm))}{n}\,+\, \frac{\text{poly}(B)\cdot d\cdot \text{poly}(\log n)\log(T_n)}{n}},
-\bea  
-and provided that \( V_n \,\geq\, \rev{\|\nabla_{G_K}\theta^*\|_1} \). In addition, \( \hat{f}_{V_n}\), defined in \eqref{np_knn1}--\eqref{np_knn2} satisfies that
-
-% \[
-% \Delta^2(\hat{f}_{V_n} - f^*)  = O_p\left(\frac{\text{poly}(B)\text{poly}(\log(nm))}{mn}V_n + \frac{\text{poly}(B)\text{poly}(\log(nm))}{n}+ \frac{d\cdot \text{poly}(\log n)\log(T_n)}{n} + \frac{\paren{\text{poly}(\log(nm))}^{1/d}}{(nm)^{1/d}} \right)
-% \]
-\bea
-&\norm{\hat{f}_{V_n} - f^*}_2^2 \,=\, O_p \biggl(  \frac{\text{poly}(B)\text{poly}(\log(nm))}{mn} V_n \,+\, \frac{\text{poly}(B) d\cdot \text{poly}(\log n)\log(T_n)}{n} \,+\, \frac{\text{poly}(B)\paren{\text{poly}(\log(nm))}^{1/d}}{(nm)^{1/d}}\biggr).
-\bea
+Assume the hypotheses of Lemma~\ref{lemma_35}, including its faithful
+response-state, design, and curvature conditions. Let $d\ge2$ be fixed,
+put $N=\sum_{i=1}^n m_i$ and
+$L=\lceil2\log n/C_\beta\rceil$, and assume
+$L\log(2nN)/n\to0$. Fix $\mu>0$ and choose
+\[
+K\asymp
+\begin{cases}
+\log^{3+\mu}(2N),&d=2,\\
+\log^{2+\mu}(2N),&d\ge3.
+\end{cases}
+\]
+Let $J_0>0$ be a fixed upper bound for $|Df^*|((0,1)^d)$.
+For a sufficiently large fixed constant $C_{\mathrm{tune}}$, take a
+deterministic radius
+\[
+V_n\ge C_{\mathrm{tune}}J_0N^{1-1/d}K^{1+1/d}.
+\]
+For any measurable exact minimizer in \eqref{def_knn}, use the indexed
+prediction rule in \eqref{np_knn1}--\eqref{np_knn2} and put
+$\phi(u)=\min\{|u|,u^2\}$. Then
+\beq
+&\frac1n\sum_{i=1}^n\frac1{m_i}\sum_{j=1}^{m_i}
+  \phi\bigl((\hat\theta_{V_n})_{ij}-f^*(x_{ij})\bigr)
+  +\int\phi(\hat f_{V_n}-f^*)\,dQ\\
+&\qquad=O_P\left\{\frac{V_n}{NK}
+                         +\frac{L\log(2nN)}n\right\}.
+\beq
+A measurable exact minimizer exists by the finite-graph construction
+in the proof of Lemma~\ref{lemma_35}.
+If $V_n\asymp J_0N^{1-1/d}K^{1+1/d}$, this upper bound becomes
+\[
+O_P\left\{J_0(K/N)^{1/d}+\frac{L\log(2nN)}n\right\}.
+\]
 \end{theorem}
+\end{revision}
 
 \rev{For the fixed targets and choice of $K$ covered by Lemma~\ref{lem_knn_bv_graph_tv}, a sufficient deterministic radius is $V_n=C_{f^*}(\sum_{i=1}^n m_i)^{1-1/d}K^{1+1/d}$ with a sufficiently large fixed $C_{f^*}>0$. The lemma proves $\mathbb P\{\|\nabla_{G_K}\theta^*\|_1\leq V_n\}\to1$. Since $\sum_i m_i\asymp nm$, this choice makes $V_n/(nm)$ of order $(nm)^{-1/d}K^{1+1/d}$.}
-Theorem~\ref{Theorem_5} then indicates that, for temporal-spatial data and in terms of the Huber-type loss defined in \eqref{huber_def}, the \(K\)-NN-FL estimator presented in \eqref{np_knn1} and \eqref{np_knn2} attains a convergence rate of \(\rev{\text{poly}(\log(nm))} \text{poly}(B)\cdot (nm)^{-1/d} + \log(n)d \cdot n^{-1}\). With respect to the \(\ell_2\) loss, this rate is \(\rev{\text{poly}(\log(nm))} \text{poly}(B)\cdot (nm)^{-1/d} + \log(n)d \text{poly}(B) \cdot n^{-1}\), where \(\text{poly}(\cdot)\) denotes a polynomial function. This achieves an upper bound on the convergence rate, \((nm)^{-1/d}\), as detailed in
-% Theorem 6 of \cite{ye2021non} and 
-Theorem 3 of \cite{padilla2023temporal} for the quantile \(K\)-NN fused lasso, but extends the applicability to include dependent measurements and spatial noise.
-
-Our results also match the upper bound from Theorem 3 in \cite{padilla2023temporal}, modulo some logarithmic factors, under the condition \(d = o(n)\). However, in contrast to their analysis, our approach accommodates heavy-tailed errors without necessitating moment conditions. Drawing from Lemma 1 in \cite{padilla2023temporal}, the rate we present is minimax optimal within the class of piecewise Lipschitz functions, aside from logarithmic factors, assuming \(d = o(n)\).
+\begin{revision}
+For the deterministic choice
+$V_n\asymp J_0N^{1-1/d}K^{1+1/d}$, Theorem~\ref{Theorem_5}
+bounds the weighted empirical Huber loss and the population Huber
+loss by
+\[
+O_P\left\{J_0(K/N)^{1/d}+\frac{L\log(2nN)}n\right\}.
+\]
+The empirical loss retains the cluster weights of \eqref{def_knn}.
+The dimension $d\ge2$ and the variation budget $J_0>0$ are fixed.
+The stated choices of $K$ give $K/N\to0$; together with the growth
+condition, both terms tend to zero. Thus both Huber losses converge
+to zero in probability under the theorem's hypotheses.
+The bounded piecewise-Lipschitz class verified after
+Lemma~\ref{lem_knn_bv_graph_tv} is included in the stated BV class.
+The proof compares the fitted vector with the deterministic
+cell means of $f^*$ and proves their feasibility. Its risk bounds
+use the Huber loss, so they do not require a fitted amplitude bound.
+\end{revision}
 
 
 \section{For $\gF$ as Non-convex Set and $f^* \notin \gF$}
@@ -5447,44 +5511,50 @@ Taking the supremum over these test fields proves $f\in BV(U)$ and hence the app
 \end{revision}
 
 \subsection{Proof of  Theorem~\ref{Theorem_5}}
+\begin{revision}
 \begin{proof}
-   We will apply the result from Theorem~\ref{Theorem_1}, and also incorporate our problem in \ref{def_knn}, to get
+Put $N=\sum_i m_i$ and use the grid in Lemma~\ref{lemma_35}.
+The specified logarithmic choices give $K/N\to0$, $q\to\infty$ and
+$J\asymp N/K$. Since $N\ge n$, $L\lesssim\log(2N)$ and
+$K/L\gtrsim\log^{1+\mu}(2N)$. In particular,
+\[
+\log(2LJ)-\frac{cv_{\min}N}{24CLJ}
+\le C_1\log(2N)-C_2\log^{1+\mu}(2N)\longrightarrow-\infty.
+\]
+This verifies the cell-probability condition of the lemma.
+Moreover $\log(2J(n+1))\lesssim\log(2nN)$, so the stated growth
+condition verifies its other probability condition.
+The ceiling in $q$ gives
+\[
+K^2h^{1-d}\le2^{d-1}A^{(d-1)/d}N^{1-1/d}K^{1+1/d}.
+\]
+Thus a sufficiently large $C_{\mathrm{tune}}$ makes the radius
+condition of Lemma~\ref{lemma_35} hold. It also gives
+$J_fh\lesssim V_n/(NK)$.
+For fixed $d$,
+\[
+L\log(2dJ)\rho_q^2\lesssim
+\begin{cases}
+\log^3(2N),&d=2,\\
+\log^2(2N),&d\ge3.
+\end{cases}
+\]
+Consequently the last term in \eqref{eq_knn_huber_general_rate}
+is bounded by a constant times $V_n/(NK)$, since
 \bea
-&R_{\mathcal{J}_{e,l}}\left(\set{\theta:\norm{\theta-\theta^*}\leq \max\set{1,B^{1/2}}t,\ \|\nabla{G_K}\theta\|_1\leq V_n}\right), \quad \\
-&R_{\mathcal{J}_{o,l}}\left(\set{\theta:\norm{\theta-\theta^*}\leq \max\set{1,B^{1/2}}t,\ \|\nabla{G_K}\theta\|_1\leq V_n}\right)
-\bea for all $l = 1, \dots, L$, based on the results from Lemma~\ref{lemma_35}.
-
-Then we can show that 
-Suppose in addition that \( K \asymp \log^{2+\mu}(nm) \) for some \( \mu > 0 \). The estimator \( \hat{\theta}_{V_n} \), defined in \eqref{def_knn} satisfies that
-
-\begin{equation}
-\Delta^2(\hat{\theta}_{V_n} - \theta^*) \,=\, O_p\left(\frac{ \max\set{B,1} \log^{5+\mu}(nm)V_n}{nm} + \frac{\log^2(nm)\max\set{B,1}}{n} + \frac{d \log^{1+\mu}(n) \log(T_n)}{n}\right) \tag{17}
-\end{equation}
-
-
-
-
+&\frac{V_n\rho_q}{NK^2}
+ \{\sqrt{KL\log(2dJ)}+L\log(2dJ)\}\\
+&=\frac{V_n}{NK}\rho_q
+ \{\sqrt{L\log(2dJ)/K}+L\log(2dJ)/K\}
+\lesssim\frac{V_n}{NK}.
 \bea
-\label{knn_loss_1}
-\norm{\hat{\theta}_{V_n} - \theta^*}^2 &\,=\, O_p \bigg(\frac{ \max\set{B^2,B} \log^{5+\mu}(nm)V_n}{nm} \\
-&\qquad\qquad + \frac{\log^2(nm)\max\set{B^2,B}}{n} + \frac{\max\set{B,1} d \log^{1+\mu}(n) \log(T_n)}{n}\bigg),
-\bea  
-
-
-and provided that \( V_n \,\geq\, \rev{\|\nabla_{G_K}\theta^*\|_1} \).
-
-
-In addition, based on the result from Lemma~\ref{knn_f}, \( \hat{f}_{V_n} \), defined in \eqref{np_knn1}--\eqref{np_knn2} satisfies that
-
-\bea
-\Delta^2(\hat{f}_{V_n} - f^*)  &\,=\, O_p\bigg(\frac{ \max\set{B,1} \log^{5+\mu}(nm)V_n}{nm} + \frac{\log^2(nm)\max\set{B,1}}{n} \\
-&\qquad\qquad + \frac{d \log^{1+\mu}(n) \log(T_n)}{n} + \frac{\log^{2+\mu}(nm)}{(nm)^{1/d}} \bigg)
-\bea
-
-\bea 
-&\norm{\hat{f}_{V_n} - f^*}_2^2 \,=\, O_p \biggl(  \max\set{B, B^2} \biggl(  \frac{\log^{5+2\mu}(nm)}{nm} +  \frac{\log^{3+\mu}(nm)V_n}{n} \biggr) \biggr. \\ & \quad \biggl.+ \max\set{B,1}\cdot \left(\frac{ d\log n}{n} + \frac{\log^{2+\mu/d}(nm)}{(nm)^{1/d}}\right).\biggr.
-\bea   
+Also $L/N\le L/n$. Applying
+\eqref{eq_knn_huber_general_rate} proves the first assertion.
+For the stated radius of order
+$J_0N^{1-1/d}K^{1+1/d}$, $V_n/(NK)$ is of order
+$J_0(K/N)^{1/d}$, giving the specialization.
 \end{proof}
+\end{revision}
 
 \subsection{Additional Definitions for proof of Theorem~\ref{Theorem_5}}
 We give some definitions that will be encountered in the proof of the lemma.  
@@ -5798,344 +5868,805 @@ Let \( \Omega_{\varepsilon} := [0,1]^d \backslash B_{\varepsilon}(\partial[0,1]^
 
 
 
+\begin{revision}
 \begin{lemma}
 \label{lemma_35}
+Suppose Assumptions~\ref{Assumption 1.} and \ref{assumptionA} hold with
+fixed positive constants and fixed $d\ge2$. In this lemma the spatial
+functions are random elements of a fixed Polish space of finite
+real-valued functions on $[0,1]^d$, with jointly measurable evaluation.
+The independence in Assumption~\ref{ass_1_4} and the joint mixing bound
+in Assumption~\ref{ass_c_beta} refer to these random elements and the
+actual design and error vectors. Assume
+$F_{y_{ij}\mid x_{ij}=x}(f^*(x))=\tau$, with $0<\tau<1$, and the bounds
+in Assumption~\ref{assumptionA} on a common $Q$-full set, for all $i,j$
+and all $|u|\le R$.
 
-
-The estimator \( \hat{\theta}_{V_n} \), defined in \eqref{def_knn}, Suppose in addition that \( K \asymp \log^{2+\mu}(nm) \) for some \( \mu > 0 \) satisfies that
-
-\bea 
-\Delta^2(\hat{\theta}_{V_n} - \theta^*)  \,=\, O_p \left(r_n^2\right),
-\bea 
-by setting that 
-\bea
-r_n^2 \asymp    \frac{ \max\set{B,1} \log^{5+\mu}(nm)V_n}{nm} + \frac{\log^2(nm)\max\set{B,1}}{n} + \frac{d \log^{1+\mu}(n) \log(T_n)}{n}.
-\bea
-
-
-% Let  $\{s_{ij}\}_{i=1,j=1}^{n,m_{i}}$ are independent Rademacher variables, then we have 
-
-
+Let $f^*$ be a fixed finite Borel representative in $BV(U)$,
+$U=(0,1)^d$, and write $J_f=|Df^*|(U)$. The positive integers $m_i$
+are deterministic. Put
+\[
+N=\sum_{i=1}^n m_i,\qquad
+L=\lceil2\log n/C_\beta\rceil,\qquad n\ge2,\quad n\ge2L.
+\]
+Use the union $K$-NN graph on the original observation indices,
+excluding only the observation's own index and breaking distance ties
+by the fixed index order. There are fixed constants $A,C_\star,q_0>0$,
+depending only on the design constants and $d$, with the following
+property. For deterministic $1\le K<N$, put
+\[
+q=\left\lceil(AN/K)^{1/d}\right\rceil,\qquad h=q^{-1},\qquad J=q^d,
+\qquad
+\rho_q=
+\begin{cases}
+\sqrt{\log(2q)},&d=2,\\
+1,&d\ge3.
+\end{cases}
+\]
+Assume $q\ge q_0$ and choose a deterministic, finite radius
+$V_n>0$ such that $V_n\ge C_\star J_fK^2h^{1-d}$. Suppose, as
+$n\to\infty$,
+\[
+LJ\exp\left(-\frac{cv_{\min}N}{24CLJ}\right)\longrightarrow0,
+\qquad
+\frac{L\log(2J(n+1))}{n}\longrightarrow0.
+\]
+For any measurable exact minimizer in \eqref{def_knn}, with the
+indexed extension in \eqref{np_knn1}--\eqref{np_knn2}, write
+$\phi(u)=\min\{|u|,u^2\}$. Then
+\beq
+\label{eq_knn_huber_general_rate}
+&\frac1n\sum_{i=1}^n\frac1{m_i}\sum_{j=1}^{m_i}
+ \phi\bigl((\hat\theta_{V_n})_{ij}-f^*(x_{ij})\bigr)
+ +\int\phi(\hat f_{V_n}-f^*)\,dQ\\
+&\quad=O_P\Biggl\{
+ J_fh+\frac{V_n}{NK}+\frac LN+\frac{L\log(2J(n+1))}{n}\\
+&\hspace{5em}+\frac{V_n\rho_q}{NK^2}
+        \left(\sqrt{KL\log(2dJ)}+L\log(2dJ)\right)\Biggr\}.
+\beq
+A measurable exact minimizer exists. Neither the target nor the
+fitted vector is required to satisfy a uniform amplitude bound.
 \end{lemma}
 \begin{proof}
+Throughout this proof constants depend only on the fixed constants
+in the statement. Write $m_{\min}=\min_i m_i$ and
+$\Gamma=N/(nm_{\min})\le C/c$, and abbreviate
+$\hat\theta=\hat\theta_{V_n}$.
 
-Define: 
-\beq 
-\label{tilde_s}
-\left(\tilde s\right)_{i,j} = \begin{cases}
-(s)_{i,j}, \text{ for } i \in \mathcal{J}_{e,l}, \text{ and } j \in [m_i],\\
-0, \text{ for } i \notin \mathcal{J}_{e,l}, \text{ and } j \in [m_i].
-\end{cases}  
-\beq 
-Then $\{\tilde s_{ij}\}_{i=1,j=1}^{n,m_{i}}$ are independent, mean-zero Sub-Gaussian random variables with parameters bounded by $1$.
+\emph{The estimator and its measurability.}
+For a fixed graph $G$, let
+$C_G=\{\theta:\|\nabla_G\theta\|_1\le V_n\}$ and let $F_y$ denote the
+original weighted empirical check loss. Set
+$a_\tau=\min\{\tau,1-\tau\}$, $w_{\min}=\min_{i,j}1/(nm_i)>0$, and
+$s_y=\sum_{i,j}|y_{ij}|/(nm_i)$. For every $\theta$,
+\beq
+F_y(\theta)
+&\ge a_\tau\sum_{i,j}\frac{|\theta_{ij}|}{nm_i}-a_\tau s_y,\\
+F_y(0)&\le(1-a_\tau)s_y,\qquad
+F_y(\theta)\le F_y(0)\ \Longrightarrow\
+\|\theta\|_\infty\le\frac{s_y}{a_\tau w_{\min}}.
+\beq
+Thus the minimum over the nonempty closed convex set $C_G$ exists,
+and its set of minimizers is compact and convex. For $\epsilon>0$,
+the minimizer $\theta_{G,\epsilon}(y)$ of
+$F_y(\theta)+\epsilon\|\theta\|_2^2$ over $C_G$ is unique.
+If $y_k\to y$, the displayed bound makes
+$\{\theta_{G,\epsilon}(y_k)\}$ bounded. Any convergent subsequence
+has a limit in $C_G$; passing to the limit in its optimality
+inequality shows that the limit minimizes
+$F_y+\epsilon\|\cdot\|_2^2$. Uniqueness proves continuity in $y$.
 
-% \bea 
-% \left({\theta}_{e,l}\right)_{i,j} = \begin{cases}
-% (\theta)_{i,j}, \text{ for } i \in \mathcal{J}_{e,l}, \text{and } j \in m_i,\\
-% 0, \text{ for } i \notin \mathcal{J}_{e,l}, \text{and } j \notin m_i.\\
-% \end{cases}  
-% \bea 
-
-% \bea 
-% \left({\theta^*}_{e,l}\right)_{i,j} = \begin{cases}
-% (\theta^*)_{i,j}, \text{ for } i \in \mathcal{J}_{e,l}, \text{and } j \in m_i,\\
-% 0, \text{ for } i \notin \mathcal{J}_{e,l}, \text{and } j \notin m_i.\\
-% \end{cases}  
-% \bea
-
-
-% \bea 
-% \left({\theta}_{o,l}\right)_{i,j} = \begin{cases}
-% (\theta)_{i,j}, \text{ for } i \in \mathcal{J}_{o,l}, \text{and } j \in m_i,\\
-% 0, \text{ for } i \notin \mathcal{J}_{o,l}, \text{and } j \notin m_i.\\
-% \end{cases}  
-% \bea 
-
-% \bea 
-% \left({\theta^*}_{o,l}\right)_{i,j} = \begin{cases}
-% (\theta^*)_{i,j}, \text{ for } i \in \mathcal{J}_{o,l}, \text{and } j \in m_i,\\
-% 0, \text{ for } i \notin \mathcal{J}_{o,l}, \text{and } j \notin m_i.\\
-% \end{cases}  
-% \bea
-
-
-
-\rev{By the definition of the Rademacher width in \eqref{rademacher_def_blocks},}
-\bea
-\label{knn_rada}
-&R_{\mathcal{J}_{e,l}}\left(\set{\theta: \norm{\theta-\theta^*} \,\leq\, b,\ \|\nabla{G_K}\theta\|_1 \,\leq\, V_n}\right) \\
-&\,=\,
-\Ept{x^*,s}{\sup_{\substack{\norm{\theta-\theta^*} \leq b \\ \|\nabla{G_K}\theta\|_1 \leq V_n}}
-\frac{1}{\sum_{i\in\mathcal{J}_{e,l}}m_i}
-\sum_{i\in\mathcal{J}_{e,l}}\sum_{j=1}^{m_i}s_{ij}(\theta_{ij}-\theta^*_{ij})} \\
-&\labelrel\leq{knn_enlarge}
-\Ept{x^*,s}{\sup_{\substack{\norm{\varLambda}\leq b \\ \|\nabla{G_K}\varLambda\|_1\leq 2V_n}}
-\frac{1}{\sum_{i\in\mathcal{J}_{e,l}}m_i}
-\sum_{i\in\mathcal{J}_{e,l}}\sum_{j=1}^{m_i}\varLambda_{ij}s_{ij}} \\
-&\,=\, \frac{\sum_{i=1}^n m_i}{\sum_{i\in\mathcal{J}_{e,l}}m_i}
-\Ept{x^*,s}{\sup_{\substack{\norm{\varLambda}\leq b \\ \|\nabla{G_K}\varLambda\|_1\leq 2V_n}}
-\frac{1}{\sum_{i=1}^n m_i}
-\sum_{i=1}^n\sum_{j=1}^{m_i}\varLambda_{ij}\tilde s_{ij}} \\
-& \asymp \frac{nm}{\abs{\mathcal{J}_{e,l}}m}
-\Ept{x^*,s}{\sup_{\substack{\norm{\varLambda}\leq b \\ \|\nabla{G_K}\varLambda\|_1\leq 2V_n}}
-\frac{1}{\sum_{i=1}^n m_i}
-\sum_{i=1}^n\sum_{j=1}^{m_i}\varLambda_{ij}\tilde s_{ij}} \\
-&\leq \frac{2\log(n)}{c_1C_{\beta}}
-\Ept{x^*,s}{\sup_{\substack{\norm{\varLambda}\leq b \\ \|\nabla{G_K}\varLambda\|_1\leq 2V_n}}
-\frac{1}{\sum_{i=1}^n m_i}
-\sum_{i=1}^n\sum_{j=1}^{m_i}\varLambda_{ij}\tilde s_{ij}}.
-\bea
-
-\rev{The first equality follows by writing
-$\theta_{ij}=(\theta_{ij}-\theta^*_{ij})+\theta^*_{ij}$ and observing that
-$\Ept{s}{\sum_{i\in\mathcal{J}_{e,l}}\sum_{j=1}^{m_i}s_{ij}\theta^*_{ij}}=0$.
-For \eqref{knn_enlarge}, set $\varLambda=\theta-\theta^*$. By
-Assumption~\ref{ass_knn_4} and the triangle inequality,
-$\|\nabla{G_K}\varLambda\|_1\leq
-\|\nabla{G_K}\theta\|_1+\|\nabla{G_K}\theta^*\|_1\leq 2V_n$.
-Thus the change of variables maps the original constraint set into
-$\set{\varLambda:\norm{\varLambda}\leq b,\ \|\nabla{G_K}\varLambda\|_1\leq 2V_n}$,
-so enlarging the supremum gives the inequality. The next equality follows from
-the definition of $\tilde s_{ij}$ in \eqref{tilde_s}.}
-We use the assumption $m_i \asymp m$ specified in the statement of the Lemma.
-
-% in Inequality~\eqref{knn_rada} is analyzed. 
-For the rest of the proofs we give the sketch, the exact proof is provided in Lemma~\ref{Lemma_18}. 
-
-From Lemma~\ref{Lemma_18} and the observation after Equation~\eqref{knn_temp1}, with a probability of at least
+Let $\theta_{G,0}(y)$ be the unique smallest-Euclidean-norm minimizer
+of the original objective. Comparing with this vector gives
 \[
-1 - \bigg(\frac{2}{nm} + \frac{4}{C_{\beta}}C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right)  + \frac{3}{n} \\
-\quad + \frac{4}{C_{\beta}} \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\bigg),
+0\le F_y(\theta_{G,\epsilon})-F_y(\theta_{G,0})
+\le\epsilon\{\|\theta_{G,0}\|_2^2-\|\theta_{G,\epsilon}\|_2^2\}.
 \]
-it is satisfied that
+Hence $\theta_{G,1/k}\to\theta_{G,0}$: every subsequential limit
+minimizes $F_y$ and has norm at most $\|\theta_{G,0}\|_2$.
+The pointwise limit is Borel. For fixed $N$ there are finitely many
+graphs, and each graph is a Borel function of the design, because
+its edges are specified by finitely many distance comparisons and
+the fixed tie rule. Selecting $\theta_{G,0}(y)$ on each graph branch
+gives a Borel exact minimizer of the original objective.
+The regularization is used only to prove this selection result.
+
+The same finite distance comparisons make the indexed prediction
+rule jointly Borel in the data and the query point. At a repeated
+training location the rule in \eqref{np_knn1} uses its prescribed
+positive-weight average; off the observed locations it averages
+exactly $K$ original fitted coordinates. Both branches are Borel.
+Consequently the population Huber integral is a measurable random
+variable. No moment of $y_{ij}$ is used in these arguments.
+
+\emph{One joint coupling and a regular grid.}
+Let $\mathcal A_r=\{r+kL:r+kL\le n,\ k\ge0\}$, $1\le r\le L$,
+$k_r=|\mathcal A_r|$, and $N_r=\sum_{i\in\mathcal A_r}m_i$.
+They form a partition, with
 \[
-\sup_{\|\varLambda\|_2 \,\leq\, b, \|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n} \frac{1}{\sum_{i = 1}^n m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij}\tilde s_{ij}
-\,\leq\, C_3  K \frac{\log^{\frac{1}{2}}(nm)}{\sum_{i = 1}^n  m_i}b + C_4  K \frac{\log(nm)}{\sum_{i = 1}^n  m_i}V_n,
+\frac{n}{2L}\le k_r\le\frac{3n}{2L},\qquad
+N_r\ge\frac{cN}{2CL},\qquad \sum_rN_r=N.
 \]
-where \( \tilde b_2 \,\geq\, 0 \) is a constant depending on \( d \), \( C_3 \) and \( v_{max} \). Moreover, \( \tilde C \) is \( \frac{c_1c}{c_2C} \) with \( c_1 \) and \( c_2 \) positive constants.
-Here \( v_{max} \), \( v_{min} \), \( C \) and \( c \) are from Assumptions~\ref{asm:m} and \ref{ass_knn}. The positive constants \( C_3 \) and \( C_4 \) only depend on \( d \).
-% and the last inequality follows from the choice of \( \eta \) in Equation (162) for sufficiently large \( C_d \).
-To find the Rademacher widths of the localized total-variation classes, we analyze
+Copy the entire states $W_i=(X_i,\delta_i,E_i)$.
+Take fresh uniforms independent of the original array, keep the first
+$L$ states, and for $i>L$ apply Theorem~\ref{thm_beta_mix} to
+$W_i$ and its original past through $i-L$, augmented by the earlier
+uniforms. The latter augmentation does not change the beta bound.
+The copied $W_i^\dagger$ has its original marginal and is independent
+of this augmented past, which contains all earlier copies in its
+group. Induction gives the product law
+\beq
+\label{eq_knn_joint_product}
+\mathcal L((W_i^\dagger)_{i\in\mathcal A_r})
+&=\bigotimes_{i\in\mathcal A_r}
+ \left\{Q^{\otimes m_i}\otimes\mathcal L(\delta_i)
+       \otimes\bigotimes_{j=1}^{m_i}\mathcal L(e_{ij})\right\},\\
+\Omega_W&=\{W_i^\dagger=W_i\text{ for all }i\},\qquad
+\mathbb P(\Omega_W^c)\le(n-L)e^{-C_\beta L}\le\frac1n.
+\beq
+The copies in different groups need not be independent. Measurable
+evaluation makes the responses agree on $\Omega_W$.
+
+Partition $[0,1]^d$ into the $J$ congruent half-open cubes of side $h$,
+assigning outer faces to the adjacent cubes. These are regular cubes,
+not the nearest-node cells in \eqref{knn_center}. Let $p_D=Q(D)$ and
+let $Z_{rD}$ count copied observations of group $r$ in cube $D$.
+By \eqref{eq_knn_joint_product}, $Z_{rD}$ is binomial with mean
+$N_rp_D$, where $v_{\min}/J\le p_D\le v_{\max}/J$.
+The binomial exponential bound gives
 \[
-\frac{R_{\mathcal{J}_{e,l}}\left(\set{\theta:\norm{\theta-\theta^*}\leq b,\ \|\nabla{G_K}\theta\|_1\leq V_n}\right)}{t^2} \\
-+ \frac{R_{\mathcal{J}_{o,l}}\left(\set{\theta:\norm{\theta-\theta^*}\leq b,\ \|\nabla{G_K}\theta\|_1\leq V_n}\right)}{t^2}.
+\mathbb P\{|Z_{rD}-N_rp_D|>N_rp_D/2\}
+\le2e^{-N_rp_D/12}.
 \]
-See the equation (13.17) in \cite{wainwright2019high}. 
-Hence,
-\bea 
-&\Ept{x^*,s}{\sup_{\|\varLambda\| \,\leq\, b, \|\nabla{G_K} \varLambda\|_1\,\leq\, 2V_n}\frac{1}{\sum_{i = 1}^n m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij} \tilde s_{ij}} \\
-&\,\leq\, C_3  K \frac{\log^{\frac{1}{2}}(nm)}{\sum_{i = 1}^n  m_i}b + C_4  K \frac{\log(nm)}{\sum_{i = 1}^n  m_i}V_n \\
-& \quad +  B  \cdot \left(\frac{2}{nm} + \frac{4}{C_{\beta}}C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) \right. \\
-& \left. \quad + \frac{3}{n} + \frac{4}{C_{\beta}} \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right).
+For completeness, applying the exponential Markov inequality to the
+binomial moment generating function at $\log(3/2)$ and $\log(1/2)$
+gives exponents
+$(3/2)\log(3/2)-1/2>1/12$ and
+$1/2+(1/2)\log(1/2)>1/12$, respectively.
+Let $\mathcal E$ be $\Omega_W$ intersected with the success of all
+$LJ$ counts. Then
+\beq
+\label{eq_knn_single_good_event}
+\mathbb P(\mathcal E^c)
+&\le\frac1n+\delta_{\mathrm{cell}},\qquad
+\delta_{\mathrm{cell}}
+=2LJ\exp\left(-\frac{cv_{\min}N}{24CLJ}\right),\\
+\frac{Np_D}{2}\le N_D&\le\frac{3Np_D}{2},\qquad
+aK\le N_D\le bK\quad\text{on }\mathcal E,
+\beq
+where $N_D$ is the original cube count,
+$a=v_{\min}/(2^{d+1}A)$, $b=3v_{\max}/(2A)$, and
+$K/(2^dA)\le N/J\le K/A$.
+
+Here is the deterministic geometry used on this event.
+A ball of radius $Rh$ meets at most
+$H_d(R)=(\lceil2R\rceil+3)^d$ cubes. Choose $A$ so large that
+$bH_d(3\sqrt d)\le1/2$. Points in the same cube or face-adjacent
+cubes are at distance at most $3\sqrt d\,h$. At most $K/2$
+observations lie within this distance of any one point, so every
+two distinct indices in these cubes are joined by a graph edge,
+regardless of distance ties.
+
+Choose a fixed integer $t_0$ with $at_0^d\ge2$ and require
+$q\ge q_0\ge t_0$. Any cube lies in an array of $t_0^d$ cubes
+inside $[0,1]^d$. The array contains at least $2K$ observations.
+It follows that all training and query neighbors lie within
+$r_0h$, for a fixed $r_0=\sqrt d(t_0+1)$; for training points,
+excluding their own index still leaves at least $K$ candidates.
+The upper count bound gives degree at most a fixed multiple of $K$.
+For every original observation index $\alpha$,
+\beq
+\label{eq_knn_query_load}
+Q\{x:\alpha\in N_K(x)\}
+&\le v_{\max}\omega_d(r_0h)^d\le C_{\mathrm{load}}\frac KN .
+\beq
+Here $\omega_d$ is the volume of the Euclidean unit ball.
+All these conclusions hold for coincident observations as well.
+
+\emph{A deterministic comparison function.}
+Let $g_0$ equal $h^{-d}\int_D f^*(x)\,dx$ on cube $D$ and put
+$h_0=g_0-f^*$. The cube and rectangle $L_1$ Poincar\'e inequalities
+give
+\beq
+\label{eq_knn_grid_oracle}
+R_1:=Q|h_0|&\le C_{\mathrm{BV}}J_fh,\qquad
+\|D_\square g_0\|_1\le C_{\mathrm{BV}}J_fh^{1-d}.
+\beq
+Here $D_\square$ is the ordinary incidence matrix of the
+face-adjacency graph of the $J$ cubes, acting on their values.
+To see both bounds, on a rectangle $R$ of largest side length
+$\ell_R$ use
+$\int_R|f^*-f_R^*|\le C_d\ell_R|Df^*|(R)$, as established in the
+proof of Lemma~\ref{lem_knn_bv_graph_tv}. Summing over cube interiors
+gives the first bound. For adjacent cubes $D,D'$, their open
+spanning rectangle contains their shared face and gives
+\[
+|(g_0)_D-(g_0)_{D'}|
+\le h^{-d}\int_R|f^*-f_R^*|
+\le C_dh^{1-d}|Df^*|(R).
+\]
+These rectangles have bounded overlap pointwise, so the estimate
+also integrates against the possibly singular variation measure.
+Summing gives the second bound in \eqref{eq_knn_grid_oracle}.
+
+For any grid-constant $g$, graph edges join cubes whose grid
+indices differ by at most a fixed constant. Connect each such
+pair of cubes by a fixed coordinate path of bounded length.
+Each grid edge occurs in only a fixed number of these paths,
+and each pair of cubes contributes at most $b^2K^2$ observation
+pairs. Therefore, on $\mathcal E$,
+\[
+\|\nabla_{G_K}g(X)\|_1\le C_{\mathrm{geo}}K^2\|D_\square g\|_1.
+\]
+The choice of $C_\star$ makes $g_0(X)$ feasible for \eqref{def_knn}.
+This is the comparison vector used below.
+
+Let $\hat g$ be the arithmetic mean of the fitted coordinates
+in each nonempty cube, and set its value to zero on an empty cube.
+This defines $\hat g$ on every data realization. The within-cube
+and adjacent-cube complete subgraphs give, on $\mathcal E$,
+\beq
+\label{eq_knn_grid_projection}
+\sum_{i,j}|\hat\theta_{ij}-\hat g(x_{ij})|
+&\le\sum_D\frac1{N_D}\sum_{\alpha,\beta\in D}
+               |\hat\theta_\alpha-\hat\theta_\beta|
+\le\frac{2V_n}{aK},\\
+\|D_\square\hat g\|_1
+&\le\sum_{D\sim D'}\frac1{N_DN_{D'}}
+       \sum_{\alpha\in D,\beta\in D'}
+          |\hat\theta_\alpha-\hat\theta_\beta|
+\le\frac{V_n}{a^2K^2}.
+\beq
+Take $U_0=C_UV_n/K^2$ with
+$C_U\ge\max\{a^{-2},C_{\mathrm{geo}}^{-1}\}$.
+Both $\|D_\square g_0\|_1\le U_0$ and
+$\|D_\square\hat g\|_1\le U_0$ then hold on $\mathcal E$.
+The check loss is 1-Lipschitz, so exact optimality against $g_0(X)$
+and \eqref{eq_knn_grid_projection} imply
+\beq
+\label{eq_knn_grid_objective}
+\widehat Z_0(\hat g-g_0)
+&:=\frac1n\sum_i\frac1{m_i}\sum_j
+ \{\rho_\tau(y_{ij}-\hat g(x_{ij}))
+              -\rho_\tau(y_{ij}-g_0(x_{ij}))\}\\
+&\le\epsilon_n,\qquad
+\epsilon_n=\frac{2V_n}{aKnm_{\min}}.
+\beq
+
+\emph{Curvature and localization around $g_0$.}
+For a finite Borel $g$ with $Q|g-f^*|<\infty$, define
+\[
+\bar Z(g)=\frac1n\sum_i\frac1{m_i}\sum_j
+ \mathbb E\{\rho_\tau(y_{ij}-g(x_{ij}))
+                       -\rho_\tau(y_{ij}-f^*(x_{ij}))\}.
+\]
+This is an expectation of an integrable difference.
+With $u=g(x)-f^*(x)$, conditioning on the design gives the integral
+\[
+\Psi_{ij}(x,u)=\int_0^u
+ \{F_{y_{ij}\mid x_{ij}=x}(f^*(x)+z)-\tau\}\,dz.
+\]
+For $|u|\le R$, the lower CDF bound gives
+$\Psi_{ij}(x,u)\ge\ubar f\,u^2/2$. If $u>R$, integrate only from
+$R/2$ to $u$; monotonicity of the CDF gives
+$\Psi_{ij}(x,u)\ge R\ubar f\,u/4$. Reversing the integral from
+$u$ to $-R/2$ gives the same bound with $|u|$ when $u<-R$.
+Thus, with $C_0=\min\{\ubar f/2,R\ubar f/4\}>0$ and
+$H(v)=Q\phi(v)$,
+\[
+\bar Z(g)\ge C_0 H(g-f^*),\qquad |\bar Z(g_0)|\le R_1.
+\]
+Using $\phi(a+b)\le2\phi(a)+2\phi(b)$ and $\phi(u)\le|u|$,
+we obtain, for every grid-constant $v$,
+\beq
+\label{eq_knn_shifted_curvature}
+\bar Z_0(v):=\bar Z(g_0+v)-\bar Z(g_0)
+&\ge\frac{C_0}{2}H(v)-(C_0+1)R_1.
+\beq
+All grid-constant functions are finite and bounded for a fixed
+coefficient vector, and $f^*\in L_1(Q)$, so these inequalities
+apply without an amplitude assumption on $f^*$.
+
+Set $a_o=\kappa_o=C_0/4$. Define the deterministic classes
+\[
+\mathcal V=\{v:\ v\text{ is constant on each cube and }
+                 \|D_\square(v+g_0)\|_1\le U_0\},\qquad
+\mathcal V_t=\{v\in\mathcal V:a_oH(v)\le t^2\}.
+\]
+The class $\mathcal V$ is convex and contains zero.
+The local set $\mathcal V_t$ is compact in $\mathbb R^J$:
+it is closed, and $p_D\phi(v_D)\le t^2/a_o$ bounds each coordinate.
+It need not be convex. A countable dense subset of this local
+set computes the suprema below, because the loss increments
+and their conditional means are Lipschitz in its coordinates.
+Use common probability kernels for the finite-dimensional
+conditioning variables and the Polish field states. Local
+increments are uniformly bounded, so integration preserves this
+continuity and the suprema are measurable.
+
+Define
+\[
+S_t=\sup_{v\in\mathcal V_t}
+       \{\bar Z_0(v)-\widehat Z_0(v)-\kappa_oH(v)\}\ge0,
+\qquad
+\delta_n=(C_0+1)R_1+\epsilon_n.
+\]
+On $\mathcal E$, put $\hat v=\hat g-g_0$. If $a_oH(\hat v)>t^2$,
+continuity along the segment from zero to $\hat v$ supplies
+$0<\lambda<1$ such that $a_oH(\lambda\hat v)=t^2$.
+Convexity of $\mathcal V$ and of the empirical check loss implies
+$\lambda\hat v\in\mathcal V_t$ and
+$\widehat Z_0(\lambda\hat v)\le\lambda\epsilon_n$. Hence
+\beq
+\label{eq_knn_boundary_localization}
+S_t
+&\ge (C_0/2-\kappa_o)H(\lambda\hat v)
+                   -(C_0+1)R_1-\lambda\epsilon_n\\
+&\ge t^2-\delta_n.
+\beq
+Let $S_t^\dagger$ use the joint copies in the empirical loss.
+It is also nonnegative and agrees with $S_t$ on $\Omega_W$.
+For $t^2>\delta_n$, the event inclusion and Markov's inequality give
+\beq
+\label{eq_knn_local_probability}
+\mathbb P\{\mathcal E,\ a_oH(\hat v)>t^2\}
+&\le\frac{\mathbb E S_t^\dagger}{t^2-\delta_n},\\
+\mathbb P\{a_oH(\hat v)>t^2\}
+&\le\frac1n+\delta_{\mathrm{cell}}
+                +\frac{\mathbb E S_t^\dagger}{t^2-\delta_n}.
+\beq
+The boundary inequality is non-strict. The single matching failure
+is outside the denominator.
+
+\emph{The three centered fluctuations and the field mean.}
+For a scalar $z$ write
+\[
+\ell_{ij,0}(z;x,\delta,e)
+=\rho_\tau(\delta(x)+e-h_0(x)-z)
+                  -\rho_\tau(\delta(x)+e-h_0(x)).
+\]
+Let $\tilde z_{ij,0}(x,\delta,z)=\mathbb E_{e_{ij}}\ell_{ij,0}
+(z;x,\delta,e_{ij})$,
+$z_{ij,0}(x,z)=\mathbb E_{\delta_i}\tilde z_{ij,0}(x,\delta_i,z)$,
+and $r_{ij,0}=z_{ij,0}-\tilde z_{ij,0}$.
+With $F_{ij}$ the marginal CDF of $e_{ij}$, the integral identity
+for loss differences yields
+\beq
+\label{eq_knn_shifted_cdf}
+r_{ij,0}(x,\delta,z)
+&=\int_0^z
+ \{\mathbb E_{\delta_i}F_{ij}(u+h_0(x)-\delta_i(x))
+                         -F_{ij}(u+h_0(x)-\delta(x))\}\,du.
+\beq
+Each of $\ell_{ij,0}$, $z_{ij,0}$, and $r_{ij,0}$ is zero at zero
+and 1-Lipschitz in its scalar last argument. For $r_{ij,0}$ this
+follows from the integrand in \eqref{eq_knn_shifted_cdf} being
+between $-1$ and $1$.
+
+For one group $I=\mathcal A_r$, every summand of
+$\bar Z_0(v)-\widehat Z_0^\dagger(v)$ splits into
 \bea
-Also with Lemma~\ref{lem_l2}, we have $b^2 = c^{-1}\max\set{B,1}\cdot t^2$,
-
-
-Let denote $\frac{1}{\sum_{i = 1}^nm_i}$ as $C_6$. 
-Now, we analyze 
-\beq 
-&\frac{R_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le   t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le  t^2}\right)}{t^2}
-\beq  
-
-% Let a constant $c_g = \frac{\max\set{B,1}}{c}$ such that $b^2 = c_g\cdot t^2$, 
-% then $b$ is a minimal positive solution of
-We assume $b^2 = O\left(\frac{1}{n} + \frac{1}{nm}\right)$, then we have 
-
+&Qz_{ij,0}(\cdot,v(\cdot))-z_{ij,0}(x_{ij}^\dagger,v(x_{ij}^\dagger)),\\
+&\tilde z_{ij,0}(x_{ij}^\dagger,\delta_i^\dagger,v(x_{ij}^\dagger))
+       -\ell_{ij,0}(v(x_{ij}^\dagger);x_{ij}^\dagger,
+                                      \delta_i^\dagger,e_{ij}^\dagger),\\
+&r_{ij,0}(x_{ij}^\dagger,\delta_i^\dagger,v(x_{ij}^\dagger))
+       -Qr_{ij,0}(\cdot,\delta_i^\dagger,v(\cdot)),\\
+&Qr_{ij,0}(\cdot,\delta_i^\dagger,v(\cdot)).
 \bea
-&\Ept{x^*,s}{\sup_{\substack{\norm{\varLambda} \leq b \\ \|\nabla{G_K}\varLambda\|_1 \leq 2V_n} } \frac{1}{\sum_{i = 1}^n   m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij}\tilde s_{ij}}   \\
-& \,\leq\,  C_3  K \frac{\log^{\frac{1}{2}}(nm)}{\sum_{i = 1}^n  m_i}b + C_4  K \frac{\log(nm)}{\sum_{i = 1}^n  m_i}V_n \\
-& \quad +  B  \cdot \left(\frac{2}{nm} + \frac{4}{C_{\beta}}C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) \right. \\
-& \left. \quad + \frac{3}{n} + \frac{4}{C_{\beta}} \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right) \\
-\labelrel\leq{in1131}
-& \frac{1}{\sum_{i = 1}^nm_i}C_4  K \log(nm)V_n \\
-& \quad +   B \cdot \left(\frac{4}{C_{\beta}}C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) \right. \\
-& \quad \left. + \frac{3}{n} + \frac{4}{C_{\beta}} \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)\right) \\
-&\labelrel\leq{in1135}  \frac{1}{\sum_{i = 1}^nm_i}C_4  K \log(nm)V_n \\
-&\quad + B C_7 \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) + \frac{BC_8}{n}.
+The first line is centered over design. The second is centered
+over errors conditional on the fields and designs of this group.
+The third is centered over design conditional on this group's
+fields. The product law \eqref{eq_knn_joint_product} supplies the
+required independent coordinates in each case.
+
+Let $s_{ij}$ be independent Rademacher signs and define, retaining
+the original weights,
+\[
+\mathcal W_I(t)=\mathbb E\sup_{v\in\mathcal V_t}
+       \frac1n\sum_{i\in I}\frac1{m_i}\sum_j
+                   s_{ij}v(x_{ij}^\dagger).
+\]
+In each of the first three lines, replace the conditional mean by
+a matching independent ghost. Jensen's inequality, independent
+swaps of each coordinate and its ghost, and splitting the two
+signed sums give the symmetrization factor two. Conditional
+one-sided Rademacher contraction then gives $\mathcal W_I(t)$,
+since the scalar kernels above are 1-Lipschitz and vanish at zero.
+For example the first line satisfies
 \bea
-The \eqref{in1131} holds since we assume $b^2 = O\left(\frac{1}{n} + \frac{1}{nm}\right)$. 
-The \eqref{in1135} holds since we assume $K = \text{poly}(log(nm))$.
-
-Case 1, if the $B \,\geq\, 1$ so $b = c^{-1/2}B^{1/2}\cdot t$, 
-Then we let 
-\bea 
-K = 2 \log(n)\log(nm) \,\leq\, \log(nm)^{2+\mu} 
-\bea for some $\mu>0$, we have 
+&\mathbb E\sup_{v\in\mathcal V_t}
+ \sum_{i\in I,j}\frac{Qz_{ij,0}(\cdot,v)-z_{ij,0}(x_{ij}^\dagger,v)}
+                       {nm_i}\\
+&\le\mathbb E\sup_{v\in\mathcal V_t}
+ \sum_{i\in I,j}\frac{z_{ij,0}(\check x_{ij},v)
+                           -z_{ij,0}(x_{ij}^\dagger,v)}{nm_i}\\
+&=\mathbb E\sup_{v\in\mathcal V_t}
+ \sum_{i\in I,j}\frac{s_{ij}
+       \{z_{ij,0}(\check x_{ij},v)-z_{ij,0}(x_{ij}^\dagger,v)\}}{nm_i}\\
+&\le2\mathbb E\sup_{v\in\mathcal V_t}
+ \sum_{i\in I,j}\frac{s_{ij}z_{ij,0}(x_{ij}^\dagger,v)}{nm_i}
+\le2\mathcal W_I(t).
 \bea
-& \frac{1}{\sum_{i = 1}^nm_i}C_4  K \log(nm)V_n + B C_7 \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) + \frac{BC_8}{n} \\
-&\,\leq\, \frac{1}{\sum_{i = 1}^nm_i}C_9  BK \log(nm)V_n + \frac{BC_8}{n}.
-\bea 
-So we have 
-\bea 
-&R_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le   t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le  t^2}\right) \\
-&\,\leq\,  \frac{1}{\sum_{i = 1}^nm_i}C_9  BK \log(nm)V_n + \frac{BC_8}{n} \\
-&\,\leq\,  \frac{1}{\sum_{i = 1}^nm_i}C_9  B \log(nm)^{3+l}V_n + \frac{BC_8}{n} . 
-\bea 
-Thus, we seek a 
-\bea 
-t^2 = \frac{ C_9  B \log(nm)^{4+l}V_n}{nm} + \frac{\log(nm)BC_8}{n}, 
-\bea to get 
-\bea 
-&\frac{R_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le   t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le  t^2}\right)}{t^2} = O\left(\frac{1}{\log(nm)}\right).
-\bea 
+In this display the shorthand $z_{ij,0}(x,v)$ means
+$z_{ij,0}(x,v(x))$. For the second and third lines the same
+calculation is conditional on their stated group variables, and
+is then integrated. The index class is deterministic throughout;
+no design-dependent graph constraint is carried through a design
+swap. Dropping the nonnegative penalty in $S_t^\dagger$ gives
+\beq
+\label{eq_knn_expected_decomposition}
+\mathbb E S_t^\dagger
+&\le6\sum_{r=1}^L\mathcal W_{\mathcal A_r}(t)
+   +\sum_{r=1}^L\mathbb E\sup_{v\in\mathcal V_t}|M_{\mathcal A_r}(v)|,\\
+M_I(v)&=\frac1n\sum_{i\in I}\frac1{m_i}\sum_j
+          Qr_{ij,0}(\cdot,\delta_i^\dagger,v(\cdot)).
+\beq
 
-Case 2, if the $B < 1$ so $b = c^{-1/2}\cdot t$, 
-
-So we have 
-\bea 
-&R_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le   t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le  t^2}\right) \\ 
-&\,\leq\,  \frac{1}{\sum_{i = 1}^nm_i}C_9  BK \log(nm)V_n + \frac{BC_8}{n} \\
-&\,\leq\,  \frac{1}{\sum_{i = 1}^nm_i}C_{10}   \log(nm)^{3+l}V_n + \frac{C_8}{n}. 
-\bea 
-Thus, we seek a 
-\bea 
-t^2 = \frac{ C_{10}   \log(nm)^{4+l}V_n}{nm} + \frac{\log(nm)C_8}{n}, 
-\bea to get 
-\bea 
-&\frac{R_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le   t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le  t^2}\right)}{t^2} = O\left(\frac{1}{\log(nm)}\right).
-\bea 
-
-% \bea
-% &C_6 C_3  K \log^{\frac{1}{2}}(nm)b +  \frac{1}{\sum_{i = 1}^nm_i}C_4  K \log(nm)V_n \\
-% & \quad +   B \cdot \left(\frac{2}{nm} + c_3C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) \right. \\ & \quad \left. + \frac{3}{n} + c_3 \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right) <  \frac{b^2}{c_g}.
-% \bea
-
-% By lemma~\ref{lem_l2}, we also have $b^2 = c^{-1}\max\set{B,1}\cdot t^2$,
-
-% \bea 
-% &\frac{R_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le  t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le t^2}\right)}{t^2}. 
-% \bea 
-
-% \bea
-% &c^{-1/2} C_6 C_3  K \log^{\frac{1}{2}}(nm)B^{1/2}t +  \frac{1}{\sum_{i = 1}^nm_i}C_4  K \log(nm)V_n \\
-% & \quad +   B \cdot \left(\frac{2}{nm} + c_3C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) \right. \\ & \quad \left. + \frac{3}{n} + c_3 \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right) <  \frac{c^{-1}B t^2}{c_g}.
-% \bea
-
-
-
-% \bea
-% &c^{1/2}c_g C_6 C_3  K \log^{\frac{1}{2}}(nm)B^{-1/2}t + cc_g  \frac{1}{\sum_{i = 1}^nm_i}C_4  K \log(nm)V_nB^{-1} \\
-% & \quad +   cc_g \cdot \left(\frac{2}{nm} + c_3C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) \right. \\ & \quad \left. + \frac{3}{n} + c_3 \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right) <  t^2.
-% \bea
-
-% We find the positive roots of the quadratic equation about $t$, thus, we let 
-% \beq 
-% t &\geq  \frac{c_gc^{1/2}}{2}B^{-1/2}C_6C_3K \log^{\frac{1}{2}}(nm) \\ &+ \left(\frac{1}{4} cc_g^2B^{-1}C_6^2C^2_3K^2 \log(nm)  + c c_g\left( B^{-1} C_6C_4  K \log(nm)V_n  + \frac{2}{nm} \right.\right.\\ & \left.\left. + c_3C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) + \frac{3}{n} + c_3 \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right)\right)^{1/2} . \quad (162)
-% \beq 
-% and 
-
-% \beq 
-% b &\geq  \frac{c_g}{2}C_6C_3K \log^{\frac{1}{2}}(nm) \\ &+ \left( \frac{1}{4} c_g^2C_6^2C^2_3K^2 \log(nm)  +  c_g C_6C_4  K \log(nm)V_n   + Bc_g\left(\frac{2}{nm} \right.\right.\\ & \left.\left. + c_3C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) + \frac{3}{n} + c_3 \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right)\right)^{1/2} . \quad (162)
-% \beq 
-
-% and 
-
-% \beq 
-% \frac{b}{\sqrt{c_g}} &\geq  \frac{c_g^{1/2}}{2}C_6C_3K \log^{\frac{1}{2}}(nm) \\ &+ \left( \frac{1}{4} c_gC_6^2C^2_3K^2 \log(nm)  +  C_6C_4  K \log(nm)V_n   + B\left(\frac{2}{nm} \right.\right.\\ & \left.\left. + c_3C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) + \frac{3}{n} + c_3 \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right)\right)^{1/2} . \quad (162)
-% \beq 
-
-% Since $B \geq 1$, so $c_g = \frac{B}{c}$, 
-% we can let $b$ such that 
-% \beq 
-% \frac{b^2}{c_g} &\geq  \frac{c_g}{2}C_6^2C_3^2K^2 \log(nm) \\ &+  \frac{1}{2} c_gC_6^2C^2_3K^2 \log(nm)  +  2C_6C_4  K \log(nm)V_n   + 2B\left(\frac{2}{nm} \right.\\ & \left. + c_3C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) + \frac{3}{n} + c_3 \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right). \quad (162)
-% \beq 
-
-
-
-
-% Case 2, if the $B < 1$ so $b = c^{-1/2}\cdot t$, 
-
-% \bea
-% &c^{-1/2} C_6 C_3  K \log^{\frac{1}{2}}(nm)t +  \frac{1}{\sum_{i = 1}^nm_i}C_4  K \log(nm)V_n \\
-% & \quad +   B \cdot \left(\frac{2}{nm} + c_3C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) \right. \\ & \quad \left. + \frac{3}{n} + c_3 \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right) <  \frac{c^{-1} t^2}{c_g}.
-% \bea
-
-
-% \bea
-% &c^{1/2}c_g C_6 C_3  K \log^{\frac{1}{2}}(nm)t + cc_g  \frac{1}{\sum_{i = 1}^nm_i}C_4  K \log(nm)V_n \\
-% & \quad +   cc_gB \cdot \left(\frac{2}{nm} + c_3C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) \right. \\ & \quad \left. + \frac{3}{n} + c_3 \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right) <  t^2.
-% \bea
-
-
-% We find the positive roots of the quadratic equation about $t$, thus, we let 
-% \beq 
-% t &\geq  \frac{c_gc^{1/2}}{2}C_6C_3K \log^{\frac{1}{2}}(nm) \\ &+ \left( c c_g C_6C_4  K \log(nm)V_n + \frac{1}{4} cc_g^2C_6^2C^2_3K^2 \log(nm)   + cc_gB\cdot \left( \frac{2}{nm} \right.\right.\\ & \left.\left. + c_3C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) + \frac{3}{n} + c_3 \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right)\right)^{1/2} . \quad (162)
-% \beq 
-% and 
-% \beq 
-% \frac{b}{c_g^{1/2}} &\geq  \frac{c_g^{1/2}}{2}C_6C_3K \log^{\frac{1}{2}}(nm) \\ &+ \left(   C_6C_4  K \log(nm)V_n + \frac{1}{4} c_gC_6^2C^2_3K^2 \log(nm)   + B\cdot \left( \frac{2}{nm} \right.\right.\\ & \left.\left. + c_3C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) + \frac{3}{n} + c_3 \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right)\right)^{1/2} . \quad (162)
-% \beq 
-
-% Since $B <1$, we have $c_g = \frac{1}{c}$, 
-% and we can let $b^*$  such that 
-
-% \beq 
-% \frac{{b^*}^2}{c_g} &=  \frac{1}{2}c_gC_6^2C_3^2K^2 \log(nm) \\ &+   2 C_6C_4  K \log(nm)V_n + \frac{1}{2} c_gC_6^2C^2_3K^2 \log(nm)   + 2B\cdot \left( \frac{2}{nm} \right.\\ & \left. + c_3C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) + \frac{3}{n} + c_3 \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right). \quad (162)
-% \beq 
-
-% Thus, overall, we can get 
-% \bea 
-% \frac{{b^*}^2}{c_g}  &=    \frac{1}{\left(\sum_{i = 1}^n   m_i\right)^2}c_gC_3^2 K^2 \log(nm)  + \frac{1}{\sum_{i = 1}^n   m_i} 2C_4 K \log(nm)V_n   \\
-% & + \frac{4B}{nm} + \frac{8B}{C_{\beta}}C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) + \frac{6B}{n} + \frac{8B}{C_{\beta}} \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{2B}{nm}. \quad (162) 
-% \bea 
-
-% Given we choose $c_g = \frac{\max\set{B,1}}{c}$, So overall we get 
-
-% \bea 
-% &\ept{\sup_{\|\varLambda\| \leq b, \|\nabla{G_K} \varLambda\|_1 \leq 2V_n} \frac{1}{\sum_{i = 1}^n   m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij}s_{ij}} \leq \frac{b^2}{c_g}\\ & \leq 
-% \frac{1}{\left(\sum_{i = 1}^n   m_i\right)^2}\frac{\max\set{B,1}}{c}C_3^2 K^2 \log(nm)  +  2\frac{1}{\sum_{i = 1}^n m_i}C_4 K \log(nm)V_n   \\
-% & + \frac{4B}{nm} + \frac{8B}{C_{\beta}}C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) + \frac{6B}{n} + \frac{8B}{C_{\beta}} \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{2B}{nm}.
-% \bea 
-
-
-
-
-
-
-% a constant $c_g = \frac{\max\set{B,1}}{c}$, the second inequality follows from the choice of $b$ as below,  
-% \bea 
-% \frac{{b^*}^2}{c_g}  &=    \frac{1}{\left(\sum_{i = 1}^n   m_i\right)^2}c_gC_3^2 K^2 \log(nm)  +  2C_4 K \log(nm)V_n   \\
-% & + \frac{4B}{nm} + \frac{8B}{C_{\beta}}C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) + \frac{6B}{n} + \frac{8B}{C_{\beta}} \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{2B}{nm}. \quad (162) 
-% \bea 
-Overall, we get 
-\bea 
-t^2 = \frac{ C_{11}  \max\set{B,1} \log(nm)^{4+l}V_n}{nm} + \frac{\log(nm)\max\set{B,1}C_8}{n}.
-\bea 
-Furthermore, by Assumption~\ref{asm:m}, $\frac{1}{\sum_{i = 1}^n   m_i} \,\leq\, \frac{1}{cmn}$, and Equation~\eqref{beta_constants}, the result 
-% \bea 
-% &R_{\mathcal{J}_{e,1}}\left( \|\nabla{G_K} \theta\|_1 \leq V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq \max\set{1,B^{1/2}}t}\right)\\
-% &\leq C\biggl(\frac{4\log^2(n)}{m^2n^2{c'}^2c_1^2C_{\beta}^2} \frac{\max\set{B,1}}{c}C_3^2 K^2 \log(nm)  + \frac{2\log (n)}{mnc'c_1 C_{\beta}}C_4  K \log(nm)V_n \biggr.  \\
-% & \biggl.+ \frac{6B}{nm} + \frac{8B}{C_{\beta}}C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) + \frac{6B}{n} + \frac{8B}{C_{\beta}} \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)\biggr)
-% \bea holds.
-The above results hold uniformly for $R_{\mathcal{J}_{e,l}}$ and $R_{\mathcal{J}_{o,l}}$ for all $l = 1, \dots, L$, then we can show that 
-
-\bea 
-& \frac{1}{t^2}\sum_{l=1}^L \left (R_{\mathcal{J}_{e,l}}\left( \rev{\set{\theta: \norm{\theta-\theta^*} \,\leq\,  \max\set{1,B^{1/2}}t,\ \|\nabla{G_K} \theta\|_1 \,\leq\, V_n}}\right)\right.\\
-&\quad \left. +R_{\mathcal{J}_{o,l}}\left( \rev{\set{\theta: \norm{\theta-\theta^*} \,\leq\,  \max\set{1,B^{1/2}}t,\ \|\nabla{G_K} \theta\|_1 \,\leq\, V_n}}\right) \right) \,=\, O\left(\frac{1}{\log(nm)}\right),
-\bea 
-by letting 
-\bea 
-t^2 = \frac{ C_{12}  \max\set{B,1} \log^{5+\mu}(nm)V_n}{nm} + \frac{\log^2(nm)\max\set{B,1}C_{13}}{n}.
-\bea 
-
-Suppose in addition that \( K \asymp \log^{2+\mu}(nm) \) for some \( \mu > 0 \). 
-
-
-
-
-The estimator \( \hat{\theta}_{V_n} \), defined in \eqref{def_knn} satisfies that
-
-
-
-Then by Theorem~\ref{Theorem_1}, The estimator \( \hat{\theta}_{V_n} \), defined in \eqref{def_knn} satisfies that  
-\bea 
-\Delta^2(\hat{\theta}_{V_n} - \theta^*)  \,=\, O_p \left(r_n^2\right),
-\bea 
-by setting that 
+For $I=\mathcal A_r$ write $k=|I|$ and
+$G_i=m_i^{-1}\sum_jF_{ij}$. For a cube $D$, let $Q_D$ be $Q$
+conditioned on $D$, and define
 \bea
-r_n^2 \asymp    \frac{ \max\set{B,1} \log^{5+\mu}(nm)V_n}{nm} + \frac{\log^2(nm)\max\set{B,1}}{n} + \frac{d \log^{1+\mu}(n) \log(T_n)}{n}.
+P_{ID}(u)
+&=\frac1k\sum_{i\in I}\int
+ \{\mathbb E_{\delta_i}G_i(u+h_0(x)-\delta_i(x))
+                  -G_i(u+h_0(x)-\delta_i^\dagger(x))\}\,dQ_D(x),\\
+\eta_I&=\max_D\sup_{u\in\mathbb R}|P_{ID}(u)|.
 \bea
+These CDF differences are right-continuous in $u$, so rational
+thresholds suffice for the supremum. Fubini's theorem applied to
+the bounded CDF integrand in \eqref{eq_knn_shifted_cdf} gives
+\beq
+\label{eq_knn_cell_mean}
+M_I(v)=\frac{k}{n}\sum_Dp_D\int_0^{v_D}P_{ID}(u)\,du,\qquad
+|M_I(v)|\le\frac{k}{n}\eta_I Q|v|.
+\beq
+The mixture $G_i$ retains all $j$-specific error laws and the
+original factor $1/m_i$.
+
+For each $i,D$, take auxiliary $X_{iD}\sim Q_D$ and
+$\xi_{iD}$ with CDF $G_i$, independent of the fields and of each
+other, and put
+\[
+T_{iD}=\delta_i^\dagger(X_{iD})+\xi_{iD}-h_0(X_{iD}).
+\]
+Rows $(T_{iD})_D$, indexed by $i\in I$, are independent with their
+own marginal laws; entries in a row share the field $\delta_i^\dagger$.
+Conditioning on the group fields expresses $P_{ID}$ as the
+conditional expectation of
+$k^{-1}\sum_i\{\mathbb P(T_{iD}\le u)-{\bf1}_{T_{iD}\le u}\}$.
+Conditional Jensen, independent matching ghost rows and whole-row
+swaps therefore give
+\bea
+\mathbb E\eta_I
+&\le\frac1k\mathbb E\max_D\sup_u
+ \left|\sum_{i\in I}
+       \{\mathbb P(T_{iD}\le u)-{\bf1}_{T_{iD}\le u}\}\right|\\
+&\le\frac2k\mathbb E\max_D\sup_u
+                  \left|\sum_{i\in I}\sigma_i{\bf1}_{T_{iD}\le u}\right|
+\le2\sqrt{\frac{2\log(2J(k+1))}{k}}.
+\bea
+Here $\sigma_i$ is one independent sign for each whole row.
+For the last inequality, condition on all $T_{iD}$. Each cube has
+at most $k+1$ distinct threshold patterns; including both signs
+gives at most $2J(k+1)$ vectors. For each such vector, the sign
+sum has moment generating function at most $\exp(\lambda^2k/2)$.
+The finite maximum bound then gives
+$\sqrt{2k\log(2J(k+1))}$. The offset $h_0$ may be unbounded;
+it changes the thresholds but not this count.
+
+Set $s=t/\sqrt{a_o}$. Since $H(v)\le s^2$ on $\mathcal V_t$,
+\[
+Q|v|
+\le\{Qv^2{\bf1}_{|v|\le1}\}^{1/2}
+                   +Q|v|{\bf1}_{|v|>1}\le s+s^2.
+\]
+Using \eqref{eq_knn_cell_mean} and
+$\sum_r\sqrt{k_r}\le\sqrt{Ln}$ yields
+\beq
+\label{eq_knn_expected_field_mean}
+\sum_r\mathbb E\sup_{v\in\mathcal V_t}|M_{\mathcal A_r}(v)|
+\le C(s+s^2)\sqrt{\frac{L\log(2J(n+1))}{n}}.
+\beq
+All conditioning in this calculation is within the one group
+being analyzed, and no product law is conditioned on $\mathcal E$.
+
+\emph{Expected width on the fixed grid.}
+Let $D_\square^\dagger$ be the Moore--Penrose inverse,
+$E_\square$ the grid edge set, and
+\[
+\rho=\max_{e\in E_\square}\|(D_\square^\dagger)_{\cdot e}\|_2,
+\qquad \lambda_g=\log(2|E_\square|).
+\]
+The grid is connected, so
+$D_\square^\dagger D_\square=I-{\bf1}{\bf1}^{\top}/J$.
+For $v\in\mathcal V_t$, the triangle inequality gives
+$\|D_\square v\|_1\le2U_0$; also its arithmetic mean satisfies
+\[
+|\bar v|\le\frac1J\sum_D|v_D|
+\le v_{\min}^{-1}Q|v|\le v_{\min}^{-1}(s+s^2).
+\]
+Define an ordinary normalized width only for the following
+explicit deterministic grid class:
+\[
+\mathcal R_I(s)=\mathbb E\sup_{\substack{
+  v\text{ constant on the regular cubes}\\
+  H(v)\le s^2,\ \|D_\square v\|_1\le2U_0}}
+     \frac1{N_I}\sum_{i\in I,j}s_{ij}v(x_{ij}^\dagger),
+\qquad N_I=\sum_{i\in I}m_i.
+\]
+Writing $c_e=(D_\square^\dagger)_{\cdot e}$ and $D(x)$ for the
+cube containing $x$, the projection identity bounds this width by
+\beq
+\label{eq_knn_grid_width_split}
+\mathcal R_I(s)
+&\le \frac{s+s^2}{v_{\min}\sqrt{N_I}}
+ +\frac{2U_0}{N_I}
+       \mathbb E\max_{e\in E_\square}
+         \left|\sum_{i\in I,j}s_{ij}(c_e)_{D(x_{ij}^\dagger)}\right|.
+\beq
+For a fixed edge the summands are independent and centered,
+bounded by $\rho$, with variance at most
+$v_{\max}\rho^2/J$. Indeed the copied design law is $Q$ and
+$\sum_D(c_e)_D^2\le\rho^2$.
+If $Y$ is any one summand, for $|\lambda|\rho<3$,
+\[
+\log\mathbb E e^{\lambda Y}
+\le\frac{\lambda^2\mathbb EY^2}
+               {2(1-|\lambda|\rho/3)}.
+\]
+This follows by expanding the exponential, using $\mathbb EY=0$,
+$\mathbb E|Y|^r\le\rho^{r-2}\mathbb EY^2$ and
+$r!\ge2\,3^{r-2}$ for $r\ge2$.
+Applying the bound to the sum and to the $2|E_\square|$ signed
+columns, then minimizing the exponential maximum bound, gives
+\[
+\mathbb E\max_e
+ \left|\sum_{i\in I,j}s_{ij}(c_e)_{D(x_{ij}^\dagger)}\right|
+\le C\rho\left\{\sqrt{\frac{N_I\lambda_g}{J}}+\lambda_g\right\}.
+\]
+Consequently
+\beq
+\label{eq_knn_expected_grid_width}
+\mathcal R_I(s)
+&\le C\frac{s+s^2}{\sqrt{N_I}}
+ +CU_0\rho\left\{\sqrt{\frac{\lambda_g}{N_IJ}}
+                         +\frac{\lambda_g}{N_I}\right\}.
+\beq
+
+The dimension dependence of $\rho$ follows from the grid spectrum;
+we include the calculation corresponding to the grid bounds in
+\cite{hutter2016optimal}. The orthonormal eigenvectors of the
+path-grid Laplacian are products of normalized cosine vectors,
+indexed by $k\in\{0,\ldots,q-1\}^d$, with eigenvalues
+\[
+\lambda_k=4\sum_{a=1}^d
+             \sin^2\left(\frac{\pi k_a}{2q}\right)
+\ge\frac{4\|k\|_2^2}{q^2}.
+\]
+For an edge in coordinate direction $a$, the difference of its
+endpoint eigenvector values is at most
+$C_dq^{-d/2}k_a/q$. Expanding the squared norm of its
+pseudoinverse column therefore gives
+\bea
+\|(D_\square^\dagger)_{\cdot e}\|_2^2
+&\le C_dq^{2-d}
+       \sum_{\substack{k\in\{0,\ldots,q-1\}^d\\k\ne0}}
+                       \frac1{\|k\|_2^2}\\
+&\le C_dq^{2-d}\sum_{r=1}^{q-1}r^{d-3}
+\le C_d
+\begin{cases}
+\log(2q),&d=2,\\
+1,&d\ge3.
+\end{cases}
+\bea
+The middle inequality counts the $O_d(r^{d-1})$ indices on an
+$\ell_\infty$ shell. Thus $\rho\le C_d\rho_q$.
+
+The factors $m_{\min}/m_i$ lie in $[0,1]$. Conditional contraction
+over the signs, followed by enlargement to the explicit class
+in $\mathcal R_I(s)$, yields
+\beq
+\label{eq_knn_original_weight_width}
+\mathcal W_I(t)
+&\le\frac{N_I}{nm_{\min}}\mathcal R_I(s),\\
+\sum_r\mathcal W_{\mathcal A_r}(t)
+&\le C\Gamma\left\{(s+s^2)\sqrt{\frac LN}
+       +\frac{U_0\rho}{N}
+             \left(\sqrt{KL\lambda_g}+L\lambda_g\right)\right\}.
+\beq
+The last line uses $\sum_r\sqrt{N_r}\le\sqrt{LN}$ and
+$N/J\le K/A$. This is a comparison of expected widths with the
+original empirical weights; it is not a change in the estimator's
+normalization.
+
+\emph{Solving the radius inequality.}
+Put
+\[
+g_n=\log(2J(n+1)),\qquad
+A_n=\sqrt{\frac LN}+\sqrt{\frac{Lg_n}{n}},\qquad
+\Lambda_n=\frac{U_0\rho}{N}
+                  \left(\sqrt{KL\lambda_g}+L\lambda_g\right).
+\]
+Combining \eqref{eq_knn_expected_decomposition},
+\eqref{eq_knn_expected_field_mean}, and
+\eqref{eq_knn_original_weight_width}, with the fixed constants
+$a_o,\Gamma$, gives
+\beq
+\label{eq_knn_radius_profile}
+\mathbb E S_t^\dagger\le C(t+t^2)A_n+C\Lambda_n.
+\beq
+In particular both terms involving the unknown radius are retained.
+Set
+\[
+a_n=R_1+\epsilon_n+\frac LN+\frac{Lg_n}{n}+\Lambda_n.
+\]
+Then $\delta_n\le(C_0+1)a_n$ and $A_n\le\sqrt{2a_n}$.
+For $M^2\ge2(C_0+1)$, take $t=M\sqrt{a_n}$ in
+\eqref{eq_knn_local_probability}. This gives
+\beq
+\label{eq_knn_fixed_point_tail}
+\mathbb P\{a_oH(\hat g-g_0)>M^2a_n\}
+&\le\frac1n+\delta_{\mathrm{cell}}
+       +\frac{C(M\sqrt{a_n}+M^2a_n)A_n+C\Lambda_n}
+                    {M^2a_n-\delta_n}\\
+&\le\frac1n+\delta_{\mathrm{cell}}
+               +\frac{C}{M}+\frac{C}{M^2}+CA_n.
+\beq
+The assumed growth conditions imply
+$\delta_{\mathrm{cell}}\to0$ and $A_n\to0$.
+Taking $\limsup_{n\to\infty}$ and then $M\to\infty$ proves
+$H(\hat g-g_0)=O_P(a_n)$. This uses neither a prior rate for the
+radius nor a fitted amplitude bound.
+
+\emph{Returning to the fitted vector and the indexed predictor.}
+Write $P_Nu=N^{-1}\sum_{i,j}u_{ij}$. On $\mathcal E$,
+\eqref{eq_knn_grid_projection}, the count bounds and the elementary
+inequality for $\phi$ give
+\beq
+\label{eq_knn_weighted_training_return}
+&\frac1n\sum_i\frac1{m_i}\sum_j
+       \phi(\hat\theta_{ij}-f^*(x_{ij}))\\
+&\le\Gamma P_N\phi(\hat\theta-f^*(X))\\
+&\le\Gamma\left\{
+       2P_N|\hat\theta-\hat g(X)|
+       +4P_N\phi(\hat g-g_0)+4P_N|h_0|\right\}\\
+&\le\Gamma\left\{\frac{4V_n}{aNK}
+                         +6H(\hat g-g_0)+4P_N|h_0|\right\}.
+\beq
+Each design marginal is $Q$, so $\mathbb EP_N|h_0|=R_1$.
+Markov's inequality and \eqref{eq_knn_fixed_point_tail} prove the
+bound for both the $P_N$ average and the displayed weighted average.
+They can be applied on $\mathcal E$ using the first line of
+\eqref{eq_knn_local_probability}; its complement is then counted once.
+
+To transfer this bound, introduce only for this calculation the
+convex function
+\[
+\chi(u)=
+\begin{cases}
+u^2,&|u|\le1,\\
+2|u|-1,&|u|>1.
+\end{cases}
+\]
+It satisfies $\phi\le\chi\le2\phi$,
+$\chi(2u)\le4\chi(u)$ and
+$\chi(u+v)\le2\chi(u)+2\chi(v)$, the last inequality following
+from convexity. Write
+\[
+B_n=\frac1K\sum_\alpha\int
+{\bf1}_{\alpha\in N_K(x)}|f^*(x_\alpha)-f^*(x)|\,dQ(x).
+\]
+Jensen's inequality for $\chi$ and the index load bound
+\eqref{eq_knn_query_load} give
+\beq
+\label{eq_knn_huber_prediction_transfer}
+&\int\phi(\hat f_{V_n}-f^*)\,dQ\\
+&\le\frac4K\sum_\alpha
+       Q\{x:\alpha\in N_K(x)\}\,
+                         \phi(\hat\theta_\alpha-f^*(x_\alpha))
+       +\frac4K\sum_\alpha\int
+          {\bf1}_{\alpha\in N_K(x)}|f^*(x_\alpha)-f^*(x)|\,dQ(x)\\
+&\le4C_{\mathrm{load}}P_N\phi(\hat\theta-f^*(X))+4B_n
+       \qquad\text{on }\mathcal E .
+\beq
+The sums are over original observation indices $\alpha=(i,j)$.
+The finite observed locations have $Q$-measure zero, so their
+prescribed values in \eqref{np_knn1} do not affect this integral.
+The branch away from the observed locations uses the original fitted
+coordinates, including separate coordinates for repeated locations.
+
+Let $r=r_0h$. On $\mathcal E$, the last bias term is bounded by the
+nonnegative random variable
+\[
+B_n\le B_r:=
+\frac{v_{\max}}K\sum_\alpha
+       \int_{U\cap B(x_\alpha,r)}
+                    |f^*(x_\alpha)-f^*(x)|\,dx.
+\]
+For a fixed displacement $z$, convexity of $U$ and the fundamental
+theorem of calculus give, for smooth $f$,
+\bea
+\int_{U\cap(U-z)}|f(x+z)-f(x)|\,dx
+&\le |z|\int_0^1\int_{U\cap(U-z)}
+                    |\nabla f(x+tz)|\,dx\,dt\\
+&\le |z|\int_U|\nabla f(x)|\,dx.
+\bea
+Strict smooth approximation in $BV(U)$
+\cite[Section~5.2.2, Theorem~2]{evans1992measure}
+passes this inequality to $f^*$: the two translated integrals converge
+in $L_1$, and the gradient integrals converge to $J_f$. Thus
+\[
+\int_{U\cap(U-z)}|f^*(x+z)-f^*(x)|\,dx\le |z|J_f.
+\]
+This argument uses the variation inside $U$ and introduces no
+boundary term from a zero extension. Tonelli's theorem and the
+common marginal design law now imply
+\bea
+\mathbb EB_r
+&\le\frac{v_{\max}^2N}{K}
+       \int_{|z|\le r}\int_{U\cap(U-z)}
+                    |f^*(x+z)-f^*(x)|\,dx\,dz\\
+&\le\frac{v_{\max}^2N}{K}
+             \frac{d\omega_d}{d+1}J_fr^{d+1}
+\le CJ_fh.
+\bea
+Only the individual design marginals are used here.
+Markov's inequality, the training bound and
+\eqref{eq_knn_huber_prediction_transfer} give
+the total risk $O_P(a_n+J_fh)$. Finally
+$R_1\le CJ_fh$, $\epsilon_n\le CV_n/(NK)$,
+$U_0=C_UV_n/K^2$, $\rho\le C_d\rho_q$, and
+$\lambda_g\le\log(2dJ)$ yield
+\eqref{eq_knn_huber_general_rate}.
 \end{proof}
+
+For a fixed graph and a fixed vector $\theta^*$ satisfying
+$\|\nabla_{G_K}\theta^*\|_1\le V_n$, the graph-width centering
+can also be recorded directly. Let $I\subseteq[n]$ be nonempty,
+$N_I=\sum_{i\in I}m_i$, $N=\sum_{i=1}^n m_i$, and hold the graph
+and $\theta^*$ fixed when integrating over the signs. Define
+\beq
+\label{tilde_s}
+\tilde s_{ij}=
+\begin{cases}
+s_{ij},&i\in I,\\
+0,&i\notin I.
+\end{cases}
+\beq
+For $b\ge0$,
+\beq
+\label{knn_rada}
+&\mathbb E_s\sup_{\substack{\|\theta-\theta^*\|_2\le b\\
+                          \|\nabla_{G_K}\theta\|_1\le V_n}}
+           \frac1{N_I}\sum_{i\in I,j}s_{ij}\theta_{ij}\\
+&=\mathbb E_s\sup_{\substack{\|\theta-\theta^*\|_2\le b\\
+                          \|\nabla_{G_K}\theta\|_1\le V_n}}
+           \frac1{N_I}\sum_{i\in I,j}s_{ij}(\theta_{ij}-\theta^*_{ij})\\
+&\labelrel\leq{knn_enlarge}
+  \mathbb E_s\sup_{\substack{\|\varLambda\|_2\le b\\
+                         \|\nabla_{G_K}\varLambda\|_1\le2V_n}}
+           \frac1{N_I}\sum_{i\in I,j}s_{ij}\varLambda_{ij}\\
+&=\frac{N}{N_I}\mathbb E_s
+       \sup_{\substack{\|\varLambda\|_2\le b\\
+                      \|\nabla_{G_K}\varLambda\|_1\le2V_n}}
+          \frac1N\sum_{i=1}^n\sum_{j=1}^{m_i}
+                            \tilde s_{ij}\varLambda_{ij}.
+\beq
+For the first equality, the fixed term has zero sign expectation:
+\[
+\mathbb E_s\left[\frac1{N_I}\sum_{i\in I,j}
+                        s_{ij}\theta^*_{ij}\right]
+=\frac1{N_I}\sum_{i\in I,j}\theta^*_{ij}\mathbb E_s[s_{ij}]=0.
+\]
+Inequality \eqref{knn_enlarge} uses
+$\varLambda=\theta-\theta^*$ and
+$\|\nabla_{G_K}\varLambda\|_1\le
+\|\nabla_{G_K}\theta\|_1+\|\nabla_{G_K}\theta^*\|_1\le2V_n$.
+The last equality uses \eqref{tilde_s}. This enlargement has the
+stated truth-feasibility premise; the risk proof above establishes
+the required feasibility for the deterministic comparator $g_0(X)$.
+\end{revision}
 
 \begin{revision}
 \begin{lemma}
@@ -6393,223 +6924,217 @@ The below lemma gives the error rate for $\hat{f}_{V_n}$ defined in \eqref{np_kn
 
 
 
-\begin{lemma}
+\begin{revision}
+\begin{lemma}[Population risk of the indexed $K$-NN extension]
 \label{knn_f}
-In addition, \( \hat{f}_{V_n} \), defined in \eqref{np_knn2} satisfies that
-
+Suppose the hypotheses of Lemma~\ref{Lemma_13} hold, and use its
+choice of $N$ in \eqref{eq:N_definition}.
+Let $f^*:[0,1]^d\to\mathbb R$ be fixed and Borel, with
+$f^*|_{(0,1)^d}\in BV((0,1)^d)$, and write
+$J=|Df^*|((0,1)^d)$ and $\theta^*_{ij}=f^*(x_{ij})$.
+For this lemma, put $\phi(u)=\min\{|u|,u^2\}$.
+Let $\hat\theta_{V_n}$ be a measurable fitted vector, and extend it by
+\eqref{np_knn1}--\eqref{np_knn2}, retaining the original observation
+indices when locations coincide.
+Use $N_0,N,C_{\mathrm r},C_{\mathrm s},L_{\mathrm g},c_{\mathrm g}$
+from Lemma~\ref{Lemma_13}, and set $r=C_{\mathrm r}/N$.
+For every $t>0$,
+\begin{equation}
+\label{eq_knn_extension_tail}
+\begin{aligned}
+&\mathbb P\left\{
+\Delta^2(\hat f_{V_n}-f^*)>
+\frac{4C_{\mathrm s}}{N_0}\sum_{i=1}^n\sum_{j=1}^{m_i}
+\phi\bigl((\hat\theta_{V_n})_{ij}-\theta^*_{ij}\bigr)+4t
+\right\}
+\\
+&\qquad\leq
+\frac1n+2L_{\mathrm g}N^d
+\exp\left(-\frac{c_{\mathrm g}K}{L_{\mathrm g}}\right)
++\frac{v_{\max}^2d\omega_d}{d+1}\,
+\frac{J N_0 r^{d+1}}{Kt},
+\end{aligned}
+\end{equation}
+where $\omega_d$ is the volume of the Euclidean unit ball.
+Consequently, if the failure bound in
+\eqref{eq_knn_geometry_failure} tends to zero and, for a
+deterministic sequence $a_{nm}>0$,
 \[
-\Delta^2(\hat{f}_{V_n} - f^*) \,=\, O_p(\tilde{r}_{nm})
+\frac1n\sum_{i=1}^n\frac1{m_i}\sum_{j=1}^{m_i}
+\phi\bigl((\hat\theta_{V_n})_{ij}-\theta^*_{ij}\bigr)
+=O_{\mathbb P}(a_{nm}),
 \]
-
-for
-\[
-\tilde{r}_{nm} =  \frac{ \max\set{B,1} \log^{5+\mu}(nm)V_n}{nm} + \frac{\log^2(nm)\max\set{B,1}}{n}
-+ \frac{d \log^{1+\mu}(n) \log(T_n)}{n} + \frac{\log^{2+\mu}(nm)}{(nm)^{1/d}}.
-\]
+then
+\begin{equation}
+\label{eq_knn_extension_rate}
+\Delta^2(\hat f_{V_n}-f^*)
+=O_{\mathbb P}\left(
+a_{nm}+\left(\frac{K}{N_0}\right)^{1/d}
+\right).
+\end{equation}
 \end{lemma}
 
 \begin{proof}
-     Through this step, notation from Appendix section~\ref{plf_notation} is used. We start noticing that,
+Put
 \[
-\|f^* - \hat{f}_{V_n}\|_2^2 = \int \left( f^*(x) - \hat{f}_{V_n}(x) \right)^2 v(x)dx.
+\psi(u)=
+\begin{cases}
+u^2,& |u|\leq1,\\
+2|u|-1,& |u|>1.
+\end{cases}
 \]
-Then, adding and subtracting \( \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) \), it can be written as
-\bea
-&\int \left( f^*(x) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) + \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) \right. \\
-& \left. \quad - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} \hat{f}_{V_n}(x_{ij}) \right)^2 v(x)dx \\
-\,\leq\,& 2 \int \left( f^*(x) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) \right)^2 v(x)dx \\
-&+ 2 \int \left( \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} \hat{f}_{V_n}(x_{ij}) \right)^2 v(x)dx.
-\bea 
-Now we proceed to bound each of the terms
-\beq 
-\label{eq201}
-\text{Int}_1 = \int \left( f^*(x) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) \right)^2 v(x)dx, \quad 
-\beq 
-and,
-\beq 
-\label{eq202}
-\text{Int}_2 = \int \left( \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} \hat{f}_{V_n}(x_{ij}) \right)^2 v(x)dx.
-\beq
-
-For the second term \(\text{Int}_2\) in Equation~\eqref{eq202}, we observe that
+The function $\psi$ is convex,
+$\phi\leq\psi\leq2\phi$, and $\psi(u)\leq2|u|$.
+Its formula also gives $\psi(2u)\leq4\psi(u)$, so convexity yields
 \[
-\int \left( \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} \hat{f}_{V_n}(x_{ij}) \right)^2 v(x)dx
+\psi(u+v)
+\leq\tfrac12\psi(2u)+\tfrac12\psi(2v)
+\leq2\psi(u)+2\psi(v).
 \]
-\[
-= \sum_{r=1}^{N^d} \int_{\gI_r} \left( \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} \hat{f}_{V_n}(x_{ij}) \right)^2 v(x)dx.
-\]
-Moreover, for \(x' \in [0, 1]^d\), there exists \(c_{r}(x') \in P_\text{lat}(N)\) that satisfies \(x' \in C(c_{r}(x'))\) and
-\[
-\|x' - P_{I}(x')\|_2 \,\leq\, \frac{1}{2N}.
-\]
-Even more, by Lemma~\ref{lemma_14}, with high probability, there exists \( (i(x'), j(x')) \in [n] \times [m_i] \) such that \( x_{i(x')j(x')} \in C(c_{r}(x')) \). Hence,
-\[
-\|x' - x_{i(x')j(x')}\|_2 \,\leq\, \frac{1}{N}.
-\]
-Denote by \( x_{i_1 j_1}, \ldots, x_{i_K j_K}\) \( [i_1, \dots, i_K]\in [n] \) and \( (j_1, \ldots, j_K) \in [m_{i_1}] \times \ldots \times [m_{i_K}] \) \( K \)-nearest neighbors corresponding to \( x_{i'(x')j(x')} \). Observe that
- Observe that
-\[
-\|x' - x_{i_rj_r}\|_2 \,\leq\, \frac{1}{N} + R_{K, \text{max}}, \quad r = 1, \ldots, K
-\]
-where
-\[
-R_{K, \text{max}} = \max_{1 \,\leq\, i \,\leq\, n, 1 \,\leq\, j \,\leq\, m_i} R_K(x_{ij}),
-\]
-
-with \(R_K(x)\) denoting the distance from \(x \in [0, 1]^d\) to its \(K\)th nearest neighbor in the set \(\{x_{11}, \ldots, x_{nm_n}\}\). Thus, with high probability, for any \(x' \in [0, 1]^d\),
-\[
-N_K(x') \subset \{x_{ij} : \|x' - x_{ij}\|_2 \,\leq\, \frac{1}{N} + R_{K,\text{max}}\} 
-\subset \{x_{ij} : \|c_r(x') - x_{ij}\|_2 \,\leq\, \left(\frac{1}{2} + \frac{1}{N}\right) + R_{K,\text{max}}\}.
-\]
-Hence, we set
-\[
-\tilde N(c_r(x')) \,=\, \{x_{ij} : \|c_r(x') - x_{ij}\|_2 \,\leq\, \left(\frac{1}{2} + \frac{1}{N}\right) + R_{K,\text{max}}\}.
-\]
-As a result, for \(r \in [N]^d\),
-\[
-\int_{C(c_r)} \left( \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} \hat{f}_{V_n}(x_{ij}) \right)^2 v(x)dx,
-\]
-
-can be bounded as,
-\[
-\int_{C(c_r)} \left( \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} \hat{f}_{V_n}(x_{ij}) \right)^2 v(x)dx
-\]
-\[
-\,\leq\, \frac{1}{K} \int_{C(c_r)} \left( \sum_{x_{ij} \in \tilde N(c_r)} \left\{ f^*(x_{ij}) - \hat{f}_{V_n}(x_{ij}) \right\}^2 \right) v(x)dx
-\]
-\[
-= \frac{1}{K} \sum_{x_{ij} \in \tilde N(c_r)} \left\{ f^*(x_{ij}) - \hat{f}_{V_n}(x_{ij}) \right\}^2 \int_{C(c_r)} v(x)dx.
-\]
-The above leads to an upper bound for the term
-\[
-\int \left( \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} \hat{f}_{V_n}(x_{ij}) \right)^2 v(x)dx.
-\]
-This upper bound has the form,
-\[
-\sum_{r=1}^{N^d} \left( \frac{1}{K} \sum_{x_{ij} \in \tilde N(c_r)} \left\{ f^*(x_{ij}) - \hat{f}_{V_n}(x_{ij}) \right\}^2 \right) \int_{C(c_r)} v(x)dx,
-\]
-
-which can be bounded by
+The fixed ordering used to select $N_K(x)$ consists of finitely
+many Borel distance comparisons. Thus the extension is measurable.
+For every realized sample, the finitely many observed locations
+have $Q$-measure zero. At every other location, the extension
+averages the original coordinates $(\hat\theta_{V_n})_{ij}$.
+Adding and subtracting the corresponding average of
+$f^*(x_{ij})$ therefore gives, for $Q$-almost every $x$,
 \begin{align*}
-&\left[ \sum_{r=1}^{N^d} \frac{1}{K} \sum_{x_{ij} \in N(r)} \left\{ f^*(x_{ij}) - \hat{f}_{V_n}(x_{ij}) \right\}^2 \right] \max_{1 \,\leq\, r \,\leq\, N^d} \int_{C(c_r)} v(x) \, dx \\
-&\leq \sum_{i=1}^{n} \sum_{j=1}^{m_i} \frac{1}{K} \sum_{\substack{r \in [N^d] : \\ \|x_{ij} - c_r\|_2 \leq (\frac{1}{2}+1)N + R_{k,\max}}} \left\{ f^*(x_{ij}) - \hat{f}_{V_n}(x_{ij}) \right\}^2 \max_{1 \leq r \leq N^d} \int_{C(c_r)} v(x) \, dx \\
-&\,\leq\, \left[\sum_{i=1}^{n} \sum_{j=1}^{m_i} \left\{ f^*(x_{ij}) - \hat{f}_{V_n}(x_{ij}) \right\}^2 \right]\left[ \frac{1}{K} \max_{1 \,\leq\, r \,\leq\, N^d} \int_{C(c_r)} v(x) \, dx \right] \\
-&\quad \times \max_{(i,j) \in [n] \times [m_i]} \left\{ k : \|x_{ij} - c_r\|_2 \,\leq\, \left( \frac{1}{2} + 1 \right) \frac{1}{N} + R_{k,\max} \right\}.
+&\phi\bigl(\hat f_{V_n}(x)-f^*(x)\bigr)\\
+&\quad\leq
+2\psi\left(
+\frac1K\sum_{(i,j)\in N_K(x)}
+\bigl((\hat\theta_{V_n})_{ij}-\theta^*_{ij}\bigr)
+\right)
++2\psi\left(
+\frac1K\sum_{(i,j)\in N_K(x)}
+\bigl(f^*(x_{ij})-f^*(x)\bigr)
+\right)\\
+&\quad\leq
+\frac4K\sum_{(i,j)\in N_K(x)}
+\phi\bigl((\hat\theta_{V_n})_{ij}-\theta^*_{ij}\bigr)
++\frac4K\sum_{(i,j)\in N_K(x)}
+|f^*(x_{ij})-f^*(x)|.
 \end{align*}
+Define the nonnegative measurable quantity
+\[
+A_r=\frac1K\sum_{i=1}^n\sum_{j=1}^{m_i}
+\int_{[0,1]^d}
+\mathbf1_{\{\|x-x_{ij}\|_2\leq r\}}
+|f^*(x_{ij})-f^*(x)|\,dQ(x).
+\]
+On $\mathcal E_{\mathrm g}$, the query-radius and selection
+bounds \eqref{eq_knn_geometry_radii} and
+\eqref{eq_knn_geometry_selection} imply
+\begin{equation}
+\label{eq_knn_extension_transfer}
+\Delta^2(\hat f_{V_n}-f^*)
+\leq
+\frac{4C_{\mathrm s}}{N_0}\sum_{i=1}^n\sum_{j=1}^{m_i}
+\phi\bigl((\hat\theta_{V_n})_{ij}-\theta^*_{ij}\bigr)
++4A_r.
+\end{equation}
 
-Next, for a set \(A \subset \mathbb{R}^d\) and positive constant \(\bar{r}\), we define the packing and external covering numbers as
+We next bound $\mathbb E A_r$ without conditioning on
+$\mathcal E_{\mathrm g}$.
+Write $U=(0,1)^d$. For each fixed $z\in\mathbb R^d$,
+\begin{equation}
+\label{eq_knn_extension_bv_translation}
+\int_{U\cap(U-z)}|f^*(x+z)-f^*(x)|\,dx
+\leq \|z\|_2J.
+\end{equation}
+To prove this inequality within $U$, let $\eta_\varepsilon$ be a
+nonnegative smooth mollifier supported in the ball of radius
+$\varepsilon$, with integral one. Put
+$U_\varepsilon=(\varepsilon,1-\varepsilon)^d$ and
+$f_\varepsilon(x)=\int_U\eta_\varepsilon(x-y)f^*(y)\,dy$
+for $x\in U_\varepsilon$, where $0<\varepsilon<1/4$.
+The distributional derivative formula and Tonelli's theorem give
 \[
-N^{\text{pack}}_{\bar r}(A) := \max \left\{ r \in \mathbb{N} : \exists q_1, \ldots, q_r \in A, \text{ such that } \|q_i - q_j\|_2 > \bar{r} \, \forall i \neq j \right\},
+\int_{U_{2\varepsilon}}\|\nabla f_\varepsilon(x)\|_2\,dx
+\leq
+\int_U\left(
+\int_{U_{2\varepsilon}}\eta_\varepsilon(x-y)\,dx
+\right)d|Df^*|(y)
+\leq J.
 \]
-\[
-N^{\text{ext}}_{\bar r}(A) := \min \left\{ r \in \mathbb{N} : \exists q_1, \ldots, q_r \in \mathbb{R}^d, \text{ such that } \forall x \in A \text{ there exists } r_x \text{ with } \|x - q_r\|_2 < \bar{r_x} \right\}.
-\]
+If $x,x+z\in U_{2\varepsilon}$, their whole line segment
+belongs to this convex cube. The fundamental theorem of calculus
+and translation of the integration variable imply
+\begin{align*}
+&\int_{U_{2\varepsilon}\cap(U_{2\varepsilon}-z)}
+|f_\varepsilon(x+z)-f_\varepsilon(x)|\,dx\\
+&\quad\leq
+\|z\|_2\int_0^1
+\int_{U_{2\varepsilon}\cap(U_{2\varepsilon}-z)}
+\|\nabla f_\varepsilon(x+sz)\|_2\,dx\,ds
+\leq \|z\|_2J.
+\end{align*}
+For fixed $z$, $f_\varepsilon(x)$ and
+$f_\varepsilon(x+z)$ converge to their Borel representatives
+for almost every $x$ in $U\cap(U-z)$.
+Taking $\varepsilon\downarrow0$ and applying Fatou's lemma proves
+\eqref{eq_knn_extension_bv_translation}.
 
-Furthermore, by Lemma~\ref{Lemma_13}, there exists a constant \( \tilde c \) such that \( R_{K,\text{max}} \,\leq\, \frac{\tilde{c}}{N} \) with high probability. This implies that with high probability, for any \( x' \in [0, 1]^d \),
-\bea
-&\max_{(i,j) \in [n] \times [m_i]} \left|\left\{ r \in [N^d] : \|x_{ij} - c_r\|_2 \,\leq\, \left( \frac{1}{2} + \frac{1}{N} \right) + R_{K,\text{max}} \right\}\right|
-\\ & \quad \,\leq\, \max_{(i,j) \in [n] \times [m_i]} \left|\left\{ r \in [N^d] : \|x_{ij} - c_r\|_2 \,\leq\, \frac{\tilde{C}}{N} \right\}\right|
-\,\leq\, \max_{(i,j) \in [n] \times [m_i]} N^{\text{pack}}_{\frac{1}{N}} \left( B_{\frac{C}{N}}(x_{ij}) \right) \\ 
- &  \quad \,\leq\, N^{\text{ext}}_{\frac{1}{N}} \left( B_{\frac{\tilde C}{N}}(0) \right)
-= N^{\text{ext}}_{1} \left( B^N_{\tilde C}(0) \right)
-< C',
-\bea 
-for some positive constant \( C' \), where the first inequality follows from \( R_{K,\text{max}} \,\leq\, \frac{\tilde{c}}{N} \), the second from the definition of packing number, and the remaining inequalities from basic properties of packing and external covering numbers. Therefore, there exists a constant \( C_1 > 0 \) such that
+Each design point has marginal law $Q$, whose density is at most
+$v_{\max}$. Applying Tonelli's theorem and
+\eqref{eq_knn_extension_bv_translation}, we obtain
+\begin{align*}
+\mathbb E A_r
+&\leq
+\frac{N_0v_{\max}^2}{K}
+\int_U\int_U
+\mathbf1_{\{\|y-x\|_2\leq r\}}
+|f^*(y)-f^*(x)|\,dy\,dx\\
+&=
+\frac{N_0v_{\max}^2}{K}
+\int_{\|z\|_2\leq r}
+\int_{U\cap(U-z)}
+|f^*(x+z)-f^*(x)|\,dx\,dz\\
+&\leq
+\frac{N_0v_{\max}^2J}{K}
+\int_{\|z\|_2\leq r}\|z\|_2\,dz
+=\frac{v_{\max}^2d\omega_d}{d+1}
+\frac{J N_0r^{d+1}}{K}.
+\end{align*}
+Only the marginal laws enter this calculation.
+Combining \eqref{eq_knn_extension_transfer} with Markov's
+inequality gives
+\begin{align*}
+&\mathbb P\left\{
+\Delta^2(\hat f_{V_n}-f^*)>
+\frac{4C_{\mathrm s}}{N_0}\sum_{i=1}^n\sum_{j=1}^{m_i}
+\phi\bigl((\hat\theta_{V_n})_{ij}-\theta^*_{ij}\bigr)+4t
+\right\}\\
+&\qquad\leq
+\mathbb P(\mathcal E_{\mathrm g}^{\,c})
++\mathbb P(A_r>t)
+\leq
+\mathbb P(\mathcal E_{\mathrm g}^{\,c})
++\frac{\mathbb E A_r}{t},
+\end{align*}
+which proves \eqref{eq_knn_extension_tail}.
 
+Finally, $N_0\geq nm$ and $m_i\leq Cm$ give, for every
+nonnegative array $(u_{ij})$,
 \[
-\text{Int}_2 = \int \left( \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} \hat{f}_{V_n}(x_{ij}) \right)^2 v(x) \mu(dx)
+\frac1{N_0}\sum_{i=1}^n\sum_{j=1}^{m_i}u_{ij}
+\leq
+\frac{n\max_i m_i}{N_0}
+\left(\frac1n\sum_{i=1}^n\frac1{m_i}\sum_{j=1}^{m_i}u_{ij}\right)
+\leq
+C\left(\frac1n\sum_{i=1}^n\frac1{m_i}\sum_{j=1}^{m_i}u_{ij}\right).
 \]
+The definition of $N$ also gives
 \[
-\,\leq\, \left[\sum_{i=1}^{n} \sum_{j=1}^{m_i} \frac{1}{K} \left( f^*(x_{ij}) - \hat{f}_{V_n}(x_{ij}) \right)^2 \right]\frac{C'}{K} \max_{1 \,\leq\, r \,\leq\, N^d} \int_{C(c_r)} v(x)dx
+\frac{N_0r^{d+1}}{K}
+\leq
+C_{\mathrm r}^{d+1}A^{-(d+1)/d}
+\left(\frac{K}{N_0}\right)^{1/d}.
 \]
-\[
-\,\leq\, \left[\sum_{i=1}^{n} \sum_{j=1}^{m_i} \left( f^*(x_{ij}) - \hat{f}_{V_n}(x_{ij}) \right)^2\right] \frac{C' c_2 d v_{\text{max}}}{K} \text{Vol} \left( B_{\frac{\tilde b_1^{1/d}}{(2c_{2,d} Cv_{\text{max}}c_2)^{1/d}}\paren{\frac{K}{nm}}^{1/d}}(x) \right)
-\]
-\[
-\,\leq\, \left[\frac{1}{nm} \sum_{i=1}^{n} \sum_{j=1}^{m_i} \left( \theta_{i,j} - (\hat{\theta}_{V_n})_{i,j} \right)^2 \right]\tilde C_1 v_{\text{max}},
-\]
-where, the second inequality is followed by Equation~\eqref{eq:292}. Then, making use of \eqref{knn_loss_1}, we conclude that
-\beq 
-\label{203}
-\text{Int}_2 = \int \left( \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} \hat{f}_{V_n}(x_{ij}) \right)^2 v(x)dx \,=\, O_p(r_{nm}^2),
-\beq 
-where
-\[
-r_{nm}^2 = \frac{ \max\set{B^2,B} \log^{5+\mu}(nm)V_n}{nm} + \frac{\log^2(nm)\max\set{B^2,B}}{n} + \frac{\max\set{B,1} d \log^{1+\mu}(n) \log(T_n)}{n}.
-\]
-\rev{It remains to analyze} the expression in Equation~\eqref{eq201}, this is,
-\[
-\text{Int}_1 = \int \left( f^*(x) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) \right)^2 v(x)dx.
-\]
-
-
-To this end, we use the notation from Appendix section~\ref{knn_notation}. Observe that, if \( S \) corresponds to the piecewise definition of \( f^* \) in Definition~\eqref{def_S}, the term
-\[
-\int \left( f^*(x) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) \right)^2 v(x)dx,
-\]
-can be written as,
-\[
-\sum_{r \in [N]^d} \int_{C(c_r)} \left( f^*(x) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) \right)^2 v(x)dx,
-\]
-which by convexity can be bounded by,
-\[
-\sum_{r \in [N]^d} \int_{C(c_r)} \sum_{x_{ij} \in N_K(x)} \frac{1}{K} \left(f^*(x) - f^*(x_{ij})\right)^2 v(x)dx
-\]
-\[
-= \sum_{r \in [N]^d : C(c_r) \cap S = \emptyset} \int_{C(c_r)} \sum_{x_{ij} \in N_K(x)} \frac{1}{K} \left(f^*(x) - f^*(x_{ij})\right)^2 v(x)dx
-\]
-\[
-+ \sum_{r \in [N]^d : C(c_r) \cap S \neq \emptyset} \int_{C(c_r)} \sum_{x_{ij} \in N_K(x)} \frac{1}{K} \left(f^*(x) - f^*(x_{ij})\right)^2 v(x)dx.
-\]
-Therefore, the term
-\[
-\int \left( f^*(x) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) \right)^2 v(x)dx,
-\]
-
-
-is bounded by
-\[
-4 \abs{\left\{ r \in [N]^d : C(c_r) \cap S \neq \emptyset \right\}} \|f_0\|_{\infty}^2 \max_{1 \,\leq\, r \,\leq\, N^d}  \int_{C(c_r)}  v(x)dx
-\]
-\[
-+ \sum_{r \in [N]^d : C(c_r) \cap S = \emptyset} \int_{C(c_r)} \sum_{x_{ij} \in N_K(x)} \frac{1}{K} \left(f_0(x) - f_0(x_{ij})\right)^2 v(x)dx,
-\]
-which by Equation~\eqref{eq:292} is smaller than
-\[
-\text{Vol} \left( B_{\frac{\tilde b_1^{1/d}}{(2c_{2,d} Cv_{\text{max}}c_2)^{1/d}}\paren{\frac{K}{nm}}^{1/d}}(x)    \right) (4v_{\text{max}} \|f_0\|_{\infty}^2) \abs{\left\{ r \in [N]^d : C(c_r) \cap S \neq \emptyset \right\}}
-\]
-\[
-+ \sum_{r \in [N]^d : C(c_r) \cap S = \emptyset} \int_{C(c_r)} \sum_{x_{ij} \in N_K(x)} \frac{1}{K} \left(f^*(x) - f^*(x_{ij})\right)^2 v(x)dx.
-\]
-Then, using the bound for volume and the piece-wise Lipschitz condition, it is bounded by
-\[
-\left( \frac{4\tilde b_1 \|f^*\|_{\infty}^2}{nm} \right) K \abs{\left\{ r \in [N]^d : C(c_r) \cap S \neq \emptyset \right\}}
-\]
-\[
-+ \sum_{r \in [N]^d : C(c_r) \cap S = \emptyset} \int_{C(c_r)} \sum_{x_{ij} \in N_K(x)} \frac{L_0}{K} \left( \|x - x_{ij}\|_2^2 \right) v(x)dx
-\]
-\[
-\,\leq\, \left( \frac{4\tilde b_1^d \|f^*\|_{\infty}^2}{nm} \right) K \abs{\left\{ r \in [N]^d : C(c_r) \cap S \neq \emptyset \right\}}
-\]
-\[
-+ L_0 \paren{\sum_{r \in [N]^d : C(c_r) \cap S = \emptyset} \int_{C(c_r)} v(x)dx} \left( \frac{1}{N} + R_{K,\text{max}} \right)^2
-\]
-\[
-\,\leq\, \left( \frac{4\tilde b_1^d \|f^*\|_{\infty}^2}{nm} \right) K \abs{\left\{ r \in [N]^d : C(c_r) \cap S \neq \emptyset \right\}} + L_0 \left( \frac{1}{N} + R_{K,\text{max}} \right)^2.
-\]
-Finally, by the choice of \( N \), Lemma~\ref{Lemma_13} and following the conclusion on Lemma 15 of \cite{madrid2020adaptive}, we get that
-\beq 
-\label{204}
-\text{Int}_2 = \int \left( f^*(x) - \frac{1}{{|N_K(x)|}} \sum_{x_{ij} \in N_K(x)} f^*(x_{ij}) \right)^2 v(x)dx \,=\, O_p\left(\left(\frac{K}{nm}\right)^{\frac{1}{d}}\right). \quad 
-\beq 
-From Equation \eqref{203} and \eqref{204}, and the fact that 
-\bea 
-\Delta^2(\hat{f}_{V_n} - f^*) \,\leq\, \|f^* - \hat{f}_{V_n}\|_2^2, 
-\bea 
-we then conclude the claim. 
-
-
+Since $f^*$ is fixed, its finite seminorm $J$ is absorbed into
+the constant in \eqref{eq_knn_extension_rate}.
 \end{proof}
+\end{revision}
 
 \begin{lemma}
 \label{Lemma_12}
