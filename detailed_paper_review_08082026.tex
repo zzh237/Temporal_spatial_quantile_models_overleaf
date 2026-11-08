@@ -346,8 +346,18 @@ does not establish minimax optimality: a uniform upper bound and a matching
 lower bound for the same target class, quantile/noise experiment and spatial
 contribution are still required. T24 and protected T04/T84 remain unresolved;
 the separate KNN optimality claim is outside this correction.}\\
-T27 & 15 & High-dimensional design-matrix definition & \deferred & Correcting the
-matrix and normalization changes the theorem's complexity quantity and proof.\\
+% Original T27 disposition retained for provenance:
+% T27 & 15 & High-dimensional design-matrix definition & \deferred & Correcting the
+% matrix and normalization changes the theorem's complexity quantity and proof.\\
+T27 & 15 & High-dimensional design-matrix definition & \pairreviewed &
+\textcolor{deferredred}{Defined the full and block design matrices, cube-wide
+linear class and each block's own denominator. Retained the unweighted
+design quantity with an explicit comparison to the original empirical
+weights; proved the local finite-maximum bound with $\log(2d)$ and the
+original/copied-design comparison. Block-size inequalities remain conditions.
+This verifies the matrix and local normalization repair, not the full
+high-dimensional risk theorem: T29/T71, T84 and the protected block
+construction remain separate.}\\
 \rowcolor{lightgray}T28 & 5--6, 15 & Coefficient consistency and variable selection &
 \deferred & Restricting the claim to prediction or adding an identifiability
 condition is a substantive theorem change.\\

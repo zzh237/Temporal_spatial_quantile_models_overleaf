@@ -1024,21 +1024,30 @@ Based on these observations, we now consider the estimator to be:
 \beq
 \label{QR_est}
 \hat{f} &\,=\, \underset{f \in H(V)}{\mathrm{arg\,min}} \frac{1}{n} \sum_{i=1}^n \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_{\tau}(y_{ij} - f(x_{ij})) \text{ where }
-H(V) \,\coloneqq\,  \{f : f(x_{ij}) \,=\, x_{ij}'\beta, ||\beta||_1 \,\leq\, V, \beta \in \mathbb{R}^d\}.
+\rev{H(V) \,\coloneqq\, \{x\mapsto x^\top\beta:\ x\in[0,1]^d,\ \|\beta\|_1\leq V,\ \beta\in\mathbb R^d\}.}
 \beq
 
 \subsection{Result for High-dimensional Quantile Linear Regression}
 With the notation from above, we now present our convergence rate for High-dimensional Quantile Linear Regression.
 \begin{theorem}
 \label{thm_hd}
-Suppose $f^* = x'\beta^*$ for some $\beta^* \in \mathbb{R}^d$. Let $X \in \mathbb{R}^{\sum_{i=1}^{m_i} \times d}$, whose rows are $\set{x_{ij}'}_{i=1,j=1}^{n,m_i}$. Denote 
-\bea 
-A \,\coloneqq\, \Ept{x}{\sum_{l=1}^L \left(\max_{j \in [d]} ||{X_{e,l}}_{\cdot j}||+\max_{j \in [d]} ||{X_{o,l}}_{\cdot j}||\right)}.
-\bea There exist constants $C_6 > 0$ and $C_7 > 0$ such that
-\bea 
-\left\|\hat f - f^*\right\|_2^2 \,=\, O_p \paren{\frac{\max\set{B,1} \log n V(\log d)^{1/2} A}{nm} \,+\, \frac{\max\set{B,1} s\cdot\text{poly}(\log n)\log (T_n)}{n}},
+Suppose $f^* = x'\beta^*$ for some $\beta^* \in \mathbb{R}^d$.
+\begin{revision}
+Let $N=\sum_{i=1}^n m_i$ and let $X\in\mathbb R^{N\times d}$ have row $x_{ij}^\top$ indexed by $(i,j)$, in lexicographic order. For a nonempty set $I\subseteq[n]$, put $N_I=\sum_{i\in I}m_i$ and let $X_I\in\mathbb R^{N_I\times d}$ contain the rows with $i\in I$. Write $X_{a,l}=X_{\mathcal J_{a,l}}$ for $a\in\{e,o\}$, and define
+\bea
+A \,\coloneqq\, \mathbb E_x\left[
+\sum_{l=1}^L\left(
+\max_{q\in[d]}\|(X_{e,l})_{\cdot q}\|_2
++\max_{q\in[d]}\|(X_{o,l})_{\cdot q}\|_2
+\right)\right].
+\bea
+The expectation in $A$ uses the original design law, and each column norm is Euclidean. The matrices are unweighted: the factor $N_I^{-1}$ belongs to $R_I$ in \eqref{rademacher_def_blocks}. Its comparison with the empirical weights $1/(nm_i)$ is given in \eqref{eq_hd_empirical_weights}.
+\end{revision}
+There exist constants $C_6 > 0$ and $C_7 > 0$ such that
+\bea
+\left\|\hat f - f^*\right\|_2^2 \,=\, O_p \paren{\frac{\max\set{B,1} \log n V\rev{(\log(2d))^{1/2}} A}{nm} \,+\, \frac{\max\set{B,1} s\cdot\text{poly}(\log n)\log (T_n)}{n}},
 \bea  
-where ${X_{e,l}}_{\cdot j}$ is the $j$th column of $X_{e,l} \in \mathbb{R}^{\sum_{i\in \mathcal{J}_{e,l}}m_i\times d}$ and $\hat{f}$ is the estimator defined in \eqref{QR_est}.    
+\rev{where $\hat f$ is the estimator in \eqref{QR_est}.}
 \end{theorem}
 
 
@@ -5008,7 +5017,7 @@ So we get
 \subsection{Proof sketch of Theorem~\ref{thm_hd}}
 In this case, the constraint set is
 \bea
-H(V) \,=\, \{f : f(x_{ij}) \,=\, x_{ij}'\beta, ||\beta||_1 \,\leq\, V, \beta \in \mathbb{R}^d\} 
+\rev{H(V) \,=\, \{x\mapsto x^\top\beta:\ x\in[0,1]^d,\ \|\beta\|_1\leq V,\ \beta\in\mathbb R^d\}.}
 \bea
 
 Since this is a compact set, we directly use Theorem~\ref{Theorem_1} to get an expectation bound by letting $\gF \equiv H(V)$. This means that we need to simply bound $ R(H(V)) $ which can be done using standard existing results.
@@ -5038,48 +5047,121 @@ We therefore bound the width of the full class $H(V)$ below.
 % \bea
 % \ept{\Delta^2(\hat f - f^*)} \leq c^{-1}\cdot\ept{\sup_{\substack{f\in H(V) }}\paren{\bar Z(f) - \hat Z(f) - d(f)}} \leq 6c^{-1}R(H(V)) + 2\frac{c}{4\tilde{c}_0}\frac{d\log n}{n}.
 % \bea
-Let
-\bea
-K_V := \{\beta \in \mathbb{R}^d : ||\beta||_1 \,\leq\, V\}.
-\bea
-Also, recall $X_{e,l} \in \mathbb{R}^{\sum_{i\in \mathcal{J}_{e,l}}m_i\times d} $ is the matrix with its rows are $\set{x_{ij}}_{i\in \mathcal{J}_{e,l},j\in [m_i]}$.
-Then we have 
-\beq 
+\begin{revision}
+Let $I$ be either an even or an odd block, with $N_I$ and $X_I$ as defined in Theorem~\ref{thm_hd}. Let $X_I^*$ have row $(x_{ij}^*)^\top$ indexed by $(i,j)$, and let $s$ be the vector of signs in the same row order. The signs are independent of the design. Then
+\beq
 \label{eq_lasso}
-\Ept{x^*, s}{\sup_{\substack{f\in H(V)}} \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  f(x_{ij}^*)} &\leq \mathbb{E} \left[ \frac{V}{\sum_{i \in \mathcal{J}_{e,l}}  m_i} \sup_{\beta \in K_1} \sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_i} s_{ij} {x_{ij}^*}'\beta \right] \\
-&\,=\,  \frac{V}{\sum_{i \in \mathcal{J}_{e,l}}  m_i} \mathbb{E} \left[ \sup_{v \in XK_1} s' v \right].
-\beq 
-
-
-
-where
+R_I(H(V))
+&\,=\,\frac{1}{N_I}\mathbb E_{x^*,s}
+       \sup_{\|\beta\|_1\leq V}s^\top X_I^*\beta\\
+&\labelrel={eq_hd_l1_duality}\frac{V}{N_I}\mathbb E_{x^*,s}
+       \|(X_I^*)^\top s\|_\infty\\
+&\labelrel\leq{eq_hd_finite_max}\frac{V\sqrt{2\log(2d)}}{N_I}
+       \mathbb E_{x^*}\max_{q\in[d]}\|(X_I^*)_{\cdot q}\|_2.
+\beq
+Equality \eqref{eq_hd_l1_duality} follows from $\ell_1/\ell_\infty$ duality. By \eqref{eq_rademacher_translation}, the same expected width is obtained for $H(V)-f^*$. We prove \eqref{eq_hd_finite_max} conditional on the design, using the finite-maximum argument in Theorem~1.14 of \cite{rigollet2023high}. For a fixed matrix $Z\in\mathbb R^{N_I\times d}$, put $a=\max_{q\in[d]}\|Z_{\cdot q}\|_2$. For $\lambda>0$ and $\epsilon\in\{-1,1\}$, independence of the signs gives
 \bea
-K_1 = \{ v : ||v||_1 \,\leq\, 1 \}.
+\mathbb E_s\exp(\epsilon\lambda s^\top Z_{\cdot q})
+&\,=\,\prod_{\nu=1}^{N_I}\cosh(\lambda Z_{\nu q})\\
+&\,\leq\,\exp\left(\frac{\lambda^2}{2}
+                  \sum_{\nu=1}^{N_I}Z_{\nu q}^2\right)
+\,\leq\,\exp(\lambda^2a^2/2).
 \bea
-
-
-By the proof of Theorem 2.4 in \cite{rigollet2023high}, there exists a constant $h_2 > 0$ such that for a given fixed design matrix $ {X_{e,l}} \in \mathbb{R}^{\sum_{i\in \mathcal{J}_{e,l}}m_i \times d} $. 
+Here $\cosh(u)\leq\exp(u^2/2)$. Jensen's inequality and the bound of a maximum by a sum yield
 \bea
-\mathbb{E} \left[ \sup_{v \in XK_1} s'v \right] \,\leq\, h_2(\log d)^{1/2} \max_{j \in [d]} ||{X_{e,l}}_{\cdot j}||.
+\lambda\mathbb E_s\|Z^\top s\|_\infty
+&\,\leq\,\log\mathbb E_s
+       \exp\left(\lambda\max_{q,\epsilon}
+                    \epsilon s^\top Z_{\cdot q}\right)\\
+&\,\leq\,\log\left(\sum_{q=1}^d\sum_{\epsilon\in\{-1,1\}}
+              \mathbb E_s\exp(\epsilon\lambda s^\top Z_{\cdot q})\right)\\
+&\,\leq\,\log(2d)+\lambda^2a^2/2.
 \bea
+Taking $\lambda=\sqrt{2\log(2d)}/a$ when $a>0$ gives $\mathbb E_s\|Z^\top s\|_\infty\leq a\sqrt{2\log(2d)}$; when $a=0$, both sides are zero. Apply this inequality to $Z=X_I^*$ and average over the design to obtain \eqref{eq_lasso}. No independence between the columns or between the design rows is used in this conditional calculation.
 
-Taking expectations on both sides, thus we have 
-\bea 
-R_{\mathcal{J}_{e,l}}\left(H(V)\right) &\,\leq\, \frac{V}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\cdot h_2(\log d)^{1/2} \ept{\max_{j \in [d]} ||{X_{e,l}}_{\cdot j}||} \\
-&\,\leq\, \frac{Lh_2V(\log d)^{1/2} \ept{\max_{j \in [d]} ||{X_{e,l}}_{\cdot j}||}}{cc_1nm} \\& = \frac{Lh_3V(\log d)^{1/2} \ept{\max_{j \in [d]} ||{X_{e,l}}_{\cdot j}||}}{nm}. 
-\bea 
-Similarly, we have 
-\bea 
-R_{\mathcal{J}_{o,l}}\left(H(V)\right) &\,\leq\, \frac{V}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\cdot h_2(\log d)^{1/2} \ept{\max_{j \in [d]} ||{X_{o,l}}_{\cdot j}||} \\
-&\,\leq\, \frac{Lh_3V(\log d)^{1/2} \ept{\max_{j \in [d]} ||{X_{o,l}}_{\cdot j}||}}{nm}. 
-\bea 
+To express the bound using the original design in $A$, Assumption~\ref{ass_1_1_1} gives
+\bea
+\mathbb E_x\max_{q\in[d]}\|(X_I)_{\cdot q}\|_2
+&\,\geq\,\frac{1}{\sqrt{N_I}}
+       \sum_{i\in I}\sum_{j=1}^{m_i}\mathbb E_x x_{ij,1}\\
+&\,\geq\,\frac{N_I}{\sqrt{N_I}}\,
+       v_{\min}\int_{[0,1]^d}x_1\,dx
+\,=\,\frac{v_{\min}}{2}\sqrt{N_I}.
+\bea
+The first inequality is Cauchy--Schwarz and uses $x_{ij,1}\geq0$. Since the coupled design points also lie in $[0,1]^d$,
+\beq
+\label{eq_hd_design_comparison}
+\mathbb E_{x^*}\max_{q\in[d]}\|(X_I^*)_{\cdot q}\|_2
+\,\leq\,\sqrt{N_I}
+\,\leq\,\frac{2}{v_{\min}}\,
+       \mathbb E_x\max_{q\in[d]}\|(X_I)_{\cdot q}\|_2.
+\beq
+Thus \eqref{eq_lasso} implies
+\[
+R_I(H(V))
+\,\leq\,\frac{h_2V\sqrt{\log(2d)}}{N_I}
+       \mathbb E_x\max_{q\in[d]}\|(X_I)_{\cdot q}\|_2,
+\qquad h_2=\frac{2\sqrt{2}}{v_{\min}}.
+\]
+This comparison does not assert equality of the original and coupled block laws.
 
-Thus, we get 
-\bea 
-&c_5\sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(H(V)\right)+ R_{\mathcal{J}_{o,l}}\left(H(V)\right)\right) + \frac{c_4 s\log n\log T_n}{n} \\ & \,\leq\,
-\frac{L c_5h_3V(\log d)^{1/2} \ept{\sum_{l=1}^L \left(\max_{j \in [d]} ||{X_{e,l}}_{\cdot j}||+\max_{j \in [d]} ||{X_{o,l}}_{\cdot j}||}\right)}{nm} + \frac{c_4 s\log n\log T_n}{n}\\
-&\,=\,\frac{h_4 \log n V(\log d)^{1/2} \ept{\sum_{l=1}^L \left(\max_{j \in [d]} ||{X_{e,l}}_{\cdot j}||+\max_{j \in [d]} ||{X_{o,l}}_{\cdot j}||}\right)}{nm} + \frac{c_4 s\log n\log T_n}{n}
-\bea 
+For the original empirical weights, let $X_I^{w,*}$ have row $(x_{ij}^*)^\top/m_i$. The same duality gives
+\beq
+\label{eq_hd_empirical_weights}
+&\mathbb E_{x^*,s}\sup_{f\in H(V)}
+ \frac1n\sum_{i\in I}\frac1{m_i}
+        \sum_{j=1}^{m_i}s_{ij}f(x_{ij}^*)\\
+&\qquad\,=\,\frac Vn\mathbb E_{x^*,s}
+             \|(X_I^{w,*})^\top s\|_\infty\\
+&\qquad\,\leq\,\frac{N_I}{n\min_{i\in I}m_i}\,R_I(H(V)).
+\beq
+The inequality follows from \eqref{eq_A2_one_sided_contraction}, applied conditional on the design to the multipliers $\min_{i'\in I}m_{i'}/m_i\in(0,1]$. The finite-maximum argument also gives the direct upper bound
+\[
+\frac{V\sqrt{2\log(2d)}}{n}
+\mathbb E_{x^*}\max_{q\in[d]}\|(X_I^{w,*})_{\cdot q}\|_2
+\]
+for the left-hand side of \eqref{eq_hd_empirical_weights}. Assumption~\ref{asm:m} gives the pointwise comparisons
+\[
+\frac{\max_q\|(X_I^*)_{\cdot q}\|_2}{Cm}
+\,\leq\,\max_q\|(X_I^{w,*})_{\cdot q}\|_2
+\,\leq\,\frac{\max_q\|(X_I^*)_{\cdot q}\|_2}{cm}.
+\]
+Thus the unweighted $A$ is used together with the block denominator $N_I$ and the weight comparison \eqref{eq_hd_empirical_weights}.
+
+Under the block-size bounds \eqref{beta_constants}, for $a\in\{e,o\}$ and $l\in[L]$,
+\[
+N_{\mathcal J_{a,l}}\geq cm|\mathcal J_{a,l}|
+\,\geq\,cc_1nm/L,
+\qquad
+\frac{N_{\mathcal J_{a,l}}}{n\min_{i\in\mathcal J_{a,l}}m_i}
+\,\leq\,\frac{Cc_2}{cL}.
+\]
+Consequently, with $h_3=h_2/(cc_1)$,
+\bea
+R_{\mathcal J_{a,l}}(H(V))
+&\,\leq\,\frac{h_2V\sqrt{\log(2d)}}{N_{\mathcal J_{a,l}}}
+       \mathbb E_x\max_{q\in[d]}\|(X_{a,l})_{\cdot q}\|_2\\
+&\,\leq\,\frac{Lh_3V\sqrt{\log(2d)}}{nm}
+       \mathbb E_x\max_{q\in[d]}\|(X_{a,l})_{\cdot q}\|_2.
+\bea
+\end{revision}
+
+
+
+\begin{revision}
+The sum of these block bounds therefore satisfies
+\bea
+&c_5\sum_{l=1}^L\left(R_{\mathcal J_{e,l}}(H(V))
+                    +R_{\mathcal J_{o,l}}(H(V))\right)
+       +\frac{c_4s\log n\log T_n}{n}\\
+&\qquad\,\leq\,\frac{Lc_5h_3V\sqrt{\log(2d)}\,A}{nm}
+       +\frac{c_4s\log n\log T_n}{n}\\
+&\qquad\,\leq\,\frac{h_4\log n\,V\sqrt{\log(2d)}\,A}{nm}
+       +\frac{c_4s\log n\log T_n}{n},
+\bea
+where $h_4=c_5h_3(2/C_\beta+1/\log 2)$, since
+$L=\lceil2\log(n)/C_\beta\rceil\leq(2/C_\beta+1/\log 2)\log n$ for $n\geq2$.
+\end{revision}
 
 % Additionally, we have 
 % \bea 
@@ -5090,10 +5172,10 @@ Thus, we get
 % \bea 
 The claim of the theorem then follows and we get 
 \bea 
-\Delta^2(\hat f - f^*) \,=\, O_p \paren{\frac{\log n V(\log d)^{1/2} A}{nm} + \frac{ s\cdot\text{poly}(\log n)\log (T_n)}{n}}, \,\,\,\text{and}\,\,\,
+\Delta^2(\hat f - f^*) \,=\, O_p \paren{\frac{\log n V\rev{(\log(2d))^{1/2}} A}{nm} + \frac{ s\cdot\text{poly}(\log n)\log (T_n)}{n}}, \,\,\,\text{and}\,\,\,
 \bea    
 \bea 
-\left\|\hat f - f^*\right\|_2^2 \,=\, O_p \paren{\frac{\max\set{B,1} \log n V(\log d)^{1/2} A}{nm} + \frac{\max\set{B,1} s\cdot\text{poly}(\log n)\log (T_n)}{n}}.
+\left\|\hat f - f^*\right\|_2^2 \,=\, O_p \paren{\frac{\max\set{B,1} \log n V\rev{(\log(2d))^{1/2}} A}{nm} + \frac{\max\set{B,1} s\cdot\text{poly}(\log n)\log (T_n)}{n}}.
 \bea  
 \end{proof}
 
