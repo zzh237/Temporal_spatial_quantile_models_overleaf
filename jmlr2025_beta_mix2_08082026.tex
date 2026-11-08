@@ -6137,46 +6137,43 @@ r_n^2 \asymp    \frac{ \max\set{B,1} \log^{5+\mu}(nm)V_n}{nm} + \frac{\log^2(nm)
 \bea
 \end{proof}
 
+\begin{revision}
 \begin{lemma}
 \label{Lemma_18}
-Let \(\{s_{ij}\}_{i=1,j=1}^{n,m_i} \in \mathbb{R}^{\sum_{i=1}^n m_i}\) be mutually independent and independent of the data, with each \(s_{ij}\) either a Rademacher variable or identically zero, and use the notation \(\varLambda = \theta_1 - \theta_2\), for \(\theta_1, \theta_2 \in \mathbb{R}^{\sum_{i=1}^n m_i}\). For some positive constants \(C_3\) and \(C_4\) we have that
-
-% \[
-% \sup_{\|\varLambda\| \leq b, \|\nabla{G_K} \varLambda\|_1 \leq 2V_n} \sum_{i=1}^n \sum_{j=1}^{m_i} \varLambda_{ij}s_{ij} \leq C_3 b\sqrt{K \log^{\frac{1}{2}}(nm)} + C_4 \sqrt{K \log(nm) V_n},
-% \]
-
-
-\bea 
-&\Ept{x,s}{\sup_{\|\varLambda\| \,\leq\, b, \|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n} \frac{1}{\sum_{i = 1}^n   m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij}s_{ij}} \\ & \,\leq\,
-C_3  K \frac{\log^{\frac{1}{2}}(nm)}{\sum_{i = 1}^n  m_i}b + C_4  K \frac{\log(nm)}{\sum_{i = 1}^n  m_i}V_n \\
-& \quad +  B  \cdot \left(\frac{2}{nm} + \frac{4}{C_{\beta}}C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) \right. \\ & \left. \quad + \frac{3}{n} + \frac{4}{C_{\beta}} \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right).
-\bea 
-
-
-% \bea 
-% &R_{\mathcal{J}_{e,1}}\left( \|\nabla{G_K} \theta\|_1 \leq V_n\cap \set{\theta: \norm{\theta-\theta^*} \leq \max\set{1,B^{1/2}}t}\right)\\
-% &\leq \frac{\max\set{B, B^2}}{mn}Cc{c'}^{-1}\biggl( C_3^2 K^2 \log(nm)  +  C_5  K \log(nm)V_n \biggr.  \\
-%    &+ \left.  \frac{2}{nm} + c_3C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) + \frac{3}{n} + c_3 \log(n) \frac{nm}{K}\exp\left(- \frac{\tilde{C} b_2 K}{\log(n)}\right)  + \frac{1}{nm} \right).
-% \bea
-Here \(C_3\,\geq\, 0\) is constant depending on \(d\), \(v_{min}\) and \(v_{max}\), and $C_5$ is constant depending on \(d\), \(v_{min}\) and \(v_{max}\) and $L$. Moreover, \(\tilde b_2 > 0\) is a constant depending on \(d\), \(v_{min}\), and \(v_{max}\). Furthermore, \(\tilde{C} = \frac{C_{\beta}cc_1}{c_2 C}\) with \(c_1\) and \(c_2\) positive constants, and and $\tilde C$ is a constant in $(0,1)$. Here \(v_{max}\), \(v_{min}\), \(C\) and \(c'\) are from Assumptions~\ref{asm:m} and \ref{ass_knn}.
-
-
-% with a probability of at least
-
-% \[
-% 1 - 2\left(\frac{1}{nm} - \frac{4}{C_{\beta} C} \log(n) \exp\left(-\frac{\tilde C K }{24\log(n)}\right) - \frac{3}{n} - C_2 \log(n) \frac{K}{\exp\left(- \frac{C_{\beta} b_2 K}{48}\right)} \frac{K}{\log(n)} - \frac{1}{nm}\right),
-% \]
+Suppose the assumptions of Lemma~\ref{lemma_14} hold, with $d\geq2$.
+Use its $N_0,N,L_{\mathrm g},c_{\mathrm g},b_1,b_2$.
+Let $b,V_n\geq0$ be deterministic, and let the $s_{ij}$ be mutually independent
+and independent of the data, each either Rademacher or identically zero.
+There are positive constants $C_3,C_4$, depending only on
+$d,v_{\min},v_{\max},c,C$, such that
+\begin{equation}
+\label{eq_knn_width_expectation}
+\begin{aligned}
+&\mathbb E_{x,s}\left[
+ \sup_{\substack{\|\varLambda\|_2\leq b\\
+                  \|\nabla_{G_K}\varLambda\|_1\leq2V_n}}
+ \frac1{N_0}\sum_{i=1}^n\sum_{j=1}^{m_i}s_{ij}\varLambda_{ij}
+ \right]\\
+&\quad\leq C_3\frac{K\sqrt{\log(nm)}}{N_0}\,b
+          +C_4\frac{K\log(nm)}{N_0}\,V_n\\
+&\qquad\quad+\frac b{\sqrt{N_0}}\left\{
+ \frac1n+2L_{\mathrm g}N^d
+           \exp\left(-\frac{c_{\mathrm g}K}{L_{\mathrm g}}\right)
+ +\frac1{nm}\right\}.
+\end{aligned}
+\end{equation}
 \end{lemma}
+\end{revision}
 
 \begin{proof}
-Let $I_r$ be given in \eqref{I_r}, 
-and let $N$ in the construction
-of $P_\text{lat}(N)$ of \eqref{lat_g} is chosen as  
-\bea  
-N = \frac{\left[ 3\sqrt{d(nm)^{1/d}} \right]}{aK^{1/d}}, \quad \,\,\,\text{where}\,\,\,\quad  a = \frac{1}{(4Cc_{2,d}c_2v_{\max})^{1/d}},
-\bea 
-for a positive constants \( c_2 \), and, \( v_{\max} \), and \( C \) are from Assumptions~\ref{asm:m} and \ref{ass_knn}. Moreover, \( c_{2,d} \) is a positive constants that depends on \( d \). Then there exist positive constants \( \bar{b}_1 \) and \( \bar{b}_2 \) depending on \( d \), \( v_{\min} \), and \( v_{\max} \) with \( v_{\min} \) from Assumptions~\ref{asm:m} and \ref{ass_knn}. Let set $C(\cdot)$ be defined in \eqref{knn_center}. We start by introducing the notation ${x'}_{ij} = P_I(x_{ij})$.Then
-define the event \(\Omega\)  as
+\begin{revision}
+The fixed tie rule gives a Borel graph with finitely many possible
+edge sets. For each graph the feasible set is nonempty and compact,
+so the supremum in \eqref{eq_knn_width_expectation} is measurable.
+Take $N$ as in \eqref{eq:N_definition}, and let $I_r$ be as in
+\eqref{I_r}. The constants $b_1,b_2$ are given in
+\eqref{eq_knn_geometry_constants}. Define $\Omega$ by
+\end{revision}
 \begin{revision}
 \begin{equation}
 \label{def_omega}
@@ -6193,28 +6190,23 @@ define the event \(\Omega\)  as
 
 
 
-\rev{For a positive constant $b_2$, define the following events:}
+\begin{revision}
+Define
 \[
-E_1 = \left\{ \min_{r=1,\ldots,N^d} |I_r| \,\geq\, \frac{1}{2} b_2 K \right\}, \quad \text{(310)}
+E_1=\left\{\min_r|I_r|\geq\frac{b_1K}{2}\right\},
+\qquad
+E_2=\left\{\max_r|I_r|\leq\frac{3b_2K}{2}\right\}.
 \]
-and
+By Lemma~\ref{lemma_14},
+$\mathcal E_{\mathrm g}\subseteq\Omega\cap E_1\cap E_2$.
+Thus their joint failure is bounded by the single probability
+in \eqref{eq_knn_geometry_failure}.
+Also set
 \[
-E_2 = \left\{ \max_{r=1,\ldots,N^d} |I_r| \,\leq\, \frac{3}{2} b_2 K \right\}. \quad \text{(311)}
+E_3=\left\{\max_{i,j}|s_{ij}|\leq\sqrt{2\log N_0}\right\}.
 \]
-hold. Observe that by Lemma~\ref{lemma_14} event $\Omega$ hold with probability at least,
-\[
-1 - \frac{4}{C_{\beta}}C\log(n)nm\exp\left(-\frac{\tilde C K }{24\log(n)}\right) - \frac{1}{n},
-\]
-and events $E_1 \cap E_2$ hold with probability at least
-\[
-1 - \frac{4}{C_{\beta}}C\log(n)nm^d\exp\left(-\frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right) - \frac{1}{n},
-\]
-respectively, where $\tilde C = \frac{C_{\beta}c_1c}{c_2C}$ and $\tilde C \in (0,1)$, with $c_1$ and $c_2$ are some constant.  Next, by (2.67) in \cite{wainwright2019high} we have that the event
-\[
-E_3 = \left\{ \max_{1 \,\leq\, i \,\leq\, n, 1\,\leq\, j\,\leq\, m_i} |s_{ij}| \,\leq\,   \sqrt{2 \log\left(\sum_{i = 1}^n   m_i\right)} \right\}
-\]
-happens with probability at least\(1 - \frac{1}{\sum_{i = 1}^n   m_i}\). 
-
+Since $|s_{ij}|\leq1$ and $N_0\geq2$, this event has probability one.
+\end{revision}
 
 Then let \(\tilde \Pi\) be the orthogonal projection onto the span of \(1_{N^d} \in \mathbb{R}^{N^d}\), and \(D^\dag\) is the pseudoinverse of the incidence matrix \(D\) from Lemma~\ref{lemma_15}.
 
@@ -6273,20 +6265,33 @@ Thus $\mathbb P_s(E_4^c)\leq1/(nm)$ for every fixed design, and
 averaging over the design gives the same bound unconditionally.
 \end{revision}
 
-Additionally, using propositions 4 and 6 in \cite{hutter2016optimal}, we have that \(\rho \,\leq\, \widetilde{C(d)} \sqrt{\log(N)}\), where \( \widetilde{C(d)}\) is a positive constant depending on \(d\). Hence,
-
+\begin{revision}
+For the $d$-dimensional lattice with $d\geq2$ and $N\geq2$,
+Propositions 4 and 6 of \cite{hutter2016optimal} give
+$\rho\leq C(d)\sqrt{\log N}$.
+By \eqref{eq_knn_grid_size} and $N_0\leq Cnm$,
 \[
-\left\| (D^\dag)^\top \tilde s\right\|_{\infty} \,\leq\,  C(d) \sqrt{\log\left(\frac{nm}{K}\right) \log\left(\frac{nm}{K} nm\right)} \quad \,\,\,\text{and}\,\,\, \quad \|\tilde \Pi \tilde s\|_2 \,\leq\, 2\sqrt{2\log(enm)},
+N^d\leq2^dACnm,
+\qquad |E_{\mathrm{lat}}|\leq dN^d.
 \]
-with probability at least \(1 - 2 \cdot \frac{1}{nm}\). Here, \(C(d) > 0\) is a constant depending on \(d\), \(C\), and \(v_{max}\).
-
-% Further, by Lemma 10 in \cite{madrid2020adaptive}, assume that the event \(\Omega\) intersected with
-% \[
-% \min_{r=1,...,N^d} |I_r| \geq \frac{1}{2}\tilde b_2K,
-% \]
-% holds. 
-
-Then denote $\mathcal{E} \equiv \Omega \cap E_1 \cap E_2 \cap E_3 \cap E_4$, on the event $\mathcal{E}$, the following is satisfied. 
+Since $nm\geq2$, the two bounds defining $E_4$ therefore imply
+\[
+\|(D^\dag)^{\top}\tilde s\|_\infty\leq C_{\rho}\log(nm),
+\qquad
+\|\tilde\Pi\tilde s\|_2\leq2\sqrt{2\log(enm)},
+\]
+where $C_{\rho}$ depends only on $d,v_{\max},C$.
+Let $\mathcal E=\mathcal E_{\mathrm g}\cap E_4$. Then
+\begin{equation}
+\label{eq_knn_width_failure}
+\mathbb P(\mathcal E^c)
+\leq\frac1n+2L_{\mathrm g}N^d
+            \exp\left(-\frac{c_{\mathrm g}K}{L_{\mathrm g}}\right)
+   +\frac1{nm}.
+\end{equation}
+On $\mathcal E$, the events $\Omega,E_1,E_2,E_3,E_4$ all hold
+almost surely.
+\end{revision}
 
 \begin{revision}
 Fix $\varLambda\in\mathbb R^{\sum_{i=1}^n m_i}$ satisfying
@@ -6321,35 +6326,59 @@ s^\top\varLambda_I
 % \[
 % s^\top \varLambda \leq 4 \sqrt{2 \log(nm)}V_n + s^\top ({\theta_{1}}_{I} - {\theta_2}_{I}).
 % \]
-Thus, we have 
-\bea
-&\frac{1}{\sum_{i = 1}^n m_i}s^\top \varLambda \,\leq\, \frac{1}{\sum_{i = 1}^n m_i}4 \sqrt{2 \log\left(\rev{\sum_{i=1}^n m_i}\right)} V_n  \\
-&\quad +\max_{r=1,\ldots,N^d} \left| I_r \right| \frac{1}{\sum_{i = 1}^n m_i}\left( \left\|\tilde \Pi\tilde s\right\|_2b + \left\| (D^\dag)^\top \tilde s \right\|_{\infty}\cdot 4V_n \right) 
-\\&
-\,\leq\, 4\frac{\sqrt{2 \log\left(\sum_{i = 1}^n   m_i\right)}}{\sum_{i = 1}^n   m_i}  V_n + \frac{3}{2} \rev{b_2} K \left(  2b\frac{\sqrt{2 \log(e nm)}}{{\sum_{i = 1}^n  m_i}} + C(d) \frac{\log(\frac{(nm)^2}{K})}{{\sum_{i = 1}^n   m_i}}(4V_n)  \right)
-\\&
-\,\leq\, C_3  K \frac{\log^{\frac{1}{2}}(nm)}{\sum_{i = 1}^n  m_i}b + C_4  K \frac{\log(nm)}{\sum_{i = 1}^n  m_i}V_n,
-\bea 
-for some positive constants \(C_3\) and \(C_4\). Here \(C_4\) depends on \(d\). 
+\begin{revision}
+Combining these inequalities with $E_2$ and $E_4$ gives
+\begin{align*}
+\frac{s^\top\varLambda}{N_0}
+&\leq\frac{4\sqrt{2\log N_0}}{N_0}V_n\\
+&\quad+\frac{3b_2K}{2N_0}
+   \left\{2b\sqrt{2\log(enm)}+2C_{\rho}V_n\log(nm)\right\}\\
+&\leq C_3\frac{K\sqrt{\log(nm)}}{N_0}\,b
+      +C_4\frac{K\log(nm)}{N_0}\,V_n.
+\end{align*}
+The last step uses $K\geq1$, $nm\geq2$, and $N_0\leq Cnm$.
+\end{revision}
 
-
-Finally, on the event \(\mathcal{E}\) the following is satisfied. Thus,
-\beq
+\begin{revision}
+Taking the supremum on $\mathcal E$ gives
+\begin{equation}
 \label{knn_temp1}
-\sup_{\|\varLambda\|_2 \,\leq\, b, \|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n} \frac{1}{\sum_{i = 1}^n m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij}s_{ij} \,\leq\, C_3  K \frac{\log^{\frac{1}{2}}(nm)}{\sum_{i = 1}^n  m_i}b + C_4  K \frac{\log(nm)}{\sum_{i = 1}^n  m_i}V_n.
-\beq 
+\begin{aligned}
+&\sup_{\substack{\|\varLambda\|_2\leq b\\
+                \|\nabla_{G_K}\varLambda\|_1\leq2V_n}}
+ \frac1{N_0}\sum_{i=1}^n\sum_{j=1}^{m_i}s_{ij}\varLambda_{ij}\\
+&\quad\leq C_3\frac{K\sqrt{\log(nm)}}{N_0}\,b
+          +C_4\frac{K\log(nm)}{N_0}\,V_n.
+\end{aligned}
+\end{equation}
+\end{revision}
 
-
-
-
-Under the event $\mathcal{E}^c$, the supremum is bounded by $B$. Therefore, splitting the expectation over $\mathcal{E}$ and $\mathcal{E}^c$,
-\bea 
-&\Ept{x,s}{\sup_{\substack{\norm{\varLambda} \leq b \\ \|\nabla{G_K}\varLambda\|_1 \leq 2V_n} } \frac{1}{\sum_{i = 1}^n   m_i}\sum_{i = 1}^n  \sum_{j=1}^{m_{i}} \varLambda_{ij}s_{ij}} \\
-&\,\leq\,
-C_3  K \frac{\log^{\frac{1}{2}}(nm)}{\sum_{i = 1}^n  m_i}b + C_4  K \frac{\log(nm)}{\sum_{i = 1}^n  m_i}V_n \\
-& \quad +  B  \cdot \left(\frac{2}{nm} + \frac{4}{C_{\beta}}C \log(n)nm \exp\left(-\frac{\tilde C K }{24\log(n)}\right) \right. \\ & \left. \quad + \frac{3}{n} + \frac{4}{C_{\beta}} \log(n) \frac{nm}{K}\exp\left(- \frac{C_{\beta} {\tilde b}_2 K}{48\log(n)}\right)  + \frac{1}{nm}\right)
-\bea 
-
+\begin{revision}
+For every design and sign realization, Cauchy--Schwarz gives
+\[
+\begin{aligned}
+0&\leq
+\sup_{\substack{\|\varLambda\|_2\leq b\\
+                \|\nabla_{G_K}\varLambda\|_1\leq2V_n}}
+       \frac{s^\top\varLambda}{N_0}\\
+&\leq\frac{b\|s\|_2}{N_0}\leq\frac b{\sqrt{N_0}}.
+\end{aligned}
+\]
+The first inequality follows by taking $\varLambda=0$; the last
+uses $|s_{ij}|\leq1$. Splitting the expectation on $\mathcal E$
+and its complement, and then using \eqref{knn_temp1}, yields
+\begin{align*}
+&\mathbb E_{x,s}\left[
+\sup_{\substack{\|\varLambda\|_2\leq b\\
+                \|\nabla_{G_K}\varLambda\|_1\leq2V_n}}
+       \frac{s^\top\varLambda}{N_0}\right]\\
+&\quad\leq C_3\frac{K\sqrt{\log(nm)}}{N_0}\,b
+         +C_4\frac{K\log(nm)}{N_0}\,V_n
+         +\frac b{\sqrt{N_0}}\mathbb P(\mathcal E^c).
+\end{align*}
+Together with \eqref{eq_knn_width_failure}, this proves
+\eqref{eq_knn_width_expectation}.
+\end{revision}
 
 \end{proof}
 
@@ -6589,429 +6618,281 @@ Let \( m \) be a Binomial \( (M, q) \) random variable. Then, for all \( \delta 
 \[ \mathbb{P}(m \,\geq\, (1 + \delta)Mq) \,\leq\, \exp\left(-\frac{1}{3}\delta^2 Mq \right) \]
 \end{lemma}
 
-\begin{lemma}
-\label{Lemma_13} (See Lemma 6 in \cite{madrid2020adaptive}). Under Assumption~\ref{Assumption 1.}. Denote by $R_k(x)$ the distance from $\in [0,1]^d$ to its $K$th nearest neighbor in the set $\{x_{ij}\}_{i=1,j=1}^{n,m}$. Setting $R_{k,\max} = \max\limits_{1 \,\leq\, i \,\leq\, n,1 \,\leq\, j \,\leq\, m_i} R_k(x_{ij})$,
-and $R_{k,\min} = \min\limits_{1 \,\leq\, i \,\leq\, n,1 \,\leq\, j \,\leq\, m_i} R_k(x_{ij})$, we have that,
-\end{lemma}
-\bea 
-& \mathbb{P}\left(a\left(\frac{K}{nm}\right)^{1/d} \,\leq\, R_{k,\min} \,\leq\, R_{k,\max} \,\leq\, \tilde{a}\left(\frac{K}{nm}\right)^{1/d}\right) \\
-\,\geq\, & 1 - \frac{4}{C_{\beta}} \left(\log(n)n\exp\left(-\frac{\tilde{C} K}{24 \log(n)}\right)\right) - \frac{4}{C_{\beta}}\left(\log(n)n\exp\left(-\frac{C_{\beta} K}{24 \log(n)}\right)\right) - \frac{2}{n},
-\bea  
-
-where $\tilde{C} = \frac{C_{\beta}c_1 c}{c_2C}$, $\alpha = 1/(4(Cc_{2,d}c_2v_{\max})^{1/d})$, and $\tilde{a} = (1/(c_1c_{1,d}c_1 v_{\min}))^{1/d}$ for some positive constants $c_2$, and $c_1$, $v_{\max}$, $v_{\min}$, $C$, $C_{\beta}$, and $c$ from Assumption~\ref{Assumption 1.}. Moreover, $c_{1,d}$ and $c_{2,d}$ are positive constants that depends on $d$.
-
-\begin{proof} First note that for any $x \in [0,1]^d$, by Assumptions 1 we have
-
-\beq 
-\label{eq:272}
-\mathbb{P}\left(x_{ij} \in B_r(x)\right) \,=\, \int_{B_r(x)} v(t) dt \,\leq\, c_2r^dv_{\max} =: \mu_{\max} < 1,
-\beq 
-
-(for some small enough $r$ and a positive constant $c_2$ that depends on $d$. Let $L = \frac{2}{C_{\beta}} \log(n)$ and $\{x_{ij}^*\}_{i=1,j=1}^{n,m_i}$ defined as in Appendix J and consider the event $\Omega^c = \bigcap\limits_{1 \,\leq\, i \,\leq\, n}\{x_{ij} = x_{ij}^*\, \forall 1 \,\leq\, j \,\leq\, m_i\}$. It is satisfied that $|\mathcal{J}_{e,l}|, |\mathcal{J}_{o,l}| \,\geq\, n/L$, from where, there exist positive constants $c_1$ and $c_2$ such that
-
-\beq 
-\label{eq:273}
-c_1n/L \,\leq\, |\mathcal{J}_{e,l}|, |\mathcal{J}_{o,l}| \,\leq\, c_2n/L.
-\beq 
-
-Moreover, by Lemma~\ref{Lemma_9} and Assumption~\ref{Assumption 1.}, we have that $\mathbb{P}(\Omega^c) \,\leq\, \frac{1}{n}$. Then,
-
-\beq 
-\label{eq:274}
-\mathbb{P}\left(\left\{R_{k,\min} \,\leq\, a\left(\frac{K}{(nm)}\right)^{1/d}\right\}\right) \,\leq\, \mathbb{P}\left(\left\{R_{k,\min} \,\leq\, a\left(\frac{K}{(nm)}\right)^{1/d}\right\} \cap\Omega\right) + \frac{1}{n}.
-\beq 
-
-To analyze the term $\mathbb{P}\left(\left\{R_{k,\min} \,\leq\, a\left(\frac{K}{(nm)}\right)^{1/d}\right\} \cap\Omega\right)$, we observe that
-
-\beq 
-\label{eq:275}
-\mathbb{P}\left(\left\{R_{k,\min} \,\leq\, a\left(\frac{K}{(nm)}\right)^{1/d}\right\} \cap\Omega\right) \,\leq\, \mathbb{P}\left(\left\{\left(\exists i,j\right) \in [n] \times [m_i] : R_k(x_{ij})\,\leq\, a(K/mn)^{1/d} \right\}\cap \tilde \Omega\right)
-\beq 
-
-We also have that $R_k(x) \,\leq\, r$ if and only if there are at least $K$ observations among $\{x_{ij}\}$ in $B_r(x)$. Therefore, letting
+\begin{revision}
+\begin{lemma}[Geometry of the $K$-NN graph]
+\label{Lemma_13}
+\label{lemma_14}
+Suppose Assumptions~\ref{ass_1_1_1}, \ref{ass_1_2},
+\ref{ass_c_beta}, and \ref{asm:m} hold. Write
+$N_0=\sum_{i=1}^n m_i$, assume $n\geq2$, and let
+$1\leq K\leq N_0-1$. The graph has one vertex for each observation
+index $(i,j)$ and an edge if either vertex selects the other among
+its $K$ nearest neighbours. A vertex does not select itself; ties
+are resolved by a fixed ordering of the observation indices.
+Choose
 \begin{equation}
-r = a(K/(nm))^{1/d},
-\label{eq:276}
-\end{equation}
-we have that
-\begin{align}
-\mathbb{P} &\left( \{(i,j) \in [n] \times [m_i] : R_k(x_{ij}) \,\leq\, a(K/(nm))^{1/d}\} \cap \tilde \Omega \right) \nonumber \\
-&\,\leq\, \sum_{i=1}^{n} \sum_{j=1}^{m_i} \mathbb{P}\left( \left\{ \sum_{t=1}^{n}\sum_{s=1}^{m_t} 1_{ x_{t,s} \in B_{r}(x_{ij}) } \,\geq\, K \right\}\cap \tilde \Omega \right) \nonumber \\
-&\,\leq\, Cnm \mathbb{P}\left( \sum_{t=1}^n\sum_{s=1}^{m_t} 1_{x_{t,s}^* \in B_{r}(x_{ij})} \,\geq\, K \right), \label{eq:277}
-\end{align}
-where the first inequality is followed by a union bound argument together with the last observation. The second inequality is followed from Assumption~\ref{asm:m} coupled with the definition of the event $\Omega$ at the beginning of the proof. Then, using a union bound argument
-\begin{align}
-&\mathbb{P} \left( \sum_{i=1}^{n} \sum_{s=1}^{m_t} 1_{x_{t,s}^* \in B_{r}(x_{ij})} \,\geq\, K \right) 
-\\& \,\leq\, \sum_{l=1}^{L} \mathbb{P}\left(\sum_{t \in \mathcal{J}_{e,l}}\sum_{s=1}^{m_t} 1_{x_{t,s}^* \in B_{r}(x_{ij})} > K/(2L) \right) \nonumber  + \sum_{l=1}^{L} \mathbb{P}\left(\sum_{t \in \mathcal{J}_{o,l}}\sum_{s=1}^{m_t} 1_{x_{t,s}^* \in B_{r}(x_{ij})} > K/(2L) \right) \nonumber \\
-&\,=\, I_1 + I_2. \label{eq:278}
-\end{align}
-
-We now bound each of the terms \( I_1 \) and \( I_2 \). The analysis employed for the second term follows the same line of arguments as for \( I_1 \) and is omitted. Using Lemma~\ref{Lemma_9} for any \( 1 \,\leq\, l \,\leq\, L \) we have that
-\begin{align}
-    \sum_{t \in \mathcal{J}_{e,l}} \sum_{s=1}^{m_t} 1_{x_{t,s}^* \in B_{r}(x_{ij})} 
-    &\sim \text{Binomial} \left( \sum_{t \in \mathcal{J}_{e,l}} m_t, \mathbb{P}(x_{1,1}^* \in B_{r}(x_{ij})) \right). \label{eq:279}
-\end{align}
-
-Let \( \text{Bin} \sim \text{Binomial}\left(\sum_{t \in \mathcal{J}_{e,l}} m_t, \mu_{\max} \right) \). By Inequality \eqref{eq:272},
-\begin{align}
-    \mathbb{P}\left( \sum_{t \in \mathcal{J}_{e,l}} \sum_{s=1}^{m_t} 1_{x_{t,s} \in B_{r}(x_{ij})} \,\geq\, K/(2L) \right) 
-    &\,\leq\, \mathbb{P}(\text{Bin} \,\geq\, K/(2L)). \label{eq:280}
-\end{align}
-
-By Inequality \eqref{eq:273}, Equation \eqref{eq:276}, Assumption~\ref{asm:m} and the definition of \( \mu_{\max} \) in Inequality \eqref{eq:272}, observe that
-\begin{align}
-    2\mu_{\max} \sum_{t \in \mathcal{J}_{e,l}} m_t 
-    &\,\leq\, \frac{2c_{2,d}v_{\max} K Cc_2nm}{4Cc_{2,d}c_2v_{\max} nm L} 
-    = \frac{K}{2L}. \label{eq:281}
-\end{align}
-
-From Inequality \eqref{eq:281} for any \( 1 \,\leq\, L \,\leq\, L \),
-\begin{align}
-    \mathbb{P}(\text{Bin} \,\geq\, K/(2L)) 
-    &\,\leq\, \mathbb{P}(\text{Bin} \,\geq\, 2\mu_{\max} \sum_{t \in \mathcal{J}_{e,l}} m_t). \label{eq:282}
-\end{align}
-
-Therefore, by ~\ref{Lemma_12}, Inequality \eqref{eq:280} and Inequality \eqref{eq:282}
-\begin{align}
-    \mathbb{P}\Bigg( \sum_{t \in \mathcal{J}_{e,l}} \sum_{s=1}^{m_t}  1_{x_{t,s}^* \in B_{r}(x_{ij})} \,\geq\, K/(2L) \Bigg) &\,\leq\, \exp\left(-\frac{1}{3}\mu_{\max} \sum_{t \in \mathcal{J}_{e,l}} m_t \right) \nonumber \\
-    &\,\leq\, \exp\left(-\frac{c_1c}{12c_2C} \frac{K}{L} \right) \,=\, \exp\left(-\frac{c_1cC_{\beta}}{24c_2C} \frac{K}{\log(n)} \right). \label{eq:283}
-\end{align}
-
-where the second inequality is followed by Inequality \eqref{eq:273}, the choice of r in Equation \eqref{eq:276}, Assumption~\ref{asm:m}, and the choice of $\mu_{\max}$ in Inequality \eqref{eq:272}. The Equality is attained by the choice of L at the beginning of the proof. Therefore, using Inequality \eqref{eq:280}, \eqref{eq:282}, \eqref{eq:283} and the choice of L at the beginning of the proof, the term \( I_1 \) is upper bounded as follows
-\begin{align}
-    I_1 &\,\leq\, \frac{2}{C_{\beta}} \log(n) \exp\left(-\frac{c_1c}{24c_2C} \frac{K}{L} \right) \nonumber \\
-    &\,=\, \frac{2}{C_{\beta}} \log(n) \exp\left(-\frac{c_1cC_{\beta}}{24c_2C_2} \frac{K}{ \log(n)} \right). \label{eq:284}
-\end{align}
-
-Similarly we obtain that
-\begin{align}
-    I_2 &\,\leq\, \frac{2}{C_{\beta}} \log(n) \exp\left(-\frac{C_{\beta}c_1c}{24C_2} \frac{K}{\log(n)} \right). \label{eq:285}
-\end{align}
-
-In consequence, by Inequality \eqref{eq:277}, \eqref{eq:278}, \eqref{eq:284} and \eqref{eq:285} we obtain that
-\begin{align}
-    \mathbb{P}\Bigg( \{ (i,j) \in [n] \times [m_i] : R_{k}(x_{ij}) \,\leq\, a(K/(nm))^{1/d} \} \cap  \Omega \Bigg) 
-    &\,\leq\, \frac{4}{C_{\beta}} Cnm \log(n) \exp\left(-\frac{c_1cC_{\beta}}{24c_2C} \frac{K}{ \log(n)} \right). \label{eq:286}
-\end{align}
-
-From Equation \eqref{eq:274}, \eqref{eq:275} and \eqref{eq:286} it follows that
-\begin{align}
-    \mathbb{P}\Bigg( \{ R_{k,\min} \,\leq\, a(K/(nm))^{1/d} \} \Bigg) 
-    &\,\leq\, \frac{4}{C_{\beta}} \log(n) \exp\left(-\frac{c_1cC_{\beta}}{24c_2C} \frac{K}{ \log(n)} \right) + \frac{1}{n}. \label{eq:287}
-\end{align}
-
-Now we analyze \( P(R_{k,\max} \,\geq\, \tilde{a}(K/nm)^{1/d}) \). To this end, we first observe that,
-\begin{align}
-    \mathbb{P}(x_{ij} \in B_{r}(x)) &\,=\, \int_{B_{r}(x)} v(t)dt \,\geq\, c_{1,d}r^d v_{\min} \,\coloneqq\,  \mu_{\min} > 0,
-\end{align}
-for a positive constant \( c_{1,d} \) that depends on \( d \). Following a similar argument as above, we arrive at
-\begin{align}
-    \mathbb{P}(R_{k,\max} \,\geq\, \tilde{a}(K/nm)^{1/d}) 
-    &\,\leq\, \frac{4}{C_{\beta}} \log(n)nm \exp\left(-\frac{C_{\beta}}{24} \frac{K}{\log(n)} \right) + \frac{1}{n}, 
-\end{align}
-concluding the proof.
-
-We provide the following lemma to characterize the minimum and maximum number of observations \(\{x_{ij}\}\) that fall within each cell \(\mathcal{I}_r\), for \(r = 1, \ldots, N^d\). Remembering that \(I_r = \{(i,j) \in [n] \times [m_i] : P_{I_r}(x_{ij}) \,=\, c_r\}\) for \(r = 1, \ldots, N^d\), where \(P_{I_r}(x)\) denotes the point in \(P_{\text{lat}}(N)\) such that \(x \in C(P_{I_r}(x))\).
-\end{proof}
-
-\begin{lemma}(see Lemma 7 in \cite{madrid2020adaptive}).
-    \label{lemma_14}
-Assume that $N$ in the construction
-of $P_\text{lat}(N)$ of \eqref{lat_g} is chosen as 
-\begin{align}
 \label{eq:N_definition}
-N = \left\lceil \frac{ 3\sqrt{d(nm)^{1/d}} }{aK^{1/d}}\right\rceil, \quad \,\,\,\text{where}\,\,\,\quad  a = \frac{1}{(4Cc_{2,d}c_2v_{\max})^{1/d}},
-\end{align} 
-for a positive constants \(c_2\), and \(v_{\max}\), and \(C\) are from Assumptions~\ref{asm:m} and \ref{ass_1_1_1}. 
-Moreover, \(c_{2,d}\) is a positive constant that depends on \(d\). Then there exist positive constants \(\tilde b_1\) and \(\tilde b_2\) depending on \(d\), \(v_{\min}\), and \(v_{\max}\) with \(v_{\min}\) from Assumption~\ref{Assumption 1.}, such that for \(C_{\beta}\) from Assumption~\ref{Assumption 1.},
-
+N=\left\lceil\left(\frac{A N_0}{K}\right)^{1/d}\right\rceil,
+\qquad
+A=\max\{1,6\cdot2^d v_{\max}(\lceil6\sqrt d\rceil+3)^d\},
+\end{equation}
+and use the cells and index sets in \eqref{knn_center} and \eqref{I_r}.
+Set
 \begin{align}
-\mathbb{P}\left( \max_{r=1,\ldots,N^d} |I_r| \,\geq\, (1 + \delta)\tilde b_1K \right) &\,\leq\, \frac{4}{C_{\beta}} \left(\log(n)n\exp\left( -\frac{C_{\beta}}{12}\delta^2 \tilde b_2\frac{\tilde b_2K}{\log(n)} \right) + \frac{1}{n} \right),
-\label{eq:max_Ir_bound}
+\label{eq_knn_geometry_constants}
+b_1&=\frac{v_{\min}}{2^{2d}A},&
+b_2&=\frac{2^d v_{\max}}{A},\\
+c_{\mathrm g}&=\frac{c v_{\min}}{24\cdot2^{2d}CA},&
+L_{\mathrm g}&=\min\{n,\lceil2\log(n)/C_\beta\rceil\}.
+\nonumber
 \end{align}
+There is an event $\mathcal E_{\mathrm g}$, determined by the
+design points, such that
+\begin{equation}
+\label{eq_knn_geometry_failure}
+\mathbb P(\mathcal E_{\mathrm g}^{\,c})
+\leq\frac1n+2L_{\mathrm g}N^d
+             \exp\left(-\frac{c_{\mathrm g}K}{L_{\mathrm g}}\right).
+\end{equation}
+For each observed vertex, its training radius is the distance to
+its $K$th selected neighbour after removing its own index.
+Let $R_{K,\min}$ and $R_{K,\max}$ be the minimum and maximum
+of these training radii. For any $x\in[0,1]^d$, let $R_K(x)$
+be the distance to its $K$th selected index from the full sample.
+On $\mathcal E_{\mathrm g}$, all of the following hold:
 \begin{align}
-\mathbb{P}\left( \min_{r=1,\ldots,N^d} |I_r| \,\leq\, (1 - \delta)\tilde b_1K \right) &\,\leq\, \frac{4}{C_{\beta}} \left(\log(n)n\exp\left( -\frac{C_{\beta}}{12}\delta^2 \tilde b_2\frac{\tilde b_2K}{\log(n)} \right) + \frac{1}{n} \right),
-\label{eq:min_Ir_bound}
-\end{align}
-for all \(\delta \in (0, 1)\). Moreover, the symmetric \(K\)-NN graph has maximum degree \(d_{\max}\) satisfying
-\begin{align}
-&\mathbb{P}(d_{\max} \,\geq\, 3Cc_2c_{2,d}v_{\text{max}}{\tilde \alpha}^dK) \nonumber \\&\,\leq\, C_{nm} \left(\frac{4}{C_{\beta}} \log(n)\exp\left(-\frac{C_{\beta}}{24}\frac{K}{\log(n)}\right) + \frac{4}{C_{\beta}}C\log(n)nm\exp\left(-\frac{C_{\beta}}{24}\frac{K}{\log(n)}\right) + \frac{1}{n}\right),
+\label{eq_knn_geometry_counts}
+\frac{b_1 K}{2}
+&\leq |I_r|\leq\frac{3b_2 K}{2},
+ \qquad r=1,\ldots,N^d,\\
+\label{eq_knn_geometry_radii}
+\frac{3\sqrt d}{N}
+&<R_{K,\min}\leq R_{K,\max}\leq\frac{C_{\mathrm r}}{N},
+\\
+\sup_{x\in[0,1]^d}R_K(x)
+&\leq\frac{C_{\mathrm r}}{N},
+\nonumber\\
 \label{eq:d_max_bound}
+d_{\max}&\leq C_{\mathrm d}K.
 \end{align}
-
-where $\tilde a = \frac{1}{(cc_1c_{1,d}v_{\min})^{1/d}}$, with $c_1$ is a positive constant. 
-Moreover, \( c_{1,d} \) is a positive constants that depends on \( d \). Let $C(\cdot)$ be defined in \eqref{knn_center}. 
-Define the event $\Omega$ as: If \(x_{ij} \in C(x'_{i,j})\) and \(x_{s,t} \in C(x'_{s,t})\) for \(x'_{i,j}, x'_{s,t} \in P_{\text{lat}}(N)\) with \(\|x'_{i,j} - x'_{s,t}\|_2 \,\leq\, N^{-1}\), then \( x_{ij} \) and \( x_{s,t} \) are connected in the K-NN graph. Then
-
-\begin{align}
-\mathbb{P}(\Omega)
-&\,\geq\, 1 - \frac{4}{C_{\beta}} C\log(n)n\exp\left(-\frac{\tilde C K}{24 \log(n)}\right) - \frac{1}{n}. \label{eq:291}
-\end{align}
-where $\tilde C = \frac{C_{\beta}c_1 c}{c_2 C}$.
-
-
+The constants $C_{\mathrm r},C_{\mathrm d}>0$
+depend only on $d,v_{\min},v_{\max}$. The event $\Omega$ in
+\eqref{def_omega} also holds, and the graph is connected.
+For $N_K(x)$ denoting the $K$ selected observation indices, there
+is a constant $C_{\mathrm s}>0$, with the same dependence, such that
+\begin{equation}
+\label{eq_knn_geometry_selection}
+\max_{i,j}Q\{x:(i,j)\in N_K(x)\}
+\leq C_{\mathrm s}\frac{K}{N_0}.
+\end{equation}
 \end{lemma}
-
 
 \begin{proof}
-  By observation, the following holds,
-
-\beq 
-\|x_{ij} - x_{s,t}\|_2 &\,\leq\, \sqrt{d} \|x_{ij} - x_{s,t}\|_{\infty}
-\\ 
-&\,\leq\, \sqrt{d} \left\{ \|x_{ij} - x'_{i,j}\|_{\infty} + \|x'_{i,j} - x'_{s,t}\|_{\infty} + \|x_{s,t} - x'_{s,t}\|_{\infty} \right\}
-\\
-&< 3\sqrt{d}N^{-1}
-\,\leq\, a \left( \frac{K}{nm} \right)^{1/d},
-\beq
-
-with \(a = 1 / (2Cc_2v_{\text{max}})^{1/d}\) and \(v_{\text{max}}\) and \(C\) are from Assumptions~\ref{asm:m} and \ref{ass_1_1_1}. The first inequality is followed by a basic inequality between the \(l_2\) and \(l_{\infty}\) norms. The second is due to the triangle inequality, while the third inequality comes after using that \(\|x'_{i,j} - x'_{s,t}\|_{\infty} \,\leq\, N^{-1}\) and \(x'_{i,j}, x'_{s,t} \in P_{\text{lat}}(N)\). 
-
-
-
-
-
-
-Proof. Through this proof, we make use of the event $\tilde \Omega$ defined as $\tilde \Omega = \bigcap_{1 \,\leq\, i \,\leq\, n}\{x_{ij} = x_{ij}^*\}$, where $x_{ij}$ are defined in Appendix~\ref{beta_mix_intro}. We use
-\begin{align}
-    L = \frac{2}{C_{\beta}} \log(n), \label{eq:288}
-\end{align}
-and for $l \in [L]$
-\begin{align}
-    \frac{c_1n}{L} \,\leq\, |\mathcal{J}_{e,l}|, |\mathcal{J}_{o,l}| \,\leq\, \frac{c_2n}{L}, \label{eq:289}
-\end{align}
-with $c_1$ and $c_2$ positive constants.
-First, we analyze the event $\Omega$. To this end, let $x_{ij} \in C(x'_{i,j})$ and $x_{s,t} \in C(x'_{s,t})$ for $x_{ij}^*,x_{s,t}' \in P_{\text{lat}}(N)$ with
-\begin{align}
-    \|x_{ij}^* - x_{s,t}'\|_2 \,\leq\, N^{-1}. \label{eq:290}
-\end{align}
-Then the following holds,
-\begin{align}
-    \|x_{ij} - x_{s,t}\|_2 &\,\leq\, \sqrt{d} \|x_{ij} - x_{s,t}\|_\infty \nonumber \\
-    &\,\leq\, \sqrt{d} (\|x_{ij} - x_{ij}^*\|_\infty + \|x_{ij}^* - x_{s,t}'\|_\infty + \|x_{s,t}' - x_{s,t}\|_\infty) \nonumber \\
-    &< 3\sqrt{d}N^{-1} \nonumber \\
-    &\,\leq\, a \left( \frac{K}{nm} \right)^{1/d}, \nonumber
-\end{align}
-where $a = 1/(2Cc_2v_{\text{max}})^{1/d}$ and $v_{\text{max}}$ and $C$ are from Assumption~\ref{Assumption 1.}. The first inequality is followed by a basic inequality between the $\ell_2$ and $\ell_\infty$ norms. The second is due to the triangle inequality, while the third inequality comes after using that $\|x_{ij}^* - x_{s,t}'\|_2 \,\leq\, N^{-1}$ and $x_{ij}^*, x_{s,t}' \in P_{\text{lat}}(N)$. Using the definition of $N$ in the statement of the Lemma provides the last inequality. From Inequality \eqref{eq:290} we observe that $\left\{\tilde a \left(\frac{K}{nm}\right)^{1/d} \,\leq\, R_{k,\text{min}}\right\} \subseteq \Omega$. Therefore, using the result from the proof of Lemma~\ref{Lemma_13},
-% \begin{align}
-% \mathbb{P}(\Omega) &\geq \mathbb{P}\left( \left(\frac{a(K/nm)}{1/d}\right)^{1/d} \leq R_{k,\min} \right) \nonumber \\
-% &\geq 1 - \frac{4}{C_{\beta}} C\log(n)n\exp\left(-\frac{C_{\beta} K}{24 \log(n)}\right) - \frac{1}{n}. \label{eq:291}
-% \end{align}
-\begin{align}
-    \mathbb{P}\left(\Omega\right) &\,\geq\, \mathbb{P}\left(a\left(K/nm\right)^{1/d}\,\leq\, R_{k,\min}\right) \,\geq\, 1 - \frac{4}{C_{\beta}} C\log(n)n\exp\left(-\frac{\tilde C}{24}\frac{K}{\log(n)}\right) - \frac{1}{n}, \label{eq:291}
-\end{align}
-
-Next, we proceed to derive an upper bound on the counts \(\{I_{l}\}_{l=1}^{N^d}\). Assume that \(x \in P_{\text{lat}}(N)\), and \(x' \in C(x)\). Since \(x' \in C(x)\), by the definition of \(P_{\text{lat}}(N)\) we have that \(\|x' - x\|_\infty \,\leq\, \frac{1}{2N}\). Therefore, using the basic inequality between the \(l_2\) and \(l_\infty\) norms,
-
-
-Assume that \(x \in P_{\text{lat}}(N)\), and \(x' \in C(x)\). Since \(x' \in C(x)\), by the definition of \(P_{\text{lat}}(N)\) we have that \(\|x - x'\|_{\infty} \,\leq\, \frac{1}{2N}\). Therefore, using the basic inequality between the \(l_2\) and \(l_{\infty}\) norms,
-
-\beq 
-\label{eq:291}
-\|x - x'\|_2 \,\leq\, \sqrt{d} \|x - x'\|_{\infty} \,\leq\, \frac{\sqrt{d}}{2N} \,\leq\,  \frac{a}{6} \left(\frac{K}{nm}\right)^{1/d}  = \frac{\tilde b_1^{1/d}}{(2c_{2,d}v_{\text{max}}2Cc_2)^{1/d}}\left(\frac{K}{nm}\right)^{1/d},
-\beq 
-
-where the third inequality is obtained from the choice of \(N\) in the statement of the Lemma, and \(b_1\) is an appropriate constant. Here \(c_{2,d} > 0\) is a constant that depends on \(d\). Therefore, from Inequality \eqref{eq:291}.
-
-
-\beq 
+First consider the deterministic cells. Every point of $[0,1]^d$
+is within distance $1/N$ in $\ell_\infty$ of a lattice centre.
+Moreover, if $\|z-c_r\|_\infty<1/(2N)$, then $c_r$ is the unique
+nearest centre: any other centre differs in some coordinate by
+at least $1/N$. Consequently,
+\begin{equation}
 \label{eq:292}
-C(x) \subseteq B_{\frac{(\tilde b_1)^{1/d}}{(2c_{2,d} Cv_{\text{max}}c_2)^{1/d}}\paren{\frac{K}{nm}}^{1/d}}(x) .
-\beq   
-
-% \beq 
-% \label{eq:292}
-% C(x) \subseteq B_{\frac{\tilde b_1^{1/d}}{(2c_{2,d} Cv_{\text{max}}c_2)^{1/d}}\paren{\frac{K}{nm}}^{1/d}}(x) .
-% \beq 
-
-% \begin{align}
-%     C(x) \leq B \left( \frac{\tilde{b}_1}{(2c_2\mu_{\text{max}}C_2)^{1/4}} \right)^{1/d} \left( \frac{K}{nm} \right)^{1/d}. \label{eq:293}
-% \end{align}
-
-On the other hand, let $\tilde{b}_2 > 0$ a constant such that $\left( \frac{(\tilde{b}_2)^{1/d}}{(2c_{1,d}c c_1 v_{\text{min}})^{1/d}} \right) \,\leq\, \frac{a}{2}\frac{1}{3\sqrt{d}} $, with $c_{1,d} > 0$ a constant that depends on $d$. Observe that if the following holds
-
-\begin{align}
-   \|x - x'\|_2 \,\leq\,  \left( \frac{\tilde{b}_2}{(2cc_1v_{\text{min}})} \right)^{1/d} \left( \frac{K}{nm} \right)^{1/d}, 
-\end{align}
-
-we have that,
-
-\begin{align}
-    \|x - x'\|_{\infty} &\,\leq\, \|x - x'\|_2 \,\leq\, \left( \frac{\tilde{b}_2}{(2cc_{1,d}c_1v_{\text{min}})} \right)^{1/d} \left( \frac{K}{nm} \right)^{1/d} \nonumber \\
-    &\,\leq\, \frac{2}{3} \sqrt{d} \left( \frac{K}{nm} \right)^{1/d} \,\leq\, \frac{1}{2N}. \label{eq:295}
-\end{align}
-
-The third inequality is followed by the choice of \(\tilde{b}_2\) and the Equality due to the choice of \(N\) in the statement of the Lemma. Therefore,
-\begin{align}
-B_{\frac{(\tilde b_1)^{1/d}}{(2c_{2,d} Cv_{\text{max}}c_2)^{1/d}}\paren{\frac{K}{nm}}^{1/d}}(x) \subseteq  C(x)
- \label{eq:293}.
-\end{align}
-
-We are now ready to obtain the bound for \(\mathbb{P} \left\{ \max_{r=1,\ldots,N^d} |I_r| \,\geq\, (1 + \delta)\tilde b_1 K \right\}\). Notice that
-\begin{align}
-    \mathbb{P} \left\{ \max_{r=1,\ldots,N^d} |I_r| \,\geq\, (1 + \delta)\tilde b_1 K \right\} &\,\leq\, \mathbb{P} \left(\left\{ \max_{r=1,\ldots,N^d} |I_r| \,\geq\, (1 + \delta)\tilde b_1 K \right\} \cap \tilde \Omega \right)  + \frac{1}{n} \label{eq:294},
-\end{align}
-with \(\tilde \Omega\) defined at the beginning of the proof. Then, by a union bound argument
-\begin{align}
-    &\mathbb{P} \left\{ \max_{r=1,\ldots,N^d} |I_r| \,\geq\, (1 + \delta)\tilde b_1 K \right\} \\ 
-    &\,\leq\, \sum_{r=1}^{N^d} \mathbb{P} \left\{ |I_1| \,\geq\, (1 + \delta)\tilde b_1 K \right\}
-    \\&\,\leq\, \sum_{x \in P_{\text{lat}}(N)} \mathbb{P} \left[\left\{ |C(x)| \,\geq\, (1 + \delta)\tilde b_1 K \right\} \cap \tilde \Omega \right] \label{eq:295},
-\end{align}
-where \(C(x) \,=\, \{(i,j) \in [n] \times [m_i] : P_I(x_{ij}) \,=\, x\}\). Moreover, for any \(x \in P_{\text{lat}}(N)\) using Equation \eqref{eq:292} we have that
-\begin{align}
-    \mathbb{P}(x_{1,1} \in C(x)) &\,\leq\, \mathbb{P} \left(x_{1,1} \in B_{\frac{(\tilde b_1)^{1/d}}{(2c_{2,d} Cv_{\text{max}}c_2)^{1/d}}\paren{\frac{K}{nm}}^{1/d}}(x) \right) \nonumber \\
-    &\,\leq\, \frac{\left(\tilde{b}_1\right)}{\left(2c_{2,d}v_{\text{max}}Cc_2\right)} \left(\frac{K}{nm}\right)c_{2,d}v_{\text{max}},
-\end{align}
-where the last inequality follows the same line of arguments as in Inequality~\eqref{eq:272} in the proof of Lemma~\ref{Lemma_13}. Therefore, 
-\bea 
-2Cc_2 nm\mathbb{P}(x_{1,1} \in C(x)) \,\leq\, 2Cc_2 n m\frac{\left(\tilde{b}_1\right)}{\left(2c_{2,d}v_{\text{max}}Cc_2\right)} \left(\frac{K}{nm}\right)c_{2,d}v_{\text{max}}  = \tilde{b_1}K 
-\bea 
-The above Inequality and Inequality \eqref{eq:295} lead to
-\begin{align}
-    \sum_{x \in P_{\text{lat}}(N)} \mathbb{P} \left[\left\{ |C(x)| \,\geq\, (1 + \delta)\tilde b_1 K \right\} \cap \tilde \Omega \right] &\,\leq\, \sum_{x \in P_{\text{lat}}(N)} \mathbb{P} \left[\left\{ |C(x)| \,\geq\, (1 + \delta)2Cc_2nm\mathbb{P}(x_{1,1}^* \in C(x)) \right\}\right] \label{eq:296}.
-\end{align}
-Then, using the definition of the event \(\Omega\) at the beginning of the proof and a union bound argument,
-\begin{align}
-    &\mathbb{P} \left[\left\{ |C(x)| \,\geq\, (1 + \delta)2Cc_2nm\mathbb{P}(x_{1,1}^* \in C(x)) \right\}\cap \tilde \Omega \right] \nonumber \\
-    &\,\leq\, \sum_{l=1}^{L} \mathbb{P} \left(\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_i} 1_{x_{t,s} \in C(x)} \,\geq\, (1 + \delta)2Cc_2nm\mathbb{P}(x_{1,1}^* \in C(x)) /(2L) \right) \nonumber \\
-    &\quad + \sum_{l=1}^{L} \mathbb{P} \left(\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_i} 1_{x_{t,s} \in C(x)} \,\geq\, (1 + \delta)2Cc_2nm\mathbb{P}(x_{1,1}^* \in C(x)) /(2L) \right) \label{eq:297}.
-\end{align}
-
-Now we analyze each of the terms
+\begin{aligned}
+B_\infty(c_r,1/(2N))\cap[0,1]^d
+&\subseteq C(c_r)\\
+&\subseteq B_\infty(c_r,1/N)\cap[0,1]^d\\
+&\subseteq B_2(c_r,\sqrt d/N),
+\end{aligned}
+\end{equation}
+The first ball is open; all other balls in this proof are closed.
+In particular, for an arbitrary $x\in C(c_r)$,
 \[
-\mathbb{P}\bigg(\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_i} 1_{x_{t,s}^*\in C(x)} \,\geq\, (1+\delta)2Cc_2nm\mathbb{P}(x_{1,1}^* \in C(x)) / L \bigg).
+C(c_r)\subseteq B_2(x,2\sqrt d/N).
 \]
-By Inequality \eqref{eq:289} and Assumption~\ref{asm:m}
+The fixed tie rule in
+\eqref{knn_center} makes these cells a Borel partition. With
+$p_r=Q(C(c_r))$, the density bounds give
+\begin{equation}
+\label{eq_knn_cell_mass}
+\frac{v_{\min}}{2^dN^d}\leq p_r
+\leq\frac{2^d v_{\max}}{N^d}.
+\end{equation}
+The lower bound allows for a centre on the boundary of the cube;
+equal cell volumes are not needed.
+
+For the counting argument, introduce the auxiliary groups
+\[
+\mathcal A_\ell
+=\{\ell+kL_{\mathrm g}:k\geq0,\ \ell+kL_{\mathrm g}\leq n\},
+\qquad \ell=1,\ldots,L_{\mathrm g}.
+\]
+They partition $[n]$. Let $M_\ell=\sum_{i\in\mathcal A_\ell}m_i$.
+Since $1\leq L_{\mathrm g}\leq n$,
 \begin{align}
-    &\mathbb{P}\left(\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_i} 1_{x_{t,s}^*\in C(x)} \,\geq\, (1+\delta)2Cc_2nm\mathbb{P}(x_{1,1}^* \in C(x)) / L \right) 
-    \\ &\,\leq\, \mathbb{P}\left(\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_i} 1_{x_{t,s}^*\in C(x)} \,\geq\, (1+\delta) \left(\sum_{i \in \mathcal{J}_{e,l}} m_i\right) \mathbb{P}(x_{1,1}^* \in C(x)) \right). \label{eq:298}
+\label{eq_knn_geometry_group_sizes}
+|\mathcal A_\ell|
+&\in\{\lfloor n/L_{\mathrm g}\rfloor,
+       \lceil n/L_{\mathrm g}\rceil\},&
+\frac{n}{2L_{\mathrm g}}
+&\leq|\mathcal A_\ell|\leq\frac{2n}{L_{\mathrm g}},\\
+\frac{cN_0}{2CL_{\mathrm g}}
+&\leq M_\ell\leq\frac{2CN_0}{cL_{\mathrm g}},&
+\sum_{\ell=1}^{L_{\mathrm g}}M_\ell&=N_0.
+\nonumber
 \end{align}
 
-By Lemma~\ref{Lemma_12} it follows that
+Only the finite-dimensional design vectors
+$X_i=(x_{i1},\ldots,x_{im_i})$ are coupled here.
+Their mixing coefficients satisfy $\beta_X(k)\leq\beta_W(k)$,
+because $\sigma(X_i)\subseteq\sigma(W_i)$.
+Take independent uniforms $U_i$, independent of the entire original
+design process, and set $X_i^\circ=X_i$ for $i\leq L_{\mathrm g}$.
+For $i>L_{\mathrm g}$ let $P_i=(X_1,\ldots,X_{i-L_{\mathrm g}})$.
+Theorem~\ref{thm_beta_mix}, applied with the fresh uniform $U_i$,
+gives
+\begin{equation}
+\label{eq_knn_design_coupling}
+\begin{aligned}
+X_i^\circ&=g_i(P_i,X_i,U_i),&
+X_i^\circ&\stackrel d=X_i,\qquad X_i^\circ\perp P_i,\\
+\mathbb P(X_i^\circ\ne X_i)
+&\leq e^{-C_\beta L_{\mathrm g}}.
+\end{aligned}
+\end{equation}
+All the spaces in this application are finite products of cubes
+and hence Polish. If $U_{\rm prev}$ collects the earlier uniforms
+in the same group, it is independent of $(P_i,X_i,U_i)$ and
+therefore of $(P_i,X_i^\circ)$. For bounded measurable $a,b,c$,
+\begin{align*}
+\mathbb E\{a(X_i^\circ)b(P_i)c(U_{\rm prev})\}
+&=\mathbb E\{a(X_i^\circ)b(P_i)\}
+  \mathbb E\{c(U_{\rm prev})\}\\
+&=\mathbb E\{a(X_i^\circ)\}
+  \mathbb E\{b(P_i)\}\mathbb E\{c(U_{\rm prev})\}\\
+&=\mathbb E\{a(X_i^\circ)\}
+  \mathbb E\{b(P_i)c(U_{\rm prev})\}.
+\end{align*}
+Thus $X_i^\circ$ is independent of $(P_i,U_{\rm prev})$.
+Every preceding copy in $\mathcal A_\ell$ is measurable with respect
+to this pair. Induction gives the within-group law
+$\bigotimes_{i\in\mathcal A_\ell}Q^{\otimes m_i}$.
+Writing $\Omega_X=\{X_i^\circ=X_i\text{ for all }i\}$, we have
+\begin{equation}
+\label{eq_knn_design_matching}
+\mathbb P(\Omega_X^c)
+\leq(n-L_{\mathrm g})e^{-C_\beta L_{\mathrm g}}\leq\frac1n.
+\end{equation}
+For the last inequality, if $L_{\mathrm g}=n$ the left side is
+zero; otherwise $L_{\mathrm g}=\lceil2\log(n)/C_\beta\rceil$.
+No independence across different groups is required.
+
+For fixed $\ell,r$, the coupled cell count
+\[
+Y_{\ell r}^\circ
+=\sum_{i\in\mathcal A_\ell}\sum_{j=1}^{m_i}
+  \mathbf1\{x_{ij}^\circ\in C(c_r)\}
+\sim\operatorname{Binomial}(M_\ell,p_r).
+\]
+Lemma~\ref{Lemma_12}, with $\delta=1/2$, gives
+\[
+\mathbb P\left(
+ |Y_{\ell r}^\circ-M_\ell p_r|>\frac{M_\ell p_r}{2}\right)
+\leq2\exp(-M_\ell p_r/12).
+\]
+Define $\mathcal E_{\mathrm g}$ by requiring the corresponding
+original counts $Y_{\ell r}$ to satisfy
+$M_\ell p_r/2\leq Y_{\ell r}\leq3M_\ell p_r/2$ for every $\ell,r$.
+Using \eqref{eq_knn_design_matching} and a union bound over the
+$L_{\mathrm g}N^d$ pairs yields
 \begin{align}
-    &\mathbb{P}\bigg(\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_i} 1_{x_{t,s}^*\in C(x)} \,\geq\, (1+\delta) \Big(\sum_{i \in \mathcal{J}_{e,l}} m_i\Big) \mathbb{P}(x_{1,1}^* \in C(x)) \bigg) \nonumber \\
-    &\,\leq\, \exp\bigg(-\frac{1}{3} \delta^2 \Big(\sum_{i \in \mathcal{J}_{e,l}} m_i\Big) \mathbb{P}(x_{1,1}^* \in C(x)) \bigg). \label{eq:299}
+\label{eq_knn_geometry_union}
+\mathbb P(\mathcal E_{\mathrm g}^{\,c})
+&\leq\mathbb P(\Omega_X^c)
+ +\sum_{\ell=1}^{L_{\mathrm g}}\sum_{r=1}^{N^d}
+       2\exp(-M_\ell p_r/12)\\
+&\leq\frac1n+2L_{\mathrm g}N^d
+ \exp\left(-\frac{c v_{\min}N_0}
+                 {24\cdot2^d C L_{\mathrm g}N^d}\right).
+\nonumber
 \end{align}
+The binomial law is used unconditionally, before comparison with
+the original counts on $\Omega_X$.
+Since $A N_0/K\geq1$, integer rounding gives
+\begin{equation}
+\label{eq_knn_grid_size}
+\frac{A N_0}{K}\leq N^d\leq\frac{2^d A N_0}{K}.
+\end{equation}
+Substitution proves \eqref{eq_knn_geometry_failure}.
+On $\mathcal E_{\mathrm g}$, summing over $\ell$ gives
+\[
+\frac{N_0p_r}{2}\leq|I_r|\leq\frac{3N_0p_r}{2}.
+\]
+Combining this display with \eqref{eq_knn_cell_mass} and
+\eqref{eq_knn_grid_size} proves \eqref{eq_knn_geometry_counts}.
+In particular, every cell contains an observation.
 
-Now Equation \eqref{eq:293} implies that
-\begin{align}
-    \mathbb{P}(x_{1,1}^* \in C(x)) 
-    &\,\geq\, \mathbb{P}\left(x_{1,1}^* \in B_{\frac{(\tilde b_1)^{1/d}}{(2c_{2,d} Cv_{\text{max}}c_2)^{1/d}}\paren{\frac{K}{nm}}^{1/d}}(x) \right) \,\geq\, c_{1,d} v_{\text{min}} \left(\frac{\tilde{b}_2}{(2cc_{1,d}c_1v_{\text{min}})}\right) \left(\frac{K}{nm}\right), \label{eq:300}
-\end{align}
+We next bound counts in balls without conditioning on a random
+sample centre. For $u\geq0$, a cell meeting $B_2(x,u/N)$ has its
+centre within $\ell_\infty$ distance $(u+1)/N$ of $x$.
+The number of such centres is at most
+$H_d(u)=(\lceil2u\rceil+3)^d$. Hence, simultaneously for all $x,u$,
+\begin{equation}
+\label{eq_knn_ball_counts}
+\#\{(i,j):\|x_{ij}-x\|_2\leq u/N\}
+\leq H_d(u)\frac{3b_2K}{2}
+\qquad\text{on }\mathcal E_{\mathrm g}.
+\end{equation}
+Our choice of $A$ ensures
+$H_d(3\sqrt d)\,3b_2/2\leq1/4$.
+There are therefore fewer than $K$ observations in any ball of
+radius $3\sqrt d/N$. This proves the lower training-radius bound
+in \eqref{eq_knn_geometry_radii}. If two distinct observations
+have lattice centres at distance at most $1/N$, then
+\[
+\begin{aligned}
+\|x_{ij}-x_{st}\|_2
+&\leq\|x_{ij}-P_I(x_{ij})\|_2
+ +\|P_I(x_{ij})-P_I(x_{st})\|_2\\
+&\quad+\|P_I(x_{st})-x_{st}\|_2\\
+&\leq\frac{2\sqrt d+1}{N}\leq\frac{3\sqrt d}{N}.
+\end{aligned}
+\]
+Each must select the other among its $K$ nearest neighbours, even
+in the presence of ties. Thus $\Omega$ holds. Nonempty cells and
+the connected lattice then imply that the graph is connected.
 
-from where, using Inequality \eqref{eq:289} and Assumption~\ref{asm:m} we get that
-\begin{align}
-    \left(\sum_{i \in \mathcal{J}_{e,l}} m_i\right) \left(\mathbb{P}(x_{1,1}^* \in C(x)) \right) 
-    &\,\geq\, cc_1\frac{n}{L}mc_{1,d} v_{\text{min}} \left(\frac{\tilde{b}_2}{(2cc_{1,d}c_1v_{\text{min}})}\right) \left(\frac{K}{nm}\right). \label{eq:301}
-\end{align}
+Let $t=\lceil(4/b_1)^{1/d}\rceil$ and
+$C_{\mathrm r}=\sqrt d\,(t+1)$.
+If $N\geq t$, choose, in each coordinate, $t$ consecutive lattice
+indices including the coordinate of $P_I(x)$. The resulting
+$t^d$ cells contain at least $t^d b_1 K/2\geq2K$ observations.
+Each such observation satisfies
+\[
+\|x-x_{ij}\|_2
+\leq\frac{\sqrt d}{N}
+    +\frac{\sqrt d\,(t-1)}{N}+\frac{\sqrt d}{N}
+=\frac{C_{\mathrm r}}{N}.
+\]
+For a training query, exclusion of its own index leaves at least
+$2K-1\geq K$ observations. If $N<t$, all $N_0$ observations
+lie within distance $\sqrt d<C_{\mathrm r}/N$ of every query,
+and $N_0-1\geq K$. This proves both upper-radius bounds.
+Every edge has length at most $C_{\mathrm r}/N$, so
+\eqref{eq_knn_ball_counts} gives \eqref{eq:d_max_bound} with
+$C_{\mathrm d}=3b_2H_d(C_{\mathrm r})/2$.
 
-Thus, by our choice of \(L\) in Equation \eqref{eq:288} and Inequality \eqref{eq:298}
-\begin{align}
-   & \mathbb{P}\left(\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_i} 1_{x_{t,s}^*\in C(x)} \,\geq\, (1+\delta)2Cc_2nm\mathbb{P}(x_{1,1}^* \in C(x)) / L \right) \\
-    &\,\leq\, \exp\left(-\frac{1}{3} \delta^2 cc_1\frac{n}{L}mc_{1,d} v_{\text{min}} \frac{\tilde{b}_2}{(2cc_{1,d}c_1v_{\text{min}})} \frac{K}{nm} \right) \,=\, \exp\left(-\frac{C_{\beta}}{12} \delta^2 \tilde b_2 \frac{K}{\log(n)} \right). \label{eq:301}
-\end{align}
-
-A similarly analysis is done for
-\begin{align}
-    \mathbb{P}\left(\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_i} 1_{x_{t,s}^*\in C(x)} \,\geq\, (1+\delta)2Cc_2nm\mathbb{P}(x_{1,1}^* \in C(x)) / (2L) \right). 
-\end{align}
-
-Thus, by Equation \eqref{eq:294}, \eqref{eq:295}, \eqref{eq:296}, \eqref{eq:297}, and \eqref{eq:300}, we obtain that
-\begin{align}
-    \mathbb{P}\left(\max_{r=1,\ldots,N^d} |I_r| \,\geq\, (1+\delta)\tilde b_1 K \right) 
-    &\,\leq\, \frac{4}{C_{\beta}} \log(n)N^d \exp\left(-\frac{C_{\beta}}{12} \delta^2 \tilde b_2 \frac{K}{\log(n)} \right) + \frac{1}{n}. \label{eq:304}
-\end{align}
-
-
-On the other hand, with a similar argument, we have that
-\begin{align}
-    \mathbb{P}\left(\min_{r=1,\ldots,N^d} |I_r| \,\leq\, (1 - \delta)\tilde b_2 K \right) &\,\leq\, \sum_{x \in P_{\text{lat}}(N)} \mathbb{P}\left(\left\{|C(x)| \,\leq\, (1 - \delta)\tilde b_2 K\right\}  \cap \tilde \Omega \right)\nonumber \\
-    &\,\leq\, \sum_{x \in P_{\text{lat}}(N)} \mathbb{P}\left(\left\{|C(x)| \,\leq\, (1 - \delta)2cc_1nm\mathbb{P}(x_{1,1}^* \in C(x)) \right\} \cap \tilde \Omega \right) + \frac{1}{N} \nonumber \\
-    &\,\leq\, \frac{4}{C_{\beta}} \log(n)N^d \exp\left(-\frac{C_{\beta}}{12} \delta^2 \tilde b_2 \frac{K}{\log(n)}\right) + \frac{1}{n}. 
-\end{align}
-
-Next we proceed to find an upper bound on the maximum degree of the K-NN graph. To this end, we proceed as in the proof of Lemma~\ref{Lemma_13}. First, define the sets
-\begin{align}
-    B_{i,j}(x) &\,=\, \left\{ (i', j') \in [n] \times [m_i] \mid (i', j') \neq (i, j) ; x_{i',j'} \in B_{\tilde a(K/nm)^{1/d}}(x) \right\} \nonumber \\
-    B_{i,j} &\,=\, \left\{ (i', j') \in [n] \times [m_i] \mid (i', j') \neq (i, j) ; x_{i',j'} \in B_{\tilde a(K/nm)^{1/d}}(x_{ij}) \right\},
-\end{align}
-for \((i,j) \in [n] \times [m_i]\), and \(x \in [0,1]^d\). Observe that
-\begin{align}
-    &\mathbb{P}(|B_{i,j}(a)| > 3c_2Cc_{2,d}v_{\text{max}}{\tilde a}^dK) \nonumber \\
-    &\,\leq\, \mathbb{P}\bigg(\sum_{(i',j')\in[n] \times [m_i]\backslash\{(i,j)\}} 1_{x_{i',j'} \in B_{\tilde a(K/nm)^{1/d}}(x)} \,\geq\,  \frac{3}{2}c_2Cc_{2,d}v_{\text{max}}{\tilde a}^dK \bigg). \label{eq:302}
-\end{align}
-
-To bound the term 
-\begin{align}
-    \mathbb{P}\left(\sum_{(i',j')\in[n] \times [m_i]\backslash\{(i,j)\}} 1_{x_{i',j'} \in B_{\tilde a(K/nm)^{1/d}}(x)} > 3c_2Cc_{2,d}v_{\text{max}}{\tilde a}^dK \right),
-\end{align}
-we use a union bound arguments to get
-\begin{align}
-&\mathbb{P}\left(\sum_{(i',j')\in[n] \times [m_i]\backslash\{(i,j)\}} 1_{x_{i',j'} \in B_{\tilde a(K/nm)^{1/d}}(x)} > 3c_2Cc_{2,d}v_{\text{max}}{\tilde a}^dK \right)\\ &\,\leq\, \sum_{l=1}^{L} \mathbb{P}\left(\sum_{(i',j')\in \mathcal{J}_{e,l} \times [m_i]\backslash\{(i,j)\}} 1_{x_{i',j'} \in B_{\tilde a(K/nm)^{1/d}}(x)} > 3c_2Cc_{2,d}v_{\text{max}}{\tilde a}^dK / (2L) \right) \\ &+ \sum_{l=1}^{L} \mathbb{P}\left(\sum_{(i',j')\in \mathcal{J}_{o,l} \times [m_i]\backslash\{(i,j)\}} 1_{x_{i',j'} \in B_{\tilde a(K/nm)^{1/d}}(x)} > 3c_2Cc_{2,d}v_{\text{max}}{\tilde a}^dK / (2L) \right). 
-\end{align}
-
-Further, using Lemma~\ref{Lemma_9} for any \( l \in [L] \) we have that
-\begin{align}
-\sum_{(i',j')\in[n] \times [m_{i'}]\backslash\{(i,j)\}} 1_{x_{i',j'}\in B_{\tilde a(K/nm)^{1/d}}(x)} \sim \text{Binomial}\left( \sum_{i' \in J_l} m_{i'} - 1, \mathbb{P}(x_{i',1} \in B_{\tilde a(K/nm)^{1/d}}(x)) \right).
-\end{align}
-
-By Equation \eqref{eq:288}, Inequality \eqref{eq:289}, Assumption~\ref{asm:m} and the Inequality \eqref{eq:272} in the proof of Lemma~\ref{Lemma_13}, we have that
-\begin{align}
-\frac{3}{2} \mathbb{P}\left(x_{1,1}^* \in B_{\tilde a(K/nm)^{1/d}}(x)\right) \left( \sum_{i' \in J_l} m_{i'} - 1 \right) \,\leq\, \frac{3}{2} c_2\mu_{\text{max}}a^d \frac{K}{nm} C \frac{2nm}{L}.
-\end{align}
-
-Thus, for any \( 1 \,\leq\, l \,\leq\, L \),
-\begin{align}
-    &\mathbb{P}\left( \sum_{(i',j')\in\mathcal{J}_{e,l}\times[m_{i'}]\backslash\{(i,j)\}} 1_{x_{i',j'} \in B_{\tilde a(K/nm)^{1/d}}(x)} \,\geq\, 3c_2Cc_{2,d}v_{\text{max}}{\tilde a}^dK/(2L) \right) \nonumber
-   \\ &\,\leq\, \mathbb{P}\bigg( \sum_{(i',j')\in\mathcal{J}_{e,l}\times[m_{i'}]\backslash\{(i,j)\}} 1_{x_{i',j'} \in B_{\tilde a(K/nm)^{1/d}}(x)} \nonumber \\
-   &\qquad\qquad \,\geq\, 3 \left(\frac{\tilde{b}_2}{(2cc_{1,d}c_1v_{\text{min}})}\right)^{1/d} \left( \frac{K}{nm} \right)^{1/d} \bigg)  \times \left( \sum_{i' \in \mathcal{J}_{e,l}} m_{i'} - 1 \right) \label{eq:303}
-\end{align}
-
-Now, from Equation \eqref{eq:288}, Inequality \eqref{eq:289}, and Assumption~\ref{asm:m} we have that
-\begin{align}
-    \frac{cc_1}{2} c_{1,d}v_{\text{min}}{\tilde a}^d\frac{K}{L} \,\leq\, c_{1,d}v_{\text{min}}{\tilde a}^d\frac{K}{nm} - \frac{c_1}{L} \,\leq\, \mathbb{P}\left( \{x_{1,1}^* \in B_{\tilde a(K/nm)^{1/d}}(x)\} \right) \left( \sum_{i' \in \mathcal{J}_{e,l}} m_{i'} - 1 \right) \label{eq:304}
-\end{align}
-
-Thus, using ~\ref{Lemma_12} and the definition of \(\tilde{a}\) in the statement of the Lemma,
-\begin{align}
-    &\mathbb{P}\left( \sum_{(i',j')\in\mathcal{J}_{e,l}\times[m_{i'}]\backslash\{(i,j)\}} 1_{x_{i',j'} \in B_{\tilde a(K/nm)^{1/d}}(x)} \,\geq\, 3 \left(\frac{\tilde{b}_2}{(2cc_{1,d}c_1v_{\text{min}})}\right)^{1/d} \left( \frac{K}{nm} \right)^{1/d} \right) \nonumber
-    \\ &\,\leq\, \exp\left( -\frac{1}{12} \left(\frac{\tilde{b}_2}{(2cc_{1,d}c_1v_{\text{min}})}\right)^{1/d} \left( \frac{K}{nm} \right)^{1/d} \left( \sum_{i' \in \mathcal{J}_{e,l}} m_{i'} - 1 \right) \right) \nonumber 
-    \\ &\,\leq\, \exp\left( -\frac{C_{\beta}}{24} \frac{K}{\log(n)} \right) \label{eq:305}
-\end{align}
-
-Analogously, the exact same bound can be achieved when the case of \( \mathcal{J}_{o,l} \). Hence, using the above inequality together with Equation \eqref{eq:288}, Inequality \eqref{eq:302} and Inequality \eqref{eq:303}
-\begin{align}
-    \mathbb{P}\left( |B_{i,j}(a)| > 3c_2Cc_{2,d}v_{\text{max}}{\tilde a}^dK \right) 
-    &\,\leq\, \frac{4}{C_{\beta}} \log(n)\exp\left( -\frac{C_{\beta}}{24} \frac{K}{\log(n)} \right) \label{eq:306}
-\end{align}
-
-Therefore,
-\begin{align}
-\mathbb{P} \left( |B_{i,j}| \,\geq\, 3c_2Cc_{2,d}v_{\text{max}}{\tilde a}^dK \right) &\,=\, \int_{[0,1]^d} \mathbb{P} \left( |B_{i,j}(x)| \,\geq\, 3c_2Cc_{2,d}v_{\text{max}}{\tilde a}^dK \right) p(x) \, \mu(dx) \nonumber \\
-&\,\leq\, \frac{4}{C_{\beta}} \log(n)N^d \exp\left(-\frac{C_{\beta} K}{24 \log(n)}\right). \label{eq:304}
-\end{align}
-Finally let \( d_{i,j} \) be the degree associated with \( x_{ij} \). Using a union bound argument
-\begin{align}
-\mathbb{P} \left( d_{\text{max}} \,\geq\, 3c_2Cc_{2,d}v_{\text{max}}{\tilde a}^dK \right) &\,\leq\, \mathbb{P} \left( \{ d_{\text{max}} \,\geq\, 3c_2Cc_{2,d}v_{\text{max}}{\tilde a}^dK \} \cap \tilde \Omega \right) + \frac{1}{n} \nonumber \\
-&\,\leq\, Cn\mathbb{P} \left( d_{i,j} \,\geq\, 3c_2Cc_{2,d}v_{\text{max}}{\tilde a}^dK \right) \cap \tilde \Omega + \frac{1}{n}.
-\end{align}
- 
-
-
-
-
-
-Moreover,
-\begin{align}
-    &\mathbb{P} \big( \left\{ d_{i,j} \,\leq\, 3c_2Cc_{2,d}v_{\text{max}}{\tilde a}^dK \right\}  \cap \tilde \Omega\big)  \nonumber \\
-    &\,\geq\, \mathbb{P} \Bigg( \Big\{ (i',j') \in [n] \times [m_{i'}], (i',j') \neq (i,j) ; \|x_{i,j} - x_{i',j'}\|_2 \,\leq\, R_{k,\text{max}} \Big\} \,\leq\, 3v_{\text{max}}Cc_2c_{2,d}\tilde a^dK \Bigg) \cap \tilde \Omega \nonumber \\
-    &\,\geq\, \mathbb{P} \Bigg( \Big\{ (i',j') \in [n] \times [m_{i'}], (i',j') \neq (i,j) ; \|x_{i,j} - x_{i',j'}\|_2 \,\leq\, R_{k,\text{max}} \Big\} \,\leq\, \tilde a \left(\frac{K}{nm}\right)^{1/d} \Bigg) \cap \tilde \Omega \nonumber \\
-    &\,\geq\, 1 - \mathbb{P} \Bigg( R_{k,\text{max}} > \tilde a \left(\frac{K}{nm}\right)^{1/d} \Bigg) \cap \tilde \Omega - \mathbb{P} \Big( |B_{i,j}| > 3v_{\text{max}}Cc_2c_{2,d}\tilde a^dK \Big), \label{eq:lemma14_inequality}
-\end{align}
-and the claim follows from Inequality \eqref{eq:304} and the proof of Lemma~\ref{Lemma_13}.
-
-The ~\ref{lemma_14} demonstrated that the count of observations \(x_{ij}\) that fall within each cell \(I_i\) is proportional to \(K\), with high probability. We leverage this understanding to derive an upper limit for the MSE in the following result. 
+Finally, a selected observation must lie within distance
+$C_{\mathrm r}/N$ of the query. If $\omega_d$ is the volume of
+the Euclidean unit ball, then
+\begin{align*}
+Q\{x:(i,j)\in N_K(x)\}
+&\leq Q(B_2(x_{ij},C_{\mathrm r}/N))\\
+&\leq v_{\max}\omega_d C_{\mathrm r}^d N^{-d}\\
+&\leq\frac{v_{\max}\omega_d C_{\mathrm r}^d}{A}
+          \frac{K}{N_0}.
+\end{align*}
+This is \eqref{eq_knn_geometry_selection} with
+$C_{\mathrm s}=v_{\max}\omega_d C_{\mathrm r}^d/A$.
 \end{proof}
+\end{revision}
 
 
 

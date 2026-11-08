@@ -569,9 +569,18 @@ unknown radius must be retained and a new fixed-point inequality solved.\\
 complexity proof.\\
 T75 & 78--82 & Broken $K$-NN extension proof & \deferred & The unresolved reference,
 swapped terms, and radii require a full reorganization of the proof.\\
-\rowcolor{lightgray}T76 & 83--93 & Dependent-design $K$-NN geometry & \deferred & The
-needed occupancy and degree proposition under mixing is not available in the
-current source.\\
+% Original T76 disposition retained for provenance:
+% \rowcolor{lightgray}T76 & 83--93 & Dependent-design $K$-NN geometry & \deferred & The
+% needed occupancy and degree proposition under mixing is not available in the
+% current source.\\
+\rowcolor{lightgray}T76 & 83--93 & Dependent-design $K$-NN geometry & \pairreviewed &
+\textcolor{deferredred}{Proved uniform occupancy using auxiliary design groups,
+the integer grid scale, lower and upper neighbour radii, degree, connectivity
+and query selection mass. Lemma 18 now retains the local radius in its sign
+width and bad-event expectation bound. The T77 units are preserved.
+The T73--T74 risk and tuning arguments, T75 prediction extension, T34 indexed
+prediction interface, T84 response-state conditions and protected T04
+assumptions remain separate.}\\
 % Original T77 disposition retained for provenance:
 % T77 & 93--94 & Graph lemma equality and norm errors & \deferred & Fixing the
 % pseudoinverse and norm conventions changes multiple graph lemmas and their
