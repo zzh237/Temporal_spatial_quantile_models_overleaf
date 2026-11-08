@@ -743,12 +743,62 @@ R_{\mathcal{J}_{o,l}}(K) \,\coloneqq\, \Ept{x^*, s}{\sup_{\substack{f\in K \\ }}
 
 \begin{revision}
 For a nonempty class $K$ independent of the Rademacher variables, write
-$K-f^*=\{f-f^*:f\in K\}$. For either an even or an odd block $\mathcal J$,
+$K-f^*=\{f-f^*:f\in K\}$. For either an even or an odd block
+$\mathcal J$, holding the design points and $K$ fixed, we have
+\[
+\begin{aligned}
+&\mathbb{E}_s\left[
+\sup_{g\in K-f^*}
+\frac{1}{\sum_{i\in\mathcal J}m_i}
+\sum_{i\in\mathcal J}\sum_{j=1}^{m_i}
+s_{ij}g(x_{ij}^*)
+\right]\\
+&=\mathbb{E}_s\left[
+\sup_{f\in K}
+\frac{1}{\sum_{i\in\mathcal J}m_i}
+\sum_{i\in\mathcal J}\sum_{j=1}^{m_i}
+s_{ij}\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)
+\right]\\
+&=\mathbb{E}_s\left[
+\sup_{f\in K}
+\frac{1}{\sum_{i\in\mathcal J}m_i}
+\sum_{i\in\mathcal J}\sum_{j=1}^{m_i}
+s_{ij}f(x_{ij}^*)
+\right]\\
+&\qquad-
+\frac{1}{\sum_{i\in\mathcal J}m_i}
+\sum_{i\in\mathcal J}\sum_{j=1}^{m_i}
+f^*(x_{ij}^*)\underbrace{\mathbb{E}_s[s_{ij}]}_{=0}\\
+&=\mathbb{E}_s\left[
+\sup_{f\in K}
+\frac{1}{\sum_{i\in\mathcal J}m_i}
+\sum_{i\in\mathcal J}\sum_{j=1}^{m_i}
+s_{ij}f(x_{ij}^*)
+\right].
+\end{aligned}
+\]
+Taking expectation over the design points yields
 \begin{equation}
 \label{eq_rademacher_translation}
 R_{\mathcal J}(K-f^*)=R_{\mathcal J}(K).
 \end{equation}
-Indeed, subtracting $f^*$ subtracts the same signed sum from every term in the supremum, and that sum has expectation zero over the signs conditional on the design points. This identity also holds for the conditional Rademacher widths below; it is an identity of expectations, not of realized suprema. The risk proofs use the centered process indexed by $f-f^*$. If $f^*\in K$, then $0\in K-f^*$, so its supremum is nonnegative for every realization. We retain $R_{\mathcal J}(K)$ in the rate statements using \eqref{eq_rademacher_translation}.
+If $f^*\in K$, then $0\in K-f^*$ and, for every realization,
+\[
+\begin{aligned}
+&\sup_{f\in K}
+\frac{1}{\sum_{i\in\mathcal J}m_i}
+\sum_{i\in\mathcal J}\sum_{j=1}^{m_i}
+s_{ij}\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)\\
+&\qquad\geq
+\frac{1}{\sum_{i\in\mathcal J}m_i}
+\sum_{i\in\mathcal J}\sum_{j=1}^{m_i}
+s_{ij}\bigl(f^*(x_{ij}^*)-f^*(x_{ij}^*)\bigr)
+=0.
+\end{aligned}
+\]
+We use the centered processes in the risk proofs and retain
+$R_{\mathcal J}(K)$ in the rate statements by
+\eqref{eq_rademacher_translation}.
 \end{revision}
 
 
