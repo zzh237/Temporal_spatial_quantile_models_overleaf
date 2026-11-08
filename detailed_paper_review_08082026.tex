@@ -366,8 +366,17 @@ normalization.\\
 \rowcolor{lightgray}T34 & 17 & Out-of-sample extension and ties & \deferred & The
 tie-breaking rule and admissible $K$ are method-design choices not documented
 in the source.\\
-T35 & 17--18 & Convexity contradiction in the nonconvex theorem & \deferred & Removing
-convexity requires verifying that the full star-hull proof is valid without it.\\
+% Original T35 disposition retained for provenance:
+% T35 & 17--18 & Convexity contradiction in the nonconvex theorem & \deferred & Removing
+% convexity requires verifying that the full star-hull proof is valid without it.\\
+T35 & 17--18 & Convexity contradiction in the nonconvex theorem & \pairreviewed &
+\textcolor{deferredred}{No additional manuscript edit: the published T37/T82
+conditional proof removes the fitted-class convexity requirement and permits
+the target to lie outside that class. The star-hull comparison uses convexity
+of the check loss and a fixed feasible comparator, with the original weights.
+Both reviewers verified the actual proof. Measurable attained exact ERM and
+measurable suprema remain assumptions; T84, protected T04/T07 and T39/T41/T83
+network applications remain unresolved. This does not close the full T82 row.}\\
 % Original T36 disposition retained for provenance:
 % \rowcolor{lightgray}T36 & 18 & Approximation-error supremum & \deferred & Replacing it
 % by a best or near-best approximant changes the nonconvex theorem and proof.\\
