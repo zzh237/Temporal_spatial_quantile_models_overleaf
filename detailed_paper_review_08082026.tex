@@ -378,8 +378,17 @@ feasible approximant. Matching the general and network classes, supplying
 an actual approximant or a positive tolerance at an unattained infimum,
 and the remaining nonconvex proof and rate obligations remain separate.
 This verification does not resolve protected T07 or T35/T37/T39--T41/T82--T84.}\\
-T37 & 18, 95--103 & Two-sided nonconvex empirical process & \deferred & The proposed symmetric
-bound is a proof replacement, not a localized correction.\\
+% Original T37 disposition retained for provenance:
+% T37 & 18, 95--103 & Two-sided nonconvex empirical process & \deferred & The proposed symmetric
+% bound is a proof replacement, not a localized correction.\\
+T37 & 18, 95--103 & Two-sided nonconvex empirical process & \pairreviewed &
+\textcolor{deferredred}{Conditional front theorem and matching appendix integrated: both signs use the
+same centered star class and penalty, the original empirical weights, auxiliary
+time groups, and an explicit fixed-point inequality. The result assumes a
+faithful Polish random-function state with jointly measurable evaluation, a
+fixed feasible approximation, measurable suprema and an attained measurable
+empirical minimum. T84 model adoption and T39/T41/T83 network specialization
+remain open; approximate minimization is not covered by this batch.}\\
 \rowcolor{lightgray}T38 & 19--20 & Neural-network recursion & \deferred & A new recursion
 would redefine the modeled architecture and must match the approximation
 theorem used later.\\
@@ -510,9 +519,19 @@ rederived.\\
 \rowcolor{lightgray}T80 & 99--103 & Sign errors in the twelve-term decomposition &
 \deferred & Replacing the decomposition by an absolute centered process is a
 major proof rewrite.\\
-T82 & 108--113 & Missing weights and inconsistent expectations & \deferred & The
-correction must be propagated through all nonconvex process terms and penalty
-coefficients.\\
+% Original T82 disposition retained for provenance:
+% T82 & 108--113 & Missing weights and inconsistent expectations & \deferred & The
+% correction must be propagated through all nonconvex process terms and penalty
+% coefficients.\\
+T82 & 108--113 & Missing weights and inconsistent expectations & \pairreviewed &
+\textcolor{deferredred}{Partial conditional proof batch integrated with T37: original weights and
+both process signs are retained; conditional ghosts use the current group's
+product law after removal of the matching indicator. The full heterogeneous
+error CDF mixture, spatial second-moment bound and auxiliary-group fixed point
+replace the old nonconvex tail argument. T19's general norm and width lemmas
+remain unchanged. T84 faithful-state/model adoption, measurable exact-minimum
+premises and T83 network application remain unresolved; T78--T80 dispositions
+require their own actual-text reviews. This is not full-row closure.}\\
 \rowcolor{lightgray}T83 & 114--124 & Neural-network entropy/application proof & \deferred &
 The explicit architecture, approximation theorem, entropy bound, and fixed
 point all remain to be established together.\\
