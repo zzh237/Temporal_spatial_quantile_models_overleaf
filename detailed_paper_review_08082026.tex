@@ -395,9 +395,16 @@ large deterministic radius has this scale; constant targets need no
 positive graph-TV lower bound. Fixed dimension and the stated design and
 tuning conditions remain required. T32/T33, complete KNN risk, T84 and
 historical implementation questions remain separate.}\\
-T31 & 15--16 & Mutual versus symmetric $K$-NN graph & \deferred & The intended graph
-depends on the actual implementation; choosing ``and'' or ``or'' without the
-code would be speculative.\\
+% Original T31 disposition retained for provenance:
+% T31 & 15--16 & Mutual versus symmetric $K$-NN graph & \deferred & The intended graph
+% depends on the actual implementation; choosing ``and'' or ``or'' without the
+% code would be speculative.\\
+T31 & 15--16 & Mutual versus symmetric $K$-NN graph & \pairreviewed &
+\textcolor{deferredred}{Partial batch: the application now explicitly uses
+the symmetric union graph and the same OR rule as the introduction.
+The actual experimental graph-construction implementation remains
+unverified and requires the project code or author confirmation.
+This does not establish the remaining KNN risk claims; T31 remains open.}\\
 \rowcolor{lightgray}T32 & 17, 68--75 & $K$-NN norm scaling & \deferred & Normalizing the norm
 changes the theorem statement and all downstream rate comparisons.\\
 % Original T33 disposition retained for provenance:
