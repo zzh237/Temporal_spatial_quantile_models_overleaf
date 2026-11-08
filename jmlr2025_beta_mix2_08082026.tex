@@ -1541,78 +1541,122 @@ This section provides algorithms to support our theoretical results. We start by
 We develop an alternating direction method of multipliers (ADMM) specific to our objective function. See Boyd et al. (2011) for more details on ADMM algorithms.
 \subsection{Quantile Trend Filtering}
 
-
-% This resembles the BCD algorithm used in \cite{tseng2001convergence}, our algorithm resembles their approach such that is equivalent to the block coordinate descent applied to the dual, and the optimum can be obtained at convergence. 
-
-As for quantile trend filtering, we consider the penalized estimator:
-
-\begin{align}
+\begin{revision}
+We use an order-\(k\) discrete penalty, following the degree-\(k-1\)
+convention in \eqref{def_tvspace_tf}. Let \(M=\sum_{i=1}^n m_i\), and
+let \(\tilde x_1<\cdots<\tilde x_U\) be the distinct design points.
+To give repeated locations the same fitted value while retaining all
+observations, define
+\[
+A_{(i,j),r}=\mathbf{1}\{x_{ij}=\tilde x_r\},
+\qquad A\in\{0,1\}^{M\times U},\qquad r=1,\ldots,U.
+\]
+Thus \(z\in\mathbb R^U\) records the values at the ordered distinct
+locations, and \(Az\in\mathbb R^M\) records them in the original
+observation order. For \(\lambda\geq0\), the discrete penalized estimator is
+\begin{equation}
 \label{70}
-\hat{f} = \arg\min_{f\in F_k(1)} \frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_{\tau}(y_{ij} - f(x_{ij})) + \lambda TV^{(k)}(f). 
-\end{align}
-
-We let $\theta_{ij} \,\coloneqq\, f(x_{ij})$, and use $\norm{D^{(x, k+1)}(\theta)}_1$ as a discrete operator representing $TV^{(k)}(\cdot)$ on unevenly spaced inputs. As in \cite{tibshirani2014adaptive}, $D^{(x, k+1)}$ is defined recursively, with
-
-
-
-\begin{align}
+\hat z\in\arg\min_{z\in\mathbb R^U}
+\left\{
+\frac{1}{n}\sum_{i=1}^n\frac{1}{m_i}\sum_{j=1}^{m_i}
+\rho_\tau\bigl(y_{ij}-(Az)_{ij}\bigr)
++\lambda\|D^{(x,k)}z\|_1
+\right\}.
+\end{equation}
+For \(r\geq2\), let
+\begin{equation}
 \label{71}
-D^{(x, 1)} &\,=\, D^{(1)} = \begin{bmatrix}
-    -1 &  1 & 0 & \dots & 0 & 0\\
-     0 & -1 & 1 & \dots & 0 & 0\\
-     \vdots & \vdots & \vdots & \ddots & \vdots & \vdots\\
-     0 & 0 & 0 & \dots & -1 & 1 \\
-\end{bmatrix} \in \mathbb{R}^{{(M - 1)} \times {M}},
-\end{align}
-
-
-\begin{align}
+D^{(1)}_r=
+\begin{bmatrix}
+-1&1&0&\cdots&0\\
+0&-1&1&\cdots&0\\
+\vdots&\vdots&\ddots&\ddots&\vdots\\
+0&\cdots&0&-1&1
+\end{bmatrix}
+\in\mathbb R^{(r-1)\times r}.
+\end{equation}
+The uneven-input trend-filtering operator \cite{tibshirani2014adaptive}
+is defined, for \(U>k\), by
+\begin{equation}
 \label{72}
-D^{(x, k+1)} &\,=\, D^{(1)} \cdot \text{diag}\left(\frac{k}{\tilde{x}_{k+1} - \tilde{x}_{1}}, \frac{k}{\tilde{x}_{k+2} - \tilde{x}_{2}}, \ldots, \frac{k}{\tilde{x}_{M} - x_{{M}-k}}\right) \cdot D^{(x, k)}, 
-\end{align}
-where $M = \sum_{i=1}^{n} m_{i}$, and $\tilde{x}_k (k = 1, ..., M)$ are the sorted $x_{ij}$.
-
-So, we solve \eqref{73}: 
-\beq 
+\begin{aligned}
+D^{(x,1)}&=D^{(1)}_U,\\
+D^{(x,q+1)}
+&=D^{(1)}_{U-q}
+\operatorname{diag}\left(
+\frac{q}{\tilde x_{r+q}-\tilde x_r}:r=1,\ldots,U-q
+\right)D^{(x,q)},\qquad 1\leq q<k.
+\end{aligned}
+\end{equation}
+Here \(D^{(x,k)}\) has \(U-k\) rows and \(U\) columns. If \(U\leq k\),
+we take \(D^{(x,k)}\) to be the empty \(0\times U\) matrix.
+The order-\(k\) operator annihilates the values of polynomials of degree
+at most \(k-1\); in particular, \(k=1\) penalizes adjacent value
+differences and \(k=2\) penalizes adjacent slope differences.
+The fitted observation vector is
+\begin{equation}
 \label{73}
-\hat{\theta} = \arg\min_{\theta \in \R^{\sum_{i=1}^n m_i}} \frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_{\tau}(y_{ij} - \theta_{ij}) + \lambda \norm{D^{(x, k+1)}(\theta)}_1. 
-\beq 
+\hat\theta=A\hat z.
+\end{equation}
+The algorithm below computes \eqref{70}. Applying the guarantees for
+the continuous constrained estimator \eqref{eq172} to this discrete
+penalized estimator requires a separate comparison.
 
-The alternating directions method of multipliers (ADMM) algorithm (Boyd et al., 2011) is a powerful tool for solving constrained optimization problems. We describe our approach in Algorithm~\ref{alg_tf_admm}.  
-We first reformulate the optimization problem \eqref{73} as
-\beq
+For the alternating direction method of multipliers (ADMM), write
+\begin{equation}
 \label{74}
-& \underset{\theta \in \mathbb{R}^{\sum_{i=1}^n m_i}, z \in \mathbb{R}^{\sum_{i=1}^n m_i}}{\text{minimize}}
-& & \frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i}  \rho_\tau (y_{ij} - \theta_{ij}) + \lambda \norm{D^{(x, k+1)}(z)}_1  \\
-& \text{subject to}
-& & z = \theta,
-\beq 
-and the augmented Lagrangian can then be written as
+\begin{aligned}
+&\underset{\theta\in\mathbb R^M,\ z\in\mathbb R^U}{\operatorname{minimize}}
+&&\frac{1}{n}\sum_{i=1}^n\frac{1}{m_i}\sum_{j=1}^{m_i}
+\rho_\tau(y_{ij}-\theta_{ij})+\lambda\|D^{(x,k)}z\|_1\\
+&\text{subject to}&&\theta=Az.
+\end{aligned}
+\end{equation}
+With \(P>0\) and scaled dual variable \(u\in\mathbb R^M\), the
+augmented Lagrangian is
 \begin{equation}
 \label{75}
-L_P(\theta, z, u) \,=\, \frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_\tau (y_{ij} - \theta_{ij}) + \lambda \norm{D^{(x, k+1)}(z)}_1 + \frac{P}{2} \| \theta - z + u \|^2,
+\begin{aligned}
+L_P(\theta,z,u)
+&=\frac{1}{n}\sum_{i=1}^n\frac{1}{m_i}\sum_{j=1}^{m_i}
+\rho_\tau(y_{ij}-\theta_{ij})+\lambda\|D^{(x,k)}z\|_1\\
+&\quad+\frac{P}{2}\|\theta-Az+u\|_2^2-\frac{P}{2}\|u\|_2^2.
+\end{aligned}
 \end{equation}
-where \( P \) is the penalty parameter that controls step size in the update. Thus we can solve \eqref{74} iteratively:
-\begin{align}
+The updates are
+\begin{equation}
 \label{76}
-\text{\small \textit{$\theta$-minimization}} \quad \rev{\theta^{(t)}} &\,=\, \arg\min_{\theta \in \mathbb{R}^{\sum_{i=1}^n m_i}} \left\{ \frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_\tau (y_{ij} - \theta_{ij}) + \frac{P}{2} \| \theta - \rev{z^{(t-1)}} + \rev{u^{(t-1)}} \|^2 \right\}, \\
+\begin{aligned}
+\theta^{(t)}
+&=\arg\min_{\theta\in\mathbb R^M}
+\biggl\{
+\frac{1}{n}\sum_{i=1}^n\frac{1}{m_i}\sum_{j=1}^{m_i}
+\rho_\tau(y_{ij}-\theta_{ij})\\
+&\qquad+\frac{P}{2}\|\theta-Az^{(t-1)}+u^{(t-1)}\|_2^2
+\biggr\},
+\end{aligned}
+\end{equation}
+\begin{align}
 \label{77}
-\text{\small \textit{z-minimization}} \quad \rev{z^{(t)}} &\,=\, \arg\min_{z \in \mathbb{R}^{\sum_{i=1}^n m_i}} \left\{ \frac{1}{2} \| \rev{\theta^{(t)}} + \rev{u^{(t-1)}} - z \|^2 + \frac{\lambda}{P} \|D^{(x, k+1)}(z)\|_1 \right\}, \\
-\label{78}
-\text{\small \textit{\rev{dual update}}} \quad \rev{u^{(t)}} &\,=\, \rev{u^{(t-1)}+\theta^{(t)}-z^{(t)}.}
+z^{(t)}
+&=\arg\min_{z\in\mathbb R^U}
+\left\{
+\frac{1}{2}\|\theta^{(t)}+u^{(t-1)}-Az\|_2^2
++\frac{\lambda}{P}\|D^{(x,k)}z\|_1
+\right\},\\
+\label{eq:tf_dual_update}
+u^{(t)}&=u^{(t-1)}+\theta^{(t)}-Az^{(t)}.
 \end{align}
-
-\begin{revision}
 The $\theta$-minimization \eqref{76} is separable and can be solved coordinate-wise. Define
 \[
-q_{ij}^{(t-1)}=z_{ij}^{(t-1)}-u_{ij}^{(t-1)}
+q_{ij}^{(t-1)}=(Az^{(t-1)})_{ij}-u_{ij}^{(t-1)}
 \qquad\text{and}\qquad
 \gamma_i=\frac{1}{Pnm_i}.
 \]
 The check-loss proximal update is
 \begin{align}
+\theta_{ij}^{(t)} &\,=\, \arg\min_{\theta_{ij}} \Biggl\{ \frac{1}{n} \frac{1}{m_i}\rho_{\tau} (y_{ij} - \theta_{ij}) + \frac{P}{2} \left( \theta_{ij} - (Az^{(t-1)})_{ij} + u_{ij}^{(t-1)} \right)^2 \Biggr\} \notag\\
 \label{78}
-\theta_{ij}^{(t)} &\,=\, \arg\min_{\theta_{ij}} \Biggl\{ \frac{1}{n} \frac{1}{m_i}\rho_{\tau} (y_{ij} - \theta_{ij}) + \frac{P}{2} \left( \theta_{ij} - z_{ij}^{(t-1)} + u_{ij}^{(t-1)} \right)^2 \Biggr\} \\
 &\,=\, 
 \begin{cases}
     q_{ij}^{(t-1)}+\tau\gamma_i,
@@ -1622,39 +1666,65 @@ The check-loss proximal update is
     y_{ij}, & \text{otherwise}.
 \end{cases}
 \end{align}
+The \(z\)-update \eqref{77} is a weighted least-squares trend-filtering
+problem on the distinct locations. Indeed, for \(b=\theta^{(t)}+u^{(t-1)}\),
+\[
+\begin{aligned}
+\|b-Az\|_2^2
+&=\sum_{r=1}^U
+\biggl(\sum_{(i,j):\,x_{ij}=\tilde x_r}1\biggr)
+\left(
+z_r-\frac{\sum_{(i,j):\,x_{ij}=\tilde x_r}b_{ij}}
+{\sum_{(i,j):\,x_{ij}=\tilde x_r}1}
+\right)^2\\
+&\quad+\text{a term independent of }z.
+\end{aligned}
+\]
+Thus its quadratic weights are the numbers of observations at each
+location. The original check-loss weights \(1/(nm_i)\) remain in
+\eqref{76}. Since \(A^\top A\) is diagonal with positive entries,
+\eqref{77} has a unique minimizer.
+
+Algorithm~\ref{alg_tf_admm} summarizes the updates. One can use \(P=1/2\).
+After each full iteration, stop when both the primal and dual residuals
+satisfy
+\begin{equation}
+\label{eq:tf_stop}
+\|\theta^{(t)}-Az^{(t)}\|_2\leq\kappa,
+\qquad
+P\|A(z^{(t)}-z^{(t-1)})\|_2\leq\kappa,
+\end{equation}
+or when the maximum number of iterations is reached. Here \(\kappa>0\)
+is an absolute tolerance for each residual; one can use \(\kappa=10^{-3}\).
+These residual tests do not by themselves give a bound on the statistical
+error caused by terminating the optimization. Returning \(Az^{(t)}\)
+ensures that repeated locations have the same fitted value.
 \end{revision}
 
-The z-minimization problem \eqref{77} is a univariate trend filtering problem, on unevenly spaced inputs. The solution to this problem has been well studied, and we solve it using methods described in \cite{ramdas2016fast}, specifically the \texttt{trendfilter} function in the \texttt{glmgen} package.
-
-
-Lastly, the dual update is achieved via a simple gradient ascent:
-\begin{equation}
-\label{80}
-u_{ij}^{(t)} = u_{ij}^{(t-1)} + \theta_{ij}^{(t)} - z_{ij}^{(t)}.
-\end{equation}
-
-The entire procedure is presented in Algorithm~\ref{alg_tf_admm}. In practice, we can simply choose the penalty parameter \( P \) to be \( \frac{1}{2} \). We require the procedure to stop if it reaches the maximum iterations or every coefficient \( (\theta^{(t)} - \theta^{(t-1)})^{2} \) is within a tolerance \( \kappa \), to which we set \( 10^{-3} \) in our computation. 
-
-
-
 \begin{algorithm}[!htbp]
-   \caption{Alternating Directions Method of Multipliers for quantile spatial temporal trend filtering in \eqref{70}}
+\begin{revision}
+   \caption{ADMM for discrete penalized quantile temporal-spatial trend filtering in \eqref{70}}
 \label{alg_tf_admm}
 \begin{algorithmic}[1]
-    \STATE {\bfseries } \textbf{Input:} responses \(y_{ij} \in \R\) and input points \(x_{ij} \in \R\), \(i = 1 \dots n\), and \(j = 1 \dots m_i\), penalty parameter \(\lambda \in \R\), quantile \( \tau \in (0, 1)\), maximum iteration \( N_{\text{iter}} \), tolerance \( \kappa \).
-   \STATE \textbf{Output:} \( \theta \in \R^{\sum_{i=1}^n m_i} \)
-   \STATE \textbf{Set:} \(t = 0\) and Initialize \( \theta_{ij}^{(0)} = y_{ij} \), \( z_{ij}^{(0)} = y_{ij} \), \( u_{ij}^{(0)} = 0 \) for all \(i = 1, \ldots, n\) and \(j = 1, \ldots, m_i\).
-
-   \FOR{$t = 1, 2, 3, \dots $ (until converge) \( \|\theta^{(t)} - \theta^{(t-1)}\|_2 \,\leq\, \kappa \) or the procedure reaches \( N_{\text{iter}} \) }
- \STATE (i) For $i=1,2,\cdots,n $, $j = 1, \cdots, m_i$, \\ \quad update
- \( \theta_{ij}^{(t)} \leftarrow \arg\min_{\theta_{ij}} \left\{ \frac{1}{n} \frac{1}{m_i}\rho_{\tau} (y_{ij} - \theta_{ij}) + \frac{P}{2} \left( \theta_{ij} - z_{ij}^{(t-1)} + u_{ij}^{(t-1)} \right)^2 \right\}. \)
- \STATE (ii) Update
- \( z^{(t)} \leftarrow \arg\min_{z} \left\{ \frac{1}{2} \|(\theta^{(t)} + u^{(t-1)}) - z\|_2^2 + \frac{\lambda}{P} \norm{D^{(x, k+1)}(z)}_1 \right\} \).
- \STATE (iii) Update
-\( u^{(t)} \leftarrow u^{(t-1)} + \theta^{(t)} - z^{(t)} \)
+    \STATE \textbf{Input:} observations \((x_{ij},y_{ij})\), integer order \(k\geq1\),
+    penalty \(\lambda\geq0\), quantile \(\tau\in(0,1)\), \(P>0\),
+    maximum iteration \(N_{\mathrm{iter}}\geq1\), and tolerance \(\kappa>0\).
+    \STATE \textbf{Output:} a fitted observation vector in \(\mathbb R^M\).
+    \STATE Form the distinct locations, \(A\), and \(D^{(x,k)}\) as above.
+    Set \(\theta^{(0)}=y\), \(z^{(0)}=(A^\top A)^{-1}A^\top y\),
+    and \(u^{(0)}=0\).
+    \FOR{\(t=1,\ldots,N_{\mathrm{iter}}\)}
+    \STATE Update each \(\theta_{ij}^{(t)}\) using \eqref{78}, with
+    \(q_{ij}^{(t-1)}=(Az^{(t-1)})_{ij}-u_{ij}^{(t-1)}\).
+    \STATE Solve the weighted quadratic problem \eqref{77} for \(z^{(t)}\).
+    \STATE Set \(u^{(t)}=u^{(t-1)}+\theta^{(t)}-Az^{(t)}\).
+    \IF{both residual bounds in \eqref{eq:tf_stop} hold}
+        \STATE \textbf{break}.
+    \ENDIF
 \ENDFOR
-\STATE \textbf{Return} $\hat \theta^{(t)}$ at convergence. 
+\STATE \textbf{Return} \(Az^{(t)}\).
 \end{algorithmic}
+\end{revision}
 \end{algorithm}
 
 \subsection{Quantile K-NN Fused Lasso}
@@ -1666,7 +1736,9 @@ For Quantile K-NN Fused Lasso, we consider the penalized  version estimator:
 \hat{\theta}_n = \arg\min_{\theta \in \mathbb{R}^{\sum_{i=1}^n m_i}}\frac{1}{n} \sum_{i=1}^n \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_{\tau}(y_{ij} - \theta_{ij}) + \lambda \|\nabla_{G_k} \theta\|_1. 
 \end{align}. 
 
-Here, $\nabla_{G_k}$ is the graph adjacency matrix, and $\|\nabla_{G_k} \theta\|_1$ is the total variation as in \eqref{tv_knn}. 
+\rev{Here, $\nabla_{G_k}$ is an oriented edge-incidence matrix of
+$G_K$, with one row per undirected edge and an arbitrary orientation.
+Thus $\|\nabla_{G_k}\theta\|_1$ is the total variation in \eqref{tv_knn}.}
 
 To solve \eqref{80}, we use a very similar ADMM as in Algorithm~\ref{alg_tf_admm}. We provide a few details, and describe our approach in Algorithm~\ref{alg_knn_admm}. This approach is very similar to the ADMM algorithm in \cite{ye2021non}, as well, though their method does not directly generalize to temporal-spatial data. 
 
@@ -1675,7 +1747,7 @@ As before, we  reformulate the optimization problem \eqref{80} into the augmente
 \label{82}
 L_P(\theta, z, u) \,=\, \frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_\tau (y_{ij} - \theta_{ij}) + \lambda \|\nabla_{G_k} z\|_1 + \frac{P}{2} \| \theta - z + u \|^2,
 \end{equation}
-where \( P \) is the penalty parameter that controls step size in the update. 
+\rev{Here \(P>0\) is the ADMM penalty parameter.}
 
 We again solve \eqref{82} iteratively:
 \begin{align}
@@ -1689,27 +1761,49 @@ We again solve \eqref{82} iteratively:
 
 \rev{The $\theta$-minimization \eqref{83} uses the same coordinate-wise proximal update as above, and the dual variable uses the additive update in \eqref{85}. The z-minimization problem \eqref{84} is a generalized lasso problem that can be solved with the parametric max-flow algorithm of Chambolle and Darbo (2009).}
 
-The entire procedure is presented in Algorithm~\ref{alg_knn_admm}. In practice, we can simply choose the penalty parameter \( P \) to be \( \frac{1}{2} \). We require the procedure to stop if it reaches the maximum iterations or every coefficient \( (\theta^{(t)} - \theta^{(t-1)})^{2} \) is within a tolerance \( \kappa \), to which we set \( 10^{-3} \) in our computation. 
+\begin{revision}
+The entire procedure is presented in Algorithm~\ref{alg_knn_admm}.
+After each complete iteration, we check the primal and dual residuals:
+\begin{equation}
+\label{eq:knn_stop}
+\|\theta^{(t)}-z^{(t)}\|_2\,\leq\,\kappa,
+\qquad
+P\|z^{(t)}-z^{(t-1)}\|_2\,\leq\,\kappa.
+\end{equation}
+The algorithm returns $z^{(t)}$ when both inequalities hold.
+If the iteration limit is reached first, it reports this and returns
+the last iterate. The output is a numerical approximation to
+\eqref{80}. For example, one may set $P=1/2$ and $\kappa=10^{-3}$.
+\end{revision}
 
 \begin{algorithm}[!htbp]
+\begin{revision}
    \caption{\rev{Alternating direction method of multipliers for quantile \(K\)-NN fused lasso in \eqref{80}}}
 \label{alg_knn_admm}
 \begin{algorithmic}[1]
-    \STATE {\bfseries } \textbf{Input:} responses \(y_{ij} \in \R\) and input points \(x_{ij} \in \R^d\), \(i = 1 \dots n\), and \(j = 1 \dots m_i\), penalty parameter \(\lambda \in \R\), quantile \( \tau \in (0, 1)\), maximum iteration \( N_{\text{iter}} \), tolerance \( \kappa \).
-   \STATE \textbf{Output:} \( \theta \in \R^{\sum_{i=1}^n m_i} \)
+    \STATE \textbf{Input:} responses \(y_{ij}\), a \(K\)-NN graph \(G_K\)
+    on the design points \(x_{ij}\), \(i=1,\ldots,n\), \(j=1,\ldots,m_i\);
+    penalty \(\lambda\geq0\), quantile \(\tau\in(0,1)\), \(P>0\),
+    a positive integer \(N_{\text{iter}}\), and tolerance \(\kappa>0\).
+   \STATE \textbf{Output:} a numerical approximation to \eqref{80}
+   in \(\mathbb R^{\sum_{i=1}^n m_i}\).
    \STATE \textbf{Set:} \(t = 0\) and Initialize \( \theta_{ij}^{(0)} = y_{ij} \), \( z_{ij}^{(0)} = y_{ij} \), \( u_{ij}^{(0)} = 0 \) for all \(i = 1, \ldots, n\) and \(j = 1, \ldots, m_i\).
-   \STATE Compute the K-NN graph incidence matrix $\nabla_{G_k}$ from $x_{ij}$. 
+   \STATE Form the oriented incidence matrix $\nabla_{G_k}$ of the supplied graph.
 
-   \FOR{$t = 1, 2, 3, \dots $ (until converge) \( \|\theta^{(t)} - \theta^{(t-1)}\|_2 \,\leq\, \kappa \) or the procedure reaches \( N_{\text{iter}} \) }
+   \FOR{\(t=1,\ldots,N_{\text{iter}}\)}
  \STATE (i) For $i=1,2,\cdots,n $, $j = 1, \cdots, m_i$, \\ \quad update
  \( \theta_{ij}^{(t)} \leftarrow \arg\min_{\theta_{ij}} \left\{ \frac{1}{n} \frac{1}{m_i}\rho_{\tau} (y_{ij} - \theta_{ij}) + \frac{P}{2} \left( \theta_{ij} - z_{ij}^{(t-1)} + u_{ij}^{(t-1)} \right)^2 \right\}. \)
  \STATE (ii) Update
  \( z^{(t)} \leftarrow \arg\min_{z} \left\{ \frac{1}{2} \|(\theta^{(t)} + u^{(t-1)}) - z\|_2^2 + \frac{\lambda}{P} \|\nabla_{G_k} z\|_1 \right\} \).
  \STATE (iii) Update
 \( u^{(t)} \leftarrow u^{(t-1)} + \theta^{(t)} - z^{(t)} \)
+ \IF{both inequalities in \eqref{eq:knn_stop} hold}
+ \STATE \textbf{Return} \(z^{(t)}\).
+ \ENDIF
 \ENDFOR
-\STATE \textbf{Return} $\hat \theta^{(t)}$ at convergence. 
+\STATE \textbf{Return} \(z^{(N_{\text{iter}})}\) and report that the iteration limit was reached.
 \end{algorithmic}
+\end{revision}
 \end{algorithm}
 
 

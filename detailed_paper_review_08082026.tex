@@ -473,9 +473,17 @@ the approximation result.\\
 T41 & 21 & Architecture choice in the network theorem & \deferred & Selecting depth,
 width, and sparsity requires balancing approximation and estimation from
 scratch.\\
+% Original T42 disposition retained for provenance:
+% \rowcolor{lightgray}T42 & 22 & Trend-filtering penalty order in the algorithm &
+% \deferred & The discrete operator convention must be reconciled jointly with
+% the implementation and the theory before changing it.\\
 \rowcolor{lightgray}T42 & 22 & Trend-filtering penalty order in the algorithm &
-\deferred & The discrete operator convention must be reconciled jointly with
-the implementation and the theory before changing it.\\
+\pairreviewed & \textcolor{deferredred}{Partial correction: specified the
+order-$k$ discrete operator, dimensions and repeated-location mapping,
+retaining the original observation weights. Corrected the ADMM updates
+and both residual stopping tests. The continuous constrained-estimator
+comparison, historical implementation and statistical effect of finite
+optimization tolerance remain unresolved.}\\
 % Original T49 disposition retained for provenance:
 % T49 & 34 & Coupling-error probability & \deferred & The probability bookkeeping is
 % part of the asymptotic proof and cannot be safely changed in isolation.\\
@@ -822,6 +830,18 @@ baselines changes the experiment and requires new computation.\\
 authors can provide verified disclosure language.\\
 \end{longtable}
 \end{landscape}
+
+\section*{Separate follow-up: KNN ADMM stopping}
+\textcolor{deferredred}{\textbf{Pair-reviewed; user review pending.}
+The separately assigned KNN stopping correction checks both primal and dual
+residuals after each complete update, returns the current numerical iterate,
+and explicitly reports reaching the iteration limit. The graph operator is
+an oriented edge-incidence matrix. The original weighted objective and
+three updates are retained. This correction follows the earlier T45
+caption and dual-update repairs; it does not replace their historical
+acceptance. Historical stopping code and the statistical error caused by
+numerical termination remain unverified. A finite tolerance does not
+certify the exact ERM assumed in the risk theorems.}
 
 \section*{Conclusion}
 The applied set is intentionally narrow. Items in the second part should remain
