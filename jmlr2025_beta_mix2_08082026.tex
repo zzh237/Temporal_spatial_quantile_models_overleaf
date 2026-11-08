@@ -1094,14 +1094,17 @@ For dimensions \(d > 1\), in addition to exploring High-dimensional Quantile Lin
 Let \(G_K\) represent the \(K\)-NN graph with edge set \(E_K\), derived from \(\{x_{ij}\}_{i=1, j=1}^{n,m_i}\). For a signal \(\theta \in \mathbb{R}^{\sum_{i=1}^n m_i}\), its total variation along \(G_K\) is defined as
 \begin{equation}
 \label{tv_knn}
-\|\nabla_{G_k} \theta\|_1 := \sum_{\{(i_1,j_1),(i_2,j_2)\} \in E_K} |\theta_{i_1,j_1} - \theta_{i_2,j_2}|.
+\rev{\|\nabla_{G_K} \theta\|_1} := \sum_{\{(i_1,j_1),(i_2,j_2)\} \in E_K} |\theta_{i_1,j_1} - \theta_{i_2,j_2}|.
 \end{equation}
-This definition presupposes that if \(\theta\) corresponds to function evaluations, \(\|\nabla_{G_k} \theta\|_1\) would be significantly less than \(n\), as \(G_K\) captures the domain geometry of \rev{the design points \(x_{ij}\)}, rendering most differences \(\| \theta_{i_1 j_1} - \theta_{i_2 j_2} \|\) minimal. Furthermore, drawing upon \cite{von2014hitting}, \cite{madrid2020adaptive} demonstrated that \rev{under Assumption~\ref{ass_knn}}, it is probable that
+\begin{revision}
+For \rev{the design points \(x_{ij}\)} \rev{under Assumption~\ref{ass_knn}}, the graph total variation in \eqref{tv_knn} is an unnormalized sum. For fixed $d>1$ and a fixed target $f^*\in BV((0,1)^d)$, put $\theta^*_{ij}=f^*(x_{ij})$. Under the design conditions of Lemma~\ref{lem_knn_bv_graph_tv}, with $K\asymp\log^{2+\mu}(nm)$ for a fixed $\mu>0$, that lemma gives
 \begin{equation}
 \label{l1_norm_for_knn_reg}
-\|\nabla_{G_k} \theta\|_1 \asymp (nm)^{-\frac{1}{d}},
+\|\nabla_{G_K}\theta^*\|_1
+\,\leq\,C_{f^*}\left(\sum_{i=1}^n m_i\right)^{1-1/d}K^{1+1/d}
 \end{equation}
-with \(\theta^*_{ij} = f^*(x_{ij})\), assuming \(f^*\) either exhibits bounded variation or is piecewise Lipschitz, alongside a condition extending piecewise Lipschitz continuity.
+with probability tending to one. Here $C_{f^*}>0$ depends on the fixed design constants, $d$, and the target's BV seminorm. A constant target has graph variation zero, so the result is an upper bound. The bounded piecewise-Lipschitz class described in \cite{madrid2020adaptive} is also covered, as verified after the proof of Lemma~\ref{lem_knn_bv_graph_tv}.
+\end{revision}
 
 
 
@@ -1187,7 +1190,8 @@ and provided that \( V_n \,\geq\, \|V_{G^*}\| \). In addition, \( \hat{f}_{V_n}\
 \bea
 \end{theorem}
 
-Based on \eqref{l1_norm_for_knn_reg}, the optimal selection for \(V_n\) is \(V_n = \|\nabla_{G_k}\theta^*\|_1 \asymp (nm)^{1-1/d}\). Theorem~\ref{Theorem_5} then indicates that, for temporal-spatial data and in terms of the Huber-type loss defined in \eqref{huber_def}, the \(K\)-NN-FL estimator presented in \eqref{np_knn1} and \eqref{np_knn2} attains a convergence rate of \(\text{poly}(nm) \text{poly}(B)\cdot (nm)^{-1/d} + \log(n)d \cdot n^{-1}\). With respect to the \(\ell_2\) loss, this rate is \(\text{poly}(nm) \text{poly}(B)\cdot (nm)^{-1/d} + \log(n)d \text{poly}(B) \cdot n^{-1}\), where \(\text{poly}(\cdot)\) denotes a polynomial function. This achieves an upper bound on the convergence rate, \((nm)^{-1/d}\), as detailed in 
+\rev{For the fixed targets and choice of $K$ covered by Lemma~\ref{lem_knn_bv_graph_tv}, a sufficient deterministic radius is $V_n=C_{f^*}(\sum_{i=1}^n m_i)^{1-1/d}K^{1+1/d}$ with a sufficiently large fixed $C_{f^*}>0$. The lemma proves $\mathbb P\{\|\nabla_{G_K}\theta^*\|_1\leq V_n\}\to1$. Since $\sum_i m_i\asymp nm$, this choice makes $V_n/(nm)$ of order $(nm)^{-1/d}K^{1+1/d}$.}
+Theorem~\ref{Theorem_5} then indicates that, for temporal-spatial data and in terms of the Huber-type loss defined in \eqref{huber_def}, the \(K\)-NN-FL estimator presented in \eqref{np_knn1} and \eqref{np_knn2} attains a convergence rate of \(\text{poly}(nm) \text{poly}(B)\cdot (nm)^{-1/d} + \log(n)d \cdot n^{-1}\). With respect to the \(\ell_2\) loss, this rate is \(\text{poly}(nm) \text{poly}(B)\cdot (nm)^{-1/d} + \log(n)d \text{poly}(B) \cdot n^{-1}\), where \(\text{poly}(\cdot)\) denotes a polynomial function. This achieves an upper bound on the convergence rate, \((nm)^{-1/d}\), as detailed in
 % Theorem 6 of \cite{ye2021non} and 
 Theorem 3 of \cite{padilla2023temporal} for the quantile \(K\)-NN fused lasso, but extends the applicability to include dependent measurements and spatial noise.
 
@@ -5202,6 +5206,217 @@ The claim of the theorem then follows and we get
 \end{proof}
 
 \section{Quantile K-NN fused lasso}
+
+\begin{revision}
+\subsection{Graph variation of a fixed BV target}
+
+\begin{lemma}
+\label{lem_knn_bv_graph_tv}
+Suppose the design conditions in Assumptions~\ref{ass_1_1_1}, \ref{ass_1_2}, \ref{ass_c_beta}, and \ref{asm:m} hold, with fixed $d\geq2$ and fixed positive density, mixing, and sample-size constants. Regard the positive integers $m_i$ as fixed, and write $N=\sum_{i=1}^n m_i$. Assume $n\geq2$, set $L=\lceil2\log n/C_\beta\rceil$, and require $n\geq2L$. Let $K$ be a deterministic integer with $1\leq K<N$, and set $q=\lceil(N/K)^{1/d}\rceil$ and $h=q^{-1}$. There is an integer $q_0$, depending only on $d$ and $v_{\min}$, such that the following holds whenever $q\geq q_0$.
+
+Let $f\in BV((0,1)^d)$ be a fixed finite Borel representative, with arbitrary finite values on the boundary of $[0,1]^d$. Let $J=|Df|((0,1)^d)$ be its distributional total variation, and put $\theta_{ij}=f(x_{ij})$. Each edge of $G_K$ is to arise from a $K$-nearest-neighbor relation between indexed observations, with the observation itself excluded. Any deterministic rule may resolve distance ties. In particular, the bound applies to either the union or the mutual $K$-NN graph. There is a constant $C_\star$, independent of $f,n,(m_i)$ and $K$, such that
+\beq
+\label{eq_knn_bv_target_tail}
+&\sP\left\{\|\nabla_{G_K}\theta\|_1
+  >C_\star JN^{1-1/d}K^{1+1/d}\right\}\\
+&\quad\,\leq\,\frac1n
+ +2Lq^d\exp\left(-\frac{cv_{\min}N}{24CLq^d}\right)
+ +C_\star\left(\frac LK\right)^{1/(d-1)}.
+\beq
+The constant $C_\star$ depends only on the fixed design constants and $d$. Consequently, if $K\asymp\log^{2+\mu}N$ for a fixed $\mu>0$, the probability in \eqref{eq_knn_bv_target_tail} tends to zero as $n\to\infty$. This is a bound for each fixed target, not a simultaneous event over all functions in a BV ball.
+\end{lemma}
+
+\begin{proof}
+We first obtain the design event needed below. The finite-dimensional design vectors $X_i=(x_{i1},\ldots,x_{im_i})$ satisfy $\beta_X(l)\leq\beta_W(l)\leq e^{-C_\beta l}$. Define the auxiliary groups
+\[
+\mathcal I_r^{\mathrm{aux}}
+=\{r+jL:r+jL\leq n,\ j\geq0\},\qquad r=1,\ldots,L.
+\]
+They partition the time indices, and their sizes $k_r$ satisfy
+\[
+\frac{n}{2L}\,\leq\,k_r\,\leq\,\frac{3n}{2L},
+\qquad
+N_r:=\sum_{i\in\mathcal I_r^{\mathrm{aux}}}m_i
+\,\geq\,\frac{cN}{2CL},
+\qquad
+\sum_{r=1}^L N_r=N.
+\]
+We use these auxiliary groups to construct independent copies of the design vectors.
+
+Take independent uniforms $\zeta_1,\ldots,\zeta_n$, independent of the entire original design. Set $X_i^\dagger=X_i$ for $i\leq L$. For $i>L$, apply Theorem~\ref{thm_beta_mix} to $X_i$ and
+\[
+(X_1,\ldots,X_{i-L},\zeta_1,\ldots,\zeta_{i-1}),
+\]
+using the fresh uniform $\zeta_i$. Adjoining the independent uniforms leaves the corresponding beta coefficient unchanged. The theorem produces $X_i^\dagger$ with the law of $X_i$, independent of this augmented past, and measurable in this past, $X_i$, and $\zeta_i$. Every earlier copy in the same auxiliary group is measurable in that augmented past. Induction therefore gives the joint product law within each group. Since $X_i\sim Q^{\otimes m_i}$, all $N_r$ copied design points in group $r$ are independent with law $Q$. Moreover, for
+$\Omega_X=\{X_i^\dagger=X_i\text{ for all }i\}$,
+\beq
+\label{eq_knn_bv_design_match}
+\sP(\Omega_X^c)
+\,\leq\,(n-L)e^{-C_\beta L}
+\,\leq\,\frac1n.
+\beq
+Independence between different auxiliary groups is not required.
+
+Partition $[0,1]^d$ into $q^d$ half-open cubes of side $h$, assigning the outer faces to the adjacent cells. Write $p_D=Q(D)$ for a cell $D$ and let $Z_{r,D}$ count copied observations from group $r$ in $D$. Then $Z_{r,D}$ is binomial with mean $N_rp_D$, where
+$v_{\min}h^d\leq p_D\leq v_{\max}h^d$. The binomial Bernstein bound gives
+\[
+\sP\{|Z_{r,D}-N_rp_D|>N_rp_D/2\}
+\,\leq\,2e^{-N_rp_D/12}.
+\]
+A union bound over the $Lq^d$ pairs $(r,D)$ bounds the probability that at least one count leaves its prescribed interval by
+\[
+2Lq^d\exp\left(-\frac{cv_{\min}N}{24CLq^d}\right).
+\]
+On their simultaneous success, summing over $r$ bounds each cell's copied count between $Np_D/2$ and $3Np_D/2$. The ceiling defining $q$ implies
+\[
+\frac K{2^d}\,\leq\,Nh^d\,\leq\,K.
+\]
+Thus, on this count event and $\Omega_X$, every cell's original count lies between $a_0K$ and $b_0K$, where
+$a_0=v_{\min}/2^{d+1}$ and $b_0=3v_{\max}/2$.
+
+Choose an integer $q_0$ with $a_0q_0^d\geq3$. If $q\geq q_0$, any cell belongs to a rectangular array of $q_0^d$ cells inside the design cube. This array contains at least $3K$ indexed observations and has diameter at most $\sqrt d\,q_0h$. Hence every observation has at least $K$ other observations within that distance. Every graph edge therefore has length at most $\sqrt d\,q_0h$. A ball of this radius meets only a fixed number of cells, each containing at most $b_0K$ observations; consequently, every vertex has degree at most a fixed constant times $K$. These conclusions allow coincident observations and distance ties.
+
+We next control the values of the fixed function. Put $U=(0,1)^d$ and $p=d/(d-1)\in(1,2]$. The cube Poincar\'e--Wirtinger inequality, \cite[Lemma~4.2, with $\tau=1$]{arroyo2024local}, gives
+\[
+\|f-f_U\|_{L^p(U)}\,\leq\,C_dJ,
+\qquad f_U=\int_U f(x)\,dx.
+\]
+We also need the corresponding $L_1$ bound on an open rectangle $R=a+T U$, where $T$ is positive diagonal and $\ell_{\max}$ is its largest entry. For a test field $\psi\in C_c^1(U;\mathbb R^d)$, the field $\eta(x)=T\psi(T^{-1}(x-a))$ satisfies
+$\operatorname{div}\eta(x)=\operatorname{div}\psi(T^{-1}(x-a))$ and
+$\|\eta\|_\infty\leq\ell_{\max}\|\psi\|_\infty$. The distributional definition of variation, a change of variables, and the cube inequality imply
+\bea
+|D(f\circ(a+T\cdot))|(U)
+&\,\leq\,\frac{\ell_{\max}}{|R|}|Df|(R),\\
+\int_R|f-f_R|\,dx
+&\,\leq\,C_d\ell_{\max}|Df|(R),
+\qquad f_R=\frac1{|R|}\int_R f(x)\,dx.
+\bea
+The second line also uses H\"older's inequality on the unit-volume cube.
+
+For each grid cell $D$, let $a_D=h^{-d}\int_D f(x)\,dx$, and set
+$\xi_h(x)=|f(x)-a_D|$ for $x\in D$. These quantities depend only on the fixed target and the deterministic grid. Summing the rectangle inequality over cell interiors gives
+\bea
+\mu_h:=\mathbb E_Q\xi_h
+&\,\leq\,C_dv_{\max}h\sum_D|Df|(D^\circ)
+\,\leq\,C_dv_{\max}hJ.
+\bea
+Jensen's inequality for each cell mean and the critical cube inequality give
+\bea
+\mathbb E_Q\xi_h^p
+&\,\leq\,2^{p-1}v_{\max}
+ \left(\int_U|f-f_U|^p\,dx
+       +\sum_D h^d|a_D-f_U|^p\right)\\
+&\,\leq\,2^pv_{\max}\|f-f_U\|_{L^p(U)}^p
+\,\leq\,C_d'J^p.
+\bea
+The marginal design laws avoid the finitely many deterministic grid faces and any exceptional null set of the chosen BV representative with probability one.
+
+On the design event, an edge joins cells whose grid indices differ by at most a fixed constant. For two distinct such cells $D,E$, let $R_{DE}$ be their minimal enclosing open rectangle. Its side lengths lie between $h$ and a fixed multiple of $h$. Their interiors are disjoint subsets of $R_{DE}$, so
+\bea
+|a_D-a_E|
+&\,\leq\,h^{-d}\int_{R_{DE}}|f-f_{R_{DE}}|\,dx\\
+&\,\leq\,C_d''h^{1-d}|Df|(R_{DE}).
+\bea
+In particular, a shared cell face lies inside the spanning rectangle; its variation measure is not discarded. For each point $z$, only a fixed number of these short rectangles contain $z$, because their endpoint cells must be in a fixed grid neighborhood of $z$. Thus their overlap bound is pointwise and can be integrated against the possibly singular measure $|Df|$. There are at most a fixed constant times $K^2$ edges between any two cells. Summing
+$|f(x)-f(y)|\leq\xi_h(x)+\xi_h(y)+|a_D-a_E|$ over graph edges consequently gives
+\beq
+\label{eq_knn_bv_graph_decomposition}
+\|\nabla_{G_K}\theta\|_1
+\,\leq\,C_1K\sum_{i=1}^n\sum_{j=1}^{m_i}\xi_h(x_{ij})
+       +C_2K^2h^{1-d}J.
+\beq
+Here and below the constants depend only on the fixed design constants and $d$.
+
+It remains to bound the residual sum without a supremum-norm assumption on $f$. Within auxiliary group $r$, write
+\[
+S_r=\sum_{i\in\mathcal I_r^{\mathrm{aux}}}\sum_{j=1}^{m_i}
+       \{\xi_h(x_{ij}^\dagger)-\mu_h\}.
+\]
+Let $\xi'_{ij}$ be independent copies of the residual variables in this group, and let $s_{ij}$ be independent Rademacher signs. Matching ghosts, the symmetry of each independent difference, and conditional averaging over the signs yield
+\bea
+\mathbb E|S_r|^p
+&\,\leq\,\mathbb E\left|
+ \sum_{i\in\mathcal I_r^{\mathrm{aux}}}\sum_j
+       \{\xi_h(x_{ij}^\dagger)-\xi'_{ij}\}\right|^p\\
+&\,=\,\mathbb E\,\mathbb E_s\left|
+ \sum_{i\in\mathcal I_r^{\mathrm{aux}}}\sum_j
+       s_{ij}\{\xi_h(x_{ij}^\dagger)-\xi'_{ij}\}\right|^p\\
+&\labelrel\leq{eq_knn_bv_sign_moment}
+\mathbb E\left(
+ \sum_{i\in\mathcal I_r^{\mathrm{aux}}}\sum_j
+       \{\xi_h(x_{ij}^\dagger)-\xi'_{ij}\}^2\right)^{p/2}\\
+&\,\leq\,\sum_{i\in\mathcal I_r^{\mathrm{aux}}}\sum_j
+       \mathbb E|\xi_h(x_{ij}^\dagger)-\xi'_{ij}|^p\\
+&\,\leq\,2^pN_r\mathbb E_Q\xi_h^p
+\,\leq\,C_3N_rJ^p.
+\bea
+Inequality \eqref{eq_knn_bv_sign_moment} uses $p\leq2$ after fixing the finitely many residual values. The next inequality uses $(\sum b_j)^{p/2}\leq\sum b_j^{p/2}$ for nonnegative $b_j$. Thus only $p$th moments of the residuals are needed, even when $p<2$.
+
+Minkowski's inequality and the finite-sum H\"older inequality, without independence across groups, now give
+\bea
+\left(\mathbb E\left|\sum_{r=1}^LS_r\right|^p\right)^{1/p}
+&\,\leq\,\sum_{r=1}^L(\mathbb E|S_r|^p)^{1/p}\\
+&\,\leq\,C_3^{1/p}J\sum_{r=1}^LN_r^{1/p}\\
+&\,\leq\,C_3^{1/p}J L^{1-1/p}N^{1/p}.
+\bea
+If $J>0$, Markov's inequality therefore implies
+\bea
+\sP\left\{\left|\sum_{r=1}^LS_r\right|>NhJ\right\}
+&\,\leq\,C_3L^{p-1}N^{1-p}h^{-p}\\
+&\,=\,C_3\left(\frac{L}{Nh^d}\right)^{1/(d-1)}
+\,\leq\,C_4\left(\frac LK\right)^{1/(d-1)}.
+\bea
+On the complementary residual event and $\Omega_X$,
+$\sum_{i,j}\xi_h(x_{ij})\leq N\mu_h+NhJ\leq C_5NhJ$.
+Substitution into \eqref{eq_knn_bv_graph_decomposition}, together with
+$K^2h^{1-d}=NKh\{K/(Nh^d)\}\leq2^dNKh$ and
+$h\leq(K/N)^{1/d}$, proves the stated graph bound. If $J=0$, the cube Poincar\'e inequality makes $f$ constant almost everywhere, so the graph variation is zero almost surely.
+
+The cell and residual calculations used the unconditional copied laws. Intersecting their success events with the same $\Omega_X$ and applying a union bound gives \eqref{eq_knn_bv_target_tail}; the matching failure is counted once. Finally, $N\geq n$ and $K\asymp\log^{2+\mu}N$ imply $L=O(\log N)$, $K/L\to\infty$, and
+$N/(Lq^d)\geq K/(2^dL)\gtrsim\log^{1+\mu}N$. These bounds make both the cell-count failure and the residual-moment failure tend to zero.
+\end{proof}
+
+For the piecewise-Lipschitz alternative in Assumption~\ref{ass_knn_3}, we use the bounded class described in \cite{madrid2020adaptive}, with the identity domain map. More explicitly, there is a null set $\mathcal S\subset U$ and fixed positive constants $\epsilon_0,C_{\mathcal S},L_0$ such that, for each $0<\eta<\epsilon_0$,
+\[
+|B_\eta(\mathcal S\cup\partial U)\cap U|
+\,\leq\,C_{\mathcal S}\eta,
+\]
+and $f$ is $L_0$-Lipschitz on each connected component of
+$U\setminus B_\eta(\mathcal S\cup\partial U)$. Here $B_\eta$ denotes an open neighborhood. We verify that this class is covered by Lemma~\ref{lem_knn_bv_graph_tv}.
+
+Let $B_\star=\|f\|_\infty$. Extend $f$ by zero outside $U$ and set $f_\epsilon=f*\psi_\epsilon$, where $\psi$ is a smooth nonnegative unit-integral mollifier supported in the unit ball and $\psi_\epsilon(z)=\epsilon^{-d}\psi(z/\epsilon)$. The zero extension is used here only as an integrable function.
+
+If $\operatorname{dist}(x,\mathcal S\cup\partial U)>3\epsilon$ and $|z|<\epsilon$, the segment from $x$ to $x-z$ lies in a single component of
+$U\setminus B_\epsilon(\mathcal S\cup\partial U)$. Hence
+$|f(x-z)-f(x)|\leq L_0|z|$. Since $\int\nabla\psi_\epsilon=0$,
+\bea
+|\nabla f_\epsilon(x)|
+&\,=\,\left|\int\nabla\psi_\epsilon(z)
+                  \{f(x-z)-f(x)\}\,dz\right|\\
+&\,\leq\,L_0\int|\nabla\psi_\epsilon(z)|\,|z|\,dz\\
+&\,=\,L_0\int|\nabla\psi(z)|\,|z|\,dz
+\,\leq\,L_0\|\nabla\psi\|_1.
+\bea
+Everywhere in $U$,
+$|\nabla f_\epsilon(x)|\leq B_\star\|\nabla\psi\|_1/\epsilon$.
+For $4\epsilon<\epsilon_0$, the remaining region is contained in
+$B_{4\epsilon}(\mathcal S\cup\partial U)\cap U$ and has volume at most $4C_{\mathcal S}\epsilon$. Consequently,
+\[
+\int_U|\nabla f_\epsilon(x)|\,dx
+\,\leq\,\|\nabla\psi\|_1(L_0+4C_{\mathcal S}B_\star).
+\]
+Since $f_\epsilon\to f$ in $L_1(U)$, every $\varphi\in C_c^1(U;\mathbb R^d)$ with $\|\varphi\|_\infty\leq1$ satisfies
+\bea
+\left|\int_U f\,\operatorname{div}\varphi\,dx\right|
+&\,=\,\lim_{\epsilon\downarrow0}
+ \left|\int_U f_\epsilon\,\operatorname{div}\varphi\,dx\right|\\
+&\,\leq\,\liminf_{\epsilon\downarrow0}
+ \int_U|\nabla f_\epsilon|\,dx\\
+&\,\leq\,\|\nabla\psi\|_1(L_0+4C_{\mathcal S}B_\star).
+\bea
+Taking the supremum over these test fields proves $f\in BV(U)$ and hence the applicability of the graph-variation bound to this piecewise-Lipschitz class.
+\end{revision}
+
 \subsection{Proof of  Theorem~\ref{Theorem_5}}
 \begin{proof}
    We will apply the result from Theorem~\ref{Theorem_1}, and also incorporate our problem in \ref{def_knn}, to get

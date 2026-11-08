@@ -373,8 +373,19 @@ eigenvalue assumption and does not establish exact support recovery.
 The T29/T71 risk claims and T84 response-state conditions remain separate.}\\
 T29 & 15 & Linear-rate summary & \deferred & A corrected summary must be derived from
 the unresolved weighted design and block normalization.\\
-\rowcolor{lightgray}T30 & 16 & Graph total-variation scaling & \deferred & Changing
-the exponent must be propagated through the graph theorem and proof.\\
+% Original T30 disposition retained for provenance:
+% \rowcolor{lightgray}T30 & 16 & Graph total-variation scaling & \deferred & Changing
+% the exponent must be propagated through the graph theorem and proof.\\
+\rowcolor{lightgray}T30 & 16 & Graph total-variation scaling & \pairreviewed &
+\textcolor{deferredred}{Replaced the unnormalized graph-TV decay and two-sided
+scaling claims by a proved high-probability upper bound for each fixed BV
+target, of order $N^{1-1/d}K^{1+1/d}$, where $N=\sum_i m_i$.
+The proof supplies the design coupling, cell counts, radius/degree controls,
+BV residual bound and the stated piecewise-Lipschitz case. A sufficiently
+large deterministic radius has this scale; constant targets need no
+positive graph-TV lower bound. Fixed dimension and the stated design and
+tuning conditions remain required. T32/T33, complete KNN risk, T84 and
+historical implementation questions remain separate.}\\
 T31 & 15--16 & Mutual versus symmetric $K$-NN graph & \deferred & The intended graph
 depends on the actual implementation; choosing ``and'' or ``or'' without the
 code would be speculative.\\
