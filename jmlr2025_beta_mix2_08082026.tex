@@ -2149,10 +2149,10 @@ In details, with the above two steps, under Assumptions~\ref{Assumption 1.}, \re
 \bea  where $s = |S|$ is the intrinsic dimension from Assumption~\ref{assump:lip} (the number of active coordinates of $\Pi$), $T_n$ is from Assumption~\ref{ass:tail_multi_d}. Constant $c_{4}$ depends on $\tilde c_0$ in Assumption~\ref{ass:tail_multi_d}, $C_{\beta}$ in Assumption~\ref{ass_c_beta}, and $c_1$, $c_2$ in \eqref{beta_constants}, and $c_5$ depends on constants $C$ and $c$ in Assumption~\ref{asm:m}.
 
 \step{Step 5}
-By using \cref{lem_17},  we start by writing
-\bea 
-&R_{\mathcal{J}_{e,l}}\left(\gF\cap \set{f: c_0\Delta^2(f - f^*) \leq  t^2}\right) \,\leq\, R_{\mathcal{J}_{e,l}}\left(\gF\cap \set{f:\norm{f-f^*} \leq  c_0^{-1/2}\cdot b(B)\cdot t}\right), \,\,\,\text{and}\,\,\, \\
-&R_{\mathcal{J}_{o,l}}\left(\gF\cap \set{f: c_0\Delta^2(f - f^*) \leq  t^2}\right) \,\leq\, R_{\mathcal{J}_{o,l}}\left(\gF\cap \set{f:\norm{f-f^*} \leq  c_0^{-1/2}\cdot b(B)\cdot t}\right),
+\rev{By Lemma~\ref{lem_l2}, we have}
+\bea
+&R_{\mathcal{J}_{e,l}}\left(\gF\cap \set{f: c_0\Delta^2(f - f^*) \leq  t^2}\right) \,\leq\, \rev{\sqrt{2}}\,R_{\mathcal{J}_{e,l}}\left(\gF\cap \set{f:\norm{f-f^*} \leq  c_0^{-1/2}\cdot b(B)\cdot t}\right), \,\,\,\text{and}\,\,\, \\
+&R_{\mathcal{J}_{o,l}}\left(\gF\cap \set{f: c_0\Delta^2(f - f^*) \leq  t^2}\right) \,\leq\, \rev{\sqrt{2}}\,R_{\mathcal{J}_{o,l}}\left(\gF\cap \set{f:\norm{f-f^*} \leq  c_0^{-1/2}\cdot b(B)\cdot t}\right),
 \bea 
 where $b(B) \,=\, \max\set{B^{1/2},1}$ is a constant that depends on $B$, with $B$ introduced in \eqref{F_2}. 
 
@@ -4314,19 +4314,66 @@ In the last line, we combine the $c_4$ with some other numeric constant into one
 \subsection{Proof of Step 5}
 \begin{lemma}
 \label{lem_17}
-Let $f, f^* \in \gF$. Let $B > 0$ be the constant defined in \eqref{F_2}, and let the Huber-type loss $\Delta^2(f)$ be defined in \eqref{huber_def}. Then the following inequality holds:
-$$
-\|f - f^*\|_2^2 \,\leq\, \max\set{B, 1} \cdot \Delta^2(f - f^*).
-$$
+\begin{revision}
+Let $B>0$ and let the population Huber loss be defined in \eqref{huber_def}. If $\|f\|_\infty,\|f^*\|_\infty\leq B$, as holds for $f,f^*\in\gF$ under \eqref{F_2}, then
+\[
+\|f-f^*\|_2^2
+\,\leq\, \max\set{2B,1}\Delta^2(f-f^*)
+\,\leq\, 2b^2(B)\Delta^2(f-f^*),
+\qquad b(B)=\max\set{B^{1/2},1}.
+\]
+More generally, suppose \eqref{F_2} holds and there is $f_{\mathrm{Proj}}\in\gF$ with $\|f_{\mathrm{Proj}}-f^*\|_\infty\leq\phi_{nm}$. Then every $f\in\text{Star}(\gF,f^*)$ satisfies
+\beq
+\label{eq_huber_l2_approx}
+\|f-f^*\|_2^2
+\,\leq\,3b^2(B)\Delta^2(f-f^*)+2\phi_{nm}^2.
+\beq
+\end{revision}
 \end{lemma}
-\begin{proof} We notice that
+\begin{proof}
+\begin{revision}
+For every $x\in[0,1]^d$,
+\[
+|f(x)-f^*(x)|
+\,\leq\, |f(x)|+|f^*(x)|
+\,\leq\, 2B.
+\]
+Therefore,
+\bea
+\|f-f^*\|_2^2
+&\,=\, \int_{\{|f-f^*|\leq1\}}|f-f^*|^2\,dQ
+       +\int_{\{|f-f^*|>1\}}|f-f^*|^2\,dQ\\
+&\labelrel\leq{eq_huber_l2_envelope}
+       \int_{\{|f-f^*|\leq1\}}|f-f^*|^2\,dQ
+       +2B\int_{\{|f-f^*|>1\}}|f-f^*|\,dQ\\
+&\,\leq\, \max\set{2B,1}
+       \int_{[0,1]^d}\min\{|f-f^*|,|f-f^*|^2\}\,dQ\\
+&\,=\, \max\set{2B,1}\Delta^2(f-f^*)
+\,\leq\, 2b^2(B)\Delta^2(f-f^*).
+\bea
+Inequality \eqref{eq_huber_l2_envelope} uses $|f-f^*|^2\leq2B|f-f^*|$ on $\{|f-f^*|>1\}$. The last inequality follows from $\max\set{2B,1}\leq2\max\set{B,1}=2b^2(B)$.
 
+For \eqref{eq_huber_l2_approx}, write $f-f^*=\mu(f_0-f^*)$ with $f_0\in\gF$ and $\mu\in[0,1]$. Then
+\[
+\|f-f^*\|_\infty
+\,\leq\,\|f_0-f_{\mathrm{Proj}}\|_\infty
+       +\|f_{\mathrm{Proj}}-f^*\|_\infty
+\,\leq\,2B+\phi_{nm}.
+\]
+At each $x$, put $u=|f(x)-f^*(x)|$. If $u>1$, then
 \bea
-\|f-f^*\|_2^2 &\,=\, \int  (f- f^*)^2(x) dx  \\
-&\,=\, \int_{\set{t:\abs{(f- f^*)(t)\leq  1}}} |(f- f^*)(x)|^2 dx  + \int_{\set{t:\abs{(f- f^*)(t)> 1}}} |(f- f^*)(x)|^2 dx \\
-&\,\leq\, \int_{\set{t:\abs{(f- f^*)(t)\leq  1}}} |(f- f^*)(x)|^2 dx  + B\cdot \int_{\set{t:\abs{(f- f^*)(t)> 1}}} |(f- f^*)(x)| dx \\
-&\,\leq\, \max\set{B,1} \cdot \Delta^2(f-f^*).
+u^2
+&\,\leq\,(2B+\phi_{nm})u\\
+&\labelrel\leq{eq_huber_approx_young}
+  2b^2(B)u+\frac{u^2}{3}+\frac{3\phi_{nm}^2}{4},
 \bea
+where \eqref{eq_huber_approx_young} uses $B\leq b^2(B)$ and Young's inequality. Rearranging gives
+\[
+u^2\,\leq\,3b^2(B)u+\frac{9\phi_{nm}^2}{8}
+\,\leq\,3b^2(B)\min\{u,u^2\}+2\phi_{nm}^2.
+\]
+For $u\leq1$, the last inequality holds because $b^2(B)\geq1$ and $\min\{u,u^2\}=u^2$. Integrating with respect to $Q$ proves \eqref{eq_huber_l2_approx}.
+\end{revision}
 \end{proof}
 
 \begin{definition}
@@ -4342,21 +4389,67 @@ B_{mn}(t) \,\coloneqq\, \set{f:\norm{f-f^*}_{nm}\leq  t}.
 
 
 \begin{lemma}
-    \label{lem_l2}  For $f, f^* \in \gF$, there exists a constant $b(B) \,\coloneqq\, \max\set{B^{1/2},1}$  that depends on $B$, such that
-    \beq 
-    \label{exp_rade}
-R_{\mathcal{J}_{e,l}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}\right) \,\leq\, R_{\mathcal{J}_{e,l}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot t\right)\right)
-    \beq 
+\label{lem_l2}
+\begin{revision}
+Retain $b(B)=\max\set{B^{1/2},1}$, and let $\mathcal J$ be either an even or an odd block. If $\gF$ is convex, $f^*\in\gF$, and \eqref{F_2} holds, then for every $t>0$,
+\beq
+\label{exp_rade}
+R_{\mathcal J}\left(\gF\cap\set{c_0\Delta^2(f-f^*)\leq t^2}\right)
+&\,\leq\,R_{\mathcal J}\left(\gF\cap B_2\left(\sqrt{2}\,c_0^{-1/2}b(B)t\right)\right)\\
+&\,\leq\,\sqrt{2}\,R_{\mathcal J}\left(\gF\cap B_2\left(c_0^{-1/2}b(B)t\right)\right).
+\beq
+Under the approximation condition in \eqref{eq_huber_l2_approx}, without assuming that $\gF$ is convex or that $f^*\in\gF$, for every $\tilde t>0$ satisfying $\tilde t^2\geq2c_0\phi_{nm}^2$,
+\beq
+\label{eq_rade_l2_approx}
+&R_{\mathcal J}\left(\text{Star}(\gF,f^*)\cap
+  \set{c_0\Delta^2(f-f^*)\leq\tilde t^2}\right)\\
+&\qquad\,\leq\,2R_{\mathcal J}\left(\text{Star}(\gF,f^*)\cap
+  B_2\left(c_0^{-1/2}b(B)\tilde t\right)\right).
+\beq
+\end{revision}
 \end{lemma}
 \begin{proof}
-By Lemma~\ref{lem_17}, 
-\bea 
-\Delta^2(f - f^*) \,\leq\, t^2 \implies \norm{f-f^*}_2^2 \,\leq\, \max\set{B,1}\cdot \Delta^2(f - f^*) \,\leq\, \max\set{B,1}\cdot t^2.
-\bea 
-Then we have 
-\bea 
-R_{\mathcal{J}_{e,l}}\left(\gF\cap \set{f: c_0\Delta^2(f - f^*) \leq  t^2}\right) \,\leq\, R_{\mathcal{J}_{e,l}}\left(\gF\cap \set{f: \norm{f-f^*}_2^2 \leq  c^{-1}\cdot\max\set{B,1}\cdot t^2}\right). 
-\bea 
+\begin{revision}
+If $c_0\Delta^2(f-f^*)\leq t^2$, then Lemma~\ref{lem_17} gives
+\[
+\|f-f^*\|_2^2
+\,\leq\,2b^2(B)\Delta^2(f-f^*)
+\,\leq\,2c_0^{-1}b^2(B)t^2.
+\]
+This set inclusion proves the first inequality in \eqref{exp_rade}.
+For any $r>0$, $a\geq1$, and $f\in\gF\cap B_2(ar)$, convexity gives
+\[
+g=f^*+\frac{f-f^*}{a}\in\gF,
+\qquad \|g-f^*\|_2=\frac{\|f-f^*\|_2}{a}\leq r.
+\]
+Consequently,
+\bea
+R_{\mathcal J}\left(\gF\cap B_2(ar)\right)
+&\labelrel={eq_l2_rad_center}
+\mathbb E_{x^*,s}\left[
+\sup_{f\in\gF\cap B_2(ar)}
+\frac{\sum_{i\in\mathcal J}\sum_{j=1}^{m_i}s_{ij}(f-f^*)(x_{ij}^*)}
+     {\sum_{i\in\mathcal J}m_i}\right]\\
+&\labelrel\leq{eq_l2_rad_scale}
+a\,\mathbb E_{x^*,s}\left[
+\sup_{g\in\gF\cap B_2(r)}
+\frac{\sum_{i\in\mathcal J}\sum_{j=1}^{m_i}s_{ij}(g-f^*)(x_{ij}^*)}
+     {\sum_{i\in\mathcal J}m_i}\right]\\
+&\labelrel={eq_l2_rad_uncenter}
+a\,R_{\mathcal J}\left(\gF\cap B_2(r)\right).
+\bea
+Equalities \eqref{eq_l2_rad_center} and \eqref{eq_l2_rad_uncenter} follow from \eqref{eq_rademacher_translation}. Inequality \eqref{eq_l2_rad_scale} follows from the map $f\mapsto g$ above and $f-f^*=a(g-f^*)$. Taking $a=\sqrt{2}$ and $r=c_0^{-1/2}b(B)t$ proves the second inequality in \eqref{exp_rade}.
+
+The same scaling argument applies to $\text{Star}(\gF,f^*)$, since this class is star-shaped about $f^*$. If $c_0\Delta^2(f-f^*)\leq\tilde t^2$, then \eqref{eq_huber_l2_approx} and $\tilde t^2\geq2c_0\phi_{nm}^2$ give
+\bea
+\|f-f^*\|_2^2
+&\,\leq\,3b^2(B)c_0^{-1}\tilde t^2+2\phi_{nm}^2\\
+&\,\leq\,\bigl(3b^2(B)+1\bigr)c_0^{-1}\tilde t^2
+\,\leq\,4b^2(B)c_0^{-1}\tilde t^2.
+\bea
+Applying the scaling argument with $a=2$ and $r=c_0^{-1/2}b(B)\tilde t$ proves \eqref{eq_rade_l2_approx}.
+Thus the definition of $b(B)$ is unchanged. The numerical factors in the norm and width bounds are absorbed in $O_P$ constants; the term $2\phi_{nm}^2$ in \eqref{eq_huber_l2_approx} is retained as an approximation term.
+\end{revision}
 % And 
 % \beq 
 % \label{eq_b}
@@ -4375,8 +4468,8 @@ Let $\kappa>0$ be a constant and if $\{r_n\}$ is a sequence such that
 \beq
 \label{find_rate_cor}
 &\lim_{\kappa \to \infty} \sup_{n \,\geq\, 1} 
-\left\{\frac{c_5\sum_{l=1}^L R_{\mathcal{J}_{e,1}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \kappa r_n\right)\right)}{\kappa^2 r_n^2} \right. \\ &
-\left. +  \frac{c_5\sum_{l=1}^L R_{\mathcal{J}_{o,1}}\left(\gF \cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \kappa r_n\right)\right)}{\kappa^2 r_n^2} + \frac{\frac{c_4 s\log n\log T_n}{n} + \frac{3}{n}}{\kappa^2 r_n^2 }\right\} = 0, 
+\left\{\frac{\rev{\sqrt{2}}c_5\sum_{l=1}^L R_{\mathcal{J}_{e,1}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \kappa r_n\right)\right)}{\kappa^2 r_n^2} \right. \\ &
+\left. +  \frac{\rev{\sqrt{2}}c_5\sum_{l=1}^L R_{\mathcal{J}_{o,1}}\left(\gF \cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \kappa r_n\right)\right)}{\kappa^2 r_n^2} + \frac{\frac{c_4 s\log n\log T_n}{n} + \frac{3}{n}}{\kappa^2 r_n^2 }\right\} = 0,
 \beq
 then
 \beq
@@ -4394,7 +4487,7 @@ then
 \label{prob_to_rademacker}
 &\sP\paren{c_0\Delta^2(\hat f - f^*) > \kappa^2 r_n^2} 
 \\ &  \,\leq\,  
-\frac{c_5\sum_{l=1}^L R_{\mathcal{J}_{e,1}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \kappa r_n\right)\right)}{\kappa^2 r_n^2}  \\ & \quad +  \frac{c_5\sum_{l=1}^L R_{\mathcal{J}_{o,1}}\left(\gF \cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \kappa r_n\right)\right)}{\kappa^2 r_n^2} + \frac{\frac{c_4 s\log n\log T_n}{n} + \frac{3}{n}}{\kappa^2 r_n^2 }  \\ 
+\frac{\rev{\sqrt{2}}c_5\sum_{l=1}^L R_{\mathcal{J}_{e,1}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \kappa r_n\right)\right)}{\kappa^2 r_n^2}  \\ & \quad +  \frac{\rev{\sqrt{2}}c_5\sum_{l=1}^L R_{\mathcal{J}_{o,1}}\left(\gF \cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \kappa r_n\right)\right)}{\kappa^2 r_n^2} + \frac{\frac{c_4 s\log n\log T_n}{n} + \frac{3}{n}}{\kappa^2 r_n^2 }  \\
 & \labelrel < {in506} \varepsilon,
 \beq
 where the inequality~\eqref{in506} holds  and the last by choosing $\kappa$ large enough.  
@@ -4422,10 +4515,10 @@ r_n^2 \asymp
 
 \subsection{Proof of Theorem~\ref{Theorem_1}}
 Finally, we present the proof of Theorem~\ref{Theorem_1}.
-To proceed in the proof of Theorems~\ref{Theorem_1}, by using our Lemma~\ref{lem_17},  we start by writing
+\rev{By Lemma~\ref{lem_l2}, we have}
 
-\bea 
-R_{\mathcal{J}_{e,l}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}\right) \,\leq\, R_{\mathcal{J}_{e,1}}\left(\gF\cap \set{f:\norm{f-f^*} \leq  c_0^{-1/2}\cdot b(B)\cdot t}\right), 
+\bea
+R_{\mathcal{J}_{e,l}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2}\right) \,\leq\, \rev{\sqrt{2}\,R_{\mathcal{J}_{e,l}}}\left(\gF\cap \set{f:\norm{f-f^*} \leq  c_0^{-1/2}\cdot b(B)\cdot t}\right),
 \bea 
 
 
@@ -4437,11 +4530,11 @@ we get
 &\sP\paren{c_0\Delta^2(\hat f - f^*) > t^2}  
 \\ & \,\leq\, \frac{c_5}{t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2})+ R_{\mathcal{J}_{o,l}}(\gF \cap \set{c_0\Delta^2(f - f^*)\le  t^2})\Big) + \frac{c_4}{t^2}\frac{s\log n\log T_n}{n}. 
 \bea 
-By using our Lemma~\ref{lem_17}, we have 
+\rev{By Lemma~\ref{lem_l2}, we have}
 \bea 
 &\sP\paren{c_0\Delta^2(\hat f - f^*) > t^2}  
-\\ & \,\leq\, \frac{c_5}{t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot t^2\right)\right) \\
-&\qquad + R_{\mathcal{J}_{o,l}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot t^2\right)\right)\Big) + \frac{c_4}{t^2}\frac{s\log n\log T_n}{n}. 
+\\ & \,\leq\, \frac{\rev{\sqrt{2}}c_5}{t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \rev{t}\right)\right) \\
+&\qquad + R_{\mathcal{J}_{o,l}}\left(\gF\cap B_2\left(c_0^{-\frac{1}{2}}\cdot b(B)\cdot \rev{t}\right)\right)\Big) + \frac{c_4}{t^2}\frac{s\log n\log T_n}{n}.
 \bea 
 
 
@@ -4707,8 +4800,7 @@ Without loss of generality assume that $b \,\geq\, (nm)^{-1/2}$. Since $k/(2k-1)
 \label{b_in256}
 c_6 \frac{B^{1/2k}\sqrt{2\log(n)} }{\sqrt{C_{\beta}cc_1nm}}b^{1-1/(2k)} + \frac{2B\log(n)}{C_{\beta}cc_1\sqrt{nm}}b^{1-1/(2k)} < c_6 B\frac{2\log(n) }{\sqrt{C_{\beta}cc_1nm}}b^{1-1/(2k)}.
 \beq 
-Here we use 
-Now, using \eqref{b_in256}, we see that 
+\rev{Using \eqref{b_in256} and the width comparison in Lemma~\ref{lem_l2}, with its factor $\sqrt{2}$ included in the generic constant $c_6$, we obtain}
 \beq 
 \label{in_271}
 &\frac{R_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le  t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c\Delta^2(f - f^*)\le  t^2}\right)}{t^2} \\ 
@@ -4873,13 +4965,14 @@ By Corollary~\ref{cor_op},
 % \frac{c_5\sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}(t)+ R_{\mathcal{J}_{o,l}}(t)\right) + \frac{c_4 s\log n\log T_n}{n} }{t^2} .   
 % \bea
 
-It suffices to get  $R_{\mathcal{J}_{e,l}}\left(\gF\cap B_2\left(c^{-\frac{1}{2}}\cdot b(B)\cdot t\right)\right)$ and  $ R_{\mathcal{J}_{o,l}}\left(\gF\cap B_2\left(c^{-\frac{1}{2}}\cdot b(B)\cdot t\right)\right)$ for $l = 1, \dots, n$.   
-Then we have 
-\bea 
-R_{\mathcal{J}_{e,l}}\left(\gF\cap B_2\left(c^{-\frac{1}{2}}\cdot b(B)\cdot t\right)\right) &\,=\, \Ept{x^*, s}{\sup_{\substack{f\in H(V) \\ f\in B_2\left(c^{-\frac{1}{2}}\cdot b(B)\cdot t\right)}} \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  f(x_{ij}^*)}\\
-& \leq \Ept{x^*, s}{\sup_{\substack{f\in H(V)}} \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  f(x_{ij}^*)}\\
-& = R_{\mathcal{J}_{e,l}}\left(H(V)\right)
-\bea 
+\begin{revision}
+For this application, $\gF=H(V)$. For either an even or an odd block $\mathcal J$, set inclusion directly gives
+\[
+R_{\mathcal J}\left(H(V)\cap\set{c_0\Delta^2(f-f^*)\leq t^2}\right)
+\,\leq\,R_{\mathcal J}\left(H(V)\right).
+\]
+We therefore bound the width of the full class $H(V)$ below.
+\end{revision}
  
 % \bea
 % \ept{\Delta^2(\hat f - f^*)} \leq c^{-1}\cdot\ept{\sup_{\substack{f\in H(V) }}\paren{\bar Z(f) - \hat Z(f) - d(f)}} \leq 6c^{-1}R(H(V)) + 2\frac{c}{4\tilde{c}_0}\frac{d\log n}{n}.
@@ -7413,7 +7506,7 @@ Then we have
 % &+ 2\left(C_0 + \frac{\bar f}{2}\right)\phi_{nm}^2 + \frac{s \cdot \text{poly}(\log n)\log T_n}{n},
 % \bea
 \bea 
-& \sP\paren{c_0\Delta^2(\hat f - f^*) > \tilde t^2} \\& \,\leq\, \frac{24c_5\tilde t^2}{\dbtilde t^2} \frac{1}{\tilde t^2}\left[ \sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right)\right. \right. \\
+& \sP\paren{c_0\Delta^2(\hat f - f^*) > \tilde t^2} \\& \,\leq\, \frac{\rev{48}c_5\tilde t^2}{\dbtilde t^2} \frac{1}{\tilde t^2}\left[ \sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right)\right. \right. \\
 & \left. \left. +R_{\mathcal{J}_{o,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right)\right)\right] \\
 & \quad + \frac{c_{12}}{\dbtilde t^2}\frac{s\log n\log T_n}{n}.
 \bea 
@@ -7465,18 +7558,18 @@ R_{\mathcal J}(\mathcal F_{\tilde t}^{\star})
 \]
 Thus the centered widths above equal the affine star-class widths used in the theorem statement and in the application of Lemma~\ref{lem_17}.}
 
-By Lemma~\ref{lem_17}, we have 
+\rev{Since $\tilde t^2\geq2C_0\phi_{nm}^2\geq2c_0\phi_{nm}^2$, we apply \eqref{eq_rade_l2_approx} to obtain}
 \bea 
 &R_{\mathcal{J}_{e,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}\right) \\
-&\,\leq\, R_{\mathcal{J}_{e,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right). 
+&\,\leq\, \rev{2}\,R_{\mathcal{J}_{e,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right).
 \bea  and we have 
 \bea 
 &R_{\mathcal{J}_{o,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}\right) \\ 
-&\,\leq\, R_{\mathcal{J}_{o,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right). 
+&\,\leq\, \rev{2}\,R_{\mathcal{J}_{o,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right).
 \bea 
 Thus, we get 
 \bea 
-& \sP\paren{c_0\Delta^2(\hat f - f^*) > \tilde t^2} \\& \,\leq\, \frac{24c_5\tilde t^2}{\dbtilde t^2} \frac{1}{\tilde t^2}\left[ \sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right)\right. \right. \\
+& \sP\paren{c_0\Delta^2(\hat f - f^*) > \tilde t^2} \\& \,\leq\, \frac{\rev{48}c_5\tilde t^2}{\dbtilde t^2} \frac{1}{\tilde t^2}\left[ \sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right)\right. \right. \\
 & \left. \left. +R_{\mathcal{J}_{o,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right)\right)\right] \\
 & \quad + \frac{c_{12}}{\dbtilde t^2}\frac{s\log n\log T_n}{n}.
 \bea 
@@ -7691,7 +7784,7 @@ Thus, we get
 From Lemma~\ref{lem_huber_rate}, 
 we get 
 \bea 
-& \sP\paren{c_0\Delta^2(\hat f - f^*) > \tilde t^2} \\& \,\leq\, \frac{24c_5\tilde t^2}{\dbtilde t^2} \frac{1}{\tilde t^2}\left[ \sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right)\right. \right. \\
+& \sP\paren{c_0\Delta^2(\hat f - f^*) > \tilde t^2} \\& \,\leq\, \frac{\rev{48}c_5\tilde t^2}{\dbtilde t^2} \frac{1}{\tilde t^2}\left[ \sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right)\right. \right. \\
 & \left. \left. +R_{\mathcal{J}_{o,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right)\right)\right] \\
 & \quad + \frac{c_{12}}{\dbtilde t^2}\frac{s\log n\log T_n}{n}.
 \bea 
@@ -7723,7 +7816,7 @@ With such choice of $\tilde t^2$, suppose
 % \bea 
 Then we have 
 \bea 
-&  \frac{24c_5\tilde t^2}{\dbtilde t^2} \frac{1}{\tilde t^2}\left[ \sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right)\right. \right. \\
+&  \frac{\rev{48}c_5\tilde t^2}{\dbtilde t^2} \frac{1}{\tilde t^2}\left[ \sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right)\right. \right. \\
 & \left. \left. +R_{\mathcal{J}_{o,l}}\left(\text{Star}(\gF, f^\ast) \cap \set{f: \norm{f-f^*}^2 \leq  c_0^{-1}\cdot\max\set{B,1}\cdot \tilde t^2}\right)\right)\right] \\
 & \quad + \frac{c_{12}}{\dbtilde t^2}\frac{s\log n\log T_n}{n} = O\left(\gamma_n + \frac{\left(C_0 + \frac{\bar f}{2}\right) \phi_{nm}^2}{\dbtilde t^2}\gamma_n + \gamma_n^{\mu}\right) \,=\, O\left(\gamma_n+\gamma_n^{\mu}\right).
 \bea 
@@ -7732,9 +7825,10 @@ Thus, it holds that
 \bea 
 \Delta^2(\hat{f} - f^*) &\,=\, O_p \left(\sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(\text{Star}(\gF, f^\ast)\cap \left\{f: \norm{f-f^*}\,\leq\, c_0^{-\frac{1}{2}}\cdot b(B)\cdot \tilde t\right\}\right)\right.\right. \\
 &\quad \left.\left. +R_{\mathcal{J}_{o,l}}\left(\text{Star}(\gF, f^\ast)\cap \left\{f: \norm{f-f^*}\,\leq\, c_0^{-\frac{1}{2}}\cdot b(B)\cdot \tilde t\right\}\right) \right.\right. 
-\\&\quad \left.\left. + 2\left(C_0 + \frac{\bar f}{2}\right)\phi_{nm}^2 + \frac{s\cdot\text{poly}(\log n)\log (T_n)}{n}\right)\right), \,\,\,\text{and}\,\,\,
-\bea 
+\\&\quad \left.\left. + 2\left(C_0 + \frac{\bar f}{2}\right)\phi_{nm}^2 + \frac{s\cdot\text{poly}(\log n)\log (T_n)}{n}\right)\right)\rev{.}
+\bea
 
+\rev{Applying \eqref{eq_huber_l2_approx} gives the $L_2$ bound below. Its additional $2\phi_{nm}^2$ is absorbed by the displayed approximation term, since $b^2(B)\geq1$ and $C_0+\bar f/2>0$.}
 \bea 
 \left\|\hat f - f^*\right\|_2^2 &\,=\, O_p \left(b^2(B)\cdot \sum_{l=1}^L\left(R_{\mathcal{J}_{e,l}}\left(\text{Star}(\gF, f^\ast)\cap \left\{f: \norm{f-f^*}\,\leq\, c_0^{-\frac{1}{2}}\cdot b(B)\cdot \tilde t\right\}\right)\right.\right. \\
 &\quad \left.\left. +R_{\mathcal{J}_{o,l}}\left(\text{Star}(\gF, f^\ast)\cap \left\{f: \norm{f-f^*}\,\leq\, c_0^{-\frac{1}{2}}\cdot b(B)\cdot \tilde t\right\}\right) 
