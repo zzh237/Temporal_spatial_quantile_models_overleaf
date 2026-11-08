@@ -1473,7 +1473,7 @@ the network before this truncation. In particular, every function
 in this class satisfies \eqref{F_2}.
 \end{revision}
 
-In order to judge the quality of such estimates theoretically, usually the rate of convergence of the \( L_2 \)-error is considered. It is well-known, that smoothness assumptions on the regression function are necessary in order to derive non-trivial results on the rate of convergence (see, e.g., Theorem 7.2 and Problem 7.2 in \cite{devroye2013probabilistic} and Section 3 in \cite{devroye1980distribution}). For that purpose, we introduce the following definition of \( (p, C) \)-smoothness.
+In order to judge the quality of such estimates theoretically, usually the rate of convergence of the \( L_2 \)-error is considered. \rev{We impose a quantitative smoothness condition on the regression function to derive the convergence rates below.} For that purpose, we introduce the following definition of \( (p, C) \)-smoothness.
 
 \begin{definition}
 Let \( p = q + s \) for some \( q \in \mathbb{N}_0 \) and \( 0 < s \,\leq\, 1 \). A function \( m : \mathbb{R}^d \rightarrow \mathbb{R} \) is called \( (p, C) \)-smooth, if for every \( a = (\alpha_1, \ldots, \alpha_d) \in \mathbb{N}_0^d \) with \( \sum_{j=1}^d \alpha_j = q \) the partial derivative \( \partial^qm / (\partial x_1^{\alpha_1} \ldots \partial x_d^{\alpha_d}) \) exists and satisfies
