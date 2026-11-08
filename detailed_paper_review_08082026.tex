@@ -462,17 +462,44 @@ faithful Polish random-function state with jointly measurable evaluation, a
 fixed feasible approximation, measurable suprema and an attained measurable
 empirical minimum. T84 model adoption and T39/T41/T83 network specialization
 remain open; approximate minimization is not covered by this batch.}\\
-\rowcolor{lightgray}T38 & 19--20 & Neural-network recursion & \deferred & A new recursion
-would redefine the modeled architecture and must match the approximation
-theorem used later.\\
-T39 & 20--21 & Uncontrolled neural-network class & \deferred & Clipping, sparsity, or
-weight bounds are substantive new assumptions.\\
-\rowcolor{lightgray}T40 & 20--21 & Hierarchical-composition assumptions & \deferred &
-Finiteness and bounded-domain conditions would strengthen the model and affect
-the approximation result.\\
-T41 & 21 & Architecture choice in the network theorem & \deferred & Selecting depth,
-width, and sparsity requires balancing approximation and estimation from
-scratch.\\
+% Original T38 disposition retained for provenance:
+% \rowcolor{lightgray}T38 & 19--20 & Neural-network recursion & \deferred & A new recursion
+% would redefine the modeled architecture and must match the approximation
+% theorem used later.\\
+\rowcolor{lightgray}T38 & 19--20 & Neural-network recursion & \pairreviewed &
+\textcolor{deferredred}{Corrected the layer and coefficient indices and the affine
+output from the final hidden layer, including depth one. The recursion now
+matches the shared bounded network class. Historical implementation and the
+separate statistical application conditions are not certified by this repair.}\\
+% Original T39 disposition retained for provenance:
+% T39 & 20--21 & Uncontrolled neural-network class & \deferred & Clipping, sparsity, or
+% weight bounds are substantive new assumptions.\\
+T39 & 20--21 & Uncontrolled neural-network class & \pairreviewed &
+\textcolor{deferredred}{The fitted class now uses fixed output clipping, the
+original empirical weights, complete dense parameter counting and a covering
+bound for that same class. Measurable exact ERM, measurable suprema and response
+state conditions remain explicit; historical unbounded fits are not certified.}\\
+% Original T40 disposition retained for provenance:
+% \rowcolor{lightgray}T40 & 20--21 & Hierarchical-composition assumptions & \deferred &
+% Finiteness and bounded-domain conditions would strengthen the model and affect
+% the approximation result.\\
+\rowcolor{lightgray}T40 & 20--21 & Hierarchical-composition assumptions & \pairreviewed &
+\textcolor{deferredred}{The application fixes the dimension and a finite target
+representation. Continuity gives compact true input ranges, with constants
+allowed to depend on the representation and all positive smoothness orders
+retained. No uniform result over growing dimensions or changing representations
+is asserted; T84 and historical implementation remain separate.}\\
+% Original T41 disposition retained for provenance:
+% T41 & 21 & Architecture choice in the network theorem & \deferred & Selecting depth,
+% width, and sparsity requires balancing approximation and estimation from
+% scratch.\\
+T41 & 21 & Architecture choice in the network theorem & \pairreviewed &
+\textcolor{deferredred}{The shared proof constructs a feasible comparator in the
+same bounded class, uses strict-ancestor effective smoothness and two explicit
+architectures, and connects their complexity to the current group fixed point.
+The rate retains fixed representation and target envelope, measurable exact
+ERM, measurable suprema and faithful response-state/evaluation conditions.
+T04/T07/T84 and numerical optimization error are not resolved here.}\\
 % Original T42 disposition retained for provenance:
 % \rowcolor{lightgray}T42 & 22 & Trend-filtering penalty order in the algorithm &
 % \deferred & The discrete operator convention must be reconciled jointly with
@@ -804,9 +831,18 @@ replace the old nonconvex tail argument. T19's general norm and width lemmas
 remain unchanged. T84 faithful-state/model adoption, measurable exact-minimum
 premises and T83 network application remain unresolved; T78--T80 dispositions
 require their own actual-text reviews. This is not full-row closure.}\\
-\rowcolor{lightgray}T83 & 114--124 & Neural-network entropy/application proof & \deferred &
-The explicit architecture, approximation theorem, entropy bound, and fixed
-point all remain to be established together.\\
+% Original T83 disposition retained for provenance:
+% \rowcolor{lightgray}T83 & 114--124 & Neural-network entropy/application proof & \deferred &
+% The explicit architecture, approximation theorem, entropy bound, and fixed
+% point all remain to be established together.\\
+\rowcolor{lightgray}T83 & 114--124 & Neural-network entropy/application proof & \pairreviewed &
+\textcolor{deferredred}{Established expected local width with both radius and
+envelope terms, unsigned contraction, complete parameter counting and the
+current-group fixed-point application in the shared network proof. The old
+arbitrary-radius empirical-ball containment chain is replaced. Fixed target
+envelope and representation, measurable exact ERM and suprema, and faithful
+response-state/evaluation remain conditions; T04/T07/T84, historical unbounded
+fits and numerical stopping error are not certified.}\\
 T84 & 125--127 & Berbee coupling proof & \deferred & Quoting or proving sequential joint
 coupling changes a foundational proof and must be checked against the precise
 mixing assumptions.\\

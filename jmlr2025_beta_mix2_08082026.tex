@@ -1436,22 +1436,42 @@ Recently, also unbounded activation functions are used, e.g., the ReLU activatio
 \end{equation}
 
 The network architecture \( (\gL, k) \) depends on a positive integer \( \gL \) called the number of hidden layers and a width vector \( k = (k_1, \ldots, k_{\gL}) \in \mathbb{N}^{\gL} \) that describes the number of neurons in the first, second, \ldots, \( \gL \)-th hidden layer. A multilayer feedforward neural network with network architecture \( (\gL, k) \) and ReLU activation function \( \sigma \) is a real-valued function defined on \( \mathbb{R}^d \) of the form
+\begin{revision}
 \begin{equation} \label{eq:network_function}
-f(x) \,=\, \sum_{i=1}^{k_{\gL}} c_{i,1}^{(\gL)} \sigma \left( f_{i}^{(\gL-1)}(x) \right) + c_{1,0}^{(\gL)},
+f(x) \,=\, \sum_{i=1}^{k_{\gL}} c_{1,i}^{(\gL)} f_i^{(\gL)}(x) + c_{1,0}^{(\gL)},
 \end{equation}
-for some \( c_{1,0}^{(\gL)}, \ldots, c_{1,k_{\gL}}^{(\gL)} \in \mathbb{R} \) and for \( f_i^{(\gL)} \)'s recursively defined by
+for \( c_{1,0}^{(\gL)}, \ldots, c_{1,k_{\gL}}^{(\gL)} \in \mathbb{R} \).
+The hidden-layer functions are defined recursively by
 \begin{align}
 f_i^{(s)}(x) &\,=\, \sigma \left( \sum_{j=1}^{k_{s-1}} c_{i,j}^{(s-1)} f_j^{(s-1)}(x) + c_{i,0}^{(s-1)} \right), \\
-&\quad \text{for some } c_{i,0}^{(s-1)}, \ldots, c_{i,k_{s-1}}^{(s-1)} \in \mathbb{R}, s \in \{2, \ldots, L\}, \nonumber
+&\quad s \in \{2, \ldots, \gL\}, \quad i \in \{1,\ldots,k_s\}, \nonumber
 \end{align}
-and
+with real coefficients \(c_{i,j}^{(s-1)}\), \(j=0,\ldots,k_{s-1}\), and
 \begin{equation} \label{eq:first_layer_function}
 f_i^{(1)}(x) \,=\, \sigma \left( \sum_{j=1}^d c_{i,j}^{(0)} x^{(j)} + c_{i,0}^{(0)} \right),
+\quad i \in \{1,\ldots,k_1\},
 \end{equation}
-for some \( c_{i,0}^{(0)}, \ldots, c_{i,d}^{(0)} \in \mathbb{R} \). The space of neural networks with \( \gL \) hidden layers and \( r \) neurons per layer is defined by
-\begin{equation} \label{eq:space_of_networks}
-\mathcal{F}(\gL,r) \,=\, \left\{ f : f \text{ is of the form \eqref{eq:network_function} with } k_1 = k_2 = \ldots = k_{\gL} = r \right\}.
+with \(c_{i,0}^{(0)},\ldots,c_{i,d}^{(0)}\in\mathbb R\).
+When \(\gL=1\), the higher-layer recursion is empty and the affine
+output uses the first hidden layer.
+\end{revision}
+\begin{revision}
+For the fixed bound \(B>0\) in \eqref{F_2}, define the class of
+networks with \(\gL\) hidden layers and \(r\) neurons per layer by
+\begin{equation}
+\label{eq:space_of_networks}
+\begin{aligned}
+\mathcal F(\gL,r)
+\,=\,\bigl\{x\mapsto\max\{-B,\min\{B,g(x)\}\}:&
+\ g\text{ has the form \eqref{eq:network_function}},\\
+& k_1=\cdots=k_{\gL}=r\bigr\}.
+\end{aligned}
 \end{equation}
+The fixed output truncation has no trainable parameters, and
+\(B\) is suppressed in the notation. The depth and width describe
+the network before this truncation. In particular, every function
+in this class satisfies \eqref{F_2}.
+\end{revision}
 
 In order to judge the quality of such estimates theoretically, usually the rate of convergence of the \( L_2 \)-error is considered. It is well-known, that smoothness assumptions on the regression function are necessary in order to derive non-trivial results on the rate of convergence (see, e.g., Theorem 7.2 and Problem 7.2 in \cite{devroye2013probabilistic} and Section 3 in \cite{devroye1980distribution}). For that purpose, we introduce the following definition of \( (p, C) \)-smoothness.
 
@@ -1497,48 +1517,129 @@ For \( l > 1 \), we recursively define
 Thus, we add the following assumption.
 \begin{assumption}
 \label{assump_nn}
-\begin{itemize}
-    \item The $f^*$ is a hierarchical composition model that satisfying Definition~\ref{def_h_c_model}.
-\end{itemize}
-    
+\begin{revision}
+For the neural-network application, fix \(d\) and a representation of
+\(f^*\) as a hierarchical composition model in
+Definition~\ref{def_h_c_model}. Its level, component functions, input
+dimensions and smoothness constants do not depend on \(n\) or
+\(\{m_i\}_{i=1}^n\). In this application, \(\gP\) denotes the finite
+set of smoothness-order pairs \((p,K)\) used in this representation.
+\end{revision}
 \end{assumption}
 
-Then, our estimator is defined as 
-\beq
+\rev{The representation has finitely many components because its level
+and the number of inputs at each component are finite. The coordinate
+leaves take values in \([0,1]\). Inductively, continuity of each component
+on the compact ranges of its inputs implies that every intermediate
+output has a fixed compact range on \([0,1]^d\). Thus the arguments of
+each component lie in a fixed compact product of intervals.
+Approximation constants may depend on this fixed representation and
+these intervals.}
+
+\begin{revision}
+Let \(\hat f\) be a measurable minimizer, assumed to exist, of the
+empirical quantile loss over the class in
+\eqref{eq:space_of_networks}:
+\begin{equation}
 \label{nn_main_est}
-\hat{f} &\,=\, \arg\min_{f \in F(\gL, r)} \left\{ \frac{1}{n} \sum_{i=1}^n \frac{1}{m_i} \sum_{j=1}^{m_i} \rho(y_{ij} - f(x_{ij})) \right\}. \\
-% &\text{subject to } J(f) \leq 1.
-\beq
+\hat f \,\in\,
+\arg\min_{f\in\mathcal F(\gL,r)}
+\left\{
+\frac{1}{n}\sum_{i=1}^n\frac{1}{m_i}
+\sum_{j=1}^{m_i}\rho\bigl(y_{ij}-f(x_{ij})\bigr)
+\right\}.
+\end{equation}
+\end{revision}
 
 \subsection{Results For Neural Networks}
 
 
-\begin{theorem}[Neural Network]
- \label{Theorem_nn_rate} Consider observations $\{(x_{ij}, y_{ij})\}_{i=1,j=1}^{n,m_i}$ satisfying Assumptions~\ref{Assumption 1.} to \ref{ass:tail_multi_d} and Assumption~\ref{assump_nn}. And let $f^*(x_{ij})$ be the sequence of $\tau$ quantiles of $y_{ij}$. The $f^*$ is not necessarily in $\mathcal{F}$. Based on these observations, consider the estimator $\hat f \in F(\gL, r)$ be given by \eqref{nn_main_est}. 
-It holds that
-% \beq 
-% \Delta^2(\hat f - f^*) = O_p \paren{\frac{\max\set{B,1} \log^3(n) \cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{nm}  + 2\left(C_0 + \frac{\bar f}{2}\right) \phi_{nm}^2 + \frac{s\cdot\text{poly}(\log n) \log(T_n)}{n}}, \,\,\,\text{and}\,\,\,
-% \beq    
-% \beq 
-% \label{nn_rate}
-% &\left\|\hat f - f^*\right\|_2^2 = O_p \left(\frac{\max\set{B^2,B} \log^3(n) \cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{nm} \right.\\ 
-% & \quad \left. + 2\max\set{B,1}\left(C_0 + \frac{\bar f}{2}\right) \phi_{nm}^2 + \max\set{B,1}\frac{s\cdot\text{poly}(\log n) \log(T_n)}{n}\right),
-% \beq   
-% \beq 
-% \label{nn_rate}
-% &\left\|\hat f - f^*\right\|_2^2 = O_p \left(\max\set{B^2,B}\cdot\log^3(n) \cdot \log^2(nm) \cdot \max_{(p, K) \in \gP}  (nm)^{\frac{-2p}{2p+K}} \right.\\ 
-% & \quad \left. + \max\set{B,1}\cdot \left(2C_0 + \bar f\right)\cdot \max_{(p, K) \in \gP}  (nm)^{\frac{-2p}{2p+K}} + \max\set{B,1}\frac{s\cdot\text{poly}(\log n) \log(T_n)}{n}\right).
-% \beq
-\beq 
-\label{nn_rate}
-&\left\|\hat f - f^*\right\|_2^2 \,=\, O_p \left(\max\set{B^2,B}\cdot \log^5(nm) \cdot \max_{(p, K) \in \gP}  (nm)^{\frac{-2p}{2p+K}} \right.\\
-& \quad \left. \,+\, \max\set{B,1}\cdot \gC\cdot \max_{(p, K) \in \gP}  (nm)^{\frac{-2p}{2p+K}} \,+\, \max\set{B,1}\frac{s\cdot\text{poly}(\log n) \log(T_n)}{n}\right).
-\beq
-\end{theorem}
+\begin{revision}
+\begin{theorem}[Neural networks]
+\label{Theorem_nn_rate}
+Assume the sampling, random-function-state, and curvature hypotheses
+of Theorem~\ref{Theorem_non_convex}, and
+Assumption~\ref{assump_nn}. All function norms below are taken on
+$[0,1]^d$, and $\|\cdot\|_2$ denotes $L_2(Q)$.
+Put $N=\sum_{i=1}^n m_i$ and retain
+$L=\lceil2\log(n)/C_\beta\rceil$, with $n\geq2$ and $n\geq2L$.
+Use the bounded network class in \eqref{eq:space_of_networks} with
+a fixed $B\geq\max\{1,\|f^*\|_\infty\}$.
+The estimator in \eqref{nn_main_est} is a measurable minimizer,
+assumed to exist, of the original empirical loss with weights
+$1/(nm_i)$. Assume that the displayed suprema are measurable.
 
-Theorem~\ref{Theorem_nn_rate} then indicates that, for temporal-spatial data and in terms of the $\gL_2$ loss defined in \eqref{huber_def}, the fully connected neural network estimator presented in \eqref{nn_main_est} which satisfies \rev{a hierarchical}
-composition model with smoothness and order constraint $\gP$ attains a convergence rate of \\ \( \left\{\max\set{B^2,B}\cdot \text{poly}(\log(nm))+\max\set{B,1}\cdot \gC\right\}\cdot \max_{(p, K) \in \gP}  (nm)^{\frac{-2p}{2p+K}} +\max\set{B,1}\log(T_n)s \cdot n^{-1}\). This rate does not depend on d and which does therefore circumvent the so-called
-curse of dimensionality. The first term in our rate \rev{is the same as the rate} $\max_{(p, K) \in \gP}  (nm)^{\frac{-2p}{2p+K}}$ in \cite{kohler2019rate} up to some logarithm factors and $\max\set{B^2,B}$, the difference is the second term approximation error and the last term, which comes from $f^* \notin \gF$ and quantile temporal data.  Our analysis first derives the rate for \rev{Quantile Temporal-Spatial Data} with Neural Network as function class of estimators. We also have the result in terms of the Huber-type loss defined in \eqref{huber_def} shown in \eqref{nn_rate_huber}. 
+For a positive-level representation, let $\mathcal V$ be its
+finite set of component occurrences, viewed as a tree. If component
+$v$ has smoothness $p_v$ and $K_v$ inputs, define
+\begin{equation}
+\label{eq_nn_effective_smoothness}
+\widetilde p_v
+=p_v\prod_{\substack{w\text{ a strict ancestor}\\
+                     \text{of }v}}(p_w\wedge1),
+\qquad
+\rho=\min_{v\in\mathcal V}
+       \frac{2\widetilde p_v}{2\widetilde p_v+K_v},
+\end{equation}
+where an empty product is one. Choose either
+\begin{equation}
+\label{eq_nn_architecture_choice}
+\begin{aligned}
+(\mathcal L_N,r_N)
+&\asymp\bigl(\log N,N^{(1-\rho)/2}\bigr),\\
+\text{or}\qquad
+(\mathcal L_N,r_N)
+&\asymp\bigl(N^{(1-\rho)/2}\log N,1\bigr),
+\end{aligned}
+\end{equation}
+with sufficiently large fixed constants and integer rounding.
+In the second choice, the width is a sufficiently large fixed
+integer.
+
+Assume the expected-width conclusion of
+Lemma~\ref{lem_nn_expected_local_width} for this same fitted
+class and its deterministic feasible comparison functions.
+Then, as $n\to\infty$,
+\begin{equation}
+\label{nn_rate}
+\|\hat f-f^*\|_2^2
+=O_P\left(L\log^4(N)N^{-\rho}+\frac{L}{n}\right).
+\end{equation}
+The same order holds for $\Delta^2(\hat f-f^*)$.
+Since $L=O(\log N)$, the first term may also be bounded by
+$\log^5(N)N^{-\rho}$.
+
+For a level-zero representation, use the actual fitted class
+$\mathcal F(1,1)$ and do not define $\rho$ by a minimum over an
+empty set. Under the same expected-width estimate for this class,
+\[
+\|\hat f-f^*\|_2^2
+=O_P\left(\frac{L\log(C_{\rm ent}N)}{N}+\frac{L}{n}\right),
+\]
+where $C_{\rm ent}\geq e$ is the constant in
+\eqref{eq_nn_width_scale}.
+All constants may depend on the fixed representation, $d$, $B$,
+and the stated sampling and curvature constants.
+\end{theorem}
+\end{revision}
+
+
+\begin{revision}
+Theorem~\ref{Theorem_nn_rate} bounds the $L_2(Q)$ error of the
+bounded network estimator in \eqref{nn_main_est} for either
+architecture in \eqref{eq_nn_architecture_choice}.
+The Huber-type risk defined in \eqref{huber_def} has the same
+order. For a positive-level representation, the component input
+dimensions and effective smoothness in
+\eqref{eq_nn_effective_smoothness} determine the exponent
+$\rho$. If every component has $p_v\geq1$, then
+$\widetilde p_v=p_v$; an ancestor with smoothness below one
+reduces the effective smoothness of its descendants.
+The ambient dimension $d$ is fixed, and the constants may
+depend on $d$ and the chosen representation.
+The risk proof bounds the contribution of the shared
+within-time effect by a term of order $L/n$.
+\end{revision}
 
 \section{Algorithms}
 This section provides algorithms to support our theoretical results. We start by building algorithms to evaluate the performance of the penalized estimators for Trend Filtering, High Dimensional Quantile Regression and \( K \)-NN-FL, respectively, for both settings \( d = 1 \) and \( d > 1 \). 
@@ -9828,373 +9929,441 @@ Lemma~\ref{lem_nonconvex_huber_rate} then gives the $L_2$ conclusion.
 
 
 \section{Proof of Theorem~\ref{Theorem_nn_rate}}
-\begin{corollary}[Neural Network When $f^* \notin \gF$ and $\gF$ is not Convex]
- \label{col_nn},  Let $F(\gL,r)$ defined as in (2) where $\sigma : \mathbb{R} \to \mathbb{R}$ with $\sigma(x) \,=\, \max\{x, 0\}$, let $\text{Star}(F(\gL,r), f^\ast)$ follow the definition in \eqref{star_shaped} where $f^*$ not necessarily in $F(\gL,r)$,  
- let 
-Let $f_{\text{Proj}}$ in $\gF$ such that
-\begin{align*}
-\| f_{\text{Proj}} - f^\ast \|_{\infty} &\,\leq\, \phi_{nm}
-\end{align*}Let 
-\bea
-\tilde t^2 \,\coloneqq\, t^2 +  2\left(C_0 + \frac{\bar f}{2}\right)\phi_{nm}^2, 
-\bea
- 
-then we have 
- \beq 
- \label{nn_rate_huber}
- \Delta^2(\hat f - f^*) &\,=\, O_p \bigg(\frac{\max\set{B,1} \log^3(n) \cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{nm} \\
- &\qquad\qquad + 2\left(C_0 + \frac{\bar f}{2}\right) \phi_{nm}^2 + \frac{s\cdot\text{poly}(\log n) \log(T_n)}{n}\bigg).
- \beq 
-\end{corollary}
+
+\begin{revision}
+\begin{lemma}[Expected local Rademacher complexity]
+\label{lem_nn_expected_local_width}
+Let $\mathcal F$ be a nonempty deterministic class of measurable functions
+with $|f(x)|\le B<\infty$ and finite pseudodimension at most $v\ge1$.
+Suppose that a fixed $f_{\rm Proj}\in\mathcal F$ satisfies
+$\|f_{\rm Proj}-f^*\|_\infty\le\phi<\infty$, and put $A=2B+\phi$.
+For $b\ge0$, let
+\[
+\mathcal H_b
+\,=\,
+\{h\in\operatorname{Star}(\mathcal F,f^*)-f^*:
+  \|h\|_{L_2(Q)}\le b\}.
+\]
+Suppose that the suprema below are measurable.
+For a nonempty auxiliary group $\mathcal A_r$, let
+$N_r=\sum_{i\in\mathcal A_r}m_i$, and suppose that its coupled design
+points have joint law $Q^{\otimes N_r}$.
+There are universal constants $C_{\rm ent}\ge e$ and $C_R>0$ such that,
+with
+\begin{equation}
+\label{eq_nn_width_scale}
+\xi_r^2
+\,=\,
+\frac{(v+1)\log(C_{\rm ent}N_r)}{N_r},
+\end{equation}
+we have, for every $b\ge0$,
+\begin{equation}
+\label{eq_nn_expected_local_width}
+R_{\mathcal A_r}(\mathcal H_b)
+\,\le\,
+C_R\bigl(b\xi_r+A\xi_r^2\bigr).
+\end{equation}
+Here the complexity uses the denominator $N_r$ and expectation under
+the unconditional law of the coupled design points.
+\end{lemma}
+
 \begin{proof}
-
-We analyze   
-\bea 
-&\frac{R_{\mathcal{J}_{e,l}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}\right)+ R_{\mathcal{J}_{o,l}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}\right)}{\dbtilde t^2}, 
-\bea 
-Also, let $\tilde b = c^{-1/2}\max\set{B^{1/2},1}\cdot \tilde t$.
-
-
-
-For any function class $\gF \cap B_2(\tilde b)$, we have 
-\bea 
-R_{\mathcal{J}_{e,l}}\left(\gF \cap B_2(\tilde b)\right) \,=\, \E\Big[\mathbb{E} \Big[  \sup_{g \in \gF \cap B_2(b)} 
-\frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  g(x_{ij}) |\set{x_{ij}} \Big]\Big] 
-\bea 
-
-Denote 
-\beq 
-\label{c_eq_rade_b2}
-R_{\mathcal{J}_{elmn}}\left(\gF \cap B_2(\tilde b)\right) \,=\, \mathbb{E} \left[  \sup_{g \in \gF \cap B_2(\tilde b)} 
-\frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  g(x_{ij}) |\set{x_{ij}} \right]
-\beq 
-Also denote by $\norm{g}_{mn} = \left(\frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}} g(x_{ij})^2\right)^{1/2}$
-
-
-
-
-Corollary 2.2 of \cite{bartlett2005local} gives
-
-\bea
-\gF \cap B_2(\tilde b) \subseteq \gF \cap B_{mn} (\sqrt{2} \tilde b),
-\bea
-
-with probability at least $1 - \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}m_i} \,\geq\, 1 - \frac{1}{C_{\beta}}\frac{2\log n}{cc_1nm}$, where $c$ appears in Assumption~\ref{asm:m}. Define this good event as $\mathcal{E}$. On $\mathcal{E}$ using Dudley’s entropy integral (see \cite{dudley1967sizes} or Lemma~\ref{dud_new}), Equation~\eqref{beta_constants}, and the assumption $m_i \asymp m$ specified in the statement of the Lemma, with $c$ defined in Assumption~\ref{asm:m}, we bound the empirical Rademacher complexity defined in Equation~\eqref{c_eq_rade_b2} as follows
-
-
-The Rademacher complexity defined in Equation~\eqref{c_eq_rade_b2} is bounded by
-
-
-% \begin{align}
-% \mathbb{E} \left( \sup_{f \in \mathcal{F}_{\text{star}(\mathcal{F})} : \|f\|_{\infty} \leq \delta} \frac{1}{n} \sum_{i=1}^n \xi_i f(x_i) \Big| \{x_i\}_{i=1}^n \right) 
-% &\leq 12 \inf_{0 < \alpha < \delta} \left[ \alpha + \frac{1}{\sqrt{n}} \int_{\alpha}^{\delta} \sqrt{\log \mathcal{N}(t, \text{star}(\mathcal{F}), \|\cdot\|_{\infty})} \, dt \right] \\
-% &\leq 12 \inf_{0 < \alpha < \delta} \left[ \alpha + \frac{1}{\sqrt{n}} \int_{\alpha}^{\delta} \sqrt{\log \mathcal{N}(t/2, \mathcal{F}, \|\cdot\|_{\infty})} \, dt + \frac{1}{\sqrt{n}} \int_{\alpha}^{\delta} c_1 \log(1/t) \, dt \right] \\
-% &\leq \frac{\delta^2}{4} + \frac{12}{\sqrt{n}} \int_{\delta^2/4}^{\delta} \sqrt{\log \mathcal{N}(t/2, \mathcal{F}, \|\cdot\|_{\infty})} \, dt + \frac{12 c_1}{\sqrt{n}} \log\left(\frac{48}{\delta^2}\right)
-% \end{align}
-
-
-
-\bea
-&R_{\mathcal{J}_{elmn}} (\gF \cap B_2(\tilde b)) \,\leq\, R_{\mathcal{J}_{e1mn}} \left( \left\{ g \in F : ||g||_{mn}^2 \,\leq\, 2\tilde b^2 \right\} \right) \\
-&\,\leq\,  
-12 \inf_{0 < \alpha < \sqrt{2}\tilde b} \left[ \alpha + \frac{1}{\sqrt{\sum_{i\in \mathcal{J}_{e,1} m_i}}} \int_{\alpha}^{\delta} \sqrt{\log N(t, ||\cdot||_{mn}, \gF)} \, dt \right]
-\\
-&\,\leq\,  12 \inf_{0 < \alpha < \sqrt{2}\tilde b} \left[ \alpha + \frac{1}{\sqrt{C_{\beta}cc_1nm}} \int_{\alpha}^{\delta} \sqrt{\log N(t, ||\cdot||_{mn}, \gF)} \, dt \right].
-\bea
-
-Under the event $\mathcal{E}^c$, given that $F \subseteq B_{\infty}(B)$, we have that $R_{\mathcal{J}_{e1mn}} (\gF \cap B_2(b)) \,\leq\, B$. Therefore, splitting the expectation over $\mathcal{E}$ and $\mathcal{E}^c$, 
-
-Set that $\gF \equiv \text{Star}(F(\gL,r), f^\ast)$, from Lemma~\ref{cor_bounded}, we obtain that. 
-
-\bea 
-&\log N(\epsilon,\left\| \cdot \right\|_{nm}, \text{Star}(F(\gL,r), f^\ast)) \,\leq\, \log \left(\frac{2B}{\epsilon}\right) + \gL^2 r^2 \log(\gL r^2) \log(B\epsilon^{-1}).
-\bea
-
-Denote $\frac{1}{\sqrt{C_{\beta}cc_1}}$ as $c_8$. 
-\bea
-& R_{\mathcal{J}_{elmn}} ( \text{Star}(F(\gL,r), f^\ast) \cap B_{nm}(\sqrt{2}\tilde b)) \\ 
-&\,\leq\,   12 \inf_{0 < \alpha < \sqrt{2}\tilde b} \left[ \alpha + \frac{c_8}{\sqrt{nm}} \int_{\alpha}^{\sqrt{2} \tilde b} \sqrt{\log N(\epsilon, ||\cdot||_{mn}, \text{Star}(F(\gL,r))} \, d\epsilon \right] \\
-&\labelrel\leq{in1028}  12 \inf_{0 < \alpha < \sqrt{2}\tilde b} \left[ \alpha + \frac{c_8}{\sqrt{nm}} \int_{\alpha}^{\sqrt{2} \tilde b} \sqrt{\gL^2 r^2 \log(\gL r^2) \log(B\epsilon^{-1})} d\epsilon + \frac{c_8}{\sqrt{nm}} \int_{\alpha}^{\sqrt{2} \tilde b} \sqrt{c_1 \log\left(\frac{2B}{\epsilon}\right)} d\epsilon \right] \\
-% &\labelrel\leq{in1034}  12 \inf_{0 < \alpha < \sqrt{2}\tilde b} \left[ \alpha + \frac{c_8B}{\sqrt{nm}} \int_{\alpha/B}^{\sqrt{2} \tilde b/B} \sqrt{\gL^2 r^2 \log(\gL r^2) \log(t^{-1})} dt + \frac{2c_8B}{\sqrt{nm}} \int_{\frac{\alpha}{2B}}^{\frac{\sqrt{2} \tilde b}{2B}} \sqrt{c_1 \log\left(s^{-1}\right)} ds \right]\\
-&\labelrel\leq{eq1035}  \frac{ \tilde  b^2}{mn} + \frac{12c_8}{\sqrt{mn}} \int_{\frac{\tilde b^2}{12\log(nm)}}^{\sqrt{2} \tilde b} \sqrt{\gL^2 r^2 \log(\gL r^2) \log(\epsilon^{-1})} d\epsilon + \frac{12 c_8}{\sqrt{mn}} \int_{\frac{\tilde b^2}{12\log(nm)}}^{\sqrt{2} \tilde b}\sqrt{c_1\log\left(\frac{2B}{\epsilon}\right)}d\epsilon  \\
-&\,\leq\,  \frac{\tilde b^2}{\log(mn)} + \frac{12\sqrt{2} \tilde b c_8}{\sqrt{mn}} \sqrt{\gL^2 r^2 \log(\gL r^2) \log\left(\frac{12B\log(mn)}{\tilde b^2}\right)} + \frac{12\sqrt{2} \tilde b c_8}{\sqrt{mn}} \sqrt{c_1\log\left(\frac{24B\log(mn)}{\tilde b^2}\right)}
-\\
-&\,=\, \frac{\tilde b^2}{\log(mn)} + \frac{12\sqrt{2} \tilde b c_8 \gL r \sqrt{ \log(\gL r^2) \log\left(\frac{12B\log(mn)}{\tilde b^2}\right)} }{\sqrt{mn}}  + \frac{12\sqrt{2} \tilde b c_8\sqrt{c_1\log\left(\frac{24B\log(mn)}{\tilde b^2}\right)}}{\sqrt{mn}}  \\
-&\,\leq\, \frac{\tilde b^2}{\log(mn)} + \frac{12\sqrt{2} \tilde b c_8c_9 \gL r (\log(\gL r^2))^{1/2}\sqrt{  \log\left(\frac{12B\log(mn)}{\tilde b^2}\right)} }{\sqrt{mn}}.
-\bea
-Where inequality~\eqref{in1028} follows the Corollary~\ref{cor_star_nn} and \eqref{eq1035} holds by choosing $\alpha = \frac{\tilde b^2}{12 \log(mn)}$. 
-
-% For the last term, given a $\tilde \delta = \max\set{\frac{1}{nm}, \delta}$ 
-% \bea 
-% \frac{12 \delta}{\sqrt{n}} \sqrt{c_1\log\left(\frac{48}{\delta^2}\right)} \leq \frac{12 \tilde \delta}{\sqrt{n}} \sqrt{c_1\log\left(\frac{48}{\tilde \delta^2}\right)} \leq \max \set{ \frac{c_{12}}{nm},  \frac{c_{13} \delta}{\sqrt{nm}} \sqrt{\log\left(\frac{1}{\delta^2}\right)} }
-% \bea 
-
-% \bea
-% \frac{C_{\text{Dud}}}{\sqrt{C_{\beta}cc_1nm}} \int_0^{\sqrt{2}b} \sqrt{\log N (\epsilon, ||\cdot||_{mn}, F)} d\epsilon &\leq \frac{A C_{\text{Dud}}B^{1/2k} }{\sqrt{C_{\beta}cc_1nm}} \int_0^{\sqrt{2}b} \epsilon^{-1/(2k)} d\epsilon \\
-% &= \frac{c_4 B^{1/2k} b^{1-1/(2k)}}{\sqrt{C_{\beta}cc_1nm}},
-% \bea
-
-
-The Rademacher complexity defined in Equation~\rev{\eqref{c_eq_rade_b2}} is bounded by
-
-\bea
-&R_{\mathcal{J}_{e,l}}( \text{Star}(F(\gL,r), f^\ast) \cap B_2(b)) \\ &\,=\, \mathbb{E}[R_{\mathcal{J}_{e1mn}} ( \text{Star}(F(\gL,r), f^\ast) \cap B_2(b))] \\ 
-&\,\leq\, \frac{ \tilde b^2}{\log(nm)} + \frac{12\sqrt{2} \tilde b c_8c_9 \gL r (\log(\gL r^2))^{1/2}\sqrt{\log\left(\frac{24B\log(mn)}{\tilde b^2}\right)} }{\sqrt{mn}}  + \frac{2Bc_8^2\log(n)}{nm} \\
-&\,=\, \frac{ \tilde b^2}{\log(nm)} + \frac{c_8c_9 \tilde b \gL r (\log(\gL r^2))^{1/2}\sqrt{\log\left(\frac{24B\log(nm)}{\tilde b^2}\right)} }{\sqrt{mn}} + \frac{2Bc_8^2\log(n)}{nm}
-\bea
-
-
-
-% Denote 
-% \beq 
-% \label{c_eq_rade_b2}
-% R_{\mathcal{J}_{e1mn}}\left(\gF \cap B_2(\tilde b)\right) = \mathbb{E} \left[  \sup_{g \in \gF \cap B_2(\tilde b)} 
-% \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}}s_{ij}  g(x_{ij}) |\set{x_{ij}} \right]
-% \beq 
-% Also denote by $\norm{g}_{mn} = \left(\frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}} g(x_{ij})^2\right)^{1/2}$
-
-
-
-
-% Corollary 2.2 of \cite{bartlett2005local} gives
-
-% \bea
-% \gF \cap B_2(\tilde b) \subseteq \gF \cap B_{mn} (\sqrt{2}\tilde b),
-% \bea
-
-% with probability at least $1 - \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}m_i} \geq 1 - \frac{1}{C_{\beta}}\frac{2\log n}{cc_1nm}$, where $c$ appears in Assumption~\ref{asm:m}. Define this good event as $\mathcal{E}$. On $\mathcal{E}$  
-
-% we bound the empirical Rademacher complexity defined in Equation~\eqref{c_eq_rade_b2} as follows
-
-% \bea
-% &R_{\mathcal{J}_{e1mn}} (\gF \cap B_2(\tilde b)) \leq R_{\mathcal{J}_{e1mn}} \left( \left\{ g \in F : ||g||_{mn}^2 \leq 2\tilde b^2 \right\} \right) \\
-% &\leq \frac{C_{\text{Dud}}}{\sqrt{\sum_{i\in \mathcal{J}_{e,1} m_i}}} \int_0^{\sqrt{2}\tilde b} \sqrt{\log N(\epsilon, ||\cdot||_{mn}, \gF)} d\epsilon \\
-% &\leq \frac{C_{\text{Dud}}}{\sqrt{C_{\beta}cc_1nm}} \int_0^{\sqrt{2}\tilde b} \sqrt{\log N(\epsilon, ||\cdot||_{mn}, \gF)} d\epsilon.
-% \bea
-
-% Under the event $\mathcal{E}^c$, given that $F \subseteq B_{\infty}(B)$, we have that $R_{\mathcal{J}_{e1mn}} (\gF \cap B_2(\tilde b)) \leq B$. Therefore, splitting the expectation over $\mathcal{E}$ and $\mathcal{E}^c$, 
-
-% we bound the empirical Rademacher complexity defined in Equation~\eqref{c_nn_eq_rade_b2} as follows
-
-% \bea
-% &R_{\mathcal{J}_{e1mn}} (\gF \cap B_2(\tilde b)) = \mathbb{E}[R_{\mathcal{J}_{e1mn}} ( F_k(1) \cap B_2(\tilde b))] \\
-% &\leq \frac{C_{\text{Dud}}}{\sqrt{\sum_{i\in \mathcal{J}_{e,1} m_i}}} \int_0^{\tilde b} \sqrt{\log N(\epsilon, ||\cdot||_{2}, \gF)} d\epsilon \\
-% &\leq \frac{C_{\text{Dud}}}{\sqrt{C_{\beta}cc_1nm}} \int_0^{\tilde b} \sqrt{\log N(\epsilon, ||\cdot||_{2}, \gF)} d\epsilon.
-% \bea
-
-
-
-
-% \bea
-% \frac{C_{\text{Dud}}}{\sqrt{C_{\beta}cc_1nm}} \int_0^{\sqrt{2}\tilde b} \sqrt{\log N (\epsilon, ||\cdot||_{mn}, F)} d\epsilon &\leq \frac{A C_{\text{Dud}}B^{1/2k} }{\sqrt{C_{\beta}cc_1nm}} \int_0^{\sqrt{2}\tilde b} \epsilon^{-1/(2k)} d\epsilon \\
-% &= \frac{c_4 B^{1/2k} \tilde b^{1-1/(2k)}}{\sqrt{C_{\beta}cc_1nm}},
-% \bea
-
-
-
-
-
-
-
-
-% So $\tilde b^*$ is the minimal solution of
-
-% \bea
-% c_7 \frac{B^{1/2k}\sqrt{2\log(n)} }{\sqrt{C_{\beta}cc_1nm}}\tilde b^{1-1/(2k)} + \frac{2B\log(n)}{C_{\beta}cc_1nm} < \frac{\tilde b^2}{B}.
-% \bea
-
-% Without loss of generality assume that $\tilde b \geq (nm)^{-1/2}$. Since $k/(2k-1) \geq 1/2$, we have that $\tilde b \geq (nm)^{-k/(2k-1)}$ and in consequence $\tilde b^{(2k-1)/k} \geq (nm)^{-1}$. Therefore $\tilde b^{(2k-1)/k} \geq (nm)^{-1/2}$, which can be written as $\tilde b^{1-1/(2k)} \geq (nm)^{-1/2}$, which implies $\tilde b^{1-1/(2k)}/\sqrt{nm} \geq (nm)^{-1}$. Thus for some constant $c_8 > 0$ we have that 
-% \bea 
-% c_7 \frac{B^{1/2k}\sqrt{2\log(n)} }{\sqrt{C_{\beta}cc_1nm}}\tilde b^{1-1/(2k)} + \frac{2B\log(n)}{C_{\beta}cc_1\sqrt{nm}}\tilde b^{1-1/(2k)} < c_8 B\frac{2\log(n) }{\sqrt{C_{\beta}cc_1nm}}\tilde b^{1-1/(2k)}.
-% \bea 
-Now, we see that 
-
-\beq 
-\label{c_in_271}
-&\frac{R_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}\right)}{\dbtilde t^2} \\ 
-&\,\leq\, \frac{\tilde b^2}{\dbtilde t^2 \log(nm)}+ \frac{c_8c_9 \tilde b \gL r (\log(\gL r^2))^{1/2}\sqrt{\log\left(\frac{24B\log(nm)}{\tilde b^2}\right)}}{\dbtilde t^2\sqrt{nm}} + \frac{2Bc_8^2\log(n)}{\dbtilde t^2 nm} \\
-&\,=\, \frac{\tilde t^2 c_0^{-1}   \max\set{B,1}}{\dbtilde t^2 \log(nm)}+  \frac{\tilde t^2}{\dbtilde t^2}\frac{ c_8c_9c_0^{-1}   \max\set{B,1} \tilde b \gL r (\log(\gL r^2))^{1/2}\sqrt{\log\left(\frac{24B\log(nm)}{\tilde b^2}\right)}}{c_0^{-1}\max\set{B,1}\tilde t^2\sqrt{nm}} + \frac{2Bc_8^2\log(n)}{\dbtilde t^2 nm} \\
-& = \frac{\tilde t^2 c_0^{-1}   \max\set{B,1}}{\dbtilde t^2 \log(nm)}+\frac{\tilde t^2}{\dbtilde t^2}\frac{ c_8c_9c_0^{-1}   \max\set{B,1}\tilde b \gL r (\log(\gL r^2))^{1/2}\sqrt{\log\left(\frac{24B\log(nm)}{\tilde b^2}\right)}}{\tilde b^2\sqrt{nm}} + \frac{2Bc_8^2\log(n)}{\dbtilde t^2 nm} \\ & =\frac{\tilde t^2 c_0^{-1}   \max\set{B,1}}{\dbtilde t^2 \log(nm)}+\frac{\tilde t^2}{\dbtilde t^2} \frac{c_{10}   \max\set{B,1}\gL r (\log(\gL r^2))^{1/2}\sqrt{\log\left(\frac{24B\log(nm)}{\tilde b^2}\right)}}{\tilde b\sqrt{nm}} + \frac{2Bc_8^2\log(n)}{\dbtilde t^2 nm}
-\beq 
-
-% \beq 
-% \label{c_in_271}
-% &\frac{R_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le \tilde t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le \tilde t^2}\right)}{\dbtilde t^2} \\ 
-% &\leq \frac{c_9  \tilde b \log(n)^{1/2} \cdot \log(\gL \cdot r^2)^{1/2} \cdot L_1 \cdot r}{\dbtilde t^2\sqrt{nm}} \\
-% &=  \frac{\tilde t^2}{\dbtilde t^2}\frac{ c_9c_0^{-1}   \max\set{B,1} \tilde b \log(n)^{1/2} \cdot \log(\gL \cdot r^2)^{1/2} \cdot L_1 \cdot r}{c_0^{-1}\max\set{B,1}\tilde t^2\sqrt{nm}} \\
-% & = \frac{\tilde t^2}{\dbtilde t^2}\frac{ c_9c_0^{-1}   \max\set{B,1}\tilde b \log(n)^{1/2} \cdot \log(\gL \cdot r^2)^{1/2} \cdot L_1 \cdot r}{\tilde b^2\sqrt{C_{\beta}cc_1nm}} \\ & =\frac{\tilde t^2}{\dbtilde t^2} \frac{c_{10}   \max\set{B,1}\log(n)^{1/2} \cdot \log(\gL \cdot r^2)^{1/2} \cdot L_1 \cdot r}{\tilde b\sqrt{C_{\beta}cc_1nm}}
-% \beq 
-
-
-% \beq 
-% \label{c_in_271}
-% c_8 B\frac{2\log(n) }{\sqrt{C_{\beta}cc_1nm}}\tilde b^{1-1/(2k)} < \frac{\tilde b^2}{B}.
-% \beq
-
-If $B \,\geq\, 1$, from Inequality \eqref{c_in_271},
-we get 
-
-\beq 
-\label{c_840}
-&\frac{R_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}\right)}{\dbtilde t^2} \\
-&\,\leq\, \frac{\tilde t^2 c_0^{-1}   \max\set{B,1}}{\dbtilde t^2 \log(nm)}+ \frac{\tilde t^2}{\dbtilde t^2} \frac{c_{10}   \max\set{B,1}\gL r (\log(\gL r^2))^{1/2}\sqrt{\log\left(\frac{24B\log(nm)}{\tilde b^2}\right)}}{\tilde b\sqrt{nm}} + \frac{2Bc_8^2\log(n)}{\dbtilde t^2 nm}. 
-\beq 
-
-% \beq 
-% \label{c_840}
-% \frac{\tilde t^2}{\dbtilde t^2} \frac{c_{10}   \max\set{B,1}\log(n)^{1/2} \cdot \log(\gL \cdot r^2)^{1/2} \cdot L_1 \cdot r}{\tilde b\sqrt{C_{\beta}cc_1nm}} = \frac{\tilde t^2}{\dbtilde t^2} \frac{c_{10}   B\log(n)^{1/2} \cdot \log(\gL \cdot r^2)^{1/2} \cdot L_1 \cdot r}{\tilde b\sqrt{C_{\beta}cc_1nm}}. 
-% \beq 
-Then we let 
-\bea 
-\tilde b^2 = \frac{c_{11} B^2\log^2(n) \cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{nm}
-\bea 
-The \eqref{c_840} is $O\left(\frac{\tilde t^2}{\dbtilde t^2}\frac{1}{\log(n)}\right)$. 
- 
-Furthermore, we know $\tilde b^2 = c_0^{-1}\max\set{B,1}\tilde t^2 = c_0^{-1}\cdot B\cdot \tilde t^2$ when $B> 1$, 
-so we get 
-\bea 
-\tilde t^2 =\frac{c_{12} B\log^2(n) \cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{nm}.
-\bea 
-
-
-% By lemma~\ref{lem_l2}, we also have $\tilde b = c^{-1/2}\max\set{B^{1/2},1}\cdot t = c^{-1/2}\cdot B^{1/2} \cdot t$, thus,
-
-% \bea 
-% \frac{c_{10}B^{\frac{2k-1}{4k+2}} {\log(n)}^{\frac{2k}{2k+1}}}{(nm)^{\frac{k}{2k+1}}} \leq t, 
-% \bea 
-
-
-If  $B < 1$, from Inequality \eqref{c_in_271}, 
-
-\beq 
-\label{c_1030}
-&\frac{R_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}\right)}{\dbtilde t^2} \\
-&\,\leq\, \frac{\tilde t^2 c_0^{-1}   \max\set{B,1}}{\dbtilde t^2 \log(nm)}+ \frac{\tilde t^2}{\dbtilde t^2} \frac{c_{10}   \max\set{B,1}\gL r (\log(\gL r^2))^{1/2}\sqrt{\log\left(\frac{24B\log(nm)}{\tilde b^2}\right)}}{\tilde b\sqrt{nm}} + \frac{2Bc_8^2\log(n)}{\dbtilde t^2 nm}. 
-\beq 
-
-then we let 
-\bea 
-\tilde b^2 = \frac{c_{11} \log^2(n) \cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{nm}
-\bea 
-The \eqref{c_1030} is $O\left(\frac{\tilde t^2}{\dbtilde t^2}\frac{1}{\log(n)}\right)$. 
- 
-Furthermore, we know $\tilde b^2 = c_0^{-1}\max\set{B,1}\tilde t^2 = c_0^{-1}\cdot \tilde t^2$ when $B\,\leq\, 1$, so we get 
-\bea 
-\tilde t^2 = \frac{c_{13} \log^2(n) \cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{nm}, \text{ when }B \,\leq\, 1. 
-\bea 
-So we can let 
-\bea 
-\tilde t^2 = \frac{c_{14}\max\set{B,1} \log^2(n) \cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{nm} 
-\bea 
-to get 
-\beq 
-\label{c_rade_trend_filtering}
-\frac{R_{\mathcal{J}_{e,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}\right)+ R_{\mathcal{J}_{o,1}}\left(\gF \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}\right)}{\dbtilde t^2} = O\left(\frac{\tilde t^2}{\dbtilde t^2}\frac{1}{\log(n)}\right).
-\beq 
-
-
-
-Then by Theorem~\ref{Theorem_non_convex}, we know 
-\beq
-\label{c_1047}
-&\sP\paren{c_0\Delta^2(\hat f - f^*) > \tilde t^2}  
-\\&\,\leq\, \frac{24c_5}{\dbtilde t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}) \\
-&\qquad + R_{\mathcal{J}_{o,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2})\Big) \\
-& \quad + \frac{c_{12}}{\dbtilde t^2}\frac{s\log n\log T_n}{n}, 
-\beq
- and then by \eqref{c_rade_trend_filtering} and the choice of $L = \left\lceil \frac{1}{C_{\beta}} 2\log(n) \right\rceil$ in \eqref{equation}, 
-
-We can let  
-\bea 
-\tilde t^2 = \frac{c_{15}\max\set{B,1} \log^3(n) \cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{nm} 
-\bea  to make 
-\bea
-&\frac{24c_5}{\dbtilde t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}) \\
-&\qquad + R_{\mathcal{J}_{o,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2})\Big) \\&\,=\, O\left(\frac{\tilde t^2}{\dbtilde t^2}\frac{1}{\log(n)}\right). 
-\bea
-
-
-Furthermore, we know 
-\bea 
-\tilde t^2 = \dbtilde t^2 + \left(C_0 + \frac{\bar f}{2}\right) \phi_{nm}^2, 
-\bea 
-so we can let 
-
-\bea
-\dbtilde t^2 = \frac{c_{15}\max\set{B,1} \log^3(n) \cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{nm}   + \left(C_0 + \frac{\bar f}{2}\right) \phi_{nm}^2.
-\bea to make \bea
-&\frac{24c_5}{\dbtilde t^2}\sum_{l=1}^L\Big(R_{\mathcal{J}_{e,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2}) \\
-&\qquad + R_{\mathcal{J}_{o,l}}(\text{Star}(\gF, f^\ast) \cap \set{c_0\Delta^2(f - f^*)\le  \tilde t^2})\Big) \\
-&\,=\, O\left(\frac{1}{\log(n)} + \frac{\left(C_0 + \frac{\bar f}{2}\right) \phi_{nm}^2}{\dbtilde t^2}\frac{1}{\log(n)}\right) \,=\, O\left(\frac{1}{\log(n)}\right). 
-\bea
-
-Overall, we can let 
-\bea 
-\tilde t^2 = \frac{c_{15}\max\set{B,1} \log^3(n) \cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{nm}  + 2\left(C_0 + \frac{\bar f}{2}\right) \phi_{nm}^2 + \frac{s \log^{1+\mu}(n) \log(T_n)}{n},
-\bea for some $\mu>0$, to have the right hand side of \eqref{c_1047} to be 
-% \bea 
-% O\left(\frac{1}{\log(n)} + \frac{1}{\frac{\log^3(n)\cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{m^2} + \frac{n\left(2c_0 + \bar f\right) \phi_{nm}^2}{m} + \frac{\log(n)}{m}}\right).
-% \bea 
-\bea 
-O\left(\frac{1}{\log(n)} + \frac{1}{\log^{\mu}(n)}\right).
-\bea 
-
-In the end, we have 
-\bea 
-\Delta^2(\hat f - f^*)  \,=\, O_p \left(r_n^2\right),
-\bea
-by setting that 
-\bea
-r_n^2 \asymp \frac{\max\set{B,1} \log^3(n) \cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{nm}  + 2\left(C_0 + \frac{\bar f}{2}\right) \phi_{nm}^2 + \frac{s \log^{1+\mu}(n) \log(T_n)}{n}.
-\bea
-
-Thus, we get 
-\bea 
-&\Delta^2(\hat f - f^*) \,=\, O_p \left(\frac{\max\set{B,1} \log^3(n) \cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{nm} \right. \\ & \quad \left.+ 2\left(C_0 + \frac{\bar f}{2}\right) \phi_{nm}^2 + \frac{s\cdot\text{poly}(\log n) \log(T_n)}{n}\right), \,\,\,\text{and}\,\,\,
-\bea     
-\bea 
-&\left\|\hat f - f^*\right\|_2^2 \,=\, O_p \left(\frac{\max\set{B^2,B} \log^3(n) \cdot \log(\gL \cdot r^2) \cdot \gL^2 \cdot r^2}{nm} \right.\\ 
-& \quad \left. + 2\max\set{B,1}\left(C_0 + \frac{\bar f}{2}\right) \phi_{nm}^2 + \max\set{B,1}\frac{s\cdot\text{poly}(\log n) \log(T_n)}{n}\right).
-\bea  
-
-
-Then using the same notations as in Theorem 1 of \cite{kohler2019rate}, let
-\begin{align}
-L& = L_{nm} \asymp \log \left( \sum_{i=1}^{n} m_i \right)  \labelrel\asymp{eq1341} \log (nm), \label{eq:L_definition} \\
-r &\,=\, r_{nm} \asymp \max_{(p, K) \in \gP} \left( \sum_{i=1}^{n} m_i \right)^{\frac{K}{2(2p+K)}} \asymp \max_{(p, K) \in \gP}  (nm)^{\frac{K}{2(2p+K)}}, \label{eq:r_definition}
-\end{align}
-where the \eqref{eq1341} holds by the assumption $m_i \asymp m$, 
-or
-\begin{align}
-L &\,=\, L_{nm} \asymp \log(nm) \left( \max_{(p, K) \in \gP} (nm)^{\frac{K}{2(2p+K)}} \right), \label{eq:L_alternative} \\
-r &\,=\, r_{nm} \asymp 1. \label{eq:r_alternative}
-\end{align}
-
-It follows from Theorem \rev{3} of \cite{kohler2019rate} that
-\begin{align}
-\inf_{f \in \mathcal{F}(L,r)} \lVert f - f^* \rVert_{\infty} &\,\leq\, \phi_{nm}, \label{eq:theorem2_result}
-\end{align}
-where
-\begin{align}
-\phi_{nm}^2 &\,=\, \max_{(p, K) \in \gP} \left( \sum_{i=1}^{n} m_i \right)^{\frac{-2p}{2p+K}} \asymp \max_{(p, K) \in \gP}  (nm)^{\frac{-2p}{2p+K}}, \label{eq:phi_definition}
-\end{align}
-up to a logarithmic factor depending on $n$ and $\{m_i\}_{i=1}^n$.
-Then we have 
-
-Thus, we get 
-\bea 
-&\Delta^2(\hat f - f^*) \,=\, O_p \left(\frac{\max\set{B,1} \log^3(n) \cdot \log^2(nm) \cdot \max_{(p, K) \in \gP}  (nm)^{\frac{2K}{2(2p+K)}}}{nm} \right. \\ & \quad \left.+ 2\left(C_0 + \frac{\bar f}{2}\right) \max_{(p, K) \in \gP}  (nm)^{\frac{-2p}{2p+K}} + \frac{s\cdot\text{poly}(\log n) \log(T_n)}{n}\right) \\ 
-&\,=\, O_p \left(  \left(\max\set{B,1} \log^3(n) \cdot \log^2(nm) +2C_0 + \bar f\right) \max_{(p, K) \in \gP}  (nm)^{\frac{-2p}{2p+K}} + \frac{s\cdot\text{poly}(\log n) \log(T_n)}{n}    \right), \,\,\,\text{and}\,\,\,
-\bea     
-\bea 
-&\left\|\hat f - f^*\right\|_2^2 \,=\, O_p \left(\max\set{B^2,B}\cdot\log^3(n) \cdot \log^2(nm) \cdot \max_{(p, K) \in \gP}  (nm)^{\frac{-2p}{2p+K}} \right.\\ 
-& \quad \left. + \max\set{B,1}\cdot \left(2C_0 + \bar f\right)\cdot \max_{(p, K) \in \gP}  (nm)^{\frac{-2p}{2p+K}} + \max\set{B,1}\frac{s\cdot\text{poly}(\log n) \log(T_n)}{n}\right).
-\bea  
-
-
-
-
+The feasible approximation gives
+$\|f^*\|_\infty\le B+\phi$.
+Consequently, $0\in\mathcal H_b$ and $|h|\le A$ for
+$h\in\mathcal H_b$.
+If $A=0$, all these functions vanish and the conclusion holds.
+Assume henceforth that $A>0$, and write
+\[
+P_r h
+\,=\,
+\frac1{N_r}\sum_{i\in\mathcal A_r}\sum_{j=1}^{m_i}h(x_{ij}^*),
+\qquad
+S_r
+\,=\,
+\sup_{h\in\mathcal H_b}P_rh^2.
+\]
+Thus $0\le S_r\le A^2$.
+
+Fix the design points. For $0<\epsilon\le A$, partition
+$[-A,A]$ into intervals of length at most $\epsilon$,
+using the same convention at every endpoint.
+The interval indices of the $N_r$ fitted values are determined by
+at most $C N_r A/\epsilon$ strict subgraph comparisons.
+The Sauer bound for a class of pseudodimension at most $v$ gives
+at most $\exp\{Cv\log(CN_rA/\epsilon)\}$ such patterns.
+This bound also covers the case where the number of comparisons is
+less than $v$, by the bound $2^M$ for $M$ comparisons.
+One class member from each nonempty pattern therefore covers
+$\mathcal F$ in the empirical norm.
+
+For $\lambda\in[0,1]$, choose a grid with spacing at most $\epsilon/A$.
+If $f'$ is a covering representative and $\lambda'$ a grid point, then
+\[
+\begin{aligned}
+&\|\lambda(f-f^*)-\lambda'(f'-f^*)\|_{L_2(P_r)}\\
+&\quad\le
+\lambda\|f-f'\|_{L_2(P_r)}
++|\lambda-\lambda'|\,\|f'-f^*\|_{L_2(P_r)}
+\le2\epsilon.
+\end{aligned}
+\]
+Using a smaller initial scale and selecting a representative from each
+covering ball that meets $\mathcal H_b$ gives
+\[
+\log N(\epsilon,\|\cdot\|_{L_2(P_r)},\mathcal H_b)
+\,\le\,
+C(v+1)\log(CAN_r/\epsilon),
+\qquad 0<\epsilon\le A.
+\]
+The centers can be taken inside $\mathcal H_b$.
+For $\epsilon>A$, the single center zero covers the class.
+
+Set $\alpha=A/N_r$. If $\sqrt{S_r}\le\alpha$, Cauchy--Schwarz gives
+\[
+\mathbb E_s\left[
+\sup_{h\in\mathcal H_b}
+\frac1{N_r}\sum_{i\in\mathcal A_r}\sum_{j=1}^{m_i}
+s_{ij}h(x_{ij}^*)\right]
+\,\le\,\sqrt{S_r}\,\le\,\frac A{N_r}.
+\]
+Otherwise, put $t=\sqrt{S_r}$ and
+$\epsilon_k=2^{-k}t$. Choose the first integer $J\ge1$ for which
+$\epsilon_J\le\alpha$, so $\alpha/2<\epsilon_J\le\alpha$.
+Let $T_0=\{0\}$, and for $1\le k\le J$ take an internal
+$\epsilon_k$-net $T_k$ of $\mathcal H_b$.
+For each $h$, choose $\pi_k(h)\in T_k$ within $\epsilon_k$ of $h$,
+and put $\pi_0(h)=0$.
+Write
+\[
+Z_s(h)
+\,=\,
+\frac1{N_r}\sum_{i\in\mathcal A_r}\sum_{j=1}^{m_i}s_{ij}h(x_{ij}^*).
+\]
+For every realization of the signs,
+\[
+\begin{aligned}
+\sup_{h\in\mathcal H_b}Z_s(h)
+&\,\le\,\epsilon_J+
+\sum_{k=1}^J
+\max_{h\in\mathcal H_b}Z_s\bigl(\pi_k(h)-\pi_{k-1}(h)\bigr).
+\end{aligned}
+\]
+The residual is at most $\epsilon_J$ by Cauchy--Schwarz.
+There are at most $|T_k||T_{k-1}|$ distinct increments in the
+$k$th maximum, each with empirical norm at most
+$\epsilon_k+\epsilon_{k-1}$.
+For a fixed increment $u$ and a real number $a$,
+\[
+\mathbb E_s e^{aZ_s(u)}
+\,\le\,
+\exp\left\{\frac{a^2\|u\|_{L_2(P_r)}^2}{2N_r}\right\},
+\]
+by independence of the signs and $\cosh z\le e^{z^2/2}$.
+The exponential bound for a finite maximum and the covering bound
+therefore give
+\[
+\begin{aligned}
+&\mathbb E_s\max_{h\in\mathcal H_b}
+Z_s\bigl(\pi_k(h)-\pi_{k-1}(h)\bigr)\\
+&\quad\le
+C\epsilon_{k-1}
+\sqrt{\frac{(v+1)\log(CAN_r/\epsilon_J)}{N_r}}
+\le C\epsilon_{k-1}\xi_r.
+\end{aligned}
+\]
+The last step uses $\epsilon_J>A/(2N_r)$ and
+$\log(2CN_r^2)\le C\log(C_{\rm ent}N_r)$.
+Summing $\sum_{k=1}^J\epsilon_{k-1}\le2\sqrt{S_r}$ gives
+$\mathbb E_s\sup_{h\in\mathcal H_b}Z_s(h)
+\le A/N_r+C\xi_r\sqrt{S_r}$.
+It follows, in both cases, that
+\[
+R_r
+\, := \,
+R_{\mathcal A_r}(\mathcal H_b)
+\,\le\,
+\frac{CA}{N_r}+C\xi_r\sqrt{\mathbb E S_r}.
+\]
+
+The independent design points, an independent copy of those points,
+and symmetrization yield
+\[
+\begin{aligned}
+\mathbb E S_r
+&\,\le\, b^2+
+\mathbb E\sup_{h\in\mathcal H_b}(P_r-Q)h^2\\
+&\,\le\, b^2+
+2\mathbb E_{x^*,s}\left[
+\sup_{h\in\mathcal H_b}
+\frac1{N_r}\sum_{i\in\mathcal A_r}\sum_{j=1}^{m_i}
+s_{ij}h(x_{ij}^*)^2\right]\\
+&\,\le\, b^2+4AR_r.
+\end{aligned}
+\]
+The last inequality is the contraction inequality without an
+absolute value inside the supremum: the map $u\mapsto u^2$
+vanishes at zero and is $2A$-Lipschitz on $[-A,A]$.
+In particular, this argument uses the unconditional product design
+law and does not condition on a coupling event.
+
+Since $\xi_r^2\ge1/N_r$, Young's inequality now gives
+\[
+\begin{aligned}
+R_r
+&\,\le\,\frac{CA}{N_r}
+       +C\xi_r\sqrt{b^2+4AR_r}\\
+&\,\le\,\frac{CA}{N_r}
+       +Cb\xi_r+C\xi_r\sqrt{AR_r}\\
+&\,\le\,\frac12R_r+Cb\xi_r+CA\xi_r^2.
+\end{aligned}
+\]
+Rearranging proves \eqref{eq_nn_expected_local_width}.
+The translation identity \eqref{eq_rademacher_translation} gives the
+same expected complexity if the local class is written before
+subtracting $f^*$.
 \end{proof}
+\end{revision}
+
+\begin{revision}
+\begin{proof}[Proof of Theorem~\ref{Theorem_nn_rate}]
+First consider a positive-level representation. Its component
+count, smoothness parameters, and compact input ranges are fixed.
+For each $v\in\mathcal V$, set
+\[
+M_v=\left\lceil
+N^{1/[2(2\widetilde p_v+K_v)]}
+\right\rceil.
+\]
+Theorem~2(a)--(b) of \citet{kohler2019rate} gives a component
+network with uniform approximation error
+$\delta_v\leq C_vM_v^{-2p_v}$ on the required fixed compact
+input cube, for all sufficiently large $N$. Its depth and width
+may be chosen as $O(\log M_v)$ and $O(M_v^{K_v})$, respectively,
+or as $O(M_v^{K_v}+\log M_v)$ and a fixed constant.
+
+Before passing a child's output to its parent, truncate it to
+a fixed interval $[a,b]$ containing the child's true range.
+The map
+\[
+T_{[a,b]}(z)=a+\sigma(z-a)-\sigma(z-b)
+\]
+has fixed network size. For every $y\in[a,b]$,
+$|T_{[a,b]}(z)-y|\leq|z-y|$, so this step cannot increase the
+child's error. The parent therefore receives inputs in the same
+compact region on which it is approximated. If $e_v$ denotes
+the resulting uniform error at node $v$, the component smoothness
+gives
+\[
+e_v\leq\delta_v+
+C_v\max_{u\text{ a child of }v}e_u^{p_v\wedge1},
+\]
+with zero input error at coordinate leaves. By induction,
+the contribution of $\delta_v$ at the root is at most a fixed
+constant times
+\(\delta_v^{\prod_{w\text{ a strict ancestor of }v}(p_w\wedge1)}\).
+Indeed, passing from a child to its parent raises each previous
+error contribution to $p_w\wedge1$; the local error at that
+parent is added separately. Since the tree is fixed, finite
+sums can be bounded by a fixed multiple of their maximum.
+Consequently the raw composed network $g_N$ satisfies
+\begin{align*}
+\|g_N-f^*\|_\infty
+&\leq C_{\mathrm{app}}
+       \max_{v\in\mathcal V}M_v^{-2\widetilde p_v}\\
+&\leq C_{\mathrm{app}}
+       \max_{v\in\mathcal V}
+       N^{-\widetilde p_v/(2\widetilde p_v+K_v)}
+=C_{\mathrm{app}}N^{-\rho/2}.
+\end{align*}
+The exponent of a node's own local error already contains $p_v$;
+only its strict ancestors enter the additional product.
+
+At each tree level, finitely many component networks can run
+in parallel. Two signed channels preserve an intermediate real
+value, and identity layers pad shorter branches before composition.
+These operations change depth and width by fixed factors.
+Moreover,
+\[
+\max_{v\in\mathcal V}
+\frac{K_v}{2(2\widetilde p_v+K_v)}
+=\frac{1-\rho}{2}.
+\]
+For the first component construction this gives total depth
+$O(\log N)$ and width $O(N^{(1-\rho)/2})$.
+For the second, the larger depth
+$O(N^{(1-\rho)/2}\log N)$ and a sufficiently large fixed width
+are sufficient. The two choices in
+\eqref{eq_nn_architecture_choice} therefore contain $g_N$.
+This constructs a member of the dense class by setting unused
+weights to zero.
+
+Define the actual comparison function by
+\[
+f_{\mathrm{Proj},N}(x)
+=\max\{-B,\min\{B,g_N(x)\}\}
+\in\mathcal F(\mathcal L_N,r_N).
+\]
+Since $|f^*(x)|\leq B$ on the design cube,
+\[
+\|f_{\mathrm{Proj},N}-f^*\|_\infty
+\leq\|g_N-f^*\|_\infty
+\leq\phi_N,\qquad
+\phi_N=C_{\mathrm{app}}N^{-\rho/2}.
+\]
+Thus the comparison function required by
+Corollary~\ref{cor_nonconvex_critical_radius} belongs to this
+same fitted class. We apply that corollary with approximation
+bound $\phi_N$.
+
+We apply Lemma~\ref{lem_nn_expected_local_width} to the
+restrictions of this class and $f^*$ to $[0,1]^d$.
+Write
+\[
+\begin{aligned}
+H_N&=\operatorname{Star}(\mathcal F(\mathcal L_N,r_N),f^*)-f^*,\\
+v_N&=\operatorname{Pdim}(\mathcal F(\mathcal L_N,r_N)),
+\end{aligned}
+\]
+and $N_r=\sum_{i\in\mathcal A_r}m_i$ for the auxiliary groups
+of Theorem~\ref{Theorem_non_convex}.
+Their coupled designs have the unconditional law
+$Q^{\otimes N_r}$. With $A_N=2B+\phi_N$ and the deterministic
+scales $\xi_r$ in \eqref{eq_nn_width_scale}, that lemma gives
+\[
+R_{\mathcal A_r}\bigl(\{h\in H_N:\|h\|_2\leq b\}\bigr)
+\leq C_R(b\xi_r+A_N\xi_r^2),\qquad b\geq0.
+\]
+
+We next account for the actual group sizes. Since
+$cm\leq m_i\leq Cm$ and
+$|\mathcal A_r|\geq n/(2L)$,
+\[
+N_r\geq\frac{cnm}{2L}\geq\frac{cN}{2CL}.
+\]
+Put
+\[
+\xi_N^2=\frac{(v_N+1)L\log(C_{\rm ent}N)}{N},
+\qquad
+q_N=\max\{1,A_N\}.
+\]
+The inequality $N_r\leq N$ gives
+$\xi_r^2\leq(2C/c)\xi_N^2$.
+Consequently, \eqref{eq_nn_expected_local_width} implies
+\begin{equation}
+\label{eq_nn_average_width}
+\frac1L\sum_{r=1}^L
+R_{\mathcal A_r}\bigl(\{h\in H_N:\|h\|_2\leq b\}\bigr)
+\leq K_w(b\xi_N+A_N\xi_N^2),
+\end{equation}
+where
+$K_w=C_R\max\{\sqrt{2C/c},2C/c\}$.
+Here the averaging factor removes the number of groups, while
+the smaller sample size in each group retains $L$ in $\xi_N^2$.
+
+Let
+\[
+\eta=2(C_0+\bar f/2),\qquad
+a_*=\sqrt{(1+\eta)/c_0},\qquad
+D\geq\max\{1,4K_w^2a_*^2,2K_w\},
+\]
+and choose the deterministic radius
+\[
+r_{\mathrm{crit},N}^2
+=D\left(q_N\xi_N^2+\phi_N^2+\frac{q_NL}{n}\right).
+\]
+It satisfies the first condition in
+\eqref{eq_nonconvex_fixed_point}. At its required population
+radius $b_N=a_*\sqrt{q_N}\,r_{\mathrm{crit},N}$, the two terms
+in \eqref{eq_nn_average_width} obey
+\begin{align*}
+K_wb_N\xi_N
+&\leq\frac{K_wa_*}{\sqrt D}\,r_{\mathrm{crit},N}^2
+\leq\frac12r_{\mathrm{crit},N}^2,\\
+K_wA_N\xi_N^2
+&\leq K_wq_N\xi_N^2
+\leq\frac{K_w}{D}\,r_{\mathrm{crit},N}^2
+\leq\frac12r_{\mathrm{crit},N}^2.
+\end{align*}
+This proves the second condition of
+\eqref{eq_nonconvex_fixed_point}. Applying
+\eqref{eq_nonconvex_fixed_point_tail}, for every $M\geq1$,
+\[
+P\{c_0\Delta^2(\hat f-f^*)>
+ M^2r_{\mathrm{crit},N}^2+\eta\phi_N^2\}
+\leq\frac1n+\frac{18C}{cM}+\frac8{(C_0-c_0)M^2}.
+\]
+Since $|\hat f-f^*|\leq A_N$, the pointwise inequality
+$u^2\leq q_N\min\{u^2,|u|\}$ for $|u|\leq A_N$ also gives
+\begin{align*}
+&P\left\{\|\hat f-f^*\|_2^2>
+ \frac{q_N}{c_0}
+ \left(M^2r_{\mathrm{crit},N}^2+\eta\phi_N^2\right)\right\}\\
+&\qquad\leq\frac1n+\frac{18C}{cM}
+                 +\frac8{(C_0-c_0)M^2}.
+\end{align*}
+Taking a sufficiently large fixed $M$ and then letting
+$n\to\infty$ proves
+\begin{align*}
+\Delta^2(\hat f-f^*)
+&=O_P(q_N\xi_N^2+\phi_N^2+q_NL/n),\\
+\|\hat f-f^*\|_2^2
+&=O_P(q_N^2\xi_N^2+q_N\phi_N^2+q_N^2L/n).
+\end{align*}
+No additional group factor enters this application: the
+conversion from $1/(nm_i)$ to within-group widths is already
+included in \eqref{eq_nonconvex_fixed_point_tail}.
+
+It remains to substitute the actual architecture. By
+\eqref{eq_nn_parameter_count} and \eqref{eq_nn_pseudodimension},
+\[
+\begin{aligned}
+W_N&=(d+1)r_N+(\mathcal L_N-1)(r_N+1)r_N+r_N+1,\\
+v_N&\leq C W_N(\mathcal L_N+1)\log(2+W_N).
+\end{aligned}
+\]
+For the first architecture,
+$W_N=O(N^{1-\rho}\log N)$ and
+$\mathcal L_N=O(\log N)$.
+For the second,
+$W_N=O(N^{(1-\rho)/2}\log N)$ and
+$\mathcal L_N=O(N^{(1-\rho)/2}\log N)$.
+Both therefore satisfy
+\[
+v_N=O(N^{1-\rho}\log^3N),
+\qquad
+\xi_N^2=O(L\log^4(N)N^{-\rho}).
+\]
+Since $\phi_N^2=O(N^{-\rho})$ and $q_N$ has a fixed upper
+bound, these estimates prove \eqref{nn_rate} and the stated
+Huber order.
+
+For level zero, $f^*(x)=x^{(j)}$ for some coordinate $j$.
+One hidden ReLU neuron with input weights equal to that
+coordinate vector, zero bias, and output weight one gives
+$\sigma(x^{(j)})=x^{(j)}$ on $[0,1]^d$.
+The output truncation is inactive because $B\geq1$.
+Thus $f_{\mathrm{Proj},N}=f^*$ is an actual member of the
+fitted class $\mathcal F(1,1)$, so $\phi_N=0$.
+The entire fitted class has $W=d+3$ and $v_N=O(1)$.
+Repeating the same radius calculation gives
+$O_P\{L\log(C_{\rm ent}N)/N+L/n\}$.
+\end{proof}
+\end{revision}
+
+\begin{revision}
+If a fixed output bound $B$ does not contain the target range,
+the root truncation instead satisfies
+\[
+\|\max\{-B,\min\{B,g_N\}\}-f^*\|_\infty
+\leq C_{\mathrm{app}}N^{-\rho/2}
+       +\|(|f^*|-B)_+\|_\infty.
+\]
+The last term must be retained in the approximation bound
+used in the fixed point. An exact small comparison network
+also does not by itself reduce the complexity of a larger
+fitted class.
+\end{revision}
 
 
 
@@ -10404,95 +10573,121 @@ Thus, we get
 
 \section{Auxiliary Lemmas}
 
-\begin{lemma}[Ledoux-Talagrand contraction, see Theorem7 in \cite{duchi2009probability}.]
-\label{lem:Theorem 7}  Let $f : \mathbb{R}_+ \to \mathbb{R}$ be convex and increasing. Let $\phi : \mathbb{R} \to \mathbb{R}$ satisfy $\phi(0) \,=\, 0$ and be Lipschitz with constant $L$, i.e., $|\phi(a) - \phi(b)| \,\leq\, L|a - b|$. Let $\sigma_i$ be independent Rademacher random variables. For any $T \subseteq \mathbb{R}^n$,
-\bea
-\mathbb{E}f \left( \frac{1}{2} \sup_{t \in T} \sum_{i=1}^n \sigma_i \phi(t_i) \right) \,\leq\, \mathbb{E}f \left( L \cdot \sup_{t \in T} \sum_{i=1}^n \sigma_i t_i \right).
-\bea
-\end{lemma}
-
-\begin{lemma}[See Lemma \rev{12} in \cite{liang2015learning}]
-\label{lem_star}
-For any scale $\epsilon > 0$, the covering number of $\mathcal{F} \subset B_2(1)$ and that of $\text{star}(\mathcal{F})$ are bounded in the sense
+\begin{revision}
+\begin{lemma}[Ledoux--Talagrand contraction; see inequality (7) in
+\cite{duchi2009probability}]
+\label{lem:Theorem 7}
+Let $T\subset\mathbb R^n$ be nonempty and bounded. For each
+$i=1,\ldots,n$, let $\phi_i:\mathbb R\to\mathbb R$ satisfy
+$\phi_i(0)=0$ and
+$|\phi_i(u)-\phi_i(v)|\leq L|u-v|$ for all $u,v\in\mathbb R$,
+where $L\geq0$. If $\sigma_1,\ldots,\sigma_n$ are independent
+Rademacher variables, then
 \[
-\log N(\mathcal{F}, \left\| \cdot \right\|_{nm}, 2\epsilon) \,\leq\, \log N(\text{star}(\mathcal{F}),\left\| \cdot \right\|_{nm}, 2\epsilon) \,\leq\, \log \frac{2}{\epsilon} + \log N(\mathcal{F}, \left\| \cdot \right\|_{nm},\epsilon).
-\]    
-\end{lemma}
-
-
-\begin{lemma}[Dudley’s Chaining, see Lemma 3 \rev{on page 56 of arXiv version 3} in \cite{farrell2021deep}]
-\label{dud_new}
-Let \(N(\delta, \mathcal{F}, \|\cdot\|_{\infty})\) denote the metric entropy for class \(\mathcal{F}\) (with covering radius \(\delta\) and metric \(\|\cdot\|_{\infty}\)), then
-\[
-\mathbb{E} R_{nm}\{f : f \in \mathcal{F}, \|f\|_{nm} \,\leq\, r\} \,\leq\, \inf_{0 < \alpha < r} \left\{ 4\alpha + \frac{12}{\sqrt{n}} \int_{\alpha}^{r} \sqrt{\log N(\delta, \mathcal{F}, \|\cdot\|_{nm})} d\delta \right\}.
+\mathbb E_\sigma\left[
+\sup_{t\in T}\sum_{i=1}^n\sigma_i\phi_i(t_i)\right]
+\leq
+L\,\mathbb E_\sigma\left[
+\sup_{t\in T}\sum_{i=1}^n\sigma_i t_i\right].
 \]
 \end{lemma}
-% Furthermore, because \(\|\mathbf{f}\|_{\infty} \leq \max_i |f(x_i)|\) and, therefore, \(\mathcal{N}(\delta, \mathcal{F}, \|\cdot\|_{\infty}) \leq \mathcal{N}(\delta, \mathcal{F}_{|x_1,...,x_n}, \|\cdot\|_{\infty})\) and so the upper bound in the conclusions also holds with \(\mathcal{N}(\delta, \mathcal{F}_{|x_1,...,x_n}, \|\cdot\|_{\infty})\), where \(\mathcal{F}_{|x_1,...,x_n}\) is the class \(\mathcal{F}\) projected onto the data.
 
+\begin{proof}
+Fix a coordinate $k$ and condition on the other signs.
+Write their total contribution as $A_t$. All suprema below
+are finite because $T$ is bounded. Then
+\begin{align*}
+&\mathbb E_{\sigma_k}
+\sup_{t\in T}\{A_t+\sigma_k\phi_k(t_k)\}\\
+&=\frac12\left[
+\sup_{t\in T}\{A_t+\phi_k(t_k)\}
++\sup_{u\in T}\{A_u-\phi_k(u_k)\}\right]\\
+&=\frac12\sup_{t,u\in T}
+\{A_t+A_u+\phi_k(t_k)-\phi_k(u_k)\}\\
+&\labelrel\leq{eq_aux_contraction_coordinate}
+\frac12\sup_{t,u\in T}\{A_t+A_u+L|t_k-u_k|\}\\
+&=\frac12\left[
+\sup_{t\in T}\{A_t+Lt_k\}
++\sup_{u\in T}\{A_u-Lu_k\}\right]\\
+&=\mathbb E_{\sigma_k}\sup_{t\in T}\{A_t+L\sigma_k t_k\}.
+\end{align*}
+Inequality \eqref{eq_aux_contraction_coordinate} uses the
+Lipschitz condition. The next equality follows by interchanging
+$t$ and $u$: the two signs of $t_k-u_k$ give the same supremum.
+Repeating this argument for every coordinate proves the claim.
 
-\begin{corollary}
-\label{cor_bounded}
-For any scale $\epsilon > 0$, the covering number of $\mathcal{F} \subset B_{\infty}(B)$ and then
-\bea
-\log N(\epsilon, \norm{\cdot}_{nm}, \text{star}(\gF)) \,\leq\, \log \left(\frac{2B}{\epsilon}\right) + \log N\left(\epsilon/B, \norm{\cdot}_{nm}, \gF/B \right).
-\bea 
-  
-\end{corollary}
-\begin{proof} 
-We know 
-\bea 
-\gF/B \subset B_{\infty}(1) \subset B_{nm}(1).
-\bea 
-Then based on Lemma~\ref{lem_star}, we have 
-\bea 
-& \log N(\epsilon, \norm{\cdot}_{nm}, \text{star}(\gF)  ) \\ 
-& \,\le\,  \log N\left(\epsilon/B, \norm{\cdot}_{nm}, \text{star}(\gF/B) \right) \\ 
-& \,\le\, \log \left(\frac{2B}{\epsilon}\right) + \log N\left(\epsilon/B, \norm{\cdot}_{nm}, \gF/B \right).
-\bea 
-
-% \[
-% \log N(\mathcal{F}, \left\| \cdot \right\|_{2}, 2\epsilon) \leq \log N(\text{star}(\mathcal{F}),\left\| \cdot \right\|_{2}, 2\epsilon) \leq \log \frac{2}{\epsilon} + \log N(\mathcal{F}, \left\| \cdot \right\|_{2},\epsilon).
-% \]   
+For nonnegative coordinate weights $a_i$, apply the result to
+the coordinates $a_i t_i$ and the maps
+$u\mapsto a_i\phi_i(u/a_i)$ when $a_i>0$.
+These maps remain $L$-Lipschitz; zero-weight coordinates can
+be omitted.
 \end{proof}
+\end{revision}
 
-
+\begin{revision}
 \begin{lemma}
 \label{nn_covering}
-Let $F(\gL,r)$ defined as in (2) where $\sigma : \mathbb{R} \to \mathbb{R}$ with $\sigma(x) \,=\, \max\{x, 0\}$. Let $\gL, r \in \mathbb{N}$. Then
-\[
-\log (N(\epsilon, \norm{\cdot}_{nm},  F(\gL,r))) \,\leq\, \gL^2 r^2 \log(\gL r^2) \log(B\epsilon^{-1}).
-\]
-% holds for sufficiently large $n, x_1, \ldots, x_n \in \mathbb{R}^d$ and a constant $c_{56} > 0$ independent of $n, L$ and $r$.
+Let \(\mathcal F(\gL,r)\) be the class in
+\eqref{eq:space_of_networks}, where \(\gL,r\geq1\), and let
+\begin{equation}
+\label{eq_nn_parameter_count}
+W \,=\, (d+1)r+(\gL-1)(r+1)r+r+1.
+\end{equation}
+For every probability measure \(P\) on \([0,1]^d\) and
+\(0<\epsilon\leq B\),
+\begin{equation}
+\label{eq_nn_uniform_cover}
+\log N\bigl(\epsilon,\|\cdot\|_{L_2(P)},\mathcal F(\gL,r)\bigr)
+\,\leq\,
+C W(\gL+1)\log(2+W)\log(CB/\epsilon),
+\end{equation}
+where \(C>1\) is universal. This includes the weighted empirical
+norm \(\|\cdot\|_{nm}\), since its weights sum to one.
 \end{lemma}
 \begin{proof}
-  It follows from Theorem \rev{7} of \cite{bartlett2019nearly} (see also the proof of Lemma 19 on \rev{pages 77--78 of version 5} of \cite{kohler2019rate}) that the VC-dimension of \(F(\gL, r)\) satisfies
+The first hidden layer has \((d+1)r\) parameters, each of the
+remaining \(\gL-1\) hidden layers has \((r+1)r\), and the
+affine output has \(r+1\), giving \eqref{eq_nn_parameter_count}.
+
+For a raw network \(g\), add an input \(t\) and a final identity
+unit computing \(g(x)-t\). This gives a piecewise-linear
+architecture with at most \(W+3\) parameters, \(\gL+2\) layers,
+and at least three units. Its sign class contains the subgraphs
+of the raw networks. Theorem~7 of \citet{bartlett2019nearly}
+therefore bounds their pseudodimension by
+\(CW(\gL+1)\log(2+W)\).
+For the truncation used in \eqref{eq:space_of_networks},
 \[
-\text{VC}(F(\gL, r)) \,\leq\, L^2 r^2 \log(Lr^2).
+\max\{-B,\min\{B,g(x)\}\}>t
+\quad\Longleftrightarrow\quad
+g(x)>t,\qquad -B\leq t<B.
 \]
-By a slight variant of Lemma 19 of \cite{kohler2019rate}, where \(L_1\) norm is replaced by \(L_2\) norm (which is implied by Lemma 9.2 and Theorem 9.4 of \cite{gyorfi2002distribution}), it follows that
+For \(t<-B\) the comparison is always true, and for \(t\geq B\)
+it is always false. Thus truncation cannot increase
+pseudodimension, and
+\begin{equation}
+\label{eq_nn_pseudodimension}
+v \,:=\, \operatorname{Pdim}\bigl(\mathcal F(\gL,r)\bigr)
+\,\leq\, C W(\gL+1)\log(2+W).
+\end{equation}
+
+Apply the VC-subgraph covering bound
+\citep[Theorem~8.2, p.~61]{wellner2004empirical} with constant
+envelope \(B\) and exponent \(2\). For \(0<\epsilon\leq B\),
 \[
-\log N(\epsilon, F(\gL, r), \|\cdot\|_{nm}) \lesssim \gL^2 r^2 \log(\gL r^2) \left\{ \log(B^2\epsilon^{-2}) + \log \log(B^2\epsilon^{-2}) \right\}
-\lesssim \gL^2 r^2 \log(\gL r^2) \log(B\epsilon^{-1}). 
-\]  
+\begin{aligned}
+N\bigl(\epsilon,\|\cdot\|_{L_2(P)},\mathcal F(\gL,r)\bigr)
+&\,\leq\, C(v+1)(CB/\epsilon)^{2v},\\
+\log N\bigl(\epsilon,\|\cdot\|_{L_2(P)},\mathcal F(\gL,r)\bigr)
+&\,\leq\, C(v+1)\log(CB/\epsilon).
+\end{aligned}
+\]
+Substitution of \eqref{eq_nn_pseudodimension} gives
+\eqref{eq_nn_uniform_cover}. The bound is uniform in \(P\);
+it requires no independence of the points defining an empirical
+probability measure.
 \end{proof}
-
-
-\begin{corollary}
-\label{cor_star_nn}
-Let $F(\gL,r)$ defined as in (2) where $\sigma : \mathbb{R} \to \mathbb{R}$ with $\sigma(x) \,=\, \max\{x, 0\}$, let $\text{Star}(F(\gL,r), f^\ast)$ follow the definition in \eqref{star_shaped} where $f^*$ not necessarily in $F(\gL,r)$,  
-For any scale $\epsilon > 0$, we have 
-\bea 
-&\log N(\epsilon,\left\| \cdot \right\|_{nm}, \text{Star}(F(\gL,r), f^\ast)) \,\leq\, \log \left(\frac{2B}{\epsilon}\right) + \gL^2 r^2 \log(\gL r^2) \log(B\epsilon^{-1}).
-\bea
-\end{corollary}
-\begin{proof}
-    We apply the Lemma~\ref{lem_star} and Lemma~\ref{nn_covering} to obtain the conclusion with the following derivations. 
-    \bea 
-&\log N(\epsilon,\left\| \cdot \right\|_{nm}, \text{Star}(F(\gL,r), f^\ast)) \\ 
-&\,\leq\,  \log \left(\frac{2B}{\epsilon}\right) + \log N\left(\epsilon/B, \norm{\cdot}_{nm}, F(\gL,r)/B \right) \\ 
-&\,\leq\, \log \left(\frac{2B}{\epsilon}\right) + \gL^2 r^2 \log(\gL r^2) \log(B\epsilon^{-1}).
-\bea
-\end{proof}
+\end{revision}
 
 
 
