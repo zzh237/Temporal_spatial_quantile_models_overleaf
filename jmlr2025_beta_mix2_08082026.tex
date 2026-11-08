@@ -2897,22 +2897,140 @@ A_2 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f\in \mat
 &\eqqcolon A_2^*.
 \beq
 
-It remains to bound $A_2^*$. By the tower property, conditioning on $\{\delta_i^*\}_{i \in \mathcal{J}_{e,l}}$ and $\{x_{ij}^*\}_{i \in \mathcal{J}_{e,l}, j \in [m_i]}$, we have
+\begin{revision}
+It remains to bound $A_2^*$. In the rest of this proof, $(\delta^*,x^*)$
+denotes only the spatial effects and design points with $i\in\mathcal J_{e,l}$.
+By Lemma~\ref{Lemma_9}, the joint clusters $W_i^*$ in this block are
+independent and each has the law of $W_i$. Assumption~\ref{ass_1_4}
+therefore gives
 \bea
-A_2^* &\,=\, \Ept{x^*, \delta^*, e^*}{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\tilde Z_{ij}^*(f) - \hat Z_{ij}^*(f)}} \\
-&\,=\, \mathbb{E}_{\delta^*, x^*}\bigg[\mathbb{E}_{e^* \mid \delta^*, x^*}\bigg[\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\tilde Z_{ij}^*(f) - \hat Z_{ij}^*(f)} \bigg]\bigg].
+\mathcal L\bigl((W_i^*)_{i\in\mathcal J_{e,l}}\bigr)
+&=\bigotimes_{i\in\mathcal J_{e,l}}
+\left(\mathcal L(X_i)\otimes\mathcal L(\delta_i)
+\otimes\bigotimes_{j=1}^{m_i}\mathcal L(e_{ij})\right).
 \bea
-Conditioned on $\delta^*$ and $x^*$, the quantity $\tilde Z_{ij}^*(f) \,=\, \Ept{e^* \mid \delta_i^*, x_{ij}^*}{\hat Z_{ij}^*(f)}$ is deterministic, and $\{\hat Z_{ij}^*(f) - \tilde Z_{ij}^*(f)\}_{i \in \mathcal{J}_{e,l}, j \in [m_i]}$ are independent mean-zero random variables (since within block $\mathcal{J}_{e,l}$, the $e_{ij}^*$ are \rev{independent} given $\delta^*, x^*$). Applying the symmetrization inequality (Section 2.3.1 in \cite{van1996weak}), we obtain
+Consequently,
+\beq
+\label{eq_A2_conditional_product}
+\mathcal L\bigl((e_{ij}^*)_{i\in\mathcal J_{e,l},\,j\in[m_i]}
+\mid\delta^*,x^*\bigr)
+=\bigotimes_{i\in\mathcal J_{e,l}}\bigotimes_{j=1}^{m_i}\mathcal L(e_{ij})
+\quad\text{a.s.}
+\beq
+Thus the errors are conditionally independent; their marginal laws need
+not be identical. The conditional law in \eqref{eq_A2_conditional_product}
+is taken after the indicator has been removed in
+\eqref{eq:A2_le_A2star}. Moreover,
+\[
+\mathbb E_{e^*\mid\delta^*,x^*}\bigl[\hat Z_{ij}^*(f)\bigr]
+=\mathbb E_{e_{ij}^*\mid\delta_i^*,x_{ij}^*}\bigl[\hat Z_{ij}^*(f)\bigr]
+=\tilde Z_{ij}^*(f).
+\]
+Given these design points and spatial effects, let $e_{ij}'$ be
+independent copies with respective laws $\mathcal L(e_{ij})$, independent
+of $e^*$, and define $\hat Z_{ij}'(f)$ by replacing only $e_{ij}^*$ by
+$e_{ij}'$ in $\hat Z_{ij}^*(f)$. The design point $x_{ij}^*$ and the
+function $\delta_i^*$ are held fixed. Hence
+$\mathbb E_{e'\mid\delta^*,x^*}[\hat Z_{ij}'(f)]=\tilde Z_{ij}^*(f)$.
+Expectations over $e'$ below hold $e^*$ fixed.
+These conditional expectations exist because
+$|\hat Z_{ij}^*(f)|\leq |f(x_{ij}^*)-f^*(x_{ij}^*)|\leq 2B$.
+Using the centered class $\mathcal F_t$ defined above,
+we obtain
 \bea
-A_2^* &\,\le\, 2\,\mathbb{E}_{\delta^*, x^*}\bigg[\mathbb{E}_{e^*, s \mid \delta^*, x^*}\bigg[\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f-f^*) \le t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\hat Z_{ij}^*(f) \bigg]\bigg] \\
-&\,=\, 2\Ept{x^*, \delta^*, e^*, s}{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\hat Z_{ij}^* (f)}.
+&\mathbb E_{e^*\mid\delta^*,x^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+\bigl(\tilde Z_{ij}^*(f)-\hat Z_{ij}^*(f)\bigr)\right]\\
+&=\mathbb E_{e^*\mid\delta^*,x^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\mathbb E_{e'\mid\delta^*,x^*}
+\left[\frac1n\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+\bigl(\hat Z_{ij}'(f)-\hat Z_{ij}^*(f)\bigr)\right]\right]\\
+&\labelrel \leq {eq_A2_ghost_jensen}
+\mathbb E_{e^*,e'\mid\delta^*,x^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+\bigl(\hat Z_{ij}'(f)-\hat Z_{ij}^*(f)\bigr)\right]\\
+&\labelrel = {eq_A2_ghost_signs}
+\mathbb E_{e^*,e',s\mid\delta^*,x^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}\bigl(\hat Z_{ij}'(f)-\hat Z_{ij}^*(f)\bigr)\right]\\
+&\labelrel \leq {eq_A2_ghost_split}
+\mathbb E_{e',s\mid\delta^*,x^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}\hat Z_{ij}'(f)\right]\\
+&\qquad+\mathbb E_{e^*,s\mid\delta^*,x^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+(-s_{ij})\hat Z_{ij}^*(f)\right]\\
+&=2\mathbb E_{e^*,s\mid\delta^*,x^*}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}\hat Z_{ij}^*(f)\right].
 \bea
-We then apply the Lipschitz condition from Lemma~\ref{lem:lip} and the Ledoux-Talagrand contraction principle (Theorem~\ref{lem:Theorem 7}) \rev{to the increments $f(x_{ij}^*)-f^*(x_{ij}^*)$, noting that $\hat Z_{ij}^*(f^*)=0$,} to obtain
+Inequality \eqref{eq_A2_ghost_jensen} follows by conditional Jensen.
+Equality \eqref{eq_A2_ghost_signs} holds because independently swapping
+each pair $(e_{ij}^*,e_{ij}')$ preserves its conditional joint law;
+each swap acts on the entire process indexed by $f$.
+Inequality \eqref{eq_A2_ghost_split} separates the two suprema.
+The last equality uses the matching coordinate laws and the symmetry of
+the signs. Taking expectation over $(\delta^*,x^*)$ gives
+\beq
+\label{eq_A2_symmetrized}
+A_2^*\leq 2\mathbb E_{x^*,\delta^*,e^*,s}\left[
+\sup_{f-f^*\in\mathcal F_t}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}\hat Z_{ij}^*(f)\right].
+\beq
+
+We use the one-sided coordinatewise contraction inequality with constant
+one. To verify this form, let $T\subset\mathbb R^M$ be bounded and let
+each $\psi_k$ be $1$-Lipschitz. Fixing all signs except $s_k$, write
+$a_v$ for the contribution of the other coordinates. Then
+\bea
+\mathbb E_{s_k}\sup_{v\in T}\{a_v+s_k\psi_k(v_k)\}
+&=\frac12\sup_{v,w\in T}
+\{a_v+a_w+\psi_k(v_k)-\psi_k(w_k)\}\\
+&\leq\frac12\sup_{v,w\in T}\{a_v+a_w+|v_k-w_k|\}\\
+&=\frac12\left\{\sup_{v\in T}(a_v+v_k)
++\sup_{w\in T}(a_w-w_k)\right\}\\
+&=\mathbb E_{s_k}\sup_{v\in T}\{a_v+s_kv_k\}.
+\bea
+The penultimate equality follows by exchanging $v$ and $w$ in the two
+possible signs of $v_k-w_k$. Replacing one coordinate at a time yields
+\beq
+\label{eq_A2_one_sided_contraction}
+\mathbb E_s\sup_{v\in T}\sum_{k=1}^M s_k\psi_k(v_k)
+\leq\mathbb E_s\sup_{v\in T}\sum_{k=1}^M s_kv_k.
+\beq
+For fixed star data, put $w_{ij}=1/(nm_i)$ and
+\[
+\phi_{ij}(u)=
+\rho_\tau\bigl(\delta_i^*(x_{ij}^*)+e_{ij}^*-u\bigr)
+-\rho_\tau\bigl(\delta_i^*(x_{ij}^*)+e_{ij}^*\bigr).
+\]
+Lemma~\ref{lem:lip} gives $|\phi_{ij}(u)-\phi_{ij}(v)|\leq|u-v|$
+and $\phi_{ij}(0)=0$. Apply \eqref{eq_A2_one_sided_contraction}
+to $v_{ij}=w_{ij}(f(x_{ij}^*)-f^*(x_{ij}^*))$ and
+$\psi_{ij}(v)=w_{ij}\phi_{ij}(v/w_{ij})$, which is also
+$1$-Lipschitz. Averaging over the star data in
+\eqref{eq_A2_symmetrized} gives
+\end{revision}
 \bea
 A_2^* &\,\le\, 2\Ept{x^*, s}{\sup_{\substack{f\in \mathcal{F} \\ c_0\Delta^2(f - f^*)\le t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij} \rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)}} \\
 &\,\rev{\leq}\,  \rev{\frac{c_5}{L}R_{\mathcal{J}_{e,l}}(\mathcal F_t)},
 \bea
-\rev{The last inequality is the indicator-free bound in Lemma~\ref{side_lemma_for_block}.}
+\rev{For the last inequality, write the weighted sum with denominator
+$\sum_{i\in\mathcal J_{e,l}}m_i$. Its coordinate multipliers satisfy
+\[
+0<\frac{\sum_{i'\in\mathcal J_{e,l}}m_{i'}}{nm_i}
+\leq\frac{c_2C}{cL}
+\]
+by \eqref{eq_120}. Applying \eqref{eq_A2_one_sided_contraction} to these
+linear multipliers gives the prefactor $2c_2C/(cL)=c_5/L$, as in the
+indicator-free bound of Lemma~\ref{side_lemma_for_block}.}
 \end{proof}
 
 
@@ -6880,11 +6998,13 @@ Because $f^*\in\text{Star}(\gF,f^*)$, this centered class contains zero. Hence e
 \begin{corollary}[Bound of  $\tilde A_2$, $\tilde B_2$]
 \label{col_tilde_A_2}
    Let  $\tilde Z(f)$,  $\hat Z(f)$ been defined in \eqref{def_tilde_zf} and \eqref{295}. Let $\Omega_\beta$ be defined in \eqref{event_beta}.
-   Let  $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be independent Rademacher variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$, let $\tilde A_2$ be the quantity introduced in \eqref{tilde_A}, on event $\Omega$, then we have
+   Let  $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be independent Rademacher variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$, let $\tilde A_2$ be the quantity introduced in \eqref{tilde_A}. \rev{Then we have}
 
 \bea 
 \tilde A_2 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\tilde Z_{ij}(f) - \hat Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
-&\le  2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\hat Z_{ij} (f)\Big) \cdot \indic{\Omega_\beta}} \\
+&\rev{\leq 2\Ept{x^*, \delta^*, e^*, s}{\sup_{f-f^*\in\mathcal F_{\tilde t}^{\star}}
+\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i}
+s_{ij}\hat Z_{ij}^*(f)}} \\
 &\rev{\leq} \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}}).
 \bea
 Similarly, for $\tilde B_2$ in \eqref{tilde_B} we have
@@ -6894,7 +7014,25 @@ Similarly, for $\tilde B_2$ in \eqref{tilde_B} we have
 
 \end{corollary}
 \begin{proof}
-The proof is a direct application of Corollary~\ref{col_A_2} by replacing $\gF$ with $\text{Star}(\gF, f^\ast)$.  
+\rev{Apply the proof of Lemma~\ref{col_A_2} with $\mathcal F_t$ replaced
+by $\mathcal F_{\tilde t}^{\star}$. This class contains zero, so
+\eqref{eq:A2_le_A2star} first removes the coupling indicator.
+The existing approximation bound
+$\|f_{\text{Proj}}-f^*\|_\infty\leq\phi_{nm}$, with
+$f_{\text{Proj}}\in\mathcal F$, gives
+$\|f^*\|_\infty\leq B+\phi_{nm}$. For
+$f=\mu g+(1-\mu)f^*\in\text{Star}(\mathcal F,f^*)$, where
+$g\in\mathcal F$ and $\mu\in[0,1]$, we therefore have
+\[
+\|f-f^*\|_\infty=\mu\|g-f^*\|_\infty\leq 2B+\phi_{nm}.
+\]
+This bounds the loss increments and justifies the same conditional
+expectations without requiring $f^*\in\mathcal F$.
+The conditional product law \eqref{eq_A2_conditional_product}, the
+symmetrization bound \eqref{eq_A2_symmetrized}, and the subsequent
+contraction then give the result. The argument uses membership of $f^*$
+in the indexing class, but does not require the class to be convex.
+For $\tilde B_2$, use the same proof on $\mathcal J_{o,l}$.}
 \end{proof}
 
 \begin{corollary}[Bound of $\tilde A_1$, $\tilde B_1$]
@@ -6935,11 +7073,13 @@ The proof is a direct application of Corollary~\ref{col_A_3} by replacing $\gF$ 
 
 \begin{corollary}[Bound of  $\tilde E_2$, $\tilde F_2$]
 \label{col_tilde_E_2}
-   Let  $\tilde Z(f)$,  $\hat Z(f)$ been defined in \eqref{def_tilde_zf} and \eqref{295}. Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let  $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be independent Rademacher variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$, let $\tilde E_2$ be the quantity introduced in \eqref{tilde_E}, on event $\Omega$, then we have
+   Let  $\tilde Z(f)$,  $\hat Z(f)$ been defined in \eqref{def_tilde_zf} and \eqref{295}. Let $\Omega_\beta$ be defined in \eqref{event_beta}. Let  $\{s_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be independent Rademacher variables, independent of the data $\{(x_{ij}, e_{ij}, \delta_i)\}$ and their coupled copies $\{(x_{ij}^*, e_{ij}^*, \delta_i^*)\}$, let $\tilde E_2$ be the quantity introduced in \eqref{tilde_E}. \rev{Then we have}
 
 \bea 
 \tilde E_2 &\,=\, \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\hat Z_{ij}(f) - \tilde Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\
-&\le  2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\hat Z_{ij} (f)\Big) \cdot \indic{\Omega_\beta}} \\
+&\rev{\leq 2\Ept{x^*, \delta^*, e^*, s}{\sup_{f-f^*\in\mathcal F_{\tilde t}^{\star}}
+\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_i}
+s_{ij}\hat Z_{ij}^*(f)}} \\
 &\rev{\leq} \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}}).
 \bea
 Similarly, for $\tilde F_2$ in \eqref{tilde_F} we have
@@ -6949,68 +7089,47 @@ Similarly, for $\tilde F_2$ in \eqref{tilde_F} we have
 
 \end{corollary}
 \begin{proof}
-% The proof is a direct application of Corollary~\ref{col_A_2} by replacing $\gF$ with $\text{Star}(\gF, f^\ast)$.  
-In the proof, we can see that the $\tilde E_2$ and $\tilde A_2$ have same type of upper bound.
-The proof is similar to the proof of Corollary~\ref{col_A_2}. 
-
-
-First, by Tower property, we have 
-\bea 
-A_2 & \coloneqq \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\hat Z_{ij}(f) - \tilde Z_{ij}(f)}  \Big) \cdot \indic{\Omega_\beta}} \\ 
-&\,=\,
-\ept{\Big(\ept{\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{ \hat Z_{ij}(f) - \ept{\hat Z_{ij}(f)\mid  \{ \delta_{i} \}} }  \mid  \{ \delta_{i} \}}\Big) \cdot \indic{\Omega_\beta}}.
-\bea 
-To facilitate our analysis, we define more terms. 
-Let $\{\check e_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $, $\{\check x_{ij}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ be an independent and identically distributed copy of
-$\{e_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ $\{x_{ij}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $, then we define  $\check Z_{ij}(f)$ as
-\bea 
-\check Z_{ij}(f) \,\coloneqq\,
-\rho_{\tau}(f^*(\check 
- x_{ij}) + \delta_i(\check 
- x_{ij}) + \check e_{ij}  - f(\check  x_{ij})) - \rho_{\tau}(\delta_i(\check  x_{ij}) + \check e_{ij}).
-\bea 
-Now we control the $\ept{\hat Z_{ij}(f) - \check Z_{ij}(f)\mid  \{ \delta_{i} \}, \{e_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} , \{x_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]}  }$, the expectation takes on
-$\{\check e_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $, $\{\check x_{ij}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $, and conditioned on
-$\{ ( \delta_{i1}, \dots, \delta_{im_i}) \}_{i \in \mathcal{J}_{e,l}}, \{e_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ and $\{x_{ij}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $.
-
-
-So we have 
-\beq 
-\label{eq587}
-& \sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \left\{ \ept{\hat Z_{ij}(f)\mid \{ \delta_{i} \}, \{e_{i,j}\}, \{x_{ij}\}  }\right.   \\ &\left.\qquad- \ept{\check Z_{ij}(f)\mid \{ \delta_{i} \}, \{e_{i,j}\}, \{x_{ij}\}  }  \right\} \\
-\labelrel\le{ie366} & \Ept{x, \delta, e, x^*, \delta^*, e^*, s}{\Big( \sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}    \set{\hat Z_{ij}(f) - \check Z_{ij}(f)} \Big) \cdot \indic{\Omega_\beta} \mid \{ \delta_{i} \}, \{e_{i,j}\}, \{x_{ij}\}}.
-\beq 
-The equality $\eqref{ie366}$ is held by Jensen's inequality. 
-Then, the left-hand side of the above, can be further written as     
-\beq 
-\label{eq594}
-{}&\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \left\{ \ept{\hat Z_{ij}(f)\mid \{ \delta_{i} \}, \{e_{i,j}\}, \{x_{ij}\}  }\right. \\ & \left. \qquad - \ept{\check Z_{ij}(f)\mid \{ \delta_{i} \}, \{e_{i,j}\}, \{x_{ij}\}  }  \right\} \\ 
-& \labelrel={in373}  \sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{ \hat Z_{ij}(f) - \ept{\hat Z_{ij}(f)\mid  \{ \delta_{i} \} }    }. 
-\beq 
-The second expectation takes on $\{e_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $, $\{ x_{ij}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $, and conditioned on  $\{(\delta_{i1}, \dots, \delta_{im_i}) \}_{i \in \mathcal{J}_{e,l}}$, then the equality $\eqref{in373}$ holds since $\ept{\check Z_{ij}(f)\mid \{ \delta_{i} \}, \{e_{i,j}\}, \{x_{ij}\}  }$ and $\quad$ $\ept{\hat Z_{ij}(f)\mid  \{ \delta_{i} \} }$ are the same quantity.
-
-\rev{Combining} \eqref{eq587} and \eqref{eq594}, taking expectation of $\{e_{i,j}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $, $\{ x_{ij}\}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ conditioning on $\quad$ $\{ ( \delta_{i1}, \dots, \delta_{im_i}) \}_{i \in \mathcal{J}_{e,l}}$ we have 
-\bea 
-&\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\hat Z_{ij}(f) - \ept{\hat Z_{ij}(f)\mid  \{ \delta_{i} \} } } \mid  \{ \delta_{i} \}   \Big) \cdot \indic{\Omega_\beta}} \\ 
-\le & \ept{\Big( \sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}    \set{\hat Z_{ij}(f)} - \check Z_{ij}(f)  \Big) \cdot \indic{\Omega_\beta} \mid  \{ \delta_{i} \}}\\
-\labelrel={in381} &  \Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}}s_{ij}\set{\hat Z_{ij} (f) -  \check Z_{ij} (f)} \Big) \cdot \indic{\Omega_\beta} \mid  \{ \delta_{i} \}} \\
-\labelrel\le{in382}& 2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\hat Z_{ij} (f)  \Big) \cdot \indic{\Omega_\beta} \mid  \{ \delta_{i} \}}. 
-\bea 
-
-The \eqref{in381} holds since conditioned on $\{ ( \delta_{i1}, \dots, \delta_{im_i}) \}_{i \in \mathcal{J}_{e,l}} $, the $\set{\hat  Z_{ij} (f) - \check  Z_{ij} (f)}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ is independently distributed and symmetric with mean zero and $\set{s_{ij}(\hat Z_{ij} (f) -  \check  Z_{ij} (f))}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ and $\set{ \hat Z_{ij} (f) - \check  Z_{ij} (f)}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ have the same distribution. 
-The \eqref{in382} follows because $\set{-s_{ij}}_{i \in \mathcal{J}_{e,l},j\in[m_{i}]} $ are also independent Rademacher variables. Taking expectation of $\{ ( \delta_{i1}, \dots, \delta_{im_i}) \}_{i \in \mathcal{J}_{e,l}}$ \rev{on both sides}, we obtain the result. 
-
-We apply the Lipschitz condition of $\hat Z_{ij}(f)$, $Z_{ij}(f)$ and $u_{ij}(f)$ in Lemma~\ref{lem:lip}, and then apply the 
-Ledoux-Talagrand contraction principle in Theorem~\ref{lem:Theorem 7}. 
-
-\bea 
-&\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}}\frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} \set{\hat Z_{ij}(f) -  \tilde Z_{ij}(f)}\Big) \cdot \indic{\Omega_\beta}} \\ 
-&\le  2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\hat Z_{ij} (f)\Big) \cdot \indic{\Omega_\beta}}  \\ & \labelrel\le{inq493} 2\Ept{x, \delta, e, x^*, \delta^*, e^*}{\Big(\sup_{\substack{f \in \text{Star}(\gF, f^\ast)\\ c_0\Delta^2(f - f^\ast) \leq \tilde t^2}} \frac{1}{n}\sum_{i \in \mathcal{J}_{e,l}} \frac{1}{m_i}\sum_{j=1}^{m_{i}} s_{ij}\rev{\bigl(f(x_{ij}^*)-f^*(x_{ij}^*)\bigr)}\Big) \cdot \indic{\Omega_\beta}} \\
-&\,\rev{\leq}\, \frac{c_5}{L} R_{\mathcal{J}_{e,l}}(\rev{\mathcal F_{\tilde t}^{\star}}).
-\bea 
-
-\rev{Here \eqref{inq493} uses $\hat Z_{ij}(f^*)=0$. The final inequality follows from the indicator-free argument in Lemma~\ref{side_lemma_for_block}, applied to the centered star class.}
-
+\begin{revision}
+On $\Omega_\beta$, replace the data by their joint coupled copies.
+Since $f^*\in\text{Star}(\mathcal F,f^*)$ and
+$\hat Z_{ij}^*(f^*)-\tilde Z_{ij}^*(f^*)=0$, the supremum is nonnegative.
+Thus, as in \eqref{eq:A2_le_A2star},
+\[
+\tilde E_2\leq\mathbb E_{x^*,\delta^*,e^*}\left[
+\sup_{f-f^*\in\mathcal F_{\tilde t}^{\star}}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+\bigl(\hat Z_{ij}^*(f)-\tilde Z_{ij}^*(f)\bigr)\right].
+\]
+Condition only on the design points and spatial effects in this block.
+Use the error copies and $\hat Z_{ij}'$ constructed in the proof of
+Lemma~\ref{col_A_2}. The increment bound in the proof of
+Corollary~\ref{col_tilde_A_2} ensures integrability.
+The same conditional Jensen and exchange steps give
+\bea
+&\mathbb E_{e^*\mid\delta^*,x^*}\left[
+\sup_{f-f^*\in\mathcal F_{\tilde t}^{\star}}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+\bigl(\hat Z_{ij}^*(f)-\tilde Z_{ij}^*(f)\bigr)\right]\\
+&\leq\mathbb E_{e^*,e',s\mid\delta^*,x^*}\left[
+\sup_{f-f^*\in\mathcal F_{\tilde t}^{\star}}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}\bigl(\hat Z_{ij}^*(f)-\hat Z_{ij}'(f)\bigr)\right]\\
+&=\mathbb E_{e^*,e',s\mid\delta^*,x^*}\left[
+\sup_{f-f^*\in\mathcal F_{\tilde t}^{\star}}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}\bigl(\hat Z_{ij}'(f)-\hat Z_{ij}^*(f)\bigr)\right]\\
+&\leq2\mathbb E_{e^*,s\mid\delta^*,x^*}\left[
+\sup_{f-f^*\in\mathcal F_{\tilde t}^{\star}}\frac1n
+\sum_{i\in\mathcal J_{e,l}}\frac1{m_i}\sum_{j=1}^{m_i}
+s_{ij}\hat Z_{ij}^*(f)\right].
+\bea
+The equality uses $s\overset{d}{=}-s$; the final inequality is
+\eqref{eq_A2_ghost_split} with the centered star class. Taking expectation
+over the block design and spatial effects, applying
+\eqref{eq_A2_one_sided_contraction}, and then using
+Lemma~\ref{side_lemma_for_block} proves the stated bound.
+The proof for $\tilde F_2$ uses the odd block in the same way.
+\end{revision}
 \end{proof}
 
 
