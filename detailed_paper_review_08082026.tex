@@ -322,9 +322,17 @@ proved convex and approximate-star width factors $\sqrt{2}$ and $2$, preserving
 $b(B)$ and the existing weights. The approximation bound requires an actual
 feasible approximant. Protected T04/T07 and T84, global risk arguments, and the
 KNN radius/envelope and neural-network applications remain separately unresolved.}\\
-\rowcolor{lightgray}T22 & 13 & Trend-filtering radius fixed at one & \deferred &
-Keeping a general radius changes the estimator class and the rate's parameter
-dependence.\\
+% Original T22 disposition retained for provenance:
+% \rowcolor{lightgray}T22 & 13 & Trend-filtering radius fixed at one & \deferred &
+% Keeping a general radius changes the estimator class and the rate's parameter
+% dependence.\\
+T22 & 13 & Trend-filtering radius fixed at one & \pairreviewed &
+\textcolor{deferredred}{The estimator and theoretical classes now use the same
+bounded positive feasible radius $V\geq V^*$. Continuous representatives for
+$k\geq2$ and an exact original-weight replication argument support the entropy
+input, whose constant depends on $k$ and an upper bound for $V/B$.
+This does not verify the inherited risk rates: T24/T68--T70, the T42 algorithm
+comparison, and protected T04/T84 model interfaces remain unresolved.}\\
 T24 & 13--14, 63--66 & Trend-filtering rate exponents & \deferred & The recommendation requires
 a new entropy calculation and fixed-point derivation.\\
 \rowcolor{lightgray}T25 & 14 & Minimax-optimality qualification & \deferred & The

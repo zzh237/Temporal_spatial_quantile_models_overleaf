@@ -914,6 +914,7 @@ When \(g\) is differentiable, \(TV(g)=\int_0^1|g'(t)|\,dt\). Hence, when \(f^{(k
 J_k(f)=TV\!\left(f^{(k-1)}\right)=\int_0^1|f^{(k)}(t)|\,dt.
 \]
 Under this indexing convention, the corresponding trend-filtering spline has degree \(k-1\): \(k=1\) gives a piecewise-constant fit, \(k=2\) a piecewise-linear fit, and \(k=3\) a piecewise-quadratic fit \cite{mammen1997locally}.
+For \(k\geq2\), we evaluate functions in \(F_k\) using their continuous Sobolev representatives on \([0,1]\).
 \end{revision}
 \end{definition}
 
@@ -926,7 +927,7 @@ The univariate function $f^* : [0,1] \to \mathbb{R}$ satisfies the following:
 \begin{enumerate}[label={\bfseries\arabic*.}, ref={\ref{ass_tf}.\arabic*}]
 \item\label{ass_6_1} It holds that $V^* := J_k(f^*) < \infty$, where $V^*$ can depend on $n$, and with $k \geq  1$ a fixed integer, where $J_k(f) =  TV(f^{(k-1)})$ for any function $f$.
 \item\label{ass_6_2} Let $V \geq  V^* = TV({f^*}^{(k-1)})$, $V > 0$ is a tuning parameter that controls the $k - 1$th order total variation. 
-\item\label{ass_6_3} Let canonical scaling $V^* = \gO(1)$.
+\item\label{ass_6_3}\rev{Assume the canonical scaling $V^*=\gO(1)$ and choose a positive tuning radius $V\geq V^*$ with $V=\gO(1)$.}
 \item\label{ass_6_4} Let \( \int f^*(t)dt = 0 \). 
 \end{enumerate}
 
@@ -940,7 +941,7 @@ Assumption \ref{ass_6_1} addresses the smoothness properties of the function \(f
 
 Assumption~\ref{ass_6_2}, asserting that \(f^* \in \mathcal{F}\), is a standard constraint, mirroring similar premises like that in Theorem 1 of \cite{madrid2022risk} for univariate quantile trend filtering.
 
-Assumption~\ref{ass_6_3} specifies \(V^* = \mathcal{O}(1)\). This condition is widely recognized in literature as the canonical scaling for functions within a total variation ball of radius \(V\), as discussed in \cite{madrid2022risk} and \cite{sadhanala2016total}. Given this canonical scaling, setting \(V = O(1)\) is logical, suggesting \(TV(f^{(k-1)})\) to also be \(O(1)\).
+Assumption~\ref{ass_6_3} specifies \(V^* = \mathcal{O}(1)\). This condition is widely recognized in literature as the canonical scaling for functions within a total variation ball of radius \(V\), as discussed in \cite{madrid2022risk} and \cite{sadhanala2016total}. \rev{It permits a bounded positive radius $V\geq V^*$ to be chosen. The choice $V=1$ is a special case requiring $V^*\leq1$.}
 
 The condition that \( \int f^*(t)dt = 0 \) has been articulated in various forms across the literature for identifiability purposes. For instance, \cite{sadhanala2017additive} employs a discrete version of this requirement, as detailed on Page 1 of their study. A similar condition is mentioned in Example 1 of \cite{dalalyan2017prediction}, within the context of analyzing the univariate fixed design total variation estimator.
 
@@ -954,7 +955,7 @@ The condition that \( \int f^*(t)dt = 0 \) has been articulated in various forms
  For \(k \,\geq\, 1\), we introduce the Quantile Trend Filtering estimator for temporal-spatial data, defined through the optimization problem
 \begin{align}
 \label{eq172}
-\hat{f} = \arg\min_{f\in F_k(1)} \frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_{\tau}(y_{ij} - f(x_{ij})) \quad \text{subject to} \quad TV(f^{(k-1)}) \,\leq\, 1.
+\hat{f} = \arg\min_{f\in F_k(\rev{V})} \frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i} \rho_{\tau}(y_{ij} - f(x_{ij})) \quad \text{subject to} \quad TV(f^{(k-1)}) \,\leq\, \rev{V}.
 \end{align}
 Equation~\eqref{eq172} outlines a constrained version of Quantile Trend Filtering specifically for temporal-spatial data, analogous to the formulation presented in Equation~\eqref{loss_quantile}. Our analysis begins with this constrained estimator.
 
@@ -963,7 +964,7 @@ Equation~\eqref{eq172} outlines a constrained version of Quantile Trend Filterin
 \begin{theorem}[Trend Filtering]
 \label{Theorem_2}
 \begin{revision}
-Consider \(k\geq1\) and observations \(\{(x_{ij},y_{ij})\}_{i=1,j=1}^{n,m_i}\) satisfying Assumptions~\ref{Assumption 1.}--\ref{ass_tf}. Let \(f^*(x_{ij})\) be the conditional \(\tau\)-quantiles of \(y_{ij}\). Under the canonical scaling \(V^*=\gO(1)\), let \(\hat f\in F_k(1)\) be the estimator defined in \eqref{eq172}, with \(J_k(f)=TV(f^{(k-1)})\).
+Consider \(k\geq1\) and observations \(\{(x_{ij},y_{ij})\}_{i=1,j=1}^{n,m_i}\) satisfying Assumptions~\ref{Assumption 1.}--\ref{ass_tf}. Let \(f^*(x_{ij})\) be the conditional \(\tau\)-quantiles of \(y_{ij}\). Choose \(V\geq V^*\) with \(V>0\) and \(V=\gO(1)\), and let \(\hat f\in F_k(V)\) be the estimator defined in \eqref{eq172}, with \(J_k(f)=TV(f^{(k-1)})\).
 \end{revision}
 It holds that
 % \beq 
@@ -4570,11 +4571,13 @@ t^2 & \asymp
 \subsection{Proof sketch of Theorem~\ref{Theorem_2}}
 
 
-Recall Definition~\ref{def_tf} that $F_k(1)$ denote function space
-\bea 
-F_k(1) \,\coloneqq\, \big\{ f\in \gF : [0,1] \to \mathbb{R} : f \text{ is }(k - 1) \text{ times weakly differentiable} \\
-&\qquad\qquad \text{and } J_k(f) \,=\, TV(f^{(k-1)}) < 1 \big\}.
-\bea 
+\begin{revision}
+Recall the class in Definition~\ref{def_tf}, with the same bounded positive radius $V\geq V^*$ as in Theorem~\ref{Theorem_2}:
+\bea
+F_k(V) \,=\, \set{f\in F_k:J_k(f)\leq V},
+\qquad J_k(f) \,=\, TV(f^{(k-1)}).
+\bea
+\end{revision}
 % and $F_k(1)$ denote  a subspace of $F(1)$
 % \bea 
 % F_k(1) \coloneqq F(1)\cap \set{f:\norm{f}_{\infty} \leq L}. 
@@ -4586,10 +4589,10 @@ F_k(1) \,\coloneqq\, \big\{ f\in \gF : [0,1] \to \mathbb{R} : f \text{ is }(k - 
 % \bea 
 
 
-By Corollary~\ref{cor_op} or Theorem~\ref{Theorem_1},  we would need to get  $R_{\mathcal{J}_{e,l}}\left(F_k(1)\cap B_2\left(c^{-\frac{1}{2}}\cdot b(B)\cdot t\right)\right)$ and $R_{\mathcal{J}_{o,l}}\left(F_k(1)\cap B_2\left(c^{-\frac{1}{2}}\cdot b(B)\cdot t\right)\right)$, to get that, we will use an existing Theorem that bounds local Rademacher complexity using the $L_2$ set with the empirical set.   
-\bea 
-&R_{\mathcal{J}_{e,l}}\left(F_k(1)\cap \set{f: \norm{f-f^*}\leq  b}\right) \,\leq\, R_{\mathcal{J}_{e,l}}\left(F_k(1)\cap \set{f: \norm{f-f^*}_{nm} \leq  \sqrt{2}b}\right), \,\,\,\text{and}\,\,\, \\
-&R_{\mathcal{J}_{o,l}}\left(F_k(1)\cap \set{f: \norm{f-f^*}\leq  b}\right) \,\leq\, R_{\mathcal{J}_{o,l}}\left(F_k(1)\cap \set{f: \norm{f-f^*}_{nm} \leq  \sqrt{2}b}\right).
+By Corollary~\ref{cor_op} or Theorem~\ref{Theorem_1},  we would need to get  $R_{\mathcal{J}_{e,l}}\left(F_k(\rev{V})\cap B_2\left(c^{-\frac{1}{2}}\cdot b(B)\cdot t\right)\right)$ and $R_{\mathcal{J}_{o,l}}\left(F_k(\rev{V})\cap B_2\left(c^{-\frac{1}{2}}\cdot b(B)\cdot t\right)\right)$, to get that, we will use an existing Theorem that bounds local Rademacher complexity using the $L_2$ set with the empirical set.
+\bea
+&R_{\mathcal{J}_{e,l}}\left(F_k(\rev{V})\cap \set{f: \norm{f-f^*}\leq  b}\right) \,\leq\, R_{\mathcal{J}_{e,l}}\left(F_k(\rev{V})\cap \set{f: \norm{f-f^*}_{nm} \leq  \sqrt{2}b}\right), \,\,\,\text{and}\,\,\, \\
+&R_{\mathcal{J}_{o,l}}\left(F_k(\rev{V})\cap \set{f: \norm{f-f^*}\leq  b}\right) \,\leq\, R_{\mathcal{J}_{o,l}}\left(F_k(\rev{V})\cap \set{f: \norm{f-f^*}_{nm} \leq  \sqrt{2}b}\right).
 \bea 
 where $b>0$ is any constant, where 
 we denote $\norm{g}_{mn} = \left(\frac{1}{\sum_{i \in \mathcal{J}_{e,l}}  m_i}\sum_{i \in \mathcal{J}_{e,l}} \sum_{j=1}^{m_{i}} g(x_{ij})^2\right)^{1/2}$
@@ -4723,7 +4726,7 @@ Lastly, we will apply Dudley's entropy integral (see \cite{dudley1967sizes}) to 
 
 \begin{lemma}[Trend Filtering]
  \label{lem_tv_k}
- \label{col_tv_k} Let $J_k(\cdot) \,=\, TV(\cdot^{k-1})$, the $k$-th order trend filtering operator, for $F_k(1)$, we have 
+ \label{col_tv_k} Let $J_k(\cdot) \,=\, TV(\cdot^{k-1})$, the $k$-th order trend filtering operator, for $F_k(\rev{V})$, we have
  \bea 
  \Delta^2(\hat f - f^*)  \,=\, O_p \left(\frac{\min\set{B^{\frac{4k}{2k+1}},
  B^{\frac{6k-1}{2k+1}}} }{(nm)^{\frac{2k}{2k+1}}} + \frac{\log n}{n}\right).
@@ -4770,7 +4773,7 @@ with probability at least $1 - \frac{1}{\sum_{i \in \mathcal{J}_{e,l}}m_i} \,\ge
 
 Under the event $\mathcal{E}^c$, given that $F \subseteq B_{\infty}(B)$, we have that $R_{\mathcal{J}_{elmn}} (\gF \cap B_2(b)) \,\leq\, B$. Therefore, splitting the expectation over $\mathcal{E}$ and $\mathcal{E}^c$, 
 
-Set that $\gF \equiv F_k(1)$, we obtain that for some positive constant $c_7$, and $A > 0$ from Lemma~\ref{lem_pack}. 
+Set that $\gF \equiv F_k(\rev{V})$, we obtain that for some positive constant $c_7$, and $A > 0$ from Lemma~\ref{lem_pack}.
 
 
 % \bea
@@ -4782,8 +4785,8 @@ Set that $\gF \equiv F_k(1)$, we obtain that for some positive constant $c_7$, a
 The Rademacher complexity defined in Equation~\eqref{eq_rade_b2} is bounded by
 
 \bea
-R_{\mathcal{J}_{e,1}}( F_k(1) \cap B_2(b)) &\,=\, \mathbb{E}_{x^*}[R_{\mathcal{J}_{elmn}} ( F_k(1) \cap B_2(b))] \\ 
-&\,\leq\,  \frac{C_{\text{Dud}}}{\sqrt{C_{\beta}cc_1nm}} \int_0^{\sqrt{2}b} \sqrt{\log N (\epsilon, ||\cdot||_{mn}, F_k(1))} d\epsilon + \frac{2B\log(n)}{C_{\beta}cc_1nm} \\
+R_{\mathcal{J}_{e,1}}( F_k(\rev{V}) \cap B_2(b)) &\,=\, \mathbb{E}_{x^*}[R_{\mathcal{J}_{elmn}} ( F_k(\rev{V}) \cap B_2(b))] \\
+&\,\leq\,  \frac{C_{\text{Dud}}}{\sqrt{C_{\beta}cc_1nm}} \int_0^{\sqrt{2}b} \sqrt{\log N (\epsilon, ||\cdot||_{mn}, F_k(\rev{V}))} d\epsilon + \frac{2B\log(n)}{C_{\beta}cc_1nm} \\
 &\,\leq\, \frac{A C_{\text{Dud}}B^{1/2k} }{\sqrt{C_{\beta}cc_1nm}} \int_0^{\sqrt{2}b} \epsilon^{-1/(2k)} d\epsilon + \frac{2B\log(n)}{C_{\beta}cc_1nm} \\
 &\,=\, c_6 \frac{B^{1/2k} \sqrt{2\log(n)}}{\sqrt{C_{\beta}cc_1nm}}b^{1-1/(2k)} + \frac{2B\log(n)}{C_{\beta}cc_1nm}.
 \bea
@@ -4867,11 +4870,11 @@ t^2 = \frac{c\max\set{B^{\frac{4k}{2k+1}},
 and 
 \beq 
 \label{rade_trend_filtering}
-R_{\mathcal{J}_{e,l}}\left(F_k(1)\cap B_2\left(c^{-\frac{1}{2}}\cdot b(L)\cdot t\right)\right) \,\leq\, {t}^2 = \frac{c^2 \max\set{L^{\frac{4k}{2k+1}}, 
+R_{\mathcal{J}_{e,l}}\left(F_k(\rev{V})\cap B_2\left(c^{-\frac{1}{2}}\cdot b(L)\cdot t\right)\right) \,\leq\, {t}^2 = \frac{c^2 \max\set{L^{\frac{4k}{2k+1}},
  L^{\frac{2k-1}{2k+1}}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}}.
 \beq  Similarly, we have 
 \bea 
-R_{\mathcal{J}_{o,l}}\left(F_k(1)\cap B_2\left(c^{-\frac{1}{2}}\cdot b(L)\cdot t\right)\right) \,\leq\, \frac{c^2 \max\set{L^{\frac{4k}{2k+1}}, 
+R_{\mathcal{J}_{o,l}}\left(F_k(\rev{V})\cap B_2\left(c^{-\frac{1}{2}}\cdot b(L)\cdot t\right)\right) \,\leq\, \frac{c^2 \max\set{L^{\frac{4k}{2k+1}},
  L^{\frac{2k-1}{2k+1}}} {\log(n)}^{\frac{4k}{2k+1}}}{(nm)^{\frac{2k}{2k+1}}}.
 \bea 
 
@@ -4888,20 +4891,47 @@ r_n^2 \asymp \frac{
 
 \begin{lemma}
 \label{lem_pack}
-Let $\{x_{ij}\}_{i=1,j=1}^{n,m_j}$ be a collection of random variables in $[0,1]$. Denote
+Let $\{x_{ij}\}_{i=1,j=1}^{n,\rev{m_i}}$ be a collection of random variables in $[0,1]$. Denote
     \bea
 \left\|f\right\|_{mn}^{2}=\frac{1}{n} \sum_{i=1}^{n} \frac{1}{m_i} \sum_{j=1}^{m_i} f^{2}(x_{ij}).
 \bea
 
-Then, there exists an absolute constant $A$ such that for $ k \,\geq\, 1 $,
-
+\begin{revision}
+For fixed $k\geq1$ and $B>0$, and a bounded sequence of positive radii $V$, there is a constant $A\geq1$, depending only on $k$ and an upper bound for $V/B$, such that
 \bea
-\log N\left( \varepsilon, \left\| \cdot \right\|_{mn}, F_k(1) \right) \,\leq\, A B^{1/k}\varepsilon^{-1/k}.
+\log N\left(\varepsilon,\|\cdot\|_{mn},F_k(V)\right)
+\,\leq\, A B^{1/k}\varepsilon^{-1/k},
+\qquad \varepsilon>0.
 \bea
+\end{revision}
 \end{lemma}
 
 \begin{proof}
-    This is a direct consequence of \cite{sadhanala2016total}, see page 3050 of the mentioned reference.
+\begin{revision}
+Choose a positive integer $q$ divisible by every $m_i$. Replicating each design point $x_{ij}$ exactly $q/m_i$ times gives $nq$ points, whose ordinary empirical norm satisfies
+\bea
+&\frac{1}{nq}\sum_{i=1}^n\sum_{j=1}^{m_i}
+       \sum_{\ell=1}^{q/m_i}g(x_{ij})^2\\
+&\labelrel = {eq_tf_weight_replication}
+\frac{1}{n}\sum_{i=1}^n\frac{1}{m_i}
+       \sum_{j=1}^{m_i}g(x_{ij})^2
+\,=\,\|g\|_{mn}^2.
+\bea
+Equality~\eqref{eq_tf_weight_replication} follows by summing the $q/m_i$ identical terms. The entropy bound in condition C3 and Corollary~1 of \cite{sadhanala2017additive} is uniform over finite design point sequences, so it applies to this replicated sequence. For every $f\in F_k(V)$,
+\bea
+J_k\left(\frac{f}{\max\{V,B\}}\right)\leq1,
+\qquad
+\left\|\frac{f}{\max\{V,B\}}\right\|_\infty\leq1.
+\bea
+Scaling a cover of the class with variation and envelope at most one therefore gives
+\bea
+&\log N\left(\varepsilon,\|\cdot\|_{mn},F_k(V)\right)\\
+&\labelrel \le {eq_tf_radius_entropy}
+C_k\left(\frac{\max\{V,B\}}{\varepsilon}\right)^{1/k}\\
+&\,=\,C_k\max\{V/B,1\}^{1/k}B^{1/k}\varepsilon^{-1/k}.
+\bea
+In~\eqref{eq_tf_radius_entropy}, $C_k$ depends only on $k$ and includes the fixed factor needed if covering centers are required to lie in the subclass. The boundedness of $V/B$ now permits the stated choice of $A\geq1$, independent of the design and sample size.
+\end{revision}
 \end{proof}
 
 
