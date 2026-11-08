@@ -748,15 +748,41 @@ bound. The sign tail bound conditions on the complete design, and the direct
 caller uses $(\Lambda,0)$. These are conditional graph and sign results;
 T76 geometry and grid counts, T74 tuning, T73 risk, bad-event bounds,
 T84 and the protected T04 assumptions remain separate.}\\
-\rowcolor{lightgray}T78 & 95--98 & Nonconvex localization defects & \deferred & A
-near-minimizer and corrected two-sided processes require rebuilding the
-nonconvex proof.\\
-T79 & 95--100 & Inconsistent approximation-adjusted radius & \deferred & A single
-definition cannot be selected safely until the surrounding nonconvex proof is
-rederived.\\
+% Original T78 disposition retained for provenance:
+% \rowcolor{lightgray}T78 & 95--98 & Nonconvex localization defects & \deferred & A
+% near-minimizer and corrected two-sided processes require rebuilding the
+% nonconvex proof.\\
+\rowcolor{lightgray}T78 & 95--98 & Nonconvex localization defects & \pairreviewed &
+\textcolor{deferredred}{Verified the localization repair installed by T37/T82:
+a feasible comparison function, the global upper-curvature bound and the
+correct two-sided processes with the same interpolation coefficient and
+negative penalties. No additional manuscript edit is required for this issue.
+Existence of a measurable exact ERM, T83 network applicability, T84 and the
+remaining T82 conditions are not resolved by this disposition.}\\
+% Original T79 disposition retained for provenance:
+% T79 & 95--100 & Inconsistent approximation-adjusted radius & \deferred & A single
+% definition cannot be selected safely until the surrounding nonconvex proof is
+% rederived.\\
+T79 & 95--100 & Inconsistent approximation-adjusted radius & \pairreviewed &
+\textcolor{deferredred}{Verified the T37/T82 radius and fixed-point repair.
+The larger localization radius and smaller non-strict event threshold have
+distinct roles; the probability bounds use the latter denominator and keep
+the matching failure outside it. The local norm ball and fixed-point scaling
+retain the approximation envelope. No further manuscript edit is needed
+for this issue; T82's remaining conditions, measurable exact ERM,
+T83 network rates and T84 remain separate.}\\
+% Original T80 disposition retained for provenance:
+% \rowcolor{lightgray}T80 & 99--103 & Sign errors in the twelve-term decomposition &
+% \deferred & Replacing the decomposition by an absolute centered process is a
+% major proof rewrite.\\
 \rowcolor{lightgray}T80 & 99--103 & Sign errors in the twelve-term decomposition &
-\deferred & Replacing the decomposition by an absolute centered process is a
-major proof rewrite.\\
+\pairreviewed & \textcolor{deferredred}{Verified the T37/T82 repair of the
+forward and reverse decompositions, twelve signed components and their
+direct calls. Original empirical weights and negative penalties are retained;
+the two directions use their corresponding kernels and sign choices.
+No additional manuscript patch is needed for this issue. This does not
+validate the protected block construction, establish a measurable exact ERM,
+or resolve T82's remaining conditions, T83 or T84.}\\
 % Original T82 disposition retained for provenance:
 % T82 & 108--113 & Missing weights and inconsistent expectations & \deferred & The
 % correction must be propagated through all nonconvex process terms and penalty
