@@ -5497,36 +5497,53 @@ Given \( N \in \mathbb{N} \), denote the equally spaced lattice graph in \( [0,1
 \label{lat_g}
 I = P_\text{lat}(N) \,=\, \left\{ \left( \frac{i_1}{N}, \frac{i_2}{N}, \ldots, \frac{i_d}{N} \right) : i_1, \ldots, i_d \in \{1, \ldots, N\} \right\} \quad (271)
 \beq 
-Let \( \{c_r\}_{r=1}^{N^d} \) be the corresponding centers and define a collection of cells, \( \{C(c_r)\}_{r=1}^{N^d} \) as
-\beq 
+\begin{revision}
+Let $\{c_r\}_{r=1}^{N^d}$ enumerate the lattice points in a fixed
+lexicographic order. For $x\in[0,1]^d$, let $P_I(x)$ be the first
+minimizer of $\|x-c_r\|_\infty$ in this order. Define
+\begin{equation}
 \label{knn_center}
-\gI_r = C(c_r) \,=\, \left\{ z \in [0,1]^d : c_r = \arg\min_{r' \in P_\text{lat}(N)} \| z - r' \|_{\infty} \right\}.
-\beq 
-
-Now, let \( \theta \in \mathbb{R}^{\sum_{i=1}^n m_i} \) be a collection of signals observed on the sample points \( \{x_{ij}\}_{i=1,j=1}^{n,m} \). 
-
-
-Let \( \theta_I \in \mathbb{R}^{\sum_{i=1}^n m_i} \) be the modified version of \( \theta \) according to the grid induced by the lattice graph of size \( N \). Let \( \theta^I \in \mathbb{R}^{N^d} \) be the modified version of \( \theta \) that takes values on the centers of the lattice graph. See section E of \cite{madrid2020adaptive} for definitions of \( \theta_I \) and \( \theta^I \). For completion, the definitions are included as follows.
-
-\textbf{Definition 2.} Given \( \theta \in \mathbb{R}^{\sum_{i=1}^n m_i} \), let \( \{\gI_r\}_{r=1}^{N^d} \) be the collection of the cells in the lattice graph \( G_\text{lat} \) and let \( \{c_r\}_{r=1}^{N^d} \) be the corresponding centers. Let \( \theta_I \in \mathbb{R}^{\sum_{i=1}^n m_i} \) be such that for any \( 1 \,\leq\, \alpha \,\leq\, n, 1 \,\leq\, \beta \,\leq\, m_{\alpha} \),
+\mathcal I_r=C(c_r)=\{x\in[0,1]^d:P_I(x)=c_r\}.
+\end{equation}
+These cells form a disjoint partition. The corresponding observation
+indices are
+\begin{equation}
+\label{I_r}
+I_r=\{(i,j):1\leq i\leq n,\ 1\leq j\leq m_i,\
+                         P_I(x_{ij})=c_r\}.
+\end{equation}
+For every nonempty $I_r$, choose
 \[
-(\theta_I)_{\alpha,\beta} = \theta_{ij},
+(i_r,j_r)\in\operatorname*{arg\,min}_{(i,j)\in I_r}\|x_{ij}-c_r\|_2,
 \]
-if \( x_{\alpha,\beta} \) and \( x_{ij} \) are in the same cell \( \gI_r \), and that \( (i,j) \,=\, \arg\min_{1 \,\leq\, i' \,\leq\, n,1 \,\leq\, j' \,\leq\, m} \|x_{i'j'} - c_r\| \). 
-Denote by 
-\beq \label{I_r} I_r = \{(i,j) \in [n] \times [m] : P_I(x_{ij}) \,=\, c_r \} \beq  for \( r = 1, \ldots, N^d \), where \( P_I(x) \) denotes the point in \( P_\text{lat}(N) \) such that \( x \in C(P_I(x)) \).
+breaking ties lexicographically. Use this same representative for
+every signal vector. In particular, representatives from different
+nonempty cells are distinct.
 
-\textbf{Definition 3.} Let \(\theta \in \mathbb{R}^{\sum_{i=1}^n m_i}\) be a collection of signals observed on the sample points \(\{x_{ij}\}^{n,m_i}_{i=1,j=1}\). Let \(\theta^I\) in \(\mathbb{R}^{N^d}\) be such that, for any \(r \in [N^d]\)
+Following the cellwise construction in Section E of
+\cite{madrid2020adaptive}, define the two representations as follows.
 
+\textbf{Definition 2.}
+For $\theta\in\mathbb R^{\sum_{i=1}^n m_i}$, define
+$\theta_I\in\mathbb R^{\sum_{i=1}^n m_i}$ by
 \[
-\theta^I_r = 
-\begin{cases} 
-\theta_{i_rj_r}, & \text{if } I_r \neq \emptyset \,\,\,\text{and}\,\,\, (i_rj_r) \,=\, \arg\min_{1 \,\leq\, i' \,\leq\, n, 1 \,\leq\, j' \,\leq\, m_{i'}}\|x_{i'j'} - c_r\|; \\
-0, & \text{if } I_r = \emptyset.
+(\theta_I)_{ij}=\theta_{i_rj_r}\qquad\text{for }(i,j)\in I_r.
+\]
+Every observation belongs to a nonempty cell, so this defines
+every coordinate.
+
+\textbf{Definition 3.}
+For the same $\theta$, define $\theta^I\in\mathbb R^{N^d}$ by
+\[
+\theta^I_r=
+\begin{cases}
+\theta_{i_rj_r},&I_r\ne\varnothing,\\
+0,&I_r=\varnothing.
 \end{cases}
 \]
-
-This means that \(\theta^I_r\) take the value \(\theta_{i_rj_r}\), if \(x_{i_rj_r}\) is the closest point to the center of \(c_r\) among all \(\{x_{ij}\}^{n,m_i}_{i=1,j=1}\).
+Thus $\theta_I$ is constant within each cell, and $\theta^I$ records
+one value per cell.
+\end{revision}
 
 \subsubsection{Piecewise Lipschitz functions}
 \label{plf_notation}
@@ -6160,17 +6177,23 @@ N = \frac{\left[ 3\sqrt{d(nm)^{1/d}} \right]}{aK^{1/d}}, \quad \,\,\,\text{where
 \bea 
 for a positive constants \( c_2 \), and, \( v_{\max} \), and \( C \) are from Assumptions~\ref{asm:m} and \ref{ass_knn}. Moreover, \( c_{2,d} \) is a positive constants that depends on \( d \). Then there exist positive constants \( \bar{b}_1 \) and \( \bar{b}_2 \) depending on \( d \), \( v_{\min} \), and \( v_{\max} \) with \( v_{\min} \) from Assumptions~\ref{asm:m} and \ref{ass_knn}. Let set $C(\cdot)$ be defined in \eqref{knn_center}. We start by introducing the notation ${x'}_{ij} = P_I(x_{ij})$.Then
 define the event \(\Omega\)  as
+\begin{revision}
 \begin{equation}
-\begin{aligned}
 \label{def_omega}
-\Omega: \quad & \text{``If } x_{ij} \in C(x'_{ij}) \,\,\,\text{and}\,\,\, x_{st} \in C(x'_{rs}) \text{for } x_{ij}', x_{st}' \in P_{\text{lat}}(N) \text{ with } \|x_{ij}', x_{st}'\|_2 \,\leq\, N^{-1}, \\
-        & \text{then } x_{ij} \,\,\,\text{and}\,\,\, x_{st} \text{ are connected in the } K\text{-NN graph.''}
+\begin{aligned}
+\Omega=\bigl\{\,
+&\text{for all distinct observation indices }(i,j),(s,t),\\
+&\|P_I(x_{ij})-P_I(x_{st})\|_2\leq N^{-1}\\
+&\qquad\Longrightarrow
+              \{(i,j),(s,t)\}\in E_K
+\,\bigr\}.
 \end{aligned}
 \end{equation}
+\end{revision}
 
 
 
-Also, define the following events, 
+\rev{For a positive constant $b_2$, define the following events:}
 \[
 E_1 = \left\{ \min_{r=1,\ldots,N^d} |I_r| \,\geq\, \frac{1}{2} b_2 K \right\}, \quad \text{(310)}
 \]
@@ -6197,13 +6220,60 @@ Then let \(\tilde \Pi\) be the orthogonal projection onto the span of \(1_{N^d} 
 
 % where \(s \in \mathbb{R}^{N^d}\) is a mean zero vector whose coordinates are Rademacher variables. 
 
-Further, using the proof of Theorem 2 in \cite{hutter2016optimal} (see page 21 in that paper), if \(\tilde s \in \mathbb{R}^{N^d}\) is a mean zero vector whose coordinates are Rademacher variables or zero values as introduced in \eqref{tilde_s}. it yields that the following two inequalities hold simultaneously on an event \(E_4\) of probability at least   \(1 - \frac{1}{nm}\),
-
-
+\begin{revision}
+Here $\tilde s$ is the vector of normalized cell sums defined in
+Lemma~\ref{lemma_17}. Hold the complete design fixed. Since each
+$s_{ij}$ is an independent Rademacher variable or identically zero,
+the disjoint cell sums are independent and, for every
+$a\in\mathbb R^{N^d}$ and $\lambda\in\mathbb R$,
 \[
-E_4 = \left\{ \left\| (D^\dag)^\top \tilde s\right\|_{\infty} \,\leq\,  \rho \sqrt{2\log(eN^d nm)}, \quad \left\| \tilde \Pi \tilde s \right\|_2 \,\leq\, 2\sqrt{2\log(enm)} \right\},
+\mathbb E_s\exp(\lambda a^\top\tilde s)
+\,\leq\,\exp\bigl(\lambda^2\|a\|_2^2/2\bigr).
 \]
-where \(\rho = \max_{1 \,\leq\, v \,\leq\, |E_{\text{lat}}|} \left\| D^\dag_{,v} \right\|_2\). Additionally, using propositions 4 and 6 in \cite{hutter2016optimal}, we have that \(\rho \,\leq\, \widetilde{C(d)} \sqrt{\log(N)}\), where \( \widetilde{C(d)}\) is a positive constant depending on \(d\). Hence,
+Write
+$\rho=\max_{1\leq v\leq|E_{\mathrm{lat}}|}
+                 \|D^\dag_{,v}\|_2$, with $\rho=0$ if the grid has no edges.
+Define
+\[
+\begin{aligned}
+E_4=\Bigl\{\,
+&\|(D^\dag)^\top\tilde s\|_\infty
+ \leq\rho\sqrt{2\log\{4\max(1,|E_{\mathrm{lat}}|)nm\}},\\
+&\|\tilde\Pi\tilde s\|_2\leq2\sqrt{2\log(enm)}
+\,\Bigr\}.
+\end{aligned}
+\]
+The projection identity used in the proof of Theorem 2 of
+\cite{hutter2016optimal}, Appendix B.1, applies deterministically.
+For the present signs, the preceding moment bound gives the
+required probability directly:
+\[
+\begin{aligned}
+&\mathbb P_s\!\left\{
+ \|(D^\dag)^\top\tilde s\|_\infty
+ >\rho\sqrt{2\log\{4\max(1,|E_{\mathrm{lat}}|)nm\}}
+ \right\}\\
+&\qquad\leq
+ \frac{2|E_{\mathrm{lat}}|}
+      {4\max(1,|E_{\mathrm{lat}}|)nm}
+ \leq\frac{1}{2nm}.
+\end{aligned}
+\]
+Also,
+$\|\tilde\Pi\tilde s\|_2
+=|1_{N^d}^\top\tilde s|/\sqrt{N^d}$, so
+\[
+\mathbb P_s\!\left\{
+ \|\tilde\Pi\tilde s\|_2>2\sqrt{2\log(enm)}
+ \right\}
+\,\leq\,\frac{2}{(enm)^4}
+\,\leq\,\frac{1}{2nm}.
+\]
+Thus $\mathbb P_s(E_4^c)\leq1/(nm)$ for every fixed design, and
+averaging over the design gives the same bound unconditionally.
+\end{revision}
+
+Additionally, using propositions 4 and 6 in \cite{hutter2016optimal}, we have that \(\rho \,\leq\, \widetilde{C(d)} \sqrt{\log(N)}\), where \( \widetilde{C(d)}\) is a positive constant depending on \(d\). Hence,
 
 \[
 \left\| (D^\dag)^\top \tilde s\right\|_{\infty} \,\leq\,  C(d) \sqrt{\log\left(\frac{nm}{K}\right) \log\left(\frac{nm}{K} nm\right)} \quad \,\,\,\text{and}\,\,\, \quad \|\tilde \Pi \tilde s\|_2 \,\leq\, 2\sqrt{2\log(enm)},
@@ -6218,17 +6288,33 @@ with probability at least \(1 - 2 \cdot \frac{1}{nm}\). Here, \(C(d) > 0\) is a 
 
 Then denote $\mathcal{E} \equiv \Omega \cap E_1 \cap E_2 \cap E_3 \cap E_4$, on the event $\mathcal{E}$, the following is satisfied. 
 
-Let \(\theta_1,\theta_2 \in \mathbb{R}^{\sum_{i = 1}^n   m_i}\) such that \(\|\varLambda\|_2 \,\leq\, b\) and \(\|\nabla{G_K} \varLambda\|_1 \,\leq\, 2V_n\). The variables \(\{s_{ij}\}^{n,m_i}_{i=1,j=1}\) are as in the statement of the lemma.
-First, by Lemma~\ref{lemma_16} and \(E_3\), 
-\bea
-s^\top(\theta_1 - \theta_2) \,\leq\, 4\sqrt{2 \log\left(nm\right)} V_n + s^\top({\theta_1}_I - {\theta_2}_I).
-\bea 
-
-Then, by Lemma \ref{lemma_17}, \(E_2\), and \(E_4\), we have that
-\beq 
+\begin{revision}
+Fix $\varLambda\in\mathbb R^{\sum_{i=1}^n m_i}$ satisfying
+$\|\varLambda\|_2\leq b$ and
+$\|\nabla_{G_K}\varLambda\|_1\leq2V_n$.
+Apply Lemmas~\ref{lemma_16} and~\ref{lemma_17} with
+$\theta_1=\varLambda$ and $\theta_2=0$.
+On $\Omega\cap E_3$, the first lemma gives
+\[
+s^\top\varLambda
+\,\leq\,4\sqrt{2\log\left(\sum_{i=1}^n m_i\right)}\,V_n
+          +s^\top\varLambda_I .
+\]
+On $\Omega\cap E_1$, the second lemma gives
+\begin{equation}
 \label{lemma_10_madrid}
-s^\top({\theta_1}_I - {\theta_2}_I) \,\leq\, \max_{r=1,...,N^d} |I_r| \left( \| \tilde \Pi \tilde s\|_2 \|\theta_1^*-\theta_2^*\|_2 + \|(D^\dag)^\top\|_{\infty} \left( \|\nabla_{G_K}{\theta_{1}}_I\|_1 + \|\nabla_{G_K}{\theta_{2}}_I\|_1 \right) \right),
-\beq 
+\begin{aligned}
+s^\top\varLambda_I
+&\,\leq\,\max_{1\leq r\leq N^d}|I_r|
+ \Bigl[\|\tilde\Pi\tilde s\|_2\|\varLambda\|_2
+       +\|(D^\dag)^\top\tilde s\|_\infty
+                             \|\nabla_{G_K}\varLambda\|_1\Bigr]\\
+&\,\leq\,\max_{1\leq r\leq N^d}|I_r|
+ \Bigl[b\|\tilde\Pi\tilde s\|_2
+       +2V_n\|(D^\dag)^\top\tilde s\|_\infty\Bigr].
+\end{aligned}
+\end{equation}
+\end{revision}
 
 
 
@@ -6237,10 +6323,10 @@ s^\top({\theta_1}_I - {\theta_2}_I) \,\leq\, \max_{r=1,...,N^d} |I_r| \left( \| 
 % \]
 Thus, we have 
 \bea
-&\frac{1}{\sum_{i = 1}^n m_i}s^\top \varLambda \,\leq\, \frac{1}{\sum_{i = 1}^n m_i}4 \sqrt{2 \log\left(nm \right)} V_n  \\
+&\frac{1}{\sum_{i = 1}^n m_i}s^\top \varLambda \,\leq\, \frac{1}{\sum_{i = 1}^n m_i}4 \sqrt{2 \log\left(\rev{\sum_{i=1}^n m_i}\right)} V_n  \\
 &\quad +\max_{r=1,\ldots,N^d} \left| I_r \right| \frac{1}{\sum_{i = 1}^n m_i}\left( \left\|\tilde \Pi\tilde s\right\|_2b + \left\| (D^\dag)^\top \tilde s \right\|_{\infty}\cdot 4V_n \right) 
 \\&
-\,\leq\, 4\frac{\sqrt{2 \log\left(\sum_{i = 1}^n   m_i\right)}}{\sum_{i = 1}^n   m_i}  V_n + \frac{3}{2} \tilde b_1 K \left(  2b\frac{\sqrt{2 \log(e nm)}}{{\sum_{i = 1}^n  m_i}} + C(d) \frac{\log(\frac{(nm)^2}{K})}{{\sum_{i = 1}^n   m_i}}(4V_n)  \right)
+\,\leq\, 4\frac{\sqrt{2 \log\left(\sum_{i = 1}^n   m_i\right)}}{\sum_{i = 1}^n   m_i}  V_n + \frac{3}{2} \rev{b_2} K \left(  2b\frac{\sqrt{2 \log(e nm)}}{{\sum_{i = 1}^n  m_i}} + C(d) \frac{\log(\frac{(nm)^2}{K})}{{\sum_{i = 1}^n   m_i}}(4V_n)  \right)
 \\&
 \,\leq\, C_3  K \frac{\log^{\frac{1}{2}}(nm)}{\sum_{i = 1}^n  m_i}b + C_4  K \frac{\log(nm)}{\sum_{i = 1}^n  m_i}V_n,
 \bea 
@@ -6991,46 +7077,61 @@ The ~\ref{lemma_14} demonstrated that the count of observations \(x_{ij}\) that 
 
 
 
+\begin{revision}
 \begin{lemma}[see Lemma 8 in \cite{madrid2020adaptive}]
-    \label{lemma_15}
-    Consider the notation in \ref{knn_notation}. Assume that the event \(\Omega\) in \eqref{def_omega} intersected with
-\beq 
-\label{eq305}
-\min_{r=1,...,N^d} |I_r| \,\geq\, \frac{1}{2}\tilde b_2K,
-\beq 
-holds. Then for all \(s \in \mathbb{R}^{\sum_{i=1}^n m_i}\), it holds that
-\beq 
+\label{lemma_15}
+Use the cellwise representations in Section~\ref{knn_notation}.
+On the event $\Omega$ in \eqref{def_omega}, for all
+$s,\theta\in\mathbb R^{\sum_{i=1}^n m_i}$,
+\begin{equation}
 \label{eq_306}
-|s^\top (\theta - \theta_1)| \,\leq\, 2\norm{s}_{\infty}\|\nabla_{G_k}\theta\|_1, \quad \forall \theta \in \mathbb{R}^{\sum_{i=1}^n m_i}.
-\beq 
-Moreover,
-\beq 
+|s^\top(\theta-\theta_I)|
+\,\leq\,2\|s\|_\infty\|\nabla_{G_K}\theta\|_1.
+\end{equation}
+If, in addition,
+\begin{equation}
+\label{eq305}
+\min_{1\leq r\leq N^d}|I_r|>0,
+\end{equation}
+then
+\begin{equation}
 \label{eq_307}
-\|D\theta^I\| \,\leq\, \|\nabla_{G_k}\theta\|_1, \quad \forall \theta \in \mathbb{R}^{\sum_{i=1}^n m_i},
-\beq 
-where \(D\) is the incidence matrix of a \(d\)-dimensional grid graph \(G_{\text{grid}} = (V_{\text{grid}}, E_{\text{grid}})\) with \(V_{\text{grid}} = [N^d]\), where \((r,r') \in E_{\text{grid}}\) if and only if
-\[
-\|P_I{(x_{i_rj_r})} - P_I{(x_{i_{r'}j_{r'}})}\|_2 = \|c_r - c_{r'}\|_2 = \frac{1}{N},
-\]
-where \(x_{i_rj_r} \in C(c_r)\) and \(x_{i_{r'}j_{r'}} \in C(c_{r'})\).
+\|D\theta^I\|_1\,\leq\,\|\nabla_{G_K}\theta\|_1.
+\end{equation}
+Here $D$ is an oriented incidence matrix of the grid on the
+$N^d$ centres, with an edge between $c_r$ and $c_{r'}$ when
+$\|c_r-c_{r'}\|_2=N^{-1}$.
 \end{lemma}
-\begin{proof} We start by introducing the notation \(x_{ij}' = P_I{(x_{ij})}\). To prove \eqref{eq_306} we proceed in cases.
-\textit{Case 1.} If \((\theta_I)_{11} = \theta_{11}\). Then clearly \(|s_{(11)}|\abs{\theta_{11} - (\theta_I)_{11}} = 0\).
-\textit{Case 2.} If \((\theta_I)_{11} = \theta_{ij}\) for \((i,j) \neq (1,1)\). Then
-\[
-\|x'_{11} - x_{ij}\|_{\infty} \,\leq\, \|x'_{11} - x_{11}\|_{\infty} \,\leq\, \frac{1}{2N}.
-\]
-Thus, \(x'_{11} = x'_{ij}\), and so \(((1,1),(i,j))\) \( \in E_K \) by the assumption that the event \(\Omega\) holds. Therefore for every \((i,j) \in [n] \times [m_i]\), there exists \((s_{(ij)},t_{(ij)}) \in [n] \times [m]\) such that \((\theta_I)_{ij} = \theta_{s_{(ij)},t_{(ij)}}\) and either \((i,j) \,=\, (s_{(ij)},t_{(ij)})\) or \((i,j),(s_{(ij)},t_{(ij)})\) \( \in E_K \). Hence,
-\[
-|s^\top (\theta - \theta_1)| \,\leq\, \sum_{i=1}^{n} \sum_{j=1}^{m_i} |s_{ij}| |\theta_{i,j} - \theta_{s_{(ij)}t_{(ij)}}| \,\leq\, 2\norm{s}_{\infty}\|\nabla_{G_k}\theta\|_1.
-\]
-To verify \eqref{eq_307}, we observe that
-\[
-\|D\theta^I\|_1 = \sum_{(r,r')\in E_{\text{grid}}} |\theta_{i_r,j_r} - \theta_{i_{r'}j_{r'}}|.
-\]
-Now, if \((r,r') \in E_{\text{grid}}\), then \(x_{i_{r},j_{r}}\) and \(x_{i_{r'}j_{r'}}\) are neighboring cells in \(I\). This implies that \(((i_{r},j_{r}),(i_{r'}j_{r'}))\) is an edge in the K-NN graph. Thus, every edge in the grid graph \(G_{\text{grid}}\) corresponds to an edge in the K-NN graph and the mapping is injective. Note that here we have used the fact that \eqref{eq305} ensures that every cell has at least one point, provided that $K$ is large enough.
-The claim is then followed.  
+\begin{proof}
+For $(i,j)\in I_r$, the representative $(i_r,j_r)$ belongs to
+the same cell. On $\Omega$, the two indices are identical or
+form an edge of $G_K$. Hence
+\begin{align*}
+|s^\top(\theta-\theta_I)|
+&\,\leq\,\sum_{r:I_r\ne\varnothing}
+       \sum_{(i,j)\in I_r}|s_{ij}|
+                     |\theta_{ij}-\theta_{i_rj_r}|\\
+&\,\leq\,\|s\|_\infty
+       \sum_{r:I_r\ne\varnothing}
+       \sum_{(i,j)\in I_r}|\theta_{ij}-\theta_{i_rj_r}|\\
+&\,\leq\,2\|s\|_\infty\|\nabla_{G_K}\theta\|_1.
+\end{align*}
+The last inequality counts each unordered observation edge
+at most twice. This proves \eqref{eq_306}.
+
+Under \eqref{eq305}, every cell has a representative. The event
+$\Omega$ also connects the representatives of adjacent grid cells.
+The representatives are distinct, so distinct grid edges give
+distinct observation edges. Therefore
+\begin{align*}
+\|D\theta^I\|_1
+&\,=\,\sum_{\{r,r'\}\in E_{\mathrm{grid}}}
+             |\theta_{i_rj_r}-\theta_{i_{r'}j_{r'}}|\\
+&\,\leq\,\|\nabla_{G_K}\theta\|_1,
+\end{align*}
+which proves \eqref{eq_307}.
 \end{proof}
+\end{revision}
 
 
 % \begin{lemma}[see Lemma 8 in \cite{madrid2020adaptive}]
@@ -7096,77 +7197,139 @@ The claim is then followed.
 
 
 
-\begin{lemma}[see Lemma~\rev{9} in \cite{madrid2020adaptive}.]
-    \label{lemma_16}
-    Consider the notation in \ref{knn_notation} and assume that that event \(\Omega\) in \eqref{def_omega} happens. We have that for \(s\), \(\theta_1\), \(\theta_2 \in \mathbb{R}^{\sum_{i = 1}^n   m_i}\), it holds that
+\begin{revision}
+\begin{lemma}[see Lemma 9 in \cite{madrid2020adaptive}]
+\label{lemma_16}
+On the event $\Omega$ in \eqref{def_omega}, for all
+$s,\theta_1,\theta_2\in\mathbb R^{\sum_{i=1}^n m_i}$,
 \[
-s^\top (\theta_1 - \theta_2) \,\leq\, 2\|s\|_{\infty} (\|\nabla_{G_k}\theta_{1}\|_2 + \|\nabla_{G_k}\theta_{2}\|_2) \,=\, s^\top (\theta_{1I} - \theta_{2I}) .
-\] 
-% and 
-% \bea 
-% \theta_s^* \in \R^{\sum_{i = 1}^n m_i} \text{ satisfying }  (\theta_s^*)_{i,j} =  {\theta_s}_{\bracket{i,j}} \text{ for } s = \set{1,2}. 
-% \bea 
+\begin{aligned}
+s^\top(\theta_1-\theta_2)
+&\,\leq\,2\|s\|_\infty
+ \bigl(\|\nabla_{G_K}\theta_1\|_1+
+       \|\nabla_{G_K}\theta_2\|_1\bigr)\\
+&\qquad+s^\top(\theta_{1I}-\theta_{2I}).
+\end{aligned}
+\]
 \end{lemma}
 \begin{proof}
-     We observe that
-\[
-s^\top (\theta_1 - \theta_2) \,=\, s^\top (\theta_1 - \theta_{1I}) + s^\top (\theta_{1I} - \theta_{2I}) + s^\top (\theta_{2I} - \theta_2),
-\]
-and the claim is followed by Lemma~\ref{lemma_15}. 
- \end{proof}
-
-\begin{lemma}[see Lemma 10 in \cite{madrid2020adaptive}.]
-\label{lemma_17}    
- Assume that the event \(\Omega\) from Lemma~\ref{lemma_14} intersected with
-\begin{align}
-\left\{ \min_{r=1,\ldots,N^d} |I_r| > \frac{1}{2}\tilde b_2 K \right\},
-\end{align}
-holds. Let \(\theta_1, \theta_2 \in \mathbb{R}^{\sum_{i = 1}^n   m_i}\) and \(\{s_{i,j}\}_{i=1,j=1}^{n,m_i} = s \in \mathbb{R}^{\sum_{i = 1}^n   m_i}\) sub-Gaussian with parameter \(1\). 
-% And let 
-% \bea 
-% \theta_s^* \in \R^{\sum_{i = 1}^n m_i} \text{ satisfying }  (\theta_s^*)_{i,j} =  {\theta_s}_{\bracket{i,j}} \text{ for } s = \set{1,2}. 
-% \bea 
-Then, we have that
-\begin{align}
-\|s^{\top}(\theta_1 - \theta_2)\| &\,\leq\, \max_{r=1,\ldots,N^d} |I_r| \left( \|\tilde \Pi \tilde s\|_2\|\theta_1 - \theta_2\|_2 + \|(D^{\dag})^{\top} \tilde s\|_{\infty} \times \left( \|(\nabla_{G_K}\theta_{1I})\|_{1} + \|(\nabla_{G_K}\theta_{2I})\|_{1} \right) \right) \nonumber \\, \label{eq:lemma17_result}
-\end{align}
-where \(\tilde s \in \mathbb{R}^{N^d}\) is a mean zero vector whose coordinates are sub-Gaussian with the same constants \(1\). Here, \(\tilde \Pi\) is the orthogonal projection onto the span of \(1_{N^d} \in \mathbb{R}^{N^d}\), and \(D^{\dag}\) is the pseudoinverse of the incidence matrix \(D\) from Lemma~\ref{lemma_15}.
-\end{lemma}
-
-
-\begin{proof} Using the notation from the proof of Lemma~\ref{lemma_15}, we have that
-\begin{align}
-s^{\top}({\theta_1}_I - {\theta_2}_I) &\,=\, \sum_{r=1}^{N^d} \sum_{(i',j') \in I_r} s_{\bracket{i',j'}}({\theta_{1}}_{\bracket{i_r,j_r}} - {\theta_{2}}_{\bracket{i_r,j_r}}) \nonumber \\
-&\,=\, \max_{r=1,\ldots,N^d} \left|I_r\right| {\tilde s}^{\top}(\theta_{1}^I - \theta_{2}^I),
-\end{align}
-where
-\begin{align}
-\tilde s_j &\,=\, \left( \max_{r=1,\ldots,N^d} |I_r| \right)^{-1} \sum_{(i',j') \in I_r} s_{\bracket{i',j'}}.
-\end{align}
-Clearly, the \(\tilde s_1, \ldots, \tilde s_{N^d}\) are also sub-Gaussian with the same constants as the original errors \(\{s_{i,j}\}_{i=1,j=1}^{n,m_i}\).
-
-
-\text{Moreover, let } $\tilde \Pi$ \text{ be the orthogonal projection onto the span of } $1_{N_d} \in \mathbb{R}^{N_d}$.  By Hölder's inequality and by the triangle inequality,
-
-\begin{align}
-s^{\top} (\theta_1 - \theta_2) &\,\leq\, \left\{ \max_{r=1,\ldots,N_d} |I_r| \right\} \left\{ \|\tilde \Pi \tilde s\|_2 \|\theta_1^I - \theta_2^I\|_2 \right\} + \|(D^+)^{\top} \tilde s\|_{\infty} \|D (\theta_1 - \theta_2)\|_1 \notag \\
-&\,\leq\, \left\{ \max_{r=1,\ldots,N_d} |I_r| \right\} \left\{ \|\tilde \Pi \tilde s\|_2 \|\hat \theta^I - \theta^{*,I}\|_2 + \|(D^+)^{\top} \tilde s\|_{\infty} (\|D\theta_1^I\|_1 + \|D\theta_2^I\|_1) \right\}. \label{eq:308} 
-\end{align}
-
-Next we observe that
-
-\beq 
-\|\theta_1^I - \theta_2^I\|_2 &\,=\, \left( \sum_{r=1}^{N_d} ({\theta_1}_{i_r, j_r} - {\theta_2}_{i_r, j_r})^2 \right)^{1/2} \,\leq\, \left( \sum_{i = 1}^n  \sum_{j=1}^{m_i} (\theta_{1,i,j} - \theta_{2,i,j})^2 \right)^{1/2}.\\
-\label{eq:309} \\
-\beq 
-
-Therefore, combining \eqref{eq:309}, \eqref{eq:308} and Lemma~\ref{lemma_15} we arrive at 
-\beq 
-\notag \\
-s^{\top} ({\theta_1}_{I} - {\theta_2}_{I}) &\,\leq\, \left\{ \max_{r=1,\ldots,N_d} |I_r| \right\} \left\{ \|\tilde \Pi \tilde s\|_2 \|\theta_1 - \theta^*\|_2 \right\} + \|(D^+)^{\top} \tilde s\|_{\infty} \left( \|\nabla_{G_k}\theta_1\|_1 + \| \nabla_{G_k}\theta_2\|_1 \right). \notag
-\beq
-
+The exact decomposition and \eqref{eq_306} give
+\begin{align*}
+s^\top(\theta_1-\theta_2)
+&\,=\,s^\top(\theta_1-\theta_{1I})
+     +s^\top(\theta_{1I}-\theta_{2I})
+     +s^\top(\theta_{2I}-\theta_2)\\
+&\,\leq\,|s^\top(\theta_1-\theta_{1I})|
+       +s^\top(\theta_{1I}-\theta_{2I})
+       +|s^\top(\theta_{2I}-\theta_2)|\\
+&\,\leq\,2\|s\|_\infty
+ \bigl(\|\nabla_{G_K}\theta_1\|_1+
+       \|\nabla_{G_K}\theta_2\|_1\bigr)
+       +s^\top(\theta_{1I}-\theta_{2I}).
+\end{align*}
 \end{proof}
+\end{revision}
+
+\begin{revision}
+\begin{lemma}[see Lemma 10 in \cite{madrid2020adaptive}]
+\label{lemma_17}
+Assume that $\Omega$ and \eqref{eq305} hold.
+For $s,\theta_1,\theta_2\in\mathbb R^{\sum_{i=1}^n m_i}$, define
+\[
+\tilde s_r=
+\frac{1}{\max_{1\leq q\leq N^d}|I_q|}
+\sum_{(i,j)\in I_r}s_{ij},\qquad 1\leq r\leq N^d.
+\]
+Let $\tilde\Pi$ be the orthogonal projection onto the span of
+$1_{N^d}$, and let $D^\dag$ be the Moore--Penrose inverse of
+the grid incidence matrix in Lemma~\ref{lemma_15}. Then
+\begin{equation}
+\label{eq:lemma17_result}
+\begin{aligned}
+|s^\top(\theta_{1I}-\theta_{2I})|
+&\,\leq\,\max_{1\leq r\leq N^d}|I_r|
+ \Bigl[\|\tilde\Pi\tilde s\|_2\|\theta_1-\theta_2\|_2\\
+&\qquad+\|(D^\dag)^\top\tilde s\|_\infty
+ \bigl(\|\nabla_{G_K}\theta_1\|_1+
+       \|\nabla_{G_K}\theta_2\|_1\bigr)\Bigr].
+\end{aligned}
+\end{equation}
+If the $s_{ij}$ are independent of one another and of the design,
+are mean zero, and are sub-Gaussian with parameter at most $1$,
+then, conditional on the design, the coordinates of $\tilde s$
+are also independent, mean zero, and sub-Gaussian with parameter
+at most $1$.
+\end{lemma}
+\begin{proof}
+The common representative in each cell gives the exact identity
+\begin{align*}
+s^\top(\theta_{1I}-\theta_{2I})
+&\,=\,\sum_{r=1}^{N^d}
+ \left(\sum_{(i,j)\in I_r}s_{ij}\right)
+       (\theta_{1,i_rj_r}-\theta_{2,i_rj_r})\\
+&\,=\,\left(\max_{1\leq r\leq N^d}|I_r|\right)
+                    \tilde s^\top(\theta_1^I-\theta_2^I).
+\end{align*}
+Since the grid is connected, the defining projection property
+of the Moore--Penrose inverse gives
+\[
+D^\dag D=I_{N^d}-\tilde\Pi.
+\]
+Consequently,
+\begin{align*}
+\tilde s^\top(\theta_1^I-\theta_2^I)
+&\,=\,(\tilde\Pi\tilde s)^\top(\theta_1^I-\theta_2^I)
+       +\{(D^\dag)^\top\tilde s\}^\top
+                                      D(\theta_1^I-\theta_2^I),\\
+|\tilde s^\top(\theta_1^I-\theta_2^I)|
+&\,\leq\,\|\tilde\Pi\tilde s\|_2\|\theta_1^I-\theta_2^I\|_2\\
+&\qquad+\|(D^\dag)^\top\tilde s\|_\infty
+                   \|D(\theta_1^I-\theta_2^I)\|_1\\
+&\,\leq\,\|\tilde\Pi\tilde s\|_2\|\theta_1^I-\theta_2^I\|_2\\
+&\qquad+\|(D^\dag)^\top\tilde s\|_\infty
+                \bigl(\|D\theta_1^I\|_1+\|D\theta_2^I\|_1\bigr).
+\end{align*}
+The first inequality is Cauchy--Schwarz and H\"older; the second
+is the triangle inequality. Multiplying by the same cell-size
+factor in both terms yields
+\begin{equation}
+\label{eq:308}
+\begin{aligned}
+|s^\top(\theta_{1I}-\theta_{2I})|
+&\,\leq\,\max_{1\leq r\leq N^d}|I_r|
+ \Bigl[\|\tilde\Pi\tilde s\|_2\|\theta_1^I-\theta_2^I\|_2\\
+&\qquad+\|(D^\dag)^\top\tilde s\|_\infty
+          \bigl(\|D\theta_1^I\|_1+\|D\theta_2^I\|_1\bigr)\Bigr].
+\end{aligned}
+\end{equation}
+Distinct cells use distinct observation indices. Hence
+\begin{equation}
+\label{eq:309}
+\begin{aligned}
+\|\theta_1^I-\theta_2^I\|_2^2
+&\,=\,\sum_{r=1}^{N^d}
+                 (\theta_{1,i_rj_r}-\theta_{2,i_rj_r})^2\\
+&\,\leq\,\sum_{i=1}^n\sum_{j=1}^{m_i}
+                 (\theta_{1,ij}-\theta_{2,ij})^2
+=\|\theta_1-\theta_2\|_2^2.
+\end{aligned}
+\end{equation}
+Substituting \eqref{eq:309} and \eqref{eq_307} into
+\eqref{eq:308} proves \eqref{eq:lemma17_result}.
+
+For the distributional assertion, hold the complete design fixed.
+The sets $I_r$ are then fixed and disjoint. Thus their sums use
+disjoint sets of independent signs. For every $\lambda\in\mathbb R$,
+\[
+\mathbb E_s\bigl[\exp(\lambda\tilde s_r)\bigr]
+\,\leq\,
+\exp\left\{\frac{\lambda^2|I_r|}
+ {2(\max_q|I_q|)^2}\right\}
+\,\leq\,\exp(\lambda^2/2),
+\]
+since $\max_q|I_q|\geq1$. Their means are zero, proving the claim.
+\end{proof}
+\end{revision}
 
 
 
