@@ -1050,7 +1050,16 @@ Based on these observations, we now consider the estimator to be:
 With the notation from above, we now present our convergence rate for High-dimensional Quantile Linear Regression.
 \begin{theorem}
 \label{thm_hd}
-Suppose $f^* = x'\beta^*$ for some $\beta^* \in \mathbb{R}^d$.
+\begin{revision}
+Suppose $f^*(x)=x^\top\beta^*\in H(V)$, with $V>0$, and let
+$\hat f(x)=x^\top\hat\beta$ be any measurable exact minimizer in
+\eqref{QR_est}. Assume all hypotheses of Lemma~\ref{lem_huber_rate}
+for $\mathcal F=H(V)$ and $B=V$ for all sufficiently large $n$, with
+$c,C,C_\beta,C_0,c_0$ fixed and $0<c_0<C_0$.
+Write $q=\max\{1,2V\}$ and
+$L=\lceil2\log n/C_\beta\rceil$; in particular, the auxiliary-group
+hypotheses require $n\ge2$ and $n\ge2L$.
+\end{revision}
 \begin{revision}
 Let $N=\sum_{i=1}^n m_i$ and let $X\in\mathbb R^{N\times d}$ have row $x_{ij}^\top$ indexed by $(i,j)$, in lexicographic order. For a nonempty set $I\subseteq[n]$, put $N_I=\sum_{i\in I}m_i$ and let $X_I\in\mathbb R^{N_I\times d}$ contain the rows with $i\in I$. Write $X_{a,l}=X_{\mathcal J_{a,l}}$ for $a\in\{e,o\}$, and define
 \bea
@@ -1062,11 +1071,18 @@ A \,\coloneqq\, \mathbb E_x\left[
 \bea
 The expectation in $A$ uses the original design law, and each column norm is Euclidean. The matrices are unweighted: the factor $N_I^{-1}$ belongs to $R_I$ in \eqref{rademacher_def_blocks}. Its comparison with the empirical weights $1/(nm_i)$ is given in \eqref{eq_hd_empirical_weights}.
 \end{revision}
-There exist constants $C_6 > 0$ and $C_7 > 0$ such that
-\bea
-\left\|\hat f - f^*\right\|_2^2 \,=\, O_p \paren{\frac{\max\set{B,1} \log n V\rev{(\log(2d))^{1/2}} A}{nm} \,+\, \frac{\max\set{B,1} s\cdot\text{poly}(\log n)\log (T_n)}{n}},
-\bea  
-\rev{where $\hat f$ is the estimator in \eqref{QR_est}.}
+\begin{revision}
+Then
+\beq
+\label{eq_hd_conditional_rate}
+\|\hat f-f^*\|_2^2
+\,=\,O_P\left(
+qV\sqrt{\frac{L\log(2d)}{nm}}+\frac{q^2L}{n}
+\right).
+\beq
+A measurable exact minimizer exists for this finite-dimensional
+constraint set, as proved below.
+\end{revision}
 \end{theorem}
 
 
@@ -1093,36 +1109,24 @@ Thus coefficient consistency follows whenever the population prediction error di
 \end{revision}
 
 \begin{revision}
-The parameter dependence in the displayed expression of Theorem~\ref{thm_hd} can be made explicit. Under the block-size bounds in \eqref{beta_constants}, the support $x_{ij}\in[0,1]^d$ and Assumption~\ref{asm:m} give, for $a\in\{e,o\}$ and $l\in[L]$,
-\bea
-\max_{q\in[d]}\|{X_{a,l}}_{\cdot q}\|_2^2
-&\,=\,\max_{q\in[d]}
-  \sum_{i\in\mathcal J_{a,l}}\sum_{j=1}^{m_i}x_{ij,q}^2\\
-&\,\leq\,\sum_{i\in\mathcal J_{a,l}}m_i\\
-&\,\leq\,Cm|\mathcal J_{a,l}|
-\,\leq\,\frac{Cc_2nm}{L}.
-\bea
-Taking expectations and summing the $2L$ block contributions yields
-\bea
-A
-&\,\leq\,\sum_{l=1}^L\left(
- \sqrt{\sum_{i\in\mathcal J_{e,l}}m_i}
-+\sqrt{\sum_{i\in\mathcal J_{o,l}}m_i}\right)\\
-&\labelrel\leq{eq_hd_summary_blocksum}
-2L\sqrt{\frac{Cc_2nm}{L}}
-\,=\,2\sqrt{Cc_2Lnm}.
-\bea
-Inequality \eqref{eq_hd_summary_blocksum} applies the block-size bound to each of the $2L$ terms; a bound on the full columns alone does not supply this block-size factor. Consequently, the displayed rate expression, with the dimension factor written as $\sqrt{\log(2d)}$, satisfies
+The squared prediction-risk bound in Theorem~\ref{thm_hd} retains the
+constraint radius through \(q=1\vee2V\). Its two terms have the scale
 \beq
 \label{eq_hd_parameter_expression}
-&\frac{\max\{B,1\}\log n\,V\sqrt{\log(2d)}\,A}{nm}
-+\frac{\max\{B,1\}s\,\operatorname{poly}(\log n)\log(T_n)}{n}\\
-&\quad\,\leq\,
-2\sqrt{Cc_2}\max\{B,1\}V\log n
- \sqrt{\frac{L\log(2d)}{nm}}\\
-&\qquad+\frac{\max\{B,1\}s\,\operatorname{poly}(\log n)\log(T_n)}{n}.
+qV\sqrt{\frac{L\log(2d)}{nm}}+\frac{q^2L}{n}.
 \beq
-For fixed block and mixing constants and $L\asymp\log n$, the first term on the right is of order $\max\{B,1\}V(\log n)^{3/2}\sqrt{\log(2d)/(nm)}$. Both terms, including their dependence on $B,V,d,L$ and $T_n$, must be retained when assessing whether this expression tends to zero. In particular, $s=o(n)$ alone is insufficient. This calculation concerns the parameter dependence of the displayed expression; it does not change the block process or its empirical weights.
+Under the hypotheses of that theorem, if \(V=\gO(1)\), then
+\(L\asymp\log n\) and
+\[
+\|\hat f-f^*\|_2^2
+\,=\,O_P\left\{
+\sqrt{\frac{\log n\,\log(2d)}{nm}}+\frac{\log n}{n}
+\right\}.
+\]
+For growing \(V\) or \(d\), the bound gives prediction consistency when
+both terms in \eqref{eq_hd_parameter_expression} tend to zero.
+For the coefficient error, apply \eqref{eq_hd_coefficient_prediction}
+with its stated design-density condition.
 \end{revision}
 
 Although fast convergence rates have been obtained under restricted eigenvalue conditions on the design matrix in previous works (\cite{belloni2011}; \cite{fan2014adaptive}; \cite{sun2020adaptive}), \rev{our prediction analysis uses the random-design density bounds in Assumption~\ref{ass_1_1_1}.}
@@ -5688,11 +5692,80 @@ In this case, the constraint set is
 \rev{H(V) \,=\, \{x\mapsto x^\top\beta:\ x\in[0,1]^d,\ \|\beta\|_1\leq V,\ \beta\in\mathbb R^d\}.}
 \bea
 
-Since this is a compact set, we directly use Theorem~\ref{Theorem_1} to get an expectation bound by letting $\gF \equiv H(V)$. This means that we need to simply bound $ R(H(V)) $ which can be done using standard existing results.
+\rev{We first establish measurable exact minimization on the compact
+parameter ball and measurability of the localized processes. The
+full-class linear width then gives a bound independent of the local
+radius. We combine it with the empirical weights in
+Lemma~\ref{lem_huber_rate} and convert the resulting Huber bound to
+\eqref{eq_hd_conditional_rate}.}
 
 \subsection{Proof of Theorem~\ref{thm_hd}}
 \begin{proof}
-By Corollary~\ref{cor_op}, 
+\begin{revision}
+The class $H(V)$ is deterministic and convex, and
+$\|f\|_\infty\le V$ for every $f\in H(V)$.
+For fixed finite data $D=\{(x_{ij},y_{ij})\}$, write
+\[
+F_D(\beta)=\frac1n\sum_{i=1}^n\frac1{m_i}
+\sum_{j=1}^{m_i}\rho_\tau(y_{ij}-x_{ij}^\top\beta).
+\]
+This function is jointly continuous in $(D,\beta)$ and convex in
+$\beta$. Its minimizers on $\{\beta:\|\beta\|_1\le V\}$ form a
+nonempty compact convex set. For each $\epsilon>0$, let
+\[
+\beta_\epsilon(D)=
+\underset{\|\beta\|_1\le V}{\operatorname{arg\,min}}
+\{F_D(\beta)+\epsilon\|\beta\|_2^2\}.
+\]
+Strict convexity gives a unique minimizer. To verify continuity in
+$D$, take $D_\ell\to D$ and a convergent subsequence of
+$\beta_\epsilon(D_\ell)$, with limit $\bar\beta$.
+For every $\|\beta\|_1\le V$, continuity and minimization give
+\[
+F_D(\bar\beta)+\epsilon\|\bar\beta\|_2^2
+\le F_D(\beta)+\epsilon\|\beta\|_2^2.
+\]
+Thus $\bar\beta=\beta_\epsilon(D)$. Compactness then gives convergence
+of the entire sequence, so $\beta_\epsilon$ is continuous.
+
+For any minimizer $b$ of the original objective,
+\bea
+F_D(\beta_\epsilon)+\epsilon\|\beta_\epsilon\|_2^2
+&\,\leq\,F_D(b)+\epsilon\|b\|_2^2,\\
+0\le F_D(\beta_\epsilon)-F_D(b)
+&\,\leq\,\epsilon(\|b\|_2^2-\|\beta_\epsilon\|_2^2)
+\,\leq\,\epsilon V^2.
+\bea
+In particular, $\|\beta_\epsilon\|_2\le\|b\|_2$.
+Every limit point as $\epsilon\downarrow0$ therefore minimizes the
+original objective and has the smallest Euclidean norm among its
+minimizers. That point is unique by strict convexity of the squared
+norm on the convex minimizer set. Hence $\beta_{1/j}(D)$ converges
+to a Borel measurable exact minimizer $\beta_0(D)$.
+The risk argument below applies to any measurable exact minimizer
+of the original objective.
+
+For $f_\beta(x)=x^\top\beta$, the cube support gives
+\bea
+\|f_\beta-f_{\beta'}\|_\infty
+&\,\leq\,\|\beta-\beta'\|_1,\\
+|\Delta^2(f_\beta-f^*)-\Delta^2(f_{\beta'}-f^*)|
+&\,\leq\,2\|\beta-\beta'\|_1.
+\bea
+The second inequality uses the $2$-Lipschitz function
+$u\mapsto\min\{|u|,u^2\}$. The fixed-radius local parameter sets
+are therefore deterministic compact sets. Choose a countable dense
+subset of each such set itself. Sample loss differences and sign
+processes are continuous in the parameter.
+For conditional loss differences, use one jointly measurable
+conditional probability kernel at each conditioning step. Their
+increments relative to $f^*$ are bounded by $2V$, and integrating
+the loss Lipschitz bound against the same kernel preserves parameter
+continuity. Thus the relevant suprema equal suprema over the
+countable dense subsets and are measurable. This uses the
+response-state and measurable-evaluation hypotheses of
+Lemma~\ref{lem_huber_rate}.
+\end{revision}
 
 
 % By Lemma~\ref{lem_huber_rate},
@@ -5817,34 +5890,72 @@ R_{\mathcal J_{a,l}}(H(V))
 
 
 \begin{revision}
-The sum of these block bounds therefore satisfies
+We now apply Lemma~\ref{lem_huber_rate} to its auxiliary groups
+$\mathcal A_r$. Write
+$N_r=\sum_{i\in\mathcal A_r}m_i$,
+$m_{\min,r}=\min_{i\in\mathcal A_r}m_i$, and
+$\kappa=C_0-c_0>0$. Retaining the empirical-weight comparison in
+that lemma's proof gives, for $t>0$,
+\beq
+\label{eq_hd_auxiliary_aggregation}
+\mathbb P\{c_0\Delta^2(\hat f-f^*)>t^2\}
+&\,\leq\,\frac1n+
+\frac6{t^2}\sum_{r=1}^L
+\frac{N_r}{nm_{\min,r}}R_{\mathcal A_r}(\mathcal F_t)\\
+&\qquad+\frac{4qL}{\kappa nt^2},
+\beq
+where $\mathcal F_t=\{f-f^*:f\in H(V),\
+c_0\Delta^2(f-f^*)\le t^2\}$.
+Set inclusion and \eqref{eq_rademacher_translation} give
+\[
+R_{\mathcal A_r}(\mathcal F_t)
+\le R_{\mathcal A_r}(H(V)-f^*)
+=R_{\mathcal A_r}(H(V)).
+\]
+Let $X_r^\dagger$ have the $N_r$ design rows from this auxiliary
+group's joint response copies. The finite-matrix calculation
+\eqref{eq_hd_finite_max} applies to $X_r^\dagger$ and yields
 \bea
-&c_5\sum_{l=1}^L\left(R_{\mathcal J_{e,l}}(H(V))
-                    +R_{\mathcal J_{o,l}}(H(V))\right)
-       +\frac{c_4s\log n\log T_n}{n}\\
-&\qquad\,\leq\,\frac{Lc_5h_3V\sqrt{\log(2d)}\,A}{nm}
-       +\frac{c_4s\log n\log T_n}{n}\\
-&\qquad\,\leq\,\frac{h_4\log n\,V\sqrt{\log(2d)}\,A}{nm}
-       +\frac{c_4s\log n\log T_n}{n},
+R_{\mathcal A_r}(H(V))
+&\,=\,\frac V{N_r}\mathbb E\|(X_r^\dagger)^\top s\|_\infty\\
+&\,\leq\,\frac{V\sqrt{2\log(2d)}}{N_r}
+\mathbb E\max_{p\in[d]}\|(X_r^\dagger)_{\cdot p}\|_2\\
+&\,\leq\,V\sqrt{\frac{2\log(2d)}{N_r}}.
 \bea
-where $h_4=c_5h_3(2/C_\beta+1/\log 2)$, since
-$L=\lceil2\log(n)/C_\beta\rceil\leq(2/C_\beta+1/\log 2)\log n$ for $n\geq2$.
+The last inequality uses the cube support. Since the auxiliary
+groups partition the time indices, $\sum_rN_r=N$. Thus
+\bea
+6\sum_{r=1}^L\frac{N_r}{nm_{\min,r}}
+R_{\mathcal A_r}(\mathcal F_t)
+&\,\leq\,\frac{6V\sqrt{2\log(2d)}}{ncm}
+\sum_{r=1}^L\sqrt{N_r}\\
+&\,\leq\,\frac{6V\sqrt{2LN\log(2d)}}{ncm}\\
+&\,\leq\,\frac{6\sqrt{2C}}c\,V
+\sqrt{\frac{L\log(2d)}{nm}}.
+\bea
+The three inequalities use $m_{\min,r}\ge cm$,
+Cauchy--Schwarz, and $N\le Cnm$, respectively.
+Define
+\[
+a_n=\frac{6\sqrt{2C}}c\,V\sqrt{\frac{L\log(2d)}{nm}}
+       +\frac{4qL}{\kappa n}.
+\]
+Since $\hat f,f^*\in H(V)$, $|\hat f-f^*|\le2V$ and
+$\|\hat f-f^*\|_2^2\le q\Delta^2(\hat f-f^*)$.
+Taking $t=M\sqrt{a_n}$ in \eqref{eq_hd_auxiliary_aggregation} gives,
+for every $M\ge1$,
+\beq
+\label{eq_hd_conditional_tail}
+\mathbb P\left\{\|\hat f-f^*\|_2^2>
+                    \frac{qM^2a_n}{c_0}\right\}
+&\,\leq\,\mathbb P\{c_0\Delta^2(\hat f-f^*)>M^2a_n\}\\
+&\,\leq\,\frac1n+\frac1{M^2}.
+\beq
+For any prescribed positive tail probability, first choose $M$
+large enough and then $n$ large enough. With the fixed positive
+curvature and sample-size constants, this proves
+\eqref{eq_hd_conditional_rate}.
 \end{revision}
-
-% Additionally, we have 
-% \bea 
-% &c_6LR_{\mathcal{J}_{e,1}}\left(H(V)\right) + \frac{c_9s\log n\log T_n}{n} \\
-% & \leq
-% \frac{L c_5C_3V(\log d)^{1/2}L \ept{ \left(\max_{j \in [d]} ||{X_{e,1}}_{\cdot j}||}\right)}{nm} + \frac{c_4 s\log n\log T_n}{n}\\
-% &=\frac{C_4 \log^2 n V(\log d)^{1/2} \ept{\left(\max_{j \in [d]} ||{X_{e,1}}_{\cdot j}||}\right)}{nm} + \frac{c_4 s\log n\log T_n}{n}.
-% \bea 
-The claim of the theorem then follows and we get 
-\bea 
-\Delta^2(\hat f - f^*) \,=\, O_p \paren{\frac{\log n V\rev{(\log(2d))^{1/2}} A}{nm} + \frac{ s\cdot\text{poly}(\log n)\log (T_n)}{n}}, \,\,\,\text{and}\,\,\,
-\bea    
-\bea 
-\left\|\hat f - f^*\right\|_2^2 \,=\, O_p \paren{\frac{\max\set{B,1} \log n V\rev{(\log(2d))^{1/2}} A}{nm} + \frac{\max\set{B,1} s\cdot\text{poly}(\log n)\log (T_n)}{n}}.
-\bea  
 \end{proof}
 
 \section{Quantile K-NN fused lasso}
