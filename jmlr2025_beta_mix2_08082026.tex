@@ -408,7 +408,7 @@ The convergence rate for trend filtering has been explored in \cite{guntuboyina2
 Addressing the challenge of nonparametric quantile temporal-spatial data estimation for dimensions \(d > 1\), we introduce a quantile temporal-spatial data adaptation of the \(K\)-Nearest Neighbor fused lasso estimator (\(K\)-NN-FL), inspired by the methodologies of \cite{elmoataz2008nonlocal}, \cite{ferradans2014regularized}, and \cite{madrid2022risk}. The \(K\)-NN-FL estimator operates through a two-step procedure. Initially, a \(K\)-nearest neighbor graph \(G_K\) is constructed with an edge set \(E_K\), connecting two pairs \( (i_1, j_1) \) and \( (i_2, j_2) \) with an edge if \( x_{i_1 j_1} \) ranks among the \(K\)-nearest neighbors of \( x_{i_2 j_2} \), or vice versa. Subsequently, the graph fused lasso estimator is applied to \(G_K\). Notably, our implementation of \(K\)-NN-FL diverges from the one in \cite{madrid2020adaptive} by employing a distinct loss function tailored to temporal-spatial data, and from \cite{padilla2023temporal} by adapting the loss function to accommodate heavy-tailed error distributions. We demonstrate that the \(K\)-NN-FL estimator achieves a convergence rate of order \((nm)^{-1/d} + n^{-1}\), with respect to the Huber type loss, omitting logarithmic factors and under the condition that \(d = o(n)\). This rate is valid provided that the true function \(f^*\) exhibits bounded variation and adheres to a property extending piecewise Lipschitz continuity. Hence, our findings significantly broaden the scope of Theorem 3 in \cite{padilla2023temporal}, applying it within the quantile regression framework for temporal-spatial data analysis.
 
 
-Our theoretical framework also finds application in high-dimensional regression. In contexts of weak sparsity and fixed design, we demonstrate that \(\ell_1\)-constrained quantile regression is capable of consistently estimating the vector of regression coefficients without necessitating a restricted eigenvalue condition, diverging from the requirements outlined in \cite{belloni2011} and \cite{fan2014adaptive}. Further, we delve into high-dimensional quantile regression, specifically examining the constrained \(\ell_1\)-QR estimator as initially defined by Knight and in \cite{fu2000asymptotics}, and later explored in \cite{belloni2011}. The \(\ell_1\)-QR, leveraging the quantile version of the lasso estimator from \cite{tibshirani1996regression}, serves as a robust mechanism for variable selection and prediction in scenarios with high-dimensional covariates. We advance the discourse by extending the analysis presented in Theorem 5 of \cite{madrid2022risk} to the temporal-spatial setting, introducing a nuanced dependence on the data and achieving a convergence rate of \((nm)^{-1/2} + n^{-1}s\).
+\rev{Our framework also applies to $\ell_1$-constrained high-dimensional quantile regression under the random-design assumptions of this paper. The density lower bound in Assumption~\ref{ass_1_1_1} converts population prediction error into coefficient error, as shown in \eqref{eq_hd_coefficient_prediction}. This implication does not establish exact support recovery.} Further, we delve into high-dimensional quantile regression, specifically examining the constrained \(\ell_1\)-QR estimator as initially defined by Knight and in \cite{fu2000asymptotics}, and later explored in \cite{belloni2011}. The \(\ell_1\)-QR, leveraging the quantile version of the lasso estimator from \cite{tibshirani1996regression}, serves as a robust mechanism for variable selection and prediction in scenarios with high-dimensional covariates. We advance the discourse by extending the analysis presented in Theorem 5 of \cite{madrid2022risk} to the temporal-spatial setting, introducing a nuanced dependence on the data and achieving a convergence rate of \((nm)^{-1/2} + n^{-1}s\).
  
 \begin{revision}
 Relevant theory for deep networks includes expressive-power results \citep{pmlr-v70-raghu17a}, statistical risk bounds \citep{barron1989statistical}, stochastic-gradient methods \citep{reddi2019convergence}, energy landscapes \citep{choromanska2015loss}, and dynamical-systems interpretations \citep{kumpati1990identification}.
@@ -1051,11 +1051,33 @@ There exist constants $C_6 > 0$ and $C_7 > 0$ such that
 \end{theorem}
 
 
+\begin{revision}
+The prediction norm here is the population $L_2(Q)$ norm. For the linear model $f^*(x)=x^\top\beta^*$ and a linear fit $\hat f(x)=x^\top\hat\beta$, Assumption~\ref{ass_1_1_1} also controls coefficient error. To see this, take any $u\in\mathbb R^d$. Then
+\bea
+\int_{[0,1]^d}(x^\top u)^2v(x)\,dx
+&\labelrel\geq{eq_hd_gram_density}
+v_{\min}\int_{[0,1]^d}(x^\top u)^2\,dx\\
+&\labelrel={eq_hd_gram_moments}
+v_{\min}\left(\frac13\sum_{q=1}^d u_q^2
+                   +\frac12\sum_{q<r}u_qu_r\right)\\
+&\,=\,v_{\min}\left(\frac1{12}\|u\|_2^2
+                   +\frac14\left(\sum_{q=1}^d u_q\right)^2\right)\\
+&\,\geq\,\frac{v_{\min}}{12}\|u\|_2^2.
+\bea
+Inequality \eqref{eq_hd_gram_density} uses $v(x)\geq v_{\min}$ and the nonnegative squared integrand. Equality \eqref{eq_hd_gram_moments} follows from $\int_{[0,1]^d}x_q^2\,dx=1/3$ and $\int_{[0,1]^d}x_qx_r\,dx=1/4$ for $q\ne r$. Setting $u=\hat\beta-\beta^*$ gives, for every realization of the fitted coefficients,
+\beq
+\label{eq_hd_coefficient_prediction}
+\|\hat\beta-\beta^*\|_2^2
+\,\leq\,\frac{12}{v_{\min}}\|\hat f-f^*\|_2^2.
+\beq
+Thus coefficient consistency follows whenever the population prediction error divided by $v_{\min}$ tends to zero in probability. The existing density assumption supplies this population identifiability; no additional sample restricted-eigenvalue condition is used in \eqref{eq_hd_coefficient_prediction}. Exact support recovery requires a separate argument and is not a conclusion of the prediction bound.
+\end{revision}
+
 Theorem~\ref{thm_hd} shows that with columns of \(X\) normalized—a standard assumption in high-dimensional regression captured by
 \[
 \max_{j=1,\dots,d} \|X_{.j}\| \,\leq\, (mn)^{1/2},
 \]
-we achieve a rate of \(\left(\log d/(mn)\right)^{1/2} + sn^{-1}\). This rate is comparable to the \(\left(\log d/n\right)^{1/2}\) observed for univariate quantile trend filtering when \(m_i = O(1)\), in the absence of data dependence and spatial noise, as reported in \cite{madrid2022risk}. Importantly, the \(\left(\log d/n\right)^{1/2}\) rate is also applicable to the lasso, without any specific assumptions on the design matrix \(X\) and given \(m_i = O(1)\), as demonstrated in \cite{chatterjee2013assumptionless}. Our findings extend these rates to scenarios involving dependent data and spatial noise, assuming \(s = o(n)\). Although fast convergence rates have been obtained under restricted eigenvalue conditions on the design matrix in previous works (\cite{belloni2011}; \cite{fan2014adaptive}; \cite{sun2020adaptive}), our approach offers a broader applicability for dependent data without such assumptions.
+we achieve a rate of \(\left(\log d/(mn)\right)^{1/2} + sn^{-1}\). This rate is comparable to the \(\left(\log d/n\right)^{1/2}\) observed for univariate quantile trend filtering when \(m_i = O(1)\), in the absence of data dependence and spatial noise, as reported in \cite{madrid2022risk}. Importantly, the \(\left(\log d/n\right)^{1/2}\) rate is also applicable to the lasso, without any specific assumptions on the design matrix \(X\) and given \(m_i = O(1)\), as demonstrated in \cite{chatterjee2013assumptionless}. Our findings extend these rates to scenarios involving dependent data and spatial noise, assuming \(s = o(n)\). Although fast convergence rates have been obtained under restricted eigenvalue conditions on the design matrix in previous works (\cite{belloni2011}; \cite{fan2014adaptive}; \cite{sun2020adaptive}), \rev{our prediction analysis uses the random-design density bounds in Assumption~\ref{ass_1_1_1}.}
 
 
 

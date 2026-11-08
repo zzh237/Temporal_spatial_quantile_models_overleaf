@@ -358,9 +358,19 @@ original/copied-design comparison. Block-size inequalities remain conditions.
 This verifies the matrix and local normalization repair, not the full
 high-dimensional risk theorem: T29/T71, T84 and the protected block
 construction remain separate.}\\
+% Original T28 disposition retained for provenance:
+% \rowcolor{lightgray}T28 & 5--6, 15 & Coefficient consistency and variable selection &
+% \deferred & Restricting the claim to prediction or adding an identifiability
+% condition is a substantive theorem change.\\
 \rowcolor{lightgray}T28 & 5--6, 15 & Coefficient consistency and variable selection &
-\deferred & Restricting the claim to prediction or adding an identifiability
-condition is a substantive theorem change.\\
+\pairreviewed & \textcolor{deferredred}{Corrected the fixed-design claim to the
+paper's random-design setting. The existing density lower bound gives a
+population Gram lower bound and, for every fitted realization,
+$\|\hat\beta-\beta^*\|_2^2\leq12\|\hat f-f^*\|_{L_2(Q)}^2/v_{\min}$.
+Coefficient consistency requires population prediction error divided by
+$v_{\min}$ to tend to zero in probability. This adds no sample restricted-
+eigenvalue assumption and does not establish exact support recovery.
+The T29/T71 risk claims and T84 response-state conditions remain separate.}\\
 T29 & 15 & Linear-rate summary & \deferred & A corrected summary must be derived from
 the unresolved weighted design and block normalization.\\
 \rowcolor{lightgray}T30 & 16 & Graph total-variation scaling & \deferred & Changing
