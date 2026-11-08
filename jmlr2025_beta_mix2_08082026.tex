@@ -6689,7 +6689,7 @@ The claim is then followed.
 
 
 
-\begin{lemma}[see Lemma~\ref{Lemma_9} in \cite{madrid2020adaptive}.]
+\begin{lemma}[see Lemma~\rev{9} in \cite{madrid2020adaptive}.]
     \label{lemma_16}
     Consider the notation in \ref{knn_notation} and assume that that event \(\Omega\) in \eqref{def_omega} happens. We have that for \(s\), \(\theta_1\), \(\theta_2 \in \mathbb{R}^{\sum_{i = 1}^n   m_i}\), it holds that
 \[
@@ -6721,7 +6721,7 @@ holds. Let \(\theta_1, \theta_2 \in \mathbb{R}^{\sum_{i = 1}^n   m_i}\) and \(\{
 % \bea 
 Then, we have that
 \begin{align}
-\|s^{\top}(\theta_1 - \theta_2)\| &\,\leq\, \max_{r=1,\ldots,N^d} |I_r| \left( \|\tilde \Pi 、\tilde s\|_2\|\theta_1 - \theta_2\|_2 + \|(D^{\dag})^{\top} \tilde s\|_{\infty} \times \left( \|(\nabla_{G_K}\theta_{1I})\|_{1} + \|(\nabla_{G_K}\theta_{2I})\|_{1} \right) \right) \nonumber \\, \label{eq:lemma17_result}
+\|s^{\top}(\theta_1 - \theta_2)\| &\,\leq\, \max_{r=1,\ldots,N^d} |I_r| \left( \|\tilde \Pi \tilde s\|_2\|\theta_1 - \theta_2\|_2 + \|(D^{\dag})^{\top} \tilde s\|_{\infty} \times \left( \|(\nabla_{G_K}\theta_{1I})\|_{1} + \|(\nabla_{G_K}\theta_{2I})\|_{1} \right) \right) \nonumber \\, \label{eq:lemma17_result}
 \end{align}
 where \(\tilde s \in \mathbb{R}^{N^d}\) is a mean zero vector whose coordinates are sub-Gaussian with the same constants \(1\). Here, \(\tilde \Pi\) is the orthogonal projection onto the span of \(1_{N^d} \in \mathbb{R}^{N^d}\), and \(D^{\dag}\) is the pseudoinverse of the incidence matrix \(D\) from Lemma~\ref{lemma_15}.
 \end{lemma}
@@ -8182,7 +8182,7 @@ L &\,=\, L_{nm} \asymp \log(nm) \left( \max_{(p, K) \in \gP} (nm)^{\frac{K}{2(2p
 r &\,=\, r_{nm} \asymp 1. \label{eq:r_alternative}
 \end{align}
 
-It follows from Theorem 2 of \cite{kohler2019rate} that
+It follows from Theorem \rev{3} of \cite{kohler2019rate} that
 \begin{align}
 \inf_{f \in \mathcal{F}(L,r)} \lVert f - f^* \rVert_{\infty} &\,\leq\, \phi_{nm}, \label{eq:theorem2_result}
 \end{align}
@@ -8423,7 +8423,7 @@ Thus, we get
 \bea
 \end{lemma}
 
-\begin{lemma}[See Lemma 8 in \cite{liang2015learning}]
+\begin{lemma}[See Lemma \rev{12} in \cite{liang2015learning}]
 \label{lem_star}
 For any scale $\epsilon > 0$, the covering number of $\mathcal{F} \subset B_2(1)$ and that of $\text{star}(\mathcal{F})$ are bounded in the sense
 \[
@@ -8432,7 +8432,7 @@ For any scale $\epsilon > 0$, the covering number of $\mathcal{F} \subset B_2(1)
 \end{lemma}
 
 
-\begin{lemma}[Dudley’s Chaining, see Lemma 3 in \cite{farrell2021deep}]
+\begin{lemma}[Dudley’s Chaining, see Lemma 3 \rev{on page 56 of arXiv version 3} in \cite{farrell2021deep}]
 \label{dud_new}
 Let \(N(\delta, \mathcal{F}, \|\cdot\|_{\infty})\) denote the metric entropy for class \(\mathcal{F}\) (with covering radius \(\delta\) and metric \(\|\cdot\|_{\infty}\)), then
 \[
@@ -8477,7 +8477,7 @@ Let $F(\gL,r)$ defined as in (2) where $\sigma : \mathbb{R} \to \mathbb{R}$ with
 % holds for sufficiently large $n, x_1, \ldots, x_n \in \mathbb{R}^d$ and a constant $c_{56} > 0$ independent of $n, L$ and $r$.
 \end{lemma}
 \begin{proof}
-  It follows from Theorem 6 of \cite{bartlett2019nearly} (see also the proof of Lemma 19 on page 78 of \cite{kohler2019rate}) that the VC-dimension of \(F(\gL, r)\) satisfies
+  It follows from Theorem \rev{7} of \cite{bartlett2019nearly} (see also the proof of Lemma 19 on \rev{pages 77--78 of version 5} of \cite{kohler2019rate}) that the VC-dimension of \(F(\gL, r)\) satisfies
 \[
 \text{VC}(F(\gL, r)) \,\leq\, L^2 r^2 \log(Lr^2).
 \]
@@ -8747,6 +8747,8 @@ $\mathcal J_{o,l}$ is identical.
 
 
 \vskip 0.2in
+\begin{revision}
 \bibliography{references}
+\end{revision}
 
 \end{document}
